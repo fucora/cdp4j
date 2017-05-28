@@ -59,12 +59,12 @@ Integration with Maven
 2. install the jar into your local Maven repository as follows:
 
 ```bash
-mvn install:install-file -Dfile=cdp4j-1.0.1.jar -DgroupId=io.webfolder -DartifactId=cdp4j -Dversion=1.0.1 -Dpackaging=jar -DgeneratePom=true
+mvn install:install-file -Dfile=cdp4j-1.0.2.jar -DgroupId=io.webfolder -DartifactId=cdp4j -Dversion=1.0.2 -Dpackaging=jar -DgeneratePom=true
 ```
 
 3. install source jar into your local Maven repository as follows:
 ```bash
-mvn install:install-file -Dfile=cdp4j-1.0.1-sources.jar -DgroupId=io.webfolder -DartifactId=cdp4j -Dversion=1.0.1 -Dpackaging=jar -DgeneratePom=true -Dclassifier=sources
+mvn install:install-file -Dfile=cdp4j-1.0.2-sources.jar -DgroupId=io.webfolder -DartifactId=cdp4j -Dversion=1.0.2 -Dpackaging=jar -DgeneratePom=true -Dclassifier=sources
 ```
 
 4. Add the following dependency to `pom.xml` file:
@@ -73,7 +73,7 @@ mvn install:install-file -Dfile=cdp4j-1.0.1-sources.jar -DgroupId=io.webfolder -
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>cdp4j</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 
