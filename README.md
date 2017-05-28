@@ -14,7 +14,7 @@ Features
 * Invoke JavaScript function
 * Supports native CSS selector engine
 * Supports [Sizzle](http://sizzlejs.com/) selector engine
-* Supports Xpath queries
+* Supports XPath queries
 * Incognito Browsing (private tab)
 * Full page screen capture
 * Trigger Mouse events (click etc...)
