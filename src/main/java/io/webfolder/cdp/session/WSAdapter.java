@@ -121,7 +121,10 @@ class WSAdapter extends WebSocketAdapter {
                         if (error != null) {
                             int code = (int) error.getAsJsonPrimitive("code").getAsDouble();
                             String message = error.getAsJsonPrimitive("message").getAsString();
-                            context.setError(new CommandException(code, message));
+                            JsonElement messageData = error.get("data");
+                            context.setError(new CommandException(code, message +
+                                                        (messageData != null && messageData.isJsonPrimitive() ? ". " +
+                                                        messageData.getAsString() : "")));
                         } else {
                             context.setData(json);
                         }
