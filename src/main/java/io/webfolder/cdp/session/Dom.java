@@ -277,31 +277,29 @@ public interface Dom {
             throw new ElementNotFoundException(format(selector, args));
         }
         PropertyDescriptor pd = getThis().getPropertyDescriptor(objectId, "options");
-        if (pd != null) {
-            if (pd.getValue() != null) {
-                Double length = (Double) getThis().getPropertyByObjectId(pd.getValue().getObjectId(), "length");
-                List<Option> list = emptyList();
-                if (length != null) {
-                    if (length.intValue() <= 0) {
-                        getThis().releaseObject(objectId);
-                    } else {
-                        CallFunctionOnResult result = getThis().getCommand().getRuntime().callFunctionOn(pd.getValue().getObjectId(),
-                                "function() { let options = []; for (let i = 0; i < this.length; i++) " +
-                                "{ options.push({ index : this[i].index, selected: this[i].selected, " +
-                                "value: this[i].value, text: this[i].textContent, group: this[i].parentElement.tagName" +
-                                "=== 'OPTGROUP' ? this[i].parentElement.getAttribute('label') : null }); } return JSON.stringify(options); }");
-                        if (result != null && result.getResult() != null) {
-                            String json = (String) result.getResult().getValue();
-                            getThis().releaseObject(result.getResult().getObjectId());
-                            Gson gson = getThis().getGson();
-                            list = gson.fromJson(json, TYPE_TOKEN.getType());
-                        }
+        if ( pd != null && pd.getValue() != null ) {
+            Double length = (Double) getThis().getPropertyByObjectId(pd.getValue().getObjectId(), "length");
+            List<Option> list = emptyList();
+            if (length != null) {
+                if (length.intValue() <= 0) {
+                    getThis().releaseObject(objectId);
+                } else {
+                    CallFunctionOnResult result = getThis().getCommand().getRuntime().callFunctionOn(pd.getValue().getObjectId(),
+                            "function() { let options = []; for (let i = 0; i < this.length; i++) " +
+                            "{ options.push({ index : this[i].index, selected: this[i].selected, " +
+                            "value: this[i].value, text: this[i].textContent, group: this[i].parentElement.tagName" +
+                            "=== 'OPTGROUP' ? this[i].parentElement.getAttribute('label') : null }); } return JSON.stringify(options); }");
+                    if (result != null && result.getResult() != null) {
+                        String json = (String) result.getResult().getValue();
+                        getThis().releaseObject(result.getResult().getObjectId());
+                        Gson gson = getThis().getGson();
+                        list = gson.fromJson(json, TYPE_TOKEN.getType());
                     }
                 }
-                getThis().releaseObject(pd.getValue().getObjectId());
-                getThis().releaseObject(objectId);
-                return list;
             }
+            getThis().releaseObject(pd.getValue().getObjectId());
+            getThis().releaseObject(objectId);
+            return list;
         }
         getThis().releaseObject(objectId);
         return emptyList();

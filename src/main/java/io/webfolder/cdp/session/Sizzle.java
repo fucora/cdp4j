@@ -76,10 +76,8 @@ public interface Sizzle {
             Node document = dom.getDocument();
             if (document != null) {
                 RemoteObject remoteObject = dom.resolveNode(document.getNodeId());
-                if (remoteObject != null) {
-                    if (remoteObject.getObjectId() != null) {
-                        getThis().getCommand().getRuntime().releaseObject(remoteObject.getObjectId());
-                    }
+                if ( remoteObject != null && remoteObject.getObjectId() != null ) {
+                    getThis().getCommand().getRuntime().releaseObject(remoteObject.getObjectId());
                 }
             }
         }

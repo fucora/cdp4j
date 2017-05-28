@@ -172,7 +172,7 @@ public class Command {
         return getProxy(Security.class);
     }
 
-    public ServiceWorker ServiceWorker() {
+    public ServiceWorker getServiceWorker() {
         return getProxy(ServiceWorker.class);
     }
 

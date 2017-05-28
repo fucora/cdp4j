@@ -27,7 +27,6 @@ import static io.webfolder.cdp.type.constant.KeyEventType.KeyUp;
 import static java.lang.String.valueOf;
 
 import io.webfolder.cdp.command.Input;
-import io.webfolder.cdp.type.constant.KeyEventType;
 
 /**
  * Interface representing basic keyboard operations.
@@ -50,12 +49,12 @@ public interface Keyboard {
         for (int i = 0; i < text.length(); i++) {
             String c = text.substring(i, i + 1);
             input.dispatchKeyEvent(
-                    KeyEventType.KeyDown, null, null, c,
+                    KeyDown, null, null, c,
                     null, null, null, null,
                     null, null, null, null,
                     null);
             input.dispatchKeyEvent(
-                    KeyEventType.KeyUp, null, null, c,
+                    KeyUp, null, null, c,
                     null, null, null, null,
                     null, null, null, null,
                     null);

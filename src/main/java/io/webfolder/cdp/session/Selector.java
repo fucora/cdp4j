@@ -176,9 +176,7 @@ public interface Selector {
         if (callFunctionOn != null) {
             RemoteObject result = callFunctionOn.getResult();
             if (result != null) {
-                if ( result != null ) {
-                    getThis().releaseObject(result.getObjectId());
-                }
+                getThis().releaseObject(result.getObjectId());
             }
             if (callFunctionOn.getExceptionDetails() != null) {
                 RemoteObject exception = callFunctionOn.getExceptionDetails().getException();
