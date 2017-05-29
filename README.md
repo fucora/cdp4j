@@ -48,9 +48,9 @@ This library is suitable for use in production systems.
 
 Download
 --------
-[https://webfolder.io/download/cdp4j-1.0.1.jar](https://webfolder.io/download/cdp4j-1.0.1.jar) - 723 KB
+[https://webfolder.io/download/cdp4j-1.0.2.jar](https://webfolder.io/download/cdp4j-1.0.2.jar) - 723 KB
 
-[https://webfolder.io/download/cdp4j-1.0.1-sources.jar](https://webfolder.io/download/cdp4j-1.0.1-sources.jar) - 496 KB
+[https://webfolder.io/download/cdp4j-1.0.2-sources.jar](https://webfolder.io/download/cdp4j-1.0.2-sources.jar) - 496 KB
 
 Integration with Maven
 ----------------------

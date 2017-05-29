@@ -27,7 +27,6 @@
         </developer>
     </developers>
     <build>
-        <finalName>cdp4j</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
