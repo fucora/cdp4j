@@ -1,26 +1,12 @@
 sudo: required
 
-deploy:
-  provider: releases
-  api_key:
-    secure: vjL2gCBtJUa/lBhjM89LEuBUnRUkGEprxzrZSilpm1tgf+kBEIOn13Ohn4XouKH1OC3yAzxLzfLE+vi0KlvXNDwltipMaRgVOAMWK6NRIlVsrtX1vS+U+2lIUQHtXGHHRdNJn9sfcI5Y+acKQMUx5oSkkp50Bq2WWez2uNrEBlMDrcfrigWSu8MhD8DVZ2M62Qg0Azx9ZpprjiKVwfdBirXzqUugI5wnvsWkrdQcneiKbhVN+OL8WPPwSHp5CvkFdNqM2qfPjPwr2PC3VtVLr1Ahy4r7jzMGLaFXFJq8wZgf3bsKqO+6lEyUXYYNtSNtKn1Njw615KVz8FKtBulJBlNQQq9lNFR6tIVlFusjMfRkfLjYZ9S15PXHbdIfqoD4wB9R7wuVsR72g+CmMbHBRgjgnMhbOR+cA5cr2B5EvtvbTW89ULC1Vn1dfr4kBimvvtOp8GgiAU3NfATnFj/KuZIDVTNR8dfW63/eC3lcKf2DFtiQbPsIY926ucLu43k4YN7hKGsdmmfELjl5u3WL9SU9e3suJHQ2oJmBnJ+nUJQYpUHz4fw2yqndT+lXZFISO4RpJp6CvLF0E7M9DemFNUl01aTAzAmiQIh6+cW9QDXxSDb22GzgCiE4O/7X32jvQ2vmlA+tw04llSMG21L0j/Ir2+QYoE4rj8/lXSG/nJs=
-  file: target/cdp4j.jar
-  skip_cleanup: true
-  on:
-    repo: webfolderio/cdp4j
-    all_branches: true
-    tags: true
-
 language: java
 
 jdk: oraclejdk8
 
 dist: trusty 
 
-branches:
-  only:
-    - master
-    - /v\d+\.\d+[a-z]/
+branches: master
 
 cache:
   directories:
