@@ -17,7 +17,10 @@ jdk: oraclejdk8
 
 dist: trusty 
 
-branches: master
+branches:
+  only:
+    - master
+    - /v\d+\.\d+[a-z]/
 
 cache:
   directories:
