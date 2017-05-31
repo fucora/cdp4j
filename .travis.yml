@@ -8,10 +8,6 @@ dist: trusty
 
 branches: master
 
-cache:
-  directories:
-  - $HOME/.m2
-
 before_install:  
  - sudo apt-get install libxss1 libappindicator1 libindicator7
  - mkdir -p chrome-archive
