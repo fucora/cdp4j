@@ -46,28 +46,12 @@ Stability
 ---------
 This library is suitable for use in production systems.
 
-Download
---------
-[https://webfolder.io/download/cdp4j-1.0.2.jar](https://webfolder.io/download/cdp4j-1.0.2.jar) - 723 KB
-
-[https://webfolder.io/download/cdp4j-1.0.2-sources.jar](https://webfolder.io/download/cdp4j-1.0.2-sources.jar) - 496 KB
-
 Integration with Maven
 ----------------------
-1. Download jar and sources file.
 
-2. install the jar into your local Maven repository as follows:
+To use the official release of cdp4j, please use the following snippet in your `pom.xml` file.
 
-```bash
-mvn install:install-file -Dfile=cdp4j-1.0.2.jar -DgroupId=io.webfolder -DartifactId=cdp4j -Dversion=1.0.2 -Dpackaging=jar -DgeneratePom=true
-```
-
-3. install source jar into your local Maven repository as follows:
-```bash
-mvn install:install-file -Dfile=cdp4j-1.0.2-sources.jar -DgroupId=io.webfolder -DartifactId=cdp4j -Dversion=1.0.2 -Dpackaging=jar -DgeneratePom=true -Dclassifier=sources
-```
-
-4. Add the following dependency to `pom.xml` file:
+Add the following to your POM's `<dependencies>` tag:
 
 ```xml
 <dependency>
@@ -76,6 +60,12 @@ mvn install:install-file -Dfile=cdp4j-1.0.2-sources.jar -DgroupId=io.webfolder -
     <version>1.0.2</version>
 </dependency>
 ```
+
+Download
+--------
+[cdp4j-1.0.2.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/1.0.2/cdp4j-1.0.2.jar) - 723 KB
+
+[cdp4j-1.0.2-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/1.0.2/cdp4j-1.0.2-sources.jar) - 496 KB
 
 Supported Platforms
 -------------------
