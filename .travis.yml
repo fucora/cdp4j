@@ -20,11 +20,11 @@ before_install:
  - sudo apt-get install -f
 
 before_script:
- - mvn -q clean install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+ - mvn -q clean package -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
 script:
 - google-chrome --version
 - google-chrome --headless --no-default-browser-check --no-first-run --disable-translate --remote-debugging-port=9222 --disable-gpu &
-- mvn clean test
+- mvn test
 - wget https://github.com/codacy/codacy-coverage-reporter/releases/download/2.0.0/codacy-coverage-reporter-2.0.0-assembly.jar -O codacy.jar
 - java -cp codacy.jar com.codacy.CodacyCoverageReporter -l Java -r target/site/jacoco/jacoco.xml
