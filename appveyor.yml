@@ -57,4 +57,4 @@ build_script:
 
 test_script:
   - wmic datafile where name="C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe" get Version /value
-  - mvn test
+  - mvn -Dmaven.javadoc.skip=true -B -V -q package
