@@ -48,11 +48,5 @@ jobs:
           name: Execute Maven
           command: mvn -Dmaven.javadoc.skip=true -B -V -q package
 
-      - run:
-          name: Publish Code Coverage Result
-          command: |
-            wget https://github.com/codacy/codacy-coverage-reporter/releases/download/2.0.0/codacy-coverage-reporter-2.0.0-assembly.jar -O codacy.jar
-            java -cp codacy.jar com.codacy.CodacyCoverageReporter -l Java -r target/site/jacoco/jacoco.xml
-      
       - store_test_results:
           path: target/surefire-reports
