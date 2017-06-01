@@ -48,6 +48,6 @@ jobs:
           name: Execute Maven
           command: mvn package
 
-       -run:
+      - run:
           name: Publish Code Coverage Result
           command: java -cp codacy.jar com.codacy.CodacyCoverageReporter -l Java -r target/site/jacoco/jacoco.xml
