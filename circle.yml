@@ -25,7 +25,10 @@ jobs:
       - run: sudo dpkg -i chrome-archive/google-chrome*.deb # Might show "errors", fixed by next line
       - run: sudo apt-get install -f
       - run: google-chrome --version
-      - run: google-chrome --headless --no-default-browser-check --no-first-run --disable-translate --remote-debugging-port=9222 --disable-gpu &
+      - run:
+          name: Chrome
+          command: google-chrome --headless --no-default-browser-check --no-first-run --disable-translate --remote-debugging-port=9222 --disable-gpu
+          background: true
 
       - run: mvn package
 
