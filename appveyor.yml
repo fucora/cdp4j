@@ -38,7 +38,7 @@ init:
 install:
   - ps: |
       Add-Type -AssemblyName System.IO.Compression.FileSystem
-      choco install -y googlechrome
+      choco install -y --no-progress googlechrome
       if (!(Test-Path -Path "C:\maven")) {
         (new-object System.Net.WebClient).DownloadFile(
           'http://www.us.apache.org/dist/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.zip',
