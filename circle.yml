@@ -50,4 +50,6 @@ jobs:
 
       - run:
           name: Publish Code Coverage Result
-          command: java -cp codacy.jar com.codacy.CodacyCoverageReporter -l Java -r target/site/jacoco/jacoco.xml
+          command: |
+          wget https://github.com/codacy/codacy-coverage-reporter/releases/download/2.0.0/codacy-coverage-reporter-2.0.0-assembly.jar -O codacy.jar
+          java -cp codacy.jar com.codacy.CodacyCoverageReporter -l Java -r target/site/jacoco/jacoco.xml
