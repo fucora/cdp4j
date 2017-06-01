@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: ~/cdp4j
     docker:
-      - image: circleci/openjdk:8u121-jdk
+      - image: circleci/openjdk:8-jdk-browsers
 
     steps:
       - checkout
