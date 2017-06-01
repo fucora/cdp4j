@@ -1,0 +1,33 @@
+version: 2
+
+jobs:
+  build:
+    working_directory: ~/cdp4j
+    docker:
+      - image: circleci/openjdk:8u121-jdk
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: cdp4j-{{ checksum "pom.xml" }}
+
+      - run: mvn dependency:go-offline
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: cdp4j-{{ checksum "pom.xml" }}
+
+      - run: sudo apt-get install libxss1 libappindicator1 libindicator7
+      - run: mkdir -p chrome-archive
+      - run: wget -qnc https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O chrome-archive/google-chrome-stable_current_amd64.deb
+      - run: sudo dpkg -i chrome-archive/google-chrome*.deb # Might show "errors", fixed by next line
+      - run: sudo apt-get install -f
+      - run: google-chrome --version
+      - run: google-chrome --headless --no-default-browser-check --no-first-run --disable-translate --remote-debugging-port=9222 --disable-gpu &
+
+      - run: mvn package
+
+	  - store_test_results:
+	      path: target/surefire-reports
