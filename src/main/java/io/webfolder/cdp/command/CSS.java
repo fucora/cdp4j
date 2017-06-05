@@ -22,8 +22,6 @@
  */
 package io.webfolder.cdp.command;
 
-import java.util.List;
-
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Returns;
@@ -40,6 +38,7 @@ import io.webfolder.cdp.type.css.SelectorList;
 import io.webfolder.cdp.type.css.SourceRange;
 import io.webfolder.cdp.type.css.StyleDeclarationEdit;
 import io.webfolder.cdp.type.css.Value;
+import java.util.List;
 
 /**
  * This domain exposes CSS read/write operations

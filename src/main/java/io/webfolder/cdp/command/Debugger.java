@@ -22,13 +22,12 @@
  */
 package io.webfolder.cdp.command;
 
-import java.util.List;
-
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
 import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.constant.PauseOnExceptionState;
+import io.webfolder.cdp.type.constant.TargetCallFrames;
 import io.webfolder.cdp.type.debugger.BreakLocation;
 import io.webfolder.cdp.type.debugger.EvaluateOnCallFrameResult;
 import io.webfolder.cdp.type.debugger.Location;
@@ -39,6 +38,7 @@ import io.webfolder.cdp.type.debugger.SetBreakpointByUrlResult;
 import io.webfolder.cdp.type.debugger.SetBreakpointResult;
 import io.webfolder.cdp.type.debugger.SetScriptSourceResult;
 import io.webfolder.cdp.type.runtime.CallArgument;
+import java.util.List;
 
 /**
  * Debugger domain exposes JavaScript debugging capabilities
@@ -119,7 +119,8 @@ public interface Debugger {
      * 
      * @param location Location to continue to.
      */
-    void continueToLocation(Location location);
+    void continueToLocation(Location location,
+            @Experimental @Optional TargetCallFrames targetCallFrames);
 
     /**
      * Steps over the statement.
@@ -287,6 +288,13 @@ public interface Debugger {
     @Experimental
     @Returns("locations")
     List<BreakLocation> getPossibleBreakpoints(Location start);
+
+    /**
+     * Continues execution until specific location is reached.
+     * 
+     * @param location Location to continue to.
+     */
+    void continueToLocation(Location location);
 
     /**
      * Searches for given string in script content.

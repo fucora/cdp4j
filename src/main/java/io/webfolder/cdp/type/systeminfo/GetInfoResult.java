@@ -29,6 +29,8 @@ public class GetInfoResult {
 
     private String modelVersion;
 
+    private String commandLine;
+
     public GPUInfo getGpu() {
         return gpu;
     }
@@ -39,5 +41,9 @@ public class GetInfoResult {
 
     public String getModelVersion() {
         return modelVersion;
+    }
+
+    public String getCommandLine() {
+        return commandLine;
     }
 }

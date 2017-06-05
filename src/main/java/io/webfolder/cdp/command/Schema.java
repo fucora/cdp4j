@@ -22,10 +22,9 @@
  */
 package io.webfolder.cdp.command;
 
-import java.util.List;
-
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Returns;
+import java.util.List;
 
 /**
  * Provides information about the protocol schema

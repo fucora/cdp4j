@@ -22,9 +22,8 @@
  */
 package io.webfolder.cdp.type.debugger;
 
-import java.util.List;
-
 import io.webfolder.cdp.type.runtime.StackTrace;
+import java.util.List;
 
 public class RestartFrameResult {
     private List<CallFrame> callFrames;

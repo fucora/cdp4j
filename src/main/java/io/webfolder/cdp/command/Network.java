@@ -22,9 +22,6 @@
  */
 package io.webfolder.cdp.command;
 
-import java.util.List;
-import java.util.Map;
-
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
@@ -32,7 +29,10 @@ import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.network.ConnectionType;
 import io.webfolder.cdp.type.network.Cookie;
 import io.webfolder.cdp.type.network.CookieSameSite;
+import io.webfolder.cdp.type.network.ErrorReason;
 import io.webfolder.cdp.type.network.GetResponseBodyResult;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Network domain allows tracking network activities of the page
@@ -223,6 +223,24 @@ public interface Network {
     @Returns("tableNames")
     List<String> getCertificate(String origin);
 
+    @Experimental
+    void enableRequestInterception(Boolean enabled);
+
+    /**
+     * Response to Network.requestIntercepted which either modifies the request to continue with any modifications, or blocks it, or completes it with the provided response bytes. If a network fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted event will be sent with the same InterceptionId.
+     * 
+     * @param errorReason If set this causes the request to fail with the given reason.
+     * @param rawResponse If set the requests completes using with the provided base64 encoded raw response, including HTTP status line and headers etc...
+     * @param url If set the request url will be modified in a way that's not observable by page.
+     * @param method If set this allows the request method to be overridden.
+     * @param postData If set this allows postData to be set.
+     * @param headers If set this allows the request headers to be changed.
+     */
+    @Experimental
+    void continueInterceptedRequest(String interceptionId, @Optional ErrorReason errorReason,
+            @Optional String rawResponse, @Optional String url, @Optional String method,
+            @Optional String postData, @Optional Map<String, Object> headers);
+
     /**
      * Enables network tracking, network events will now be delivered to the client.
      */
@@ -260,4 +278,11 @@ public interface Network {
      */
     void emulateNetworkConditions(Boolean offline, Double latency, Double downloadThroughput,
             Double uploadThroughput);
+
+    /**
+     * Response to Network.requestIntercepted which either modifies the request to continue with any modifications, or blocks it, or completes it with the provided response bytes. If a network fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted event will be sent with the same InterceptionId.
+     * 
+     */
+    @Experimental
+    void continueInterceptedRequest(String interceptionId);
 }

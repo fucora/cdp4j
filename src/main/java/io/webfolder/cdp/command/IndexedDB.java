@@ -22,8 +22,6 @@
  */
 package io.webfolder.cdp.command;
 
-import java.util.List;
-
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
@@ -31,6 +29,7 @@ import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.indexeddb.DatabaseWithObjectStores;
 import io.webfolder.cdp.type.indexeddb.KeyRange;
 import io.webfolder.cdp.type.indexeddb.RequestDataResult;
+import java.util.List;
 
 @Experimental
 @Domain("IndexedDB")

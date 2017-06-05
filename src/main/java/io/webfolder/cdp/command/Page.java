@@ -22,8 +22,6 @@
  */
 package io.webfolder.cdp.command;
 
-import java.util.List;
-
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
@@ -39,6 +37,8 @@ import io.webfolder.cdp.type.page.GetLayoutMetricsResult;
 import io.webfolder.cdp.type.page.GetNavigationHistoryResult;
 import io.webfolder.cdp.type.page.GetResourceContentResult;
 import io.webfolder.cdp.type.page.NavigationResponse;
+import io.webfolder.cdp.type.page.TransitionType;
+import java.util.List;
 
 /**
  * Actions and events related to the inspected page belong to the page domain
@@ -83,11 +83,13 @@ public interface Page {
      * 
      * @param url URL to navigate the page to.
      * @param referrer Referrer URL.
+     * @param transitionType Intended transition type.
      * 
      * @return Frame id that will be navigated.
      */
     @Returns("frameId")
-    String navigate(String url, @Experimental @Optional String referrer);
+    String navigate(String url, @Experimental @Optional String referrer,
+            @Experimental @Optional TransitionType transitionType);
 
     /**
      * Force the page stop all navigations and pending resource fetches.
@@ -249,7 +251,7 @@ public interface Page {
      * 
      * @param format Image compression format (defaults to png).
      * @param quality Compression quality from range [0..100] (jpeg only).
-     * @param fromSurface Capture the screenshot from the surface, rather than the view. Defaults to false.
+     * @param fromSurface Capture the screenshot from the surface, rather than the view. Defaults to true.
      * 
      * @return Base64-encoded image data.
      */
@@ -351,6 +353,17 @@ public interface Page {
     GetLayoutMetricsResult getLayoutMetrics();
 
     /**
+     * Creates an isolated world for the given frame.
+     * 
+     * @param frameId Id of the frame in which the isolated world should be created.
+     * @param worldName An optional name which is reported in the Execution Context.
+     * @param grantUniveralAccess Whether or not universal access should be granted to the isolated world. This is a powerful option, use with caution.
+     */
+    @Experimental
+    void createIsolatedWorld(String frameId, @Optional String worldName,
+            @Optional Boolean grantUniveralAccess);
+
+    /**
      * Reloads given page optionally ignoring the cache.
      */
     void reload();
@@ -434,4 +447,12 @@ public interface Page {
      * @param accept Whether to accept or dismiss the dialog.
      */
     void handleJavaScriptDialog(Boolean accept);
+
+    /**
+     * Creates an isolated world for the given frame.
+     * 
+     * @param frameId Id of the frame in which the isolated world should be created.
+     */
+    @Experimental
+    void createIsolatedWorld(String frameId);
 }
