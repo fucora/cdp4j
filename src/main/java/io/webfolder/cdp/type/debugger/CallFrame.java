@@ -22,12 +22,10 @@
  */
 package io.webfolder.cdp.type.debugger;
 
+import com.google.gson.annotations.SerializedName;
+import io.webfolder.cdp.type.runtime.RemoteObject;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gson.annotations.SerializedName;
-
-import io.webfolder.cdp.type.runtime.RemoteObject;
 
 /**
  * JavaScript call frame

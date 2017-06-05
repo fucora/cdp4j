@@ -22,10 +22,9 @@
  */
 package io.webfolder.cdp.type.network;
 
+import io.webfolder.cdp.annotation.Experimental;
 import java.util.HashMap;
 import java.util.Map;
-
-import io.webfolder.cdp.annotation.Experimental;
 
 /**
  * WebSocket response data

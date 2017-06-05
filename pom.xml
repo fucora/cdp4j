@@ -111,6 +111,7 @@
                         <exclude>COPYING.md</exclude>
                         <exclude>LICENSE</exclude>
                         <exclude>pom.xml</exclude>
+                        <exclude>circle.yml</exclude>
                         <exclude>src/test/resources/**</exclude>
                         <exclude>src/main/resources/**</exclude>
                     </excludes>

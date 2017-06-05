@@ -22,10 +22,9 @@
  */
 package io.webfolder.cdp.type.indexeddb;
 
+import io.webfolder.cdp.type.constant.KeyPathType;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.webfolder.cdp.type.constant.KeyPathType;
 
 /**
  * Key path

@@ -22,11 +22,10 @@
  */
 package io.webfolder.cdp.type.network;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import io.webfolder.cdp.type.constant.MixedContentType;
 import io.webfolder.cdp.type.constant.ReferrerPolicy;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * HTTP request data

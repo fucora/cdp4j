@@ -22,11 +22,10 @@
  */
 package io.webfolder.cdp.type.css;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.type.dom.Rect;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Details of an element in the DOM tree with a LayoutObject

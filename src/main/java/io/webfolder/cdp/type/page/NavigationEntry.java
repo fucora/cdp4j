@@ -33,7 +33,11 @@ public class NavigationEntry {
 
     private String url;
 
+    private String userTypedURL;
+
     private String title;
+
+    private TransitionType transitionType;
 
     /**
      * Unique id of the navigation history entry.
@@ -64,6 +68,20 @@ public class NavigationEntry {
     }
 
     /**
+     * URL that the user typed in the url bar.
+     */
+    public String getUserTypedURL() {
+        return userTypedURL;
+    }
+
+    /**
+     * URL that the user typed in the url bar.
+     */
+    public void setUserTypedURL(String userTypedURL) {
+        this.userTypedURL = userTypedURL;
+    }
+
+    /**
      * Title of the navigation history entry.
      */
     public String getTitle() {
@@ -75,5 +93,19 @@ public class NavigationEntry {
      */
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    /**
+     * Transition type.
+     */
+    public TransitionType getTransitionType() {
+        return transitionType;
+    }
+
+    /**
+     * Transition type.
+     */
+    public void setTransitionType(TransitionType transitionType) {
+        this.transitionType = transitionType;
     }
 }

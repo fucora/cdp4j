@@ -22,28 +22,56 @@
  */
 package io.webfolder.cdp.type.network;
 
-import io.webfolder.cdp.annotation.Experimental;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.gson.annotations.SerializedName;
 
 /**
- * WebSocket request data
+ * Network level fetch failure reason
  */
-@Experimental
-public class WebSocketRequest {
-    private Map<String, Object> headers = new HashMap<>();
+public enum ErrorReason {
+    @SerializedName("Failed")
+    Failed("Failed"),
 
-    /**
-     * HTTP request headers.
-     */
-    public Map<String, Object> getHeaders() {
-        return headers;
+    @SerializedName("Aborted")
+    Aborted("Aborted"),
+
+    @SerializedName("TimedOut")
+    TimedOut("TimedOut"),
+
+    @SerializedName("AccessDenied")
+    AccessDenied("AccessDenied"),
+
+    @SerializedName("ConnectionClosed")
+    ConnectionClosed("ConnectionClosed"),
+
+    @SerializedName("ConnectionReset")
+    ConnectionReset("ConnectionReset"),
+
+    @SerializedName("ConnectionRefused")
+    ConnectionRefused("ConnectionRefused"),
+
+    @SerializedName("ConnectionAborted")
+    ConnectionAborted("ConnectionAborted"),
+
+    @SerializedName("ConnectionFailed")
+    ConnectionFailed("ConnectionFailed"),
+
+    @SerializedName("NameNotResolved")
+    NameNotResolved("NameNotResolved"),
+
+    @SerializedName("InternetDisconnected")
+    InternetDisconnected("InternetDisconnected"),
+
+    @SerializedName("AddressUnreachable")
+    AddressUnreachable("AddressUnreachable");
+
+    public final String value;
+
+    ErrorReason(String value) {
+        this.value = value;
     }
 
-    /**
-     * HTTP request headers.
-     */
-    public void setHeaders(Map<String, Object> headers) {
-        this.headers = headers;
+    @Override
+    public String toString() {
+        return value;
     }
 }

@@ -20,30 +20,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package io.webfolder.cdp.type.network;
+package io.webfolder.cdp.type.constant;
 
-import io.webfolder.cdp.annotation.Experimental;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.gson.annotations.SerializedName;
 
-/**
- * WebSocket request data
- */
-@Experimental
-public class WebSocketRequest {
-    private Map<String, Object> headers = new HashMap<>();
+public enum TargetCallFrames {
+    @SerializedName("any")
+    Any("any"),
 
-    /**
-     * HTTP request headers.
-     */
-    public Map<String, Object> getHeaders() {
-        return headers;
+    @SerializedName("current")
+    Current("current");
+
+    public final String value;
+
+    TargetCallFrames(String value) {
+        this.value = value;
     }
 
-    /**
-     * HTTP request headers.
-     */
-    public void setHeaders(Map<String, Object> headers) {
-        this.headers = headers;
+    @Override
+    public String toString() {
+        return value;
     }
 }
