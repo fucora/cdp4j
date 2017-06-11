@@ -2,7 +2,7 @@ cdp4j - Chrome DevTools Protocol for Java
 =================================================
 
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
-[![Join Gitter Chat Channel -](https://badges.gitter.im/cdp4j.svg)](https://gitter.im/cdp4j?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join Gitter Chat Channel -](https://badges.gitter.im/cdp4j.svg)](https://gitter.im/cdp4j/Lobby)
 [![circleci](https://img.shields.io/circleci/project/github/webfolderio/cdp4j.svg?label=linux)](https://circleci.com/gh/webfolderio/cdp4j) [![AppVeyor](https://img.shields.io/appveyor/ci/WebFolder/cdp4j.svg?label=windows)](https://ci.appveyor.com/project/WebFolder/cdp4j) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/66358e2e3fc1495aaad32e3bf7dc99bd)](https://www.codacy.com/app/WebFolder/cdp4j?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=webfolderio/cdp4j&amp;utm_campaign=Badge_Grade)
 
 cdp4j is a web-automation library for Java. It can be used for automating the use of web pages and for testing web pages.
@@ -32,7 +32,7 @@ Features
 
 Discuss
 -------
-Join us in our [Gitter chat room](https://gitter.im/cdp4j).
+Join us in our [Gitter chat room](https://gitter.im/cdp4j/Lobby).
 
 Supported Java Versions
 -----------------------
