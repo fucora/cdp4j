@@ -242,6 +242,10 @@ How it is tested
 ----------------
 cdp4j is regularly built and tested on [circleci](https://circleci.com/gh/webfolderio/cdp4j) and [AppVeyor](https://ci.appveyor.com/project/WebFolder/cdp4j).
 
+Contribute to cdp4j Project
+---------------------------
+Please follow cdp4j Contributor's [Guide](https://github.com/webfolderio/cdp4j/blob/master/CONTRIBUTING.md).
+
 Getting Help
 --------------------------------------------------------------------------------------------
 
