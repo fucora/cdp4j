@@ -149,8 +149,8 @@ public class Session implements AutoCloseable,
     public void close() {
         logEntry("close");
         if (connected.get()) {
-            connected.set(false);
             sesessionFactory.close(sessionId, this);
+            connected.set(false);
         }
     }
 

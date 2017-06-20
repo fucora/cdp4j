@@ -22,6 +22,7 @@
  */
 package io.webfolder.cdp;
 
+import static io.webfolder.cdp.session.SessionFactory.DEFAULT_HOST;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.String.format;
 import static java.lang.System.getProperty;
@@ -106,7 +107,9 @@ public class Launcher {
         list.add(chromePath);
         list.add(format("--remote-debugging-port=%d", factory.getPort()));
         list.add(format("--user-data-dir=%s", remoteProfileData.toString()));
-        list.add(format("--remote-debugging-address=%s", factory.getHost()));
+        if ( ! DEFAULT_HOST.equals(factory.getHost()) ) {
+            list.add(format("--remote-debugging-address=%s", factory.getHost()));
+        }
         list.add("--disable-translate");
         list.add("--disable-extensions");
         list.add("--no-default-browser-check");
@@ -115,9 +118,11 @@ public class Launcher {
         list.add("--no-first-run");
         list.add("--safebrowsing-disable-auto-update");
         list.add("--disable-popup-blocking");
+
         if (arguments != null) {
             list.addAll(asList(arguments));
         }
+
         try {
             Process process = getRuntime().exec(list.toArray(new String[0]));
             process.getOutputStream().close();
@@ -125,6 +130,7 @@ public class Launcher {
         } catch (IOException e) {
             throw new CdpException(e);
         }
+
         return factory;
     }
 
