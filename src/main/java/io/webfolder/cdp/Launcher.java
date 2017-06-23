@@ -93,14 +93,16 @@ public class Launcher {
     }
 
     public SessionFactory launch() {
-        return launch(new String[] { });
+        return launch(findChrome(), new String[] { });
     }
 
-    public SessionFactory launch(String... arguments) {
+    public SessionFactory launch(String chromePath, String... arguments) {
         if (launched()) {
             return factory;
         }
-        String chromePath = findChrome();
+        if (chromePath == null || chromePath.trim().isEmpty()) {
+            throw new CdpException("chrome not found");
+        }
         Path remoteProfileData = get(getProperty("java.io.tmpdir"))
                                         .resolve("remote-profile");
         List<String> list = new ArrayList<>();
