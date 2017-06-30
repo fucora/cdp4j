@@ -22,6 +22,9 @@
  */
 package io.webfolder.cdp.sample;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
@@ -31,8 +34,10 @@ public class IncognitoBrowsing {
     // Requires Headless Chrome
     // https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher()
-                                        .launch("--headless", "--disable-gpu");
+        List<String> arguments = new ArrayList<String>();
+        arguments.add("--headless");
+        arguments.add("--disable-gpu");
+        SessionFactory factory = new Launcher().launch(arguments);
 
         String  firstContext = factory.createBrowserContext();
         Session firstSession = factory.create(firstContext);

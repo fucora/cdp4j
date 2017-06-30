@@ -97,10 +97,18 @@ public class Launcher {
     }
 
     public SessionFactory launch() {
-        return launch(findChrome(), new String[] { });
+        return launch(findChrome(), new ArrayList<String>());
     }
 
+    public SessionFactory launch(List<String> arguments) {
+        return launch(findChrome(), arguments);
+    }
+    
     public SessionFactory launch(String chromePath, String... arguments) {
+        return launch(findChrome(), asList(arguments));
+    }
+    
+    public SessionFactory launch(String chromePath, List<String> arguments) {
         if (launched()) {
             return factory;
         }
@@ -125,10 +133,10 @@ public class Launcher {
         list.add("--safebrowsing-disable-auto-update");
         list.add("--disable-popup-blocking");
 
-        if (arguments != null) {
-            list.addAll(asList(arguments));
+        if (!arguments.isEmpty()) {
+            list.addAll(arguments);
         }
-
+        
         try {
             Process process = getRuntime().exec(list.toArray(new String[0]));
             process.getOutputStream().close();
