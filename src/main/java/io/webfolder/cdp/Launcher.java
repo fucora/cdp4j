@@ -50,6 +50,10 @@ public class Launcher {
     public Launcher() {
         this(new SessionFactory());
     }
+    
+    public Launcher(int port) {
+      this(new SessionFactory(port));
+    }
 
     public Launcher(final SessionFactory factory) {
         this.factory = factory;
