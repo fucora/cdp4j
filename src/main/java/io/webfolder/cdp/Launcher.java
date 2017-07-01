@@ -26,6 +26,7 @@ import static io.webfolder.cdp.session.SessionFactory.DEFAULT_HOST;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.String.format;
 import static java.lang.System.getProperty;
+import static java.lang.Thread.sleep;
 import static java.nio.file.Paths.get;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -117,6 +118,7 @@ public class Launcher {
         if (launched()) {
             return factory;
         }
+
         if (chromePath == null || chromePath.trim().isEmpty()) {
             throw new CdpException("chrome not found");
         }
@@ -138,7 +140,7 @@ public class Launcher {
         list.add("--safebrowsing-disable-auto-update");
         list.add("--disable-popup-blocking");
 
-        if (!arguments.isEmpty()) {
+        if ( ! arguments.isEmpty() ) {
             list.addAll(arguments);
         }
         
@@ -148,6 +150,24 @@ public class Launcher {
             process.getInputStream().close();
         } catch (IOException e) {
             throw new CdpException(e);
+        }
+
+        if ( ! launched() ) {
+            int       counter  =  0;
+            final int maxCount = 20;
+            while ( ! launched() && counter < maxCount ) {
+                try {
+                    sleep(500);
+                    counter += 1;
+                } catch (InterruptedException e) {
+                    break;
+                }
+            }
+        }
+
+        if ( ! launched() ) {
+            throw new CdpException("Unable to connect to the chrome remote debugging server [" +
+                            factory.getHost() + ":" + factory.getPort() + "]");
         }
 
         return factory;
@@ -163,7 +183,8 @@ public class Launcher {
     public boolean launched() {
         List<SessionInfo> list = emptyList();
         try {
-            list = factory.list();
+            int timeout = 1000; // milliseconds
+            list = factory.list(timeout);
         } catch (Throwable t) {
             // ignore
         }

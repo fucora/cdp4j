@@ -279,6 +279,13 @@ public class SessionFactory implements AutoCloseable {
     }
 
     public List<SessionInfo> list() {
+        return list(connectionTimeout);
+    }
+
+    /**
+     * @param connectionTimeout timeout an int that specifies the connect timeout value in milliseconds
+     */
+    public List<SessionInfo> list(int connectionTimeout) {
         String listSessions = format("http://%s:%d/json/list", host, port);
         URL             url = null;
         Reader       reader = null;
