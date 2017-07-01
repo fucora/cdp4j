@@ -22,23 +22,47 @@
  */
 package io.webfolder.cdp.sample;
 
+import static java.awt.Desktop.getDesktop;
+import static java.awt.Desktop.isDesktopSupported;
+import static java.nio.file.Files.createTempFile;
+import static java.nio.file.Files.write;
+import static java.util.Arrays.asList;
+
+import java.io.IOException;
+import java.nio.file.Path;
+
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
-public class HelloWorld {
+public class PrintToPDF {
 
-    public static void main(String[] args) {
+    // Requires Headless Chrome
+    // https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md
+    public static void main(String[] args) throws IOException {
         Launcher launcher = new Launcher();
 
-        try (SessionFactory factory = launcher.launch();
-                            Session session = factory.create()) {
+        Path file = createTempFile("webfolder-linux-setup", ".pdf");
 
-            session.navigate("https://webfolder.io?cdp4j");
-            session.waitDocumentReady();
-            String content = (String) session.getProperty("//body", "outerText");
-            System.out.println(content);
+        try (SessionFactory factory = launcher.launch(asList("--headless", "--disable-gpu"))) {
+            String context = factory.createBrowserContext();
+            try (Session session = factory.create(context)) {
 
+                session.navigate("https://webfolder.io/linux?cdp4j");
+                session.waitDocumentReady();
+                session.wait(1000);
+
+                byte[] content = session
+                                    .getCommand()
+                                    .getPage()
+                                    .printToPDF();
+
+                write(file, content);
+
+                if (isDesktopSupported()) {
+                    getDesktop().open(file.toFile());
+                }
+            }   
         }
     }
 }
