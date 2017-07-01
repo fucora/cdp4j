@@ -373,7 +373,7 @@ public class SessionFactory implements AutoCloseable {
                 log.error(t.getMessage(), t);
             }
         }
-        if (isHeadless()) {
+        if ( isHeadless() && headlessSession != null ) {
             headlessSession.dispose();
         }
         sessions.clear();

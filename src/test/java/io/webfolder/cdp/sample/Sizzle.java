@@ -31,11 +31,13 @@ import io.webfolder.cdp.session.SessionFactory;
 public class Sizzle {
 
     public static void main(String[] args) throws InterruptedException {
-        SessionFactory factory = new Launcher().launch();
 
         URL url = Sizzle.class.getResource("/sizzle.html");
 
-        try (Session session = factory.create()) {
+        Launcher launcher = new Launcher();
+
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
             session.navigate(url.toString());
             session.enableConsoleLog();
             session.installSizzle();
@@ -46,6 +48,5 @@ public class Sizzle {
             session.wait(100);
         }
 
-        factory.close();
     }
 }

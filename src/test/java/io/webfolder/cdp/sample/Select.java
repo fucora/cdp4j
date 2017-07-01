@@ -33,11 +33,12 @@ import io.webfolder.cdp.session.SessionFactory;
 public class Select {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
-
         URL url = Select.class.getResource("/select.html");
 
-        try (Session session = factory.create()) {
+        Launcher launcher = new Launcher();
+
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
             session.navigate(url.toString());
             session.waitDocumentReady();
             int selectedIndex = session.getSelectedIndex("select");
@@ -52,6 +53,5 @@ public class Select {
             System.out.println("Selected        : " + selected.get().getText());
         }
 
-        factory.close();
     }
 }

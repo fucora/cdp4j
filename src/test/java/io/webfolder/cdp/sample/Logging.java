@@ -29,25 +29,28 @@ import io.webfolder.cdp.session.SessionFactory;
 public class Logging {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
 
-        Session session = factory.create();
-        session.navigate("about:blank");
-        session.waitDocumentReady();
+        Launcher launcher = new Launcher();
 
-        // logs javascript messages
-        session.enableConsoleLog();
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
 
-        session.evaluate("console.info('info message')");
-        session.evaluate("console.error('error message')");
-        session.evaluate("console.warn('warning message')");
+            session.navigate("about:blank");
+            session.waitDocumentReady();
 
-        // logs newtwork, violation, security, storage and deprecation messages
-        session.enableDetailLog();
+            // logs javascript messages
+            session.enableConsoleLog();
 
-        session.evaluate("fetch('https://google.com')");
-        session.wait(2000);
+            session.evaluate("console.info('info message')");
+            session.evaluate("console.error('error message')");
+            session.evaluate("console.warn('warning message')");
 
-        factory.close();
+            // logs newtwork, violation, security, storage and deprecation messages
+            session.enableDetailLog();
+
+            session.evaluate("fetch('https://google.com')");
+            session.wait(2000);
+
+        }
     }
 }

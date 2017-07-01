@@ -31,11 +31,13 @@ import io.webfolder.cdp.session.SessionFactory;
 public class CheckBox {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
+        Launcher launcher = new Launcher();
 
         URL url = CheckBox.class.getResource("/checkbox.html");
 
-        try (Session session = factory.create()) {
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
+
             session.navigate(url.toString());
             session.waitDocumentReady();
             System.out.println("Checked: " + session.isChecked("input[name='red']"));
@@ -45,8 +47,8 @@ public class CheckBox {
             session.setChecked("input[name='red']", false);
             System.out.println("Checked: " + session.isChecked("input[name='red']"));
             session.wait(2000);
+            
         }
-
-        factory.close();
+        
     }
 }

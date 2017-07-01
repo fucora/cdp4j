@@ -34,33 +34,35 @@ import io.webfolder.cdp.type.network.Cookie;
 public class SendKeys {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
-        Session session = factory.create();
 
-        session.getCommand().getNetwork().enable();
-        List<Cookie> cookies = session.getCommand().getNetwork().getCookies(asList("https://demo.webfolder.io"));
-        for (Cookie cookie : cookies) {
-            session.getCommand().getNetwork().deleteCookie(cookie.getName(), "https://demo.webfolder.io");
+        Launcher launcher = new Launcher();
+        
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
+            session.getCommand().getNetwork().enable();
+            List<Cookie> cookies = session.getCommand().getNetwork().getCookies(asList("https://demo.webfolder.io"));
+            for (Cookie cookie : cookies) {
+                session.getCommand().getNetwork().deleteCookie(cookie.getName(), "https://demo.webfolder.io");
+            }
+            session.navigate("https://demo.webfolder.io");
+            session.waitDocumentReady();
+            session.enableNetworkLog();
+            session.focus("#txt-password");
+            session.sendEnter();
+            session.waitDocumentReady();
+            session.wait(1000);
+            session.focus("#txt-search");
+            session.sendKeys("snoopy");
+            session.wait(500);
+            session.sendDownArrow();
+            session.sendEnter();
+            session.sendEsc();
+            session.wait(500);
+            session.click("a[data-image]");
+            session.wait(2000);
+            session.click("#btn-logout");
+            session.wait(1000);
         }
-        session.navigate("https://demo.webfolder.io");
-        session.waitDocumentReady();
-        session.enableNetworkLog();
-        session.focus("#txt-password");
-        session.sendEnter();
-        session.waitDocumentReady();
-        session.wait(1000);
-        session.focus("#txt-search");
-        session.sendKeys("snoopy");
-        session.wait(500);
-        session.sendDownArrow();
-        session.sendEnter();
-        session.sendEsc();
-        session.wait(500);
-        session.click("a[data-image]");
-        session.wait(2000);
-        session.click("#btn-logout");
-        session.wait(1000);
 
-        factory.close();
     }
 }

@@ -34,9 +34,11 @@ import io.webfolder.cdp.type.network.Response;
 public class NetworkResponse {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
+        
+        Launcher launcher = new Launcher();
 
-        try (Session session = factory.create()) {
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
             session.getCommand().getNetwork().enable();
             session.navigate("http://cnn.com");
             session.addEventListener((e, d) -> {

@@ -29,9 +29,11 @@ import io.webfolder.cdp.session.SessionFactory;
 public class XPathSelector {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
 
-        try (Session session = factory.create()) {
+        Launcher launcher = new Launcher();
+
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
             session
                 .navigate("https://webfolder.io")
                 .waitUntil( s -> "WebFolder".equals(s.getTitle()) );
@@ -41,6 +43,5 @@ public class XPathSelector {
             System.out.println(title);
         }
 
-        factory.close();
     }
 }

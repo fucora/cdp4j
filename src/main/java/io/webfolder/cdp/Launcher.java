@@ -104,10 +104,15 @@ public class Launcher {
         return launch(findChrome(), arguments);
     }
     
+    /**
+     * 
+     * @deprecated As of release 1.1.0, replaced by {@link #launch(String, List)}
+     */
+    @Deprecated
     public SessionFactory launch(String chromePath, String... arguments) {
         return launch(findChrome(), asList(arguments));
     }
-    
+
     public SessionFactory launch(String chromePath, List<String> arguments) {
         if (launched()) {
             return factory;

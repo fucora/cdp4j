@@ -34,20 +34,25 @@ public class UserAgent {
 
     @SuppressWarnings("rawtypes")
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
-        Session session = factory.create();
-        session.setUserAgent("My Browser");
-        session.wait(500);
-        session.navigate("https://httpbin.org/headers");
-        session.waitDocumentReady();
-        String response = (String) session.evaluate("document.body.textContent");
+        
+        Launcher launcher = new Launcher();
 
-        Gson gson = new Gson();
-        Map json = gson.fromJson(response, Map.class);
-        Map headers = (Map) json.get("headers");
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
 
-        System.out.println(headers.get("User-Agent"));
+            session.setUserAgent("My Browser");
+            session.wait(500);
+            session.navigate("https://httpbin.org/headers");
+            session.waitDocumentReady();
+            String response = (String) session.evaluate("document.body.textContent");
 
-        factory.close();
+            Gson gson = new Gson();
+            Map json = gson.fromJson(response, Map.class);
+            Map headers = (Map) json.get("headers");
+
+            System.out.println(headers.get("User-Agent"));
+            
+        }
+
     }
 }

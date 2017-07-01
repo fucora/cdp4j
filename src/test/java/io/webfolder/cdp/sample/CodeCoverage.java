@@ -17,11 +17,13 @@ import io.webfolder.cdp.type.profiler.ScriptCoverage;
 public class CodeCoverage {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
 
-        URL url = CheckBox.class.getResource("/code-coverage.html");
+        URL url = CodeCoverage.class.getResource("/code-coverage.html");
 
-        try (Session session = factory.create()) {
+        Launcher launcher = new Launcher();
+
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
             Command command = session.getCommand();
             Profiler profiler = command.getProfiler();
             
@@ -65,6 +67,5 @@ public class CodeCoverage {
 
             profiler.disable();
         }
-        factory.close();
     }
 }

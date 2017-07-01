@@ -37,11 +37,13 @@ import io.webfolder.cdp.session.SessionFactory;
 public class Screenshot {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        SessionFactory factory = new Launcher().launch();
+
+        Launcher launcher = new Launcher();
 
         Path file = createTempFile("screenshot", ".png");
 
-        try (Session session = factory.create()) {
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
             session.navigate("https://news.ycombinator.com");
             session.waitDocumentReady();
             // activate the tab/session before capturing the screenshot
@@ -53,7 +55,5 @@ public class Screenshot {
         if (isDesktopSupported()) {
             getDesktop().open(file.toFile());
         }
-
-        factory.close();
     }
 }

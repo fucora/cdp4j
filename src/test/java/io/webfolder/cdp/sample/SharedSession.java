@@ -29,20 +29,25 @@ import io.webfolder.cdp.session.SessionFactory;
 public class SharedSession {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
+        Launcher launcher = new Launcher();
 
-        Session firstSession = factory.create();
-        firstSession.navigate("https://httpbin.org/cookies/set?SESSION_ID=1");
-        firstSession.wait(1000);
-        String session1 = (String) firstSession.evaluate("window.document.body.textContent");
-        System.out.println(session1);
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
 
-        Session secondSession = factory.create();
-        secondSession.navigate("https://httpbin.org/cookies");
-        String session2 = (String) secondSession.evaluate("window.document.body.textContent");
-        secondSession.wait(1000);
-        System.out.println(session2);
+            try (Session firstSession = factory.create()) {
+                firstSession.navigate("https://httpbin.org/cookies/set?SESSION_ID=1");
+                firstSession.wait(1000);
+                String session1 = (String) firstSession.evaluate("window.document.body.textContent");
+                System.out.println(session1);
+            }
 
-        factory.close();
+            try (Session secondSession = factory.create()) {
+                secondSession.navigate("https://httpbin.org/cookies");
+                String session2 = (String) secondSession.evaluate("window.document.body.textContent");
+                secondSession.wait(1000);
+                System.out.println(session2);
+            }
+
+        }
     }
 }

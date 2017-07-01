@@ -33,48 +33,50 @@ import io.webfolder.cdp.session.SessionFactory;
 public class GoogleTranslate {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
 
-        Session session = factory
-                            .create()
-                            .installSizzle();
+        Launcher launcher = new Launcher();
 
-        Network network = session.getCommand().getNetwork();
-        network.enable();
-        session.wait(1000);
+        try (SessionFactory factory = launcher.launch();
+                                Session session = factory.create()) {
+            
+            session.installSizzle();
 
-        Map<String, Object> headers = new HashMap<>();
-        headers.put("Accept-Language", "en-US,en;q=1");
-        headers.put("Cookie", "");
-        network.setExtraHTTPHeaders(headers);
-        session.wait(500);
-
-        session.navigate("https://translate.google.co.uk");
-        session.waitDocumentReady();
-
-        String appName = session.getText("#gt-appname");
-        if ( ! appName.equals("Translate") ) {
-            session.clearCookies();
+            Network network = session.getCommand().getNetwork();
+            network.enable();
             session.wait(1000);
+            
+            Map<String, Object> headers = new HashMap<>();
+            headers.put("Accept-Language", "en-US,en;q=1");
+            headers.put("Cookie", "");
             network.setExtraHTTPHeaders(headers);
-            session.reload();
+            session.wait(500);
+            
+            session.navigate("https://translate.google.co.uk");
+            session.waitDocumentReady();
+            
+            String appName = session.getText("#gt-appname");
+            if ( ! appName.equals("Translate") ) {
+                session.clearCookies();
+                session.wait(1000);
+                network.setExtraHTTPHeaders(headers);
+                session.reload();
+            }
+            
+            session.click("#gt-sl-gms")
+                    .wait(500)
+                    .click("div:contains('English'):last")
+                    .wait(500)
+                    .click("#gt-tl-gms")
+                    .wait(500)
+                    .click("div:contains('Estonian'):last")
+                    .wait(500)
+                    .focus("textarea:first")
+                    .wait(500)
+                    .sendKeys("hello world")
+                    .wait(2000);
+        
+            System.out.println(session.getText("#gt-res-dir-ctr"));
+
         }
-
-        session.click("#gt-sl-gms")
-            .wait(500)
-            .click("div:contains('English'):last")
-            .wait(500)
-            .click("#gt-tl-gms")
-            .wait(500)
-            .click("div:contains('Estonian'):last")
-            .wait(500)
-            .focus("textarea:first")
-            .wait(500)
-            .sendKeys("hello world")
-            .wait(500);
-
-        System.out.println(session.getText("#gt-res-dir-ctr"));
-
-        factory.close();
     }
 }

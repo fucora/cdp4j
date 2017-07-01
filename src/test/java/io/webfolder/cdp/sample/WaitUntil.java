@@ -31,23 +31,25 @@ import io.webfolder.cdp.session.SessionFactory;
 public class WaitUntil {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
 
         URL url = WaitUntil.class.getResource("/dom-change-sample.html");
 
-        Session session = factory.create();
-        session.navigate(url.toString());
-        session.waitDocumentReady();
+        Launcher launcher = new Launcher();
 
-        boolean succeed = session.waitUntil(s -> {
-            return s.matches("#time");
-        }, 10 * 1000);
-        if (succeed) {
-            String time = session.getText("#time");
-            System.out.println(time);
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
+
+            session.navigate(url.toString());
+            session.waitDocumentReady();
+
+            boolean succeed = session.waitUntil(s -> {
+                return s.matches("#time");
+            }, 10 * 1000);
+            if (succeed) {
+                String time = session.getText("#time");
+                System.out.println(time);
+            }
+
         }
-
-        session.close();
-        factory.close();
     }
 }
