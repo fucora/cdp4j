@@ -63,15 +63,15 @@ Add the following to your POM's `<dependencies>` tag:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>cdp4j</artifactId>
-    <version>1.0.3</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
 Download
 --------
-[cdp4j-1.0.3.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/1.0.3/cdp4j-1.0.3.jar) - 731 KB
+[cdp4j-1.1.0.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/1.1.0/cdp4j-1.1.0.jar) - 734 KB
 
-[cdp4j-1.0.3-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/1.0.3/cdp4j-1.0.3-sources.jar) - 501 KB
+[cdp4j-1.1.0-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/1.1.0/cdp4j-1.1.0-sources.jar) - 501 KB
 
 Supported Platforms
 -------------------
@@ -138,16 +138,17 @@ import io.webfolder.cdp.session.SessionFactory;
 public class HelloWorld {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
+        Launcher launcher = new Launcher();
 
-        try (Session session = factory.create()) {
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
+
             session.navigate("https://webfolder.io");
             session.waitDocumentReady();
             String content = (String) session.getProperty("//body", "outerText");
             System.out.println(content);
-        }
 
-        factory.close();
+        }
     }
 }
 ```
@@ -170,11 +171,13 @@ import io.webfolder.cdp.session.SessionFactory;
 public class Screenshot {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        SessionFactory factory = new Launcher().launch();
+
+        Launcher launcher = new Launcher();
 
         Path file = createTempFile("screenshot", ".png");
 
-        try (Session session = factory.create()) {
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
             session.navigate("https://news.ycombinator.com");
             session.waitDocumentReady();
             // activate the tab/session before capturing the screenshot
@@ -186,8 +189,6 @@ public class Screenshot {
         if (isDesktopSupported()) {
             getDesktop().open(file.toFile());
         }
-
-        factory.close();
     }
 }
 ```
