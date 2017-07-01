@@ -36,7 +36,7 @@ public class XPathSelector {
                             Session session = factory.create()) {
             session
                 .navigate("https://webfolder.io")
-                .waitUntil( s -> "WebFolder".equals(s.getTitle()) );
+                .waitDocumentReady();
 
             String title = session.getText("/html/head/title");
 
