@@ -33,19 +33,22 @@ import io.webfolder.cdp.session.SessionFactory;
 public class BingTranslator {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
+        Launcher launcher = new Launcher();
 
         List<String> words = asList("hello", "world");
 
-        Session session = factory
-                            .create()
-                            .navigate("https://www.bing.com/translator")
-                            .waitDocumentReady()
-                            .enableConsoleLog()
-                            .enableDetailLog()
-                            .enableNetworkLog();
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
 
-        session.click(".sourceText #LS_LangList") // click source language
+            session
+                .navigate("https://www.bing.com/translator")
+                .waitDocumentReady()
+                .enableConsoleLog()
+                .enableDetailLog()
+                .enableNetworkLog();
+
+            session
+                .click(".sourceText #LS_LangList") // click source language
                 .wait(2000)
                 .click(".sourceText td[value='en']") // choose English
                 .wait(2000)
@@ -54,22 +57,22 @@ public class BingTranslator {
                 .click(".destinationText td[value='et']") // choose Estonian
                 .wait(2000);
 
-        StringBuilder builder = new StringBuilder();
-
-        for (String word : words) {
-            String text = session
+            StringBuilder builder = new StringBuilder();
+            
+            for (String word : words) {
+                String text = session
                                 .focus(".sourceText .srcTextarea")
                                 .selectInputText(".sourceText .srcTextarea")
                                 .sendBackspace()
                                 .sendKeys(word)
                                 .wait(1000)
                                 .getText("#destText");
+                
+                builder.append(text).append(" ");
+            }
+            
+            System.out.println(builder.toString());
 
-            builder.append(text).append(" ");
         }
-
-        System.out.println(builder.toString());
-
-        factory.close();
     }
 }

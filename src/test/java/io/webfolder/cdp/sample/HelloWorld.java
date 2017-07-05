@@ -29,15 +29,16 @@ import io.webfolder.cdp.session.SessionFactory;
 public class HelloWorld {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
+        Launcher launcher = new Launcher();
 
-        try (Session session = factory.create()) {
-            session.navigate("https://webfolder.io");
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
+
+            session.navigate("https://webfolder.io?cdp4j");
             session.waitDocumentReady();
             String content = (String) session.getProperty("//body", "outerText");
             System.out.println(content);
-        }
 
-        factory.close();
+        }
     }
 }

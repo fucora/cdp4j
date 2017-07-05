@@ -31,25 +31,27 @@ import io.webfolder.cdp.session.SessionFactory;
 public class Bing {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
-        Session session = factory.create();
-        session
-            .navigate("https://www.bing.com")
-            .waitDocumentReady()
-            .installSizzle()
-            .enableNetworkLog()
-            .click("input[type='search']")
-            .sendKeys("Microsoft")
-            .sendEnter()
-            .wait(1000);
+        Launcher launcher = new Launcher();
 
-        String firstResult = session.getText("strong").toLowerCase(ENGLISH);
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
 
-        System.out.println("Query String : " + session.getQueryString());
-        System.out.println("Path name    : " + session.getPathname());
+            session
+                .navigate("https://www.bing.com")
+                .waitDocumentReady()
+                .installSizzle()
+                .enableNetworkLog()
+                .click("input[type='search']")
+                .sendKeys("Microsoft")
+                .sendEnter()
+                .wait(1000);
 
-        System.out.println(firstResult);
-
-        factory.close();
+            String firstResult = session.getText("strong").toLowerCase(ENGLISH);
+    
+            System.out.println("Query String : " + session.getQueryString());
+            System.out.println("Path name    : " + session.getPathname());
+    
+            System.out.println(firstResult);            
+        }
     }
 }

@@ -31,11 +31,13 @@ import io.webfolder.cdp.session.SessionFactory;
 public class Attributes {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
-
         URL url = Attributes.class.getResource("/attributes.html");
 
-        try (Session session = factory.create()) {
+        Launcher launcher = new Launcher();
+
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
+
             session.navigate(url.toString());
             session.waitDocumentReady();
             String value = session.getAttribute("input", "value");
@@ -43,8 +45,7 @@ public class Attributes {
             session.setAttribute("input", "value", "bar");
             value = session.getAttribute("input", "value");
             System.out.println("New Value: " + value);
-        }
 
-        factory.close();
+        }
     }
 }

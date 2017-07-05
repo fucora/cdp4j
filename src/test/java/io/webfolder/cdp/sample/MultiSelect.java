@@ -33,11 +33,13 @@ import io.webfolder.cdp.session.SessionFactory;
 public class MultiSelect {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
 
         URL url = MultiSelect.class.getResource("/multi-select.html");
 
-        try (Session session = factory.create()) {
+        Launcher launcher = new Launcher();
+
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
             session.navigate(url.toString());
             session.waitDocumentReady();
 
@@ -68,7 +70,5 @@ public class MultiSelect {
 
             session.wait(2000);
         }
-
-        factory.close();
     }
 }

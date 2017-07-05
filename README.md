@@ -63,15 +63,15 @@ Add the following to your POM's `<dependencies>` tag:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>cdp4j</artifactId>
-    <version>1.0.3</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
 Download
 --------
-[cdp4j-1.0.3.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/1.0.3/cdp4j-1.0.3.jar) - 731 KB
+[cdp4j-1.1.0.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/1.1.0/cdp4j-1.1.0.jar) - 734 KB
 
-[cdp4j-1.0.3-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/1.0.3/cdp4j-1.0.3-sources.jar) - 501 KB
+[cdp4j-1.1.0-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/1.1.0/cdp4j-1.1.0-sources.jar) - 501 KB
 
 Supported Platforms
 -------------------
@@ -138,16 +138,17 @@ import io.webfolder.cdp.session.SessionFactory;
 public class HelloWorld {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
+        Launcher launcher = new Launcher();
 
-        try (Session session = factory.create()) {
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
+
             session.navigate("https://webfolder.io");
             session.waitDocumentReady();
             String content = (String) session.getProperty("//body", "outerText");
             System.out.println(content);
-        }
 
-        factory.close();
+        }
     }
 }
 ```
@@ -170,11 +171,13 @@ import io.webfolder.cdp.session.SessionFactory;
 public class Screenshot {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        SessionFactory factory = new Launcher().launch();
+
+        Launcher launcher = new Launcher();
 
         Path file = createTempFile("screenshot", ".png");
 
-        try (Session session = factory.create()) {
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
             session.navigate("https://news.ycombinator.com");
             session.waitDocumentReady();
             // activate the tab/session before capturing the screenshot
@@ -186,8 +189,55 @@ public class Screenshot {
         if (isDesktopSupported()) {
             getDesktop().open(file.toFile());
         }
+    }
+}
+```
 
-        factory.close();
+### Print to PDF with cdp4j
+
+```java
+import static java.awt.Desktop.getDesktop;
+import static java.awt.Desktop.isDesktopSupported;
+import static java.nio.file.Files.createTempFile;
+import static java.nio.file.Files.write;
+import static java.util.Arrays.asList;
+
+import java.io.IOException;
+import java.nio.file.Path;
+
+import io.webfolder.cdp.Launcher;
+import io.webfolder.cdp.session.Session;
+import io.webfolder.cdp.session.SessionFactory;
+
+public class PrintToPDF {
+
+    // Requires Headless Chrome
+    // https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md
+    public static void main(String[] args) throws IOException {
+        Launcher launcher = new Launcher();
+
+        Path file = createTempFile("webfolder-linux-setup", ".pdf");
+
+        try (SessionFactory factory = launcher.launch(asList("--headless", "--disable-gpu"))) {
+            String context = factory.createBrowserContext();
+            try (Session session = factory.create(context)) {
+
+                session.navigate("https://webfolder.io/linux?cdp4j");
+                session.waitDocumentReady();
+                session.wait(1000);
+
+                byte[] content = session
+                                    .getCommand()
+                                    .getPage()
+                                    .printToPDF();
+
+                write(file, content);
+
+                if (isDesktopSupported()) {
+                    getDesktop().open(file.toFile());
+                }
+            }   
+        }
     }
 }
 ```
@@ -233,6 +283,8 @@ Samples
 [XPathSelector.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/XPathSelector.java)
 
 [CodeCoverage.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/CodeCoverage.java)
+
+[PrintToPDF.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/PrintToPDF.java)
 
 Building cdp4j
 --------------

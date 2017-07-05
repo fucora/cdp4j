@@ -29,9 +29,11 @@ import io.webfolder.cdp.session.SessionFactory;
 public class ExecuteJavascript {
 
     public static void main(String[] args) {
-        SessionFactory factory = new Launcher().launch();
+        Launcher launcher = new Launcher();
 
-        try (Session session = factory.create()) {
+        try (SessionFactory factory = launcher.launch();
+                            Session session = factory.create()) {
+
             session.waitDocumentReady();
             Double result = (Double) session.evaluate("var foo = function() { return 2 + 2; }; foo();");
             System.out.println(result);
@@ -42,8 +44,8 @@ public class ExecuteJavascript {
 
             Integer intResult = session.callFunction("foo", Integer.class);
             System.out.println(intResult);
+
         }
 
-        factory.close();
     }
 }
