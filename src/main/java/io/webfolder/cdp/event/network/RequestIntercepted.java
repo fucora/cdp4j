@@ -37,7 +37,7 @@ import io.webfolder.cdp.type.network.Request;
 @Domain("Network")
 @EventName("requestIntercepted")
 public class RequestIntercepted {
-    private String InterceptionId;
+    private String interceptionId;
 
     private Request request;
 
@@ -51,14 +51,14 @@ public class RequestIntercepted {
      * Each request the page makes will have a unique id, however if any redirects are encountered while processing that fetch, they will be reported with the same id as the original fetch.
      */
     public String getInterceptionId() {
-        return InterceptionId;
+        return interceptionId;
     }
 
     /**
      * Each request the page makes will have a unique id, however if any redirects are encountered while processing that fetch, they will be reported with the same id as the original fetch.
      */
-    public void setInterceptionId(String InterceptionId) {
-        this.InterceptionId = InterceptionId;
+    public void setInterceptionId(String interceptionId) {
+        this.interceptionId = interceptionId;
     }
 
     public Request getRequest() {
