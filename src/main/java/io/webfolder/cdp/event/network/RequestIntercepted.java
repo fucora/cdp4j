@@ -40,6 +40,8 @@ public class RequestIntercepted {
     private String interceptionId;
 
     private Request request;
+    
+    private String resourceType;
 
     private Map<String, Object> redirectHeaders = new HashMap<>();
 
@@ -67,6 +69,10 @@ public class RequestIntercepted {
 
     public void setRequest(Request request) {
         this.request = request;
+    }    
+    
+    /**
+     * How the requested resource will be used.
      * Allowed values: Document, Stylesheet, Image, Media, Font, Script, TextTrack, XHR, Fetch, EventSource, WebSocket, Manifest, Other.
      */
     public String getResourceType() {
