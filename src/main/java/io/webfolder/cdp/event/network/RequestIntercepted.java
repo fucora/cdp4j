@@ -67,6 +67,7 @@ public class RequestIntercepted {
 
     public void setRequest(Request request) {
         this.request = request;
+     * Allowed values: Document, Stylesheet, Image, Media, Font, Script, TextTrack, XHR, Fetch, EventSource, WebSocket, Manifest, Other.
      */
     public String getResourceType() {
       return resourceType;
@@ -74,6 +75,7 @@ public class RequestIntercepted {
 
     /**
      * How the requested resource will be used.
+     * Allowed values: Document, Stylesheet, Image, Media, Font, Script, TextTrack, XHR, Fetch, EventSource, WebSocket, Manifest, Other.
      */
     public void setResourceType(String resourceType) {
       this.resourceType = resourceType;
