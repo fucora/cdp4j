@@ -67,7 +67,17 @@ public class RequestIntercepted {
 
     public void setRequest(Request request) {
         this.request = request;
+     */
+    public String getResourceType() {
+      return resourceType;
     }
+
+    /**
+     * How the requested resource will be used.
+     */
+    public void setResourceType(String resourceType) {
+      this.resourceType = resourceType;
+    }    
 
     /**
      * HTTP response headers, only sent if a redirect was intercepted.
