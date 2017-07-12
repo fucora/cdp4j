@@ -29,6 +29,7 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.type.network.Request;
+import io.webfolder.cdp.type.page.ResourceType;
 
 /**
  * Details of an intercepted HTTP request, which must be either allowed, blocked, modified or mocked
@@ -41,7 +42,7 @@ public class RequestIntercepted {
 
     private Request request;
     
-    private String resourceType;
+    private ResourceType resourceType;
 
     private Map<String, Object> redirectHeaders = new HashMap<>();
 
@@ -73,17 +74,15 @@ public class RequestIntercepted {
     
     /**
      * How the requested resource will be used.
-     * Allowed values: Document, Stylesheet, Image, Media, Font, Script, TextTrack, XHR, Fetch, EventSource, WebSocket, Manifest, Other.
      */
-    public String getResourceType() {
+    public ResourceType getResourceType() {
       return resourceType;
     }
 
     /**
      * How the requested resource will be used.
-     * Allowed values: Document, Stylesheet, Image, Media, Font, Script, TextTrack, XHR, Fetch, EventSource, WebSocket, Manifest, Other.
      */
-    public void setResourceType(String resourceType) {
+    public void setResourceType(ResourceType resourceType) {
       this.resourceType = resourceType;
     }    
 
