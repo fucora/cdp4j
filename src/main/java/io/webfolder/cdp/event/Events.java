@@ -122,6 +122,7 @@ import io.webfolder.cdp.event.target.DetachedFromTarget;
 import io.webfolder.cdp.event.target.ReceivedMessageFromTarget;
 import io.webfolder.cdp.event.target.TargetCreated;
 import io.webfolder.cdp.event.target.TargetDestroyed;
+import io.webfolder.cdp.event.target.TargetInfoChanged;
 import io.webfolder.cdp.event.tethering.Accepted;
 import io.webfolder.cdp.event.tracing.BufferUsage;
 import io.webfolder.cdp.event.tracing.DataCollected;
@@ -453,6 +454,11 @@ public enum Events {
      */
     TargetTargetCreated("Target", "targetCreated", TargetCreated.class),
 
+    /**
+     * Issued when some information about a target has changed. This only happens between targetCreated and targetDestroyed
+     */
+    TargetTargetInfoChanged("Target", "targetInfoChanged", TargetInfoChanged.class),
+      
     /**
      * Issued when a target is destroyed
      */

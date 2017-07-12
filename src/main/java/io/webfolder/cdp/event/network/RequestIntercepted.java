@@ -29,6 +29,7 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.type.network.Request;
+import io.webfolder.cdp.type.page.ResourceType;
 
 /**
  * Details of an intercepted HTTP request, which must be either allowed, blocked, modified or mocked
@@ -40,6 +41,8 @@ public class RequestIntercepted {
     private String interceptionId;
 
     private Request request;
+    
+    private ResourceType resourceType;
 
     private Map<String, Object> redirectHeaders = new HashMap<>();
 
@@ -67,7 +70,21 @@ public class RequestIntercepted {
 
     public void setRequest(Request request) {
         this.request = request;
+    }    
+    
+    /**
+     * How the requested resource will be used.
+     */
+    public ResourceType getResourceType() {
+      return resourceType;
     }
+
+    /**
+     * How the requested resource will be used.
+     */
+    public void setResourceType(ResourceType resourceType) {
+      this.resourceType = resourceType;
+    }    
 
     /**
      * HTTP response headers, only sent if a redirect was intercepted.
