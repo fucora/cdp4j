@@ -61,7 +61,7 @@ public class Launcher {
     }
 
     private String getChromeBinary() {
-        String chromeBinary = System.getProperty("chrome_binary");
+        String chromeBinary = getProperty("chrome_binary");
         if (chromeBinary != null) {
             File chromeExecutable = new File(chromeBinary);
             if (chromeExecutable.exists() && chromeExecutable.canExecute()) {
