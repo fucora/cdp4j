@@ -224,7 +224,7 @@ public interface Network {
     List<String> getCertificate(String origin);
 
     @Experimental
-    void enableRequestInterception(Boolean enabled);
+    void setRequestInterceptionEnabled(Boolean enabled);
 
     /**
      * Response to Network.requestIntercepted which either modifies the request to continue with any modifications, or blocks it, or completes it with the provided response bytes. If a network fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted event will be sent with the same InterceptionId.
