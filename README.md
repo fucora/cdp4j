@@ -29,7 +29,7 @@ Features
 * Navigate back, forward, stop, reload
 * clear cache, clear cookies, list cookies
 * set & get values of form elements
-* Supports event handling 
+* Supports event handling
 
 Discuss
 -------
@@ -236,7 +236,7 @@ public class PrintToPDF {
                 if (isDesktopSupported()) {
                     getDesktop().open(file.toFile());
                 }
-            }   
+            }
         }
     }
 }
@@ -290,7 +290,25 @@ Samples
 
 Building cdp4j
 --------------
-`mvn install`
+
+```sh
+# Assume that you have `google-chrome` in your $PATH
+mvn install
+
+# If you use different version of Google Chrome like Chromium, Chrome Canary,
+# then you must explicitly use the `chrome_binary` property to make the code work.
+
+mvn install -Dchrome_binary=/path/to/your/google-chrome
+
+# e.g. For some Linux distribution
+mvn install -Dchrome_binary=/usr/lib/chromium-dev/chromium-dev
+
+# e.g. MacOS it may be something like
+mvn install -Dchrome_binary=/Applications/Chromium.app/Contents/MacOS/Chromium
+
+# To run the existing tests try
+mvn test -Dchrome_binary=/usr/lic/chromium-dev/chromium-dev
+```
 
 How it is tested
 ----------------
@@ -305,6 +323,6 @@ Getting Help
 
 ![WebFolder](https://raw.githubusercontent.com/webfolderio/cdp4j/master/images/logo.png)
 
-cdp4j is an MIT licensed open source project and completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing. You can support cdp4j development by 
+cdp4j is an MIT licensed open source project and completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing. You can support cdp4j development by
 **buying** support package. Please [contact us](https://webfolder.io/support) for support packages & pricing.
 
