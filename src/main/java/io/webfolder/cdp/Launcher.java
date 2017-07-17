@@ -51,13 +51,25 @@ public class Launcher {
     public Launcher() {
         this(new SessionFactory());
     }
-    
+
     public Launcher(int port) {
       this(new SessionFactory(port));
     }
 
     public Launcher(final SessionFactory factory) {
         this.factory = factory;
+    }
+
+    private String getChromeBinary() {
+        String chromeBinary = getProperty("chrome_binary");
+        if (chromeBinary != null) {
+            File chromeExecutable = new File(chromeBinary);
+            if (chromeExecutable.exists() && chromeExecutable.canExecute()) {
+                return chromeExecutable.getAbsolutePath();
+            }
+        }
+        // Return existing default binary
+        return "google-chrome";
     }
 
     public String findChrome() {
@@ -77,14 +89,14 @@ public class Launcher {
                         if (chrome.exists() && chrome.canExecute()) {
                             return chrome.toString();
                         }
-                    }                    
+                    }
                 }
                 throw new CdpException("Unable to find chrome.exe");
             } catch (Throwable e) {
                 // ignore
             }
         } else {
-            return "google-chrome";
+            return getChromeBinary();
         }
         return null;
     }
@@ -104,9 +116,9 @@ public class Launcher {
     public SessionFactory launch(List<String> arguments) {
         return launch(findChrome(), arguments);
     }
-    
+
     /**
-     * 
+     *
      * @deprecated As of release 1.1.0, replaced by {@link #launch(String, List)}
      */
     @Deprecated
@@ -143,7 +155,7 @@ public class Launcher {
         if ( ! arguments.isEmpty() ) {
             list.addAll(arguments);
         }
-        
+
         try {
             Process process = getRuntime().exec(list.toArray(new String[0]));
             process.getOutputStream().close();
