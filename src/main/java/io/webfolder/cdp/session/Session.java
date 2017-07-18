@@ -65,7 +65,6 @@ import io.webfolder.cdp.listener.TerminateListener;
 import io.webfolder.cdp.logger.CdpLogger;
 import io.webfolder.cdp.logger.CdpLoggerFactory;
 import io.webfolder.cdp.type.css.SourceRange;
-import io.webfolder.cdp.type.dom.BoxModel;
 import io.webfolder.cdp.type.dom.Rect;
 import io.webfolder.cdp.type.log.LogEntry;
 import io.webfolder.cdp.type.network.Response;
@@ -357,7 +356,6 @@ public class Session implements AutoCloseable,
         emulation.setVisibleSize(boxModel.getWidth(), metrics.getLayoutViewport().getClientHeight());
         emulation.clearDeviceMetricsOverride();
         emulation.resetPageScaleFactor();
-        emulation.resetViewport();
         css.getStyleSheetText(styleSheetId);
         css.setStyleSheetText(styleSheetId, "");
         return data;
