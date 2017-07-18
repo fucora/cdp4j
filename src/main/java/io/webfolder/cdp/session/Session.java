@@ -348,12 +348,8 @@ public class Session implements AutoCloseable,
         GetLayoutMetricsResult metrics = page.getLayoutMetrics();
         Rect cs = metrics.getContentSize();
         Emulation emulation = getThis().getCommand().getEmulation();
-        BoxModel boxModel = dom.getBoxModel(dom.getDocument().getNodeId());
-        emulation.setVisibleSize(cs.getWidth().intValue(), cs.getHeight().intValue());
-        emulation.forceViewport(0D, 0D, 1D);
-        emulation.setDeviceMetricsOverride(0, 0, 0D, false, true);
-        byte[] data = page.captureScreenshot(Png, null, true);
-        emulation.setVisibleSize(boxModel.getWidth(), metrics.getLayoutViewport().getClientHeight());
+        emulation.setDeviceMetricsOverride(cs.getWidth().intValue(), cs.getHeight().intValue(), 1D, false, true);
+        byte[] data = page.captureScreenshot(Png, null, true);        
         emulation.clearDeviceMetricsOverride();
         emulation.resetPageScaleFactor();
         css.getStyleSheetText(styleSheetId);
