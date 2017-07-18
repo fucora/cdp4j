@@ -71,7 +71,7 @@ public interface Selector {
                     final String selector,
                     final Object ...args) {
         Integer nodeId = getThis().getNodeId(selector, args);
-        if (nodeId == null || nodeId == Constant.EMPTY_NODE_ID) {
+        if (nodeId == null || Constant.EMPTY_NODE_ID.equals(nodeId)) {
             return false;
         }
         boolean retValue = nodeId.intValue() > 0;

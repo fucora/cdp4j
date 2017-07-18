@@ -153,7 +153,7 @@ public interface Dom {
     default Session focus(final String selector, final Object ...args) {
         getThis().logEntry("focus", format(selector, args));
         Integer nodeId = getThis().getNodeId(selector, args);
-        if (nodeId == null || nodeId == Constant.EMPTY_NODE_ID) {
+        if (nodeId == null || Constant.EMPTY_NODE_ID.equals(nodeId)) {
             throw new ElementNotFoundException(format(selector, args));
         }
         DOM dom = getThis().getCommand().getDOM();
@@ -430,7 +430,7 @@ public interface Dom {
             return getThis();
         }
         Integer nodeId = getThis().getNodeId(selector);
-        if (nodeId == null || nodeId.intValue() == Constant.EMPTY_NODE_ID) {
+        if (nodeId == null || Constant.EMPTY_NODE_ID.equals(nodeId)) {
             throw new ElementNotFoundException(format(selector));
         }
         getThis().logEntry("setFiles", format(selector) + "\", \"" + Arrays.toString(files));
@@ -710,7 +710,7 @@ public interface Dom {
                         final Object value,
                         final Object ...args) {
         Integer nodeId = getThis().getNodeId(selector, args);
-        if (nodeId == null || nodeId == Constant.EMPTY_NODE_ID) {
+        if (nodeId == null || Constant.EMPTY_NODE_ID.equals(nodeId)) {
             throw new ElementNotFoundException(format(selector, args));
         }
         getThis().logEntry("setAttribute", format(selector) + "\", \"" + name + "\", \"" + value);
@@ -749,7 +749,7 @@ public interface Dom {
      */
     default BoxModel getBoxModel(final String selector, Object ...args) {
         Integer nodeId = getThis().getNodeId(selector, args);
-        if (nodeId == null || nodeId == Constant.EMPTY_NODE_ID) {
+        if (nodeId == null || Constant.EMPTY_NODE_ID.equals(nodeId)) {
             throw new ElementNotFoundException(format(selector, args));
         }
         return getThis().getCommand().getDOM().getBoxModel(nodeId);
