@@ -200,12 +200,14 @@ public class Session implements AutoCloseable,
         CountDownLatch latch = new CountDownLatch(1);
         addEventListener((e, d) -> {
             if (PageLoadEventFired.equals(e)) {
-                try {
-                    latch.await(timeout, MILLISECONDS);
-                } catch (InterruptedException ex) {
-                }
+                latch.countDown();
             }
         });
+        try {
+            latch.await(timeout, MILLISECONDS);
+        } catch (InterruptedException e) {
+            throw new CdpException(e);
+        }
         if ( ! isDomReady() ) {
             waitUntil(s -> s.isDomReady());
         }

@@ -70,7 +70,7 @@ public interface Mouse {
         getThis().logEntry("click", format(selector, args));
         DOM dom = getThis().getCommand().getDOM();
         Integer nodeId = getThis().getNodeId(format(selector, args));
-        if (nodeId == null || nodeId == Constant.EMPTY_NODE_ID) {
+        if (nodeId == null || Constant.EMPTY_NODE_ID.equals(nodeId)) {
             throw new ElementNotFoundException(format(selector, args));
         }
         BoxModel boxModel = dom.getBoxModel(nodeId);

@@ -22,10 +22,15 @@
  */
 package io.webfolder.cdp.session;
 
+import static io.webfolder.cdp.session.Constant.DOM_PROPERTIES;
+import static io.webfolder.cdp.session.Constant.EMPTY_ARGS;
+import static io.webfolder.cdp.session.Constant.EMPTY_NODE_ID;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
+import static java.lang.Integer.parseInt;
 import static java.lang.String.format;
 import static java.lang.String.valueOf;
+import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +60,7 @@ public interface Selector {
      * @return <code>true</code> if the element selected by the specified selector
      */
     default boolean matches(final String selector) {
-        return matches(selector, Constant.EMPTY_ARGS);
+        return matches(selector, EMPTY_ARGS);
     }
 
     /**
@@ -71,7 +76,7 @@ public interface Selector {
                     final String selector,
                     final Object ...args) {
         Integer nodeId = getThis().getNodeId(selector, args);
-        if (nodeId == null || nodeId == Constant.EMPTY_NODE_ID) {
+        if (nodeId == null || EMPTY_NODE_ID.equals(nodeId)) {
             return false;
         }
         boolean retValue = nodeId.intValue() > 0;
@@ -90,7 +95,7 @@ public interface Selector {
     default Object getProperty(
                         final String selector,
                         final String propertyName) {
-        return getProperty(selector, propertyName, Constant.EMPTY_ARGS);
+        return getProperty(selector, propertyName, EMPTY_ARGS);
     }
 
     /**
@@ -112,7 +117,7 @@ public interface Selector {
         }
         Object value = getPropertyByObjectId(objectId, propertyName);
         releaseObject(objectId);
-        if ( ! Constant.DOM_PROPERTIES.contains(propertyName) ) {
+        if ( ! DOM_PROPERTIES.contains(propertyName) ) {
             getThis().logExit("getProperty", format(selector, args) + "\", \"" + propertyName,
                                     valueOf(value).replace("\n", "").replace("\r", ""));
         }
@@ -130,7 +135,7 @@ public interface Selector {
             final String selector,
             final String propetyName,
             final Object value) {
-        setProperty(selector, propetyName, value, Constant.EMPTY_ARGS);
+        setProperty(selector, propetyName, value, EMPTY_ARGS);
     }
 
     /**
@@ -146,7 +151,7 @@ public interface Selector {
                     final String propertyName,
                     final Object value,
                     final Object ...args) {
-        if ( ! Constant.DOM_PROPERTIES.contains(propertyName) ) {
+        if ( ! DOM_PROPERTIES.contains(propertyName) ) {
             getThis().logEntry("setProperty", format(selector) + "\", \"" + propertyName + "\", \"" + value);
         }
         String objectId = getObjectId(selector, args);
@@ -264,18 +269,92 @@ public interface Selector {
         return value;
     }
 
+    // getObjects() requires additional WebSocket call to get RemoteObject
+    // Performance of getObjectId() is better than getObjects()
+    default List<String> getObjectIds(
+                    final String selector,
+                    final Object ...args) {
+        final DOM     dom       = getThis().getCommand().getDOM();
+        final boolean sizzle    = getThis().useSizzle();
+        final boolean xpath     = selector.charAt(0) == '/';
+        List<String>  objectIds = new ArrayList<>();
+        if (sizzle || xpath) {
+            final Runtime  runtime       = getThis().getCommand().getRuntime();
+            final String   func          = xpath ? "$x(\"%s\")" : "window.cdp4j.queryAll(\"%s\")";
+            final String   expression    = format(func, format(selector.replace("\"", "\\\""), args));
+            final Boolean  includeCmdApi = xpath ? TRUE : FALSE;
+            EvaluateResult result        = runtime.evaluate(expression, null, includeCmdApi,
+                                                                null, null, null,
+                                                                null, null, null);
+            if (result == null) {
+                return null;
+            }
+            ExceptionDetails ex = result.getExceptionDetails();
+            if ( sizzle && ex != null &&
+                        ex.getException() != null &&
+                        "TypeError".equals(ex.getException().getClassName()) )  {
+                releaseObject(ex.getException().getObjectId());
+                getThis().installSizzle();
+                result = runtime.evaluate(expression, null, null,
+                                                      null, null, null,
+                                                      null, null, null);
+                if ( result != null &&
+                            result.getExceptionDetails() != null ) {
+                    ex = result.getExceptionDetails();
+                } else {
+                    ex = null;
+                }
+            }
+            GetPropertiesResult properties = runtime.getProperties(result.getResult().getObjectId(), true, false, false);
+            if ( properties != null ) {
+                for (PropertyDescriptor next : properties.getResult()) {
+                    if ( ! next.isEnumerable() ) {
+                        continue;
+                    }
+                    int index = parseInt(next.getName());
+                    RemoteObject remoteObject = next.getValue();
+                    objectIds.add(index, remoteObject.getObjectId());
+                }
+            }
+        } else {
+            Integer rootNodeId = dom.getDocument().getNodeId();
+            if (rootNodeId == null) {
+                return null;
+            }
+            List<Integer> nodeIds = dom.querySelectorAll(rootNodeId, format(selector, args));
+            if (nodeIds == null || nodeIds.isEmpty()) {
+                return emptyList();
+            }
+            for (Integer next : nodeIds) {
+                RemoteObject remoteObject = dom.resolveNode(next);
+                if (remoteObject == null) {
+                    return null;
+                }
+                String objectId = remoteObject.getObjectId();
+                if (objectId != null) {
+                    objectIds.add(objectId);
+                }
+            }
+        }
+        return objectIds;
+    }
+
+    default List<String> getObjectIds(final String selector) {
+        return getObjectIds(selector, EMPTY_ARGS);
+    }
+
     default String getObjectId(
                 final String selector,
                 final Object ...args) {
+        final DOM     dom    = getThis().getCommand().getDOM();
         final boolean sizzle = getThis().useSizzle();
-        DOM dom = getThis().getCommand().getDOM();
-        final boolean xpath = selector.charAt(0) == '/';
+        final boolean xpath  = selector.charAt(0) == '/';
         if (sizzle || xpath) {
-            final Runtime       runtime = getThis().getCommand().getRuntime();
-            final String           func = xpath ? "$x(\"%s\")[0]" : "window.cdp4j.query(\"%s\")";
-            final String     expression = format(func, format(selector.replace("\"", "\\\""), args));
-            final Boolean includeCmdApi = xpath ? TRUE : FALSE;
-            EvaluateResult       result = runtime.evaluate(expression, null, includeCmdApi,
+            final Runtime  runtime       = getThis().getCommand().getRuntime();
+            final String   func          = xpath ? "$x(\"%s\")[0]" : "window.cdp4j.query(\"%s\")";
+            final String   expression    = format(func, format(selector.replace("\"", "\\\""), args));
+            final Boolean  includeCmdApi = xpath ? TRUE : FALSE;
+            EvaluateResult result        = runtime.evaluate(expression, null, includeCmdApi,
                                                                 null, null, null,
                                                                 null, null, null);
             if (result == null) {
@@ -335,14 +414,18 @@ public interface Selector {
         }
     }
 
+    default String getObjectId(final String selector) {
+        return getObjectId(selector, EMPTY_ARGS);
+    }
+
     default Integer getNodeId(
                 final String selector,
                 final Object ...args) {
         if (selector == null || selector.trim().isEmpty()) {
-            return Constant.EMPTY_NODE_ID;
+            return EMPTY_NODE_ID;
         }
         boolean sizzle = getThis().useSizzle();
-        Integer nodeId = Constant.EMPTY_NODE_ID;
+        Integer nodeId = EMPTY_NODE_ID;
         DOM dom = getThis().getCommand().getDOM();
         if (sizzle) {
             String objectId = getThis().getObjectId(format(selector, args));
@@ -367,6 +450,10 @@ public interface Selector {
             }
         }
         return nodeId;
+    }
+
+    default Integer getNodeId(final String selector) {
+        return getNodeId(selector, EMPTY_ARGS);
     }
 
     default Session releaseObject(final String objectId) {

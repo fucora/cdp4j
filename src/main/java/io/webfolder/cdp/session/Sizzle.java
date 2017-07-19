@@ -66,9 +66,11 @@ public interface Sizzle {
                 scanner.useDelimiter("\\A");
                 sizzle = scanner.hasNext() ? scanner.next() : "";
             }
-            String func = "window.cdp4j = {}; window.cdp4j.query = function(selector) { " +
-                                        sizzle +
-                                        " var result = Sizzle(selector); if (result.length > 0) { return result[0]; } else { return null; } };";
+            String func  = "window.cdp4j = {}; " +
+                                        "window.cdp4j.query = function(selector) { " +
+                                        sizzle + " var result = Sizzle(selector); if (result.length > 0) { return result[0]; } else { return null; } };";
+                   func +=              "window.cdp4j.queryAll = function(selector) { " +
+                                        sizzle + " var result = Sizzle(selector); if (result.length > 0) { return result; } else { return null; } };";
             getThis().disableFlowLog();
             getThis().evaluate(func);
             getThis().enableFlowLog();
