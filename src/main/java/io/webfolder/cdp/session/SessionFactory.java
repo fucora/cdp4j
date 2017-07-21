@@ -453,8 +453,7 @@ public class SessionFactory implements AutoCloseable {
             return headlessSession;
         }
         for (SessionInfo next : sessionInfos) {
-            if ( "about:blank".equals(next.getTitle()) &&
-                        "about:blank".equals(next.getUrl()) &&
+            if ( "about:blank".equals(next.getUrl()) &&
                         next.getId() != null &&
                         ! next.getId().trim().isEmpty() &&
                         next.getWebSocketDebuggerUrl() != null &&
