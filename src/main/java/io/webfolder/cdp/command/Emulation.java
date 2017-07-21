@@ -51,8 +51,8 @@ public interface Emulation {
      * @param dontSetVisibleSize Do not set visible view size, rely upon explicit setVisibleSize call.
      * @param screenOrientation Screen orientation override.
      */
-    void setDeviceMetricsOverride(Integer width, Integer height, Double deviceScaleFactor, Boolean mobile, 
-            @Experimental @Optional Double scale,
+    void setDeviceMetricsOverride(Integer width, Integer height, Double deviceScaleFactor,
+            Boolean mobile, @Experimental @Optional Double scale,
             @Experimental @Optional Integer screenWidth,
             @Experimental @Optional Integer screenHeight, 
             @Experimental @Optional Integer positionX,
