@@ -43,44 +43,27 @@ public interface Emulation {
      * @param height Overriding height value in pixels (minimum 0, maximum 10000000). 0 disables the override.
      * @param deviceScaleFactor Overriding device scale factor value. 0 disables the override.
      * @param mobile Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text autosizing and more.
-     * @param fitWindow Whether a view that exceeds the available browser window area should be scaled down to fit.
      * @param scale Scale to apply to resulting view image. Ignored in |fitWindow| mode.
-     * @param offsetX Not used.
-     * @param offsetY Not used.
      * @param screenWidth Overriding screen width value in pixels (minimum 0, maximum 10000000). Only used for |mobile==true|.
      * @param screenHeight Overriding screen height value in pixels (minimum 0, maximum 10000000). Only used for |mobile==true|.
      * @param positionX Overriding view X position on screen in pixels (minimum 0, maximum 10000000). Only used for |mobile==true|.
      * @param positionY Overriding view Y position on screen in pixels (minimum 0, maximum 10000000). Only used for |mobile==true|.
+     * @param dontSetVisibleSize Do not set visible view size, rely upon explicit setVisibleSize call.
      * @param screenOrientation Screen orientation override.
      */
-    void setDeviceMetricsOverride(Integer width, Integer height, Double deviceScaleFactor,
-            Boolean mobile, Boolean fitWindow, @Experimental @Optional Double scale,
-            @Experimental @Optional Double offsetX, @Experimental @Optional Double offsetY,
+    void setDeviceMetricsOverride(Integer width, Integer height, Double deviceScaleFactor, Boolean mobile, 
+            @Experimental @Optional Double scale,
             @Experimental @Optional Integer screenWidth,
-            @Experimental @Optional Integer screenHeight, @Experimental @Optional Integer positionX,
+            @Experimental @Optional Integer screenHeight, 
+            @Experimental @Optional Integer positionX,
             @Experimental @Optional Integer positionY,
+            @Experimental @Optional Boolean dontSetVisibleSize,
             @Optional ScreenOrientation screenOrientation);
 
     /**
      * Clears the overriden device metrics.
      */
     void clearDeviceMetricsOverride();
-
-    /**
-     * Overrides the visible area of the page. The change is hidden from the page, i.e. the observable scroll position and page scale does not change. In effect, the command moves the specified area of the page into the top-left corner of the frame.
-     * 
-     * @param x X coordinate of top-left corner of the area (CSS pixels).
-     * @param y Y coordinate of top-left corner of the area (CSS pixels).
-     * @param scale Scale to apply to the area (relative to a page scale of 1.0).
-     */
-    @Experimental
-    void forceViewport(Double x, Double y, Double scale);
-
-    /**
-     * Resets the visible area of the page to the original viewport, undoing any effects of the <tt>forceViewport</tt> command.
-     */
-    @Experimental
-    void resetViewport();
 
     /**
      * Requests that page scale factor is reset to initial values.
@@ -185,10 +168,9 @@ public interface Emulation {
      * @param height Overriding height value in pixels (minimum 0, maximum 10000000). 0 disables the override.
      * @param deviceScaleFactor Overriding device scale factor value. 0 disables the override.
      * @param mobile Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text autosizing and more.
-     * @param fitWindow Whether a view that exceeds the available browser window area should be scaled down to fit.
      */
     void setDeviceMetricsOverride(Integer width, Integer height, Double deviceScaleFactor,
-            Boolean mobile, Boolean fitWindow);
+            Boolean mobile);
 
     /**
      * Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position unavailable.
