@@ -60,7 +60,7 @@ public class Launcher {
         this.factory = factory;
     }
 
-    private String getChromeBinary() {
+    private String getCustomChromeBinary() {
         String chromeBinary = getProperty("chrome_binary");
         if (chromeBinary != null) {
             File chromeExecutable = new File(chromeBinary);
@@ -68,8 +68,7 @@ public class Launcher {
                 return chromeExecutable.getAbsolutePath();
             }
         }
-        // Return existing default binary
-        return "google-chrome";
+        return null;
     }
 
     public String findChrome() {
@@ -77,41 +76,41 @@ public class Launcher {
                         .toLowerCase(ENGLISH);
         boolean windows = os.startsWith("windows");
         boolean osx = os.startsWith("mac");
-        if (windows) {
-            try {
-                for (String path : getChromeWinPaths()) {
-                    final Process process = getRuntime().exec(new String[] {
-                            "cmd", "/c", "echo", path
-                    });
-                    final int exitCode = process.waitFor();
-                    if (exitCode == 0) {
-                        final String location = toString(process.getInputStream()).trim().replace("\"", "");
-                        final File chrome = new File(location);
-                        if (chrome.exists() && chrome.canExecute()) {
-                            return chrome.toString();
-                        }
-                    }
-                }
-                throw new CdpException("Unable to find chrome.exe");
-            } catch (Throwable e) {
-                // ignore
-            }
-        } else if(osx) {
-            try {
-                for (String path : getChromeOsxPaths()) {
-                    final File chrome = new File(path);
-                    if (chrome.exists() && chrome.canExecute()) {
-                        return chrome.toString();
-                    }
-                }
-                throw new CdpException("Unable to find chrome");
-            } catch (Throwable e) {
-              // ignore
-            }
-        } else {
-            return getChromeBinary();
+
+        String chromePath = null;
+        chromePath = getCustomChromeBinary();
+        if (chromePath == null && windows) {
+          chromePath = findChromeWinPath();
         }
-        return null;
+        if (chromePath == null && osx) {
+          chromePath = findChromeOsxPath();
+        }
+        if (chromePath == null && !windows) {
+          chromePath = "google-chrome";
+        }
+        return chromePath;
+      }
+
+    public String findChromeWinPath() {
+      try {
+          for (String path : getChromeWinPaths()) {
+              final Process process = getRuntime().exec(new String[] {
+                      "cmd", "/c", "echo", path
+              });
+              final int exitCode = process.waitFor();
+              if (exitCode == 0) {
+                  final String location = toString(process.getInputStream()).trim().replace("\"", "");
+                  final File chrome = new File(location);
+                  if (chrome.exists() && chrome.canExecute()) {
+                      return chrome.toString();
+                  }
+              }
+          }
+          throw new CdpException("Unable to find chrome.exe");
+      } catch (Throwable e) {
+          // ignore
+      }
+      return null;
     }
 
     protected List<String> getChromeWinPaths() {
@@ -120,6 +119,16 @@ public class Launcher {
                 "%programfiles%\\Google\\Chrome\\Application\\chrome.exe",     // Chrome Stable 64-bit
                 "%programfiles(x86)%\\Google\\Chrome\\Application\\chrome.exe" // Chrome Stable 32-bit
         );
+    }
+
+    public String findChromeOsxPath() {
+        for (String path : getChromeOsxPaths()) {
+            final File chrome = new File(path);
+            if (chrome.exists() && chrome.canExecute()) {
+                return chrome.toString();
+            }
+        }
+        return null;
     }
 
     protected List<String> getChromeOsxPaths() {
