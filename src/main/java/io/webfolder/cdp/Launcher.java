@@ -60,7 +60,7 @@ public class Launcher {
         this.factory = factory;
     }
 
-    private String getChromeBinary() {
+    private String getCustomChromeBinary() {
         String chromeBinary = getProperty("chrome_binary");
         if (chromeBinary != null) {
             File chromeExecutable = new File(chromeBinary);
@@ -68,37 +68,49 @@ public class Launcher {
                 return chromeExecutable.getAbsolutePath();
             }
         }
-        // Return existing default binary
-        return "google-chrome";
+        return null;
     }
 
     public String findChrome() {
         String os = getProperty("os.name")
                         .toLowerCase(ENGLISH);
         boolean windows = os.startsWith("windows");
-        if (windows) {
-            try {
-                for (String path : getChromeWinPaths()) {
-                    final Process process = getRuntime().exec(new String[] {
-                            "cmd", "/c", "echo", path
-                    });
-                    final int exitCode = process.waitFor();
-                    if (exitCode == 0) {
-                        final String location = toString(process.getInputStream()).trim().replace("\"", "");
-                        final File chrome = new File(location);
-                        if (chrome.exists() && chrome.canExecute()) {
-                            return chrome.toString();
-                        }
-                    }
-                }
-                throw new CdpException("Unable to find chrome.exe");
-            } catch (Throwable e) {
-                // ignore
-            }
-        } else {
-            return getChromeBinary();
+        boolean osx = os.startsWith("mac");
+
+        String chromePath = null;
+        chromePath = getCustomChromeBinary();
+        if (chromePath == null && windows) {
+          chromePath = findChromeWinPath();
         }
-        return null;
+        if (chromePath == null && osx) {
+          chromePath = findChromeOsxPath();
+        }
+        if (chromePath == null && !windows) {
+          chromePath = "google-chrome";
+        }
+        return chromePath;
+      }
+
+    public String findChromeWinPath() {
+      try {
+          for (String path : getChromeWinPaths()) {
+              final Process process = getRuntime().exec(new String[] {
+                      "cmd", "/c", "echo", path
+              });
+              final int exitCode = process.waitFor();
+              if (exitCode == 0) {
+                  final String location = toString(process.getInputStream()).trim().replace("\"", "");
+                  final File chrome = new File(location);
+                  if (chrome.exists() && chrome.canExecute()) {
+                      return chrome.toString();
+                  }
+              }
+          }
+          throw new CdpException("Unable to find chrome.exe");
+      } catch (Throwable e) {
+          // ignore
+      }
+      return null;
     }
 
     protected List<String> getChromeWinPaths() {
@@ -106,6 +118,23 @@ public class Launcher {
                 "%localappdata%\\Google\\Chrome SxS\\Application\\chrome.exe", // Chrome Canary
                 "%programfiles%\\Google\\Chrome\\Application\\chrome.exe",     // Chrome Stable 64-bit
                 "%programfiles(x86)%\\Google\\Chrome\\Application\\chrome.exe" // Chrome Stable 32-bit
+        );
+    }
+
+    public String findChromeOsxPath() {
+        for (String path : getChromeOsxPaths()) {
+            final File chrome = new File(path);
+            if (chrome.exists() && chrome.canExecute()) {
+                return chrome.toString();
+            }
+        }
+        return null;
+    }
+
+    protected List<String> getChromeOsxPaths() {
+        return asList(
+                "/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary", // Chrome Canary
+                "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"                // Chrome Stable
         );
     }
 
