@@ -90,7 +90,7 @@ public interface Selector {
      * @return <code>true</code> if the element selected by the specified
      *         selector
      */
-    default boolean matches(Integer contextId, final String selector, final Object... args) {
+    default boolean matches(final Integer contextId, final String selector, final Object... args) {
         Integer nodeId = getThis().getNodeId(contextId, selector, args);
         if (nodeId == null || EMPTY_NODE_ID.equals(nodeId)) {
             return false;
@@ -360,15 +360,16 @@ public interface Selector {
         return getObjectIds(selector, EMPTY_ARGS);
     }
 
-    default String getObjectId(Integer contextId, String selector, Object... args) {
+    default String getObjectId(final Integer contextId, final String selector, final Object... args) {
         return getObjectIdWithContext(contextId, selector, args);
     }
-    default String getObjectId(String selector, Object... args) {
+
+    default String getObjectId(final String selector, final Object... args) {
         return getObjectIdWithContext(null, selector, args);
     }
 
     default String getObjectIdWithContext(
-            Integer contextId,
+                final Integer contextId,
                 final String selector,
                 final Object ...args) {
         final DOM     dom    = getThis().getCommand().getDOM();
@@ -380,8 +381,8 @@ public interface Selector {
             final String   expression    = format(func, format(selector.replace("\"", "\\\""), args));
             final Boolean  includeCmdApi = xpath ? TRUE : FALSE;
             EvaluateResult result        = runtime.evaluate(expression, null, includeCmdApi,
-                    null, contextId, null,
-                                                                null, null, null);
+                                                            null, contextId, null,
+                                                            null, null, null);
             if (result == null) {
                 return null;
             }
@@ -443,7 +444,8 @@ public interface Selector {
         return getObjectId(selector, EMPTY_ARGS);
     }
 
-    default Integer getNodeId(Integer context,
+    default Integer getNodeId(
+                final Integer context,
                 final String selector,
                 final Object ...args) {
         if (selector == null || selector.trim().isEmpty()) {

@@ -168,7 +168,7 @@ public interface Dom {
      *            Context id of the frame
      * @return this
      */
-    default Session focus(Integer contextId, final String selector, final Object... args) {
+    default Session focus(final Integer contextId, final String selector, final Object... args) {
         getThis().logEntry("focus", format(selector, args));
         Integer nodeId = getThis().getNodeId(contextId, selector, contextId, args);
         if (nodeId == null || Constant.EMPTY_NODE_ID.equals(nodeId)) {
@@ -676,7 +676,7 @@ public interface Dom {
      * @return returns all attribute nodes registered to the specified node.
      */
     default Map<String, String> getAttributes(
-            Integer contextId,
+                                final Integer contextId,
                                 final String selector,
                                 final Object ...args) {
         Integer nodeId = getThis().getNodeId(contextId, selector, args);
@@ -736,7 +736,8 @@ public interface Dom {
      * @return the value of attribute or <code>null</code> if there is no such
      *         attribute.
      */
-    default String getAttribute(Integer contextId,
+    default String getAttribute(
+                        final Integer contextId,
                         final String selector,
                         final String name,
                         final Object ...args) {
@@ -780,7 +781,7 @@ public interface Dom {
      * 
      * @return this
      */
-    default Session setAttribute(Integer contextId, final String selector, final String name, final Object value,
+    default Session setAttribute(final Integer contextId, final String selector, final String name, final Object value,
             final Object... args) {
         Integer nodeId = getThis().getNodeId(contextId, selector, args);
         if (nodeId == null || Constant.EMPTY_NODE_ID.equals(nodeId)) {
@@ -819,7 +820,7 @@ public interface Dom {
      * 
      * @return Box model of element or <code>null</code> otherwise
      */
-    default BoxModel getBoxModel(final String selector, Object ...args) {
+    default BoxModel getBoxModel(final String selector, final Object ...args) {
         return getBoxModel(null, selector, args);
     }
 

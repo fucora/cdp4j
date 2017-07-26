@@ -70,6 +70,7 @@ public class TestFrame {
 
     @Test
     public void test() {
+        session.wait(1000);
 
         // Needed so that xpaths work correctly.
         session.getCommand().getDOM().getDocument();
