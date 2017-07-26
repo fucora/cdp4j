@@ -92,7 +92,7 @@ public class SessionFactory implements AutoCloseable {
 
     private AtomicBoolean headless;
 
-    private Session headlessSession;
+    private volatile Session headlessSession;
 
     public SessionFactory() {
         this(DEFAULT_HOST,
@@ -181,11 +181,14 @@ public class SessionFactory implements AutoCloseable {
     public Session create(final String browserContextId) {
         boolean headless = isHeadless();
         if (headless) {
+            if (headlessSession == null) {
+                headlessSession = connectHeadless();
+            }
             Target target = headlessSession.getCommand().getTarget();
             String targetId = target.createTarget("about:blank",
-                                                    DEFAULT_SCREEN_WIDTH,
-                                                    DEFAULT_SCREEN_HEIGHT,
-                                                    browserContextId);
+                                                  DEFAULT_SCREEN_WIDTH,
+                                                  DEFAULT_SCREEN_HEIGHT,
+                                                  browserContextId);
             Session session = connect(targetId);
             targets.put(session, targetId);
             return session;
@@ -287,8 +290,8 @@ public class SessionFactory implements AutoCloseable {
      */
     public List<SessionInfo> list(int connectionTimeout) {
         String listSessions = format("http://%s:%d/json/list", host, port);
-        URL             url = null;
-        Reader       reader = null;
+        URL    url          = null;
+        Reader reader       = null;
         try {
             url = new URL(listSessions);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
