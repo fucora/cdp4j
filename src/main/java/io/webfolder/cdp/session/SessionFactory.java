@@ -482,7 +482,6 @@ public class SessionFactory implements AutoCloseable {
                 headless.set(false);
             } else if (ua.toLowerCase(ENGLISH).contains("headless")) {
                 headless.set(true);
-                headlessSession = connectHeadless();
             }
         }
         return headless.get();
@@ -524,6 +523,9 @@ public class SessionFactory implements AutoCloseable {
 
     public String createBrowserContext() {
         if (isHeadless()) {
+            if (headlessSession == null) {
+                headlessSession = connectHeadless();
+            }
             String browserContextId = headlessSession
                                             .getCommand()
                                             .getTarget()
@@ -535,7 +537,7 @@ public class SessionFactory implements AutoCloseable {
     }
 
     public void disposeBrowserContext(final String browserContextId) {
-        if (isHeadless()) {
+        if ( isHeadless() && headlessSession != null ) {
             headlessSession
                 .getCommand()
                 .getTarget()
