@@ -139,39 +139,38 @@ public interface Dom {
      * @return this
      */
     default Session focus(final String selector) {
-		Integer nullValue = null;
-		return focus(nullValue, selector);
-	}
-
-	/**
-	 * The HTMLElement.focus() method sets focus on the specified element, if it
-	 * can be focused.
-	 * 
-	 * @param selector
-	 *            css or xpath selector
-	 * @param contextId
-	 *            Context id of the frame
-	 * @return this
-	 */
-	default Session focus(final Integer contextId, final String selector) {
-		return focus(contextId, selector, Constant.EMPTY_ARGS);
+        return focus(null, selector);
     }
 
     /**
-	 * The HTMLElement.focus() method sets focus on the specified element, if it
-	 * can be focused.
-	 * 
-	 * @param selector
-	 *            css or xpath selector
-	 * @param args
-	 *            format string
-	 * @param contextId
-	 *            Context id of the frame
-	 * @return this
-	 */
-	default Session focus(Integer contextId, final String selector, final Object... args) {
+     * The HTMLElement.focus() method sets focus on the specified element, if it
+     * can be focused.
+     * 
+     * @param selector
+     *            css or xpath selector
+     * @param contextId
+     *            Context id of the frame
+     * @return this
+     */
+    default Session focus(final Integer contextId, final String selector) {
+        return focus(contextId, selector, Constant.EMPTY_ARGS);
+    }
+
+    /**
+     * The HTMLElement.focus() method sets focus on the specified element, if it
+     * can be focused.
+     * 
+     * @param selector
+     *            css or xpath selector
+     * @param args
+     *            format string
+     * @param contextId
+     *            Context id of the frame
+     * @return this
+     */
+    default Session focus(Integer contextId, final String selector, final Object... args) {
         getThis().logEntry("focus", format(selector, args));
-		Integer nodeId = getThis().getNodeId(contextId, selector, contextId, args);
+        Integer nodeId = getThis().getNodeId(contextId, selector, contextId, args);
         if (nodeId == null || Constant.EMPTY_NODE_ID.equals(nodeId)) {
             throw new ElementNotFoundException(format(selector, args));
         }
@@ -651,36 +650,36 @@ public interface Dom {
         return getAttributes(selector, Constant.EMPTY_ARGS);
     }
 
-	/**
-	 * Gets attributes of the node or {@link Collections#emptyMap()} otherwise.
-	 * 
-	 * @param selector
-	 *            css or xpath selector
-	 * @param args
-	 *            format string
-	 * 
-	 * @return returns all attribute nodes registered to the specified node.
-	 */
-	default Map<String, String> getAttributes(final String selector, final Object... args) {
-		return getAttributes(null, selector, args);
-	}
+    /**
+     * Gets attributes of the node or {@link Collections#emptyMap()} otherwise.
+     * 
+     * @param selector
+     *            css or xpath selector
+     * @param args
+     *            format string
+     * 
+     * @return returns all attribute nodes registered to the specified node.
+     */
+    default Map<String, String> getAttributes(final String selector, final Object... args) {
+        return getAttributes(null, selector, args);
+    }
 
     /**
-	 * Gets attributes of the node or {@link Collections#emptyMap()} otherwise.
-	 * 
-	 * @param selector
-	 *            css or xpath selector
-	 * @param args
-	 *            format string
-	 * @param contextId
-	 *            Frame context id
-	 * @return returns all attribute nodes registered to the specified node.
-	 */
+     * Gets attributes of the node or {@link Collections#emptyMap()} otherwise.
+     * 
+     * @param selector
+     *            css or xpath selector
+     * @param args
+     *            format string
+     * @param contextId
+     *            Frame context id
+     * @return returns all attribute nodes registered to the specified node.
+     */
     default Map<String, String> getAttributes(
-			Integer contextId,
+            Integer contextId,
                                 final String selector,
                                 final Object ...args) {
-		Integer nodeId = getThis().getNodeId(contextId, selector, args);
+        Integer nodeId = getThis().getNodeId(contextId, selector, args);
         if (nodeId != null && nodeId.intValue() > 0) {
             DOM dom = getThis().getCommand().getDOM();
             List<String> attributes = dom.getAttributes(nodeId);
@@ -720,31 +719,31 @@ public interface Dom {
      * @return the value of attribute or <code>null</code> if there is no such attribute.
      */
     default String getAttribute(
-			final String selector, final String name, final Object... args) {
-		return getAttribute(null, selector, name, args);
-	}
+            final String selector, final String name, final Object... args) {
+        return getAttribute(null, selector, name, args);
+    }
 
-	/**
-	 * Retrieves an attribute value by name.
-	 * 
-	 * @param selector
-	 *            css or xpath selector
-	 * @param name
-	 *            the name of the attribute to retrieve
-	 * @param args
-	 *            format string
-	 * 
-	 * @return the value of attribute or <code>null</code> if there is no such
-	 *         attribute.
-	 */
-	default String getAttribute(Integer contextId,
+    /**
+     * Retrieves an attribute value by name.
+     * 
+     * @param selector
+     *            css or xpath selector
+     * @param name
+     *            the name of the attribute to retrieve
+     * @param args
+     *            format string
+     * 
+     * @return the value of attribute or <code>null</code> if there is no such
+     *         attribute.
+     */
+    default String getAttribute(Integer contextId,
                         final String selector,
                         final String name,
                         final Object ...args) {
         if (name == null || name.trim().isEmpty()) {
             return null;
         }
-		String value = getAttributes(contextId, format(selector, args)).get(name);
+        String value = getAttributes(contextId, format(selector, args)).get(name);
         getThis().logExit("getAttribute", format(selector, args) + "\", \"" + name, value);
         return value;
     }
@@ -764,26 +763,26 @@ public interface Dom {
                         final String name,
                         final Object value,
                         final Object ...args) {
-		return setAttribute(null, selector, name, value, args);
-	}
+        return setAttribute(null, selector, name, value, args);
+    }
 
-	/**
-	 * Sets attribute for an element
-	 * 
-	 * @param selector
-	 *            css or xpath selector
-	 * @param name
-	 *            the name of the attribute to create or alter
-	 * @param value
-	 *            value to set in string form
-	 * @param args
-	 *            format string
-	 * 
-	 * @return this
-	 */
-	default Session setAttribute(Integer contextId, final String selector, final String name, final Object value,
-			final Object... args) {
-		Integer nodeId = getThis().getNodeId(contextId, selector, args);
+    /**
+     * Sets attribute for an element
+     * 
+     * @param selector
+     *            css or xpath selector
+     * @param name
+     *            the name of the attribute to create or alter
+     * @param value
+     *            value to set in string form
+     * @param args
+     *            format string
+     * 
+     * @return this
+     */
+    default Session setAttribute(Integer contextId, final String selector, final String name, final Object value,
+            final Object... args) {
+        Integer nodeId = getThis().getNodeId(contextId, selector, args);
         if (nodeId == null || Constant.EMPTY_NODE_ID.equals(nodeId)) {
             throw new ElementNotFoundException(format(selector, args));
         }
@@ -821,23 +820,23 @@ public interface Dom {
      * @return Box model of element or <code>null</code> otherwise
      */
     default BoxModel getBoxModel(final String selector, Object ...args) {
-		return getBoxModel(null, selector, args);
-	}
+        return getBoxModel(null, selector, args);
+    }
 
-	/**
-	 * Gets box model of an element
-	 * 
-	 * Box model hold the height, width and coordinate of the element
-	 * 
-	 * @param selector
-	 *            css or xpath selector
-	 * @param args
-	 *            fromat string
-	 * 
-	 * @return Box model of element or <code>null</code> otherwise
-	 */
-	default BoxModel getBoxModel(Integer contextId, final String selector, Object... args) {
-		Integer nodeId = getThis().getNodeId(contextId, selector, args);
+    /**
+     * Gets box model of an element
+     * 
+     * Box model hold the height, width and coordinate of the element
+     * 
+     * @param selector
+     *            css or xpath selector
+     * @param args
+     *            fromat string
+     * 
+     * @return Box model of element or <code>null</code> otherwise
+     */
+    default BoxModel getBoxModel(Integer contextId, final String selector, Object... args) {
+        Integer nodeId = getThis().getNodeId(contextId, selector, args);
         if (nodeId == null || Constant.EMPTY_NODE_ID.equals(nodeId)) {
             throw new ElementNotFoundException(format(selector, args));
         }

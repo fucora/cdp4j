@@ -26,120 +26,119 @@ import io.webfolder.cdp.type.dom.Node;
 import io.webfolder.cdp.type.runtime.ExecutionContextDescription;
 
 public class TestFrame {
-	private static CdpAppender appender;
+    private static CdpAppender appender;
 
-	private static SessionFactory factory;
+    private static SessionFactory factory;
 
-	private static Session session;
+    private static Session session;
 
-	private static LoggerContext loggerContext;
+    private static LoggerContext loggerContext;
 
-	private static FrameEventListener eventListener;
+    private static FrameEventListener eventListener;
 
-	@BeforeClass
-	@SuppressWarnings("unchecked")
-	public static void init() {
-		loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+    @BeforeClass
+    @SuppressWarnings("unchecked")
+    public static void init() {
+        loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
 
-		appender = new CdpAppender();
-		appender.setContext(loggerContext);
-		appender.start();
-		appender.setName(CdpAppender.class.getName());
+        appender = new CdpAppender();
+        appender.setContext(loggerContext);
+        appender.start();
+        appender.setName(CdpAppender.class.getName());
 
-		Logger logger = loggerContext.getLogger("cdp4j.flow");
-		logger.addAppender((Appender<ILoggingEvent>) appender);
+        Logger logger = loggerContext.getLogger("cdp4j.flow");
+        logger.addAppender((Appender<ILoggingEvent>) appender);
 
-		factory = new Launcher().launch();
-		eventListener = new FrameEventListener();
+        factory = new Launcher().launch();
+        eventListener = new FrameEventListener();
 
-		session = factory.create();
-		session.addEventListener(eventListener);
-		session.getCommand().getRuntime().enable();
-		session.enableConsoleLog();
+        session = factory.create();
+        session.addEventListener(eventListener);
+        session.getCommand().getRuntime().enable();
+        session.enableConsoleLog();
 
-		URL url = TestSession.class.getResource("/frame-test.html");
-		session.navigate(url.toString());
-	}
+        URL url = TestSession.class.getResource("/frame-test.html");
+        session.navigate(url.toString());
+    }
 
-	@AfterClass
-	public static void dispose() {
-		appender.stop();
-		loggerContext.stop();
-		factory.close();
-	}
+    @AfterClass
+    public static void dispose() {
+        appender.stop();
+        loggerContext.stop();
+        factory.close();
+    }
 
-	@SuppressWarnings("unchecked")
-	@Test
-	public void test() {
+    @Test
+    public void test() {
 
-		// Needed so that xpaths work correctly.
-		session.getCommand().getDOM().getDocument();
+        // Needed so that xpaths work correctly.
+        session.getCommand().getDOM().getDocument();
 
-		String linkValue = session.getAttribute("//a[@id='link']", "href");
-		Assert.assertEquals("Not expected value", "https://www.google.com", linkValue);
+        String linkValue = session.getAttribute("//a[@id='link']", "href");
+        Assert.assertEquals("Not expected value", "https://www.google.com", linkValue);
 
-		String frameObjectId = session.getObjectId("//iframe");
-		final Integer frameNodeId = session.getCommand().getDOM().requestNode(frameObjectId);
-		final ExecutionContextDescription ecFrame = eventListener.getExecutionContextForFrame(frameNodeId);
-		linkValue = session.getAttribute(ecFrame.getId(), "//a[@id='link']", "href");
-		Assert.assertEquals("Not expected value", "https://www.yahoo.com", linkValue);
-	}
+        String frameObjectId = session.getObjectId("//iframe");
+        final Integer frameNodeId = session.getCommand().getDOM().requestNode(frameObjectId);
+        final ExecutionContextDescription ecFrame = eventListener.getExecutionContextForFrame(frameNodeId);
+        linkValue = session.getAttribute(ecFrame.getId(), "//a[@id='link']", "href");
+        Assert.assertEquals("Not expected value", "https://www.yahoo.com", linkValue);
+    }
 
-	private static class FrameEventListener implements EventListener<Object> {
+    private static class FrameEventListener implements EventListener<Object> {
 
-		CopyOnWriteArrayList<Node> nodes;
+        CopyOnWriteArrayList<Node> nodes;
 
-		CopyOnWriteArrayList<ExecutionContextDescription> executionContexts;
+        CopyOnWriteArrayList<ExecutionContextDescription> executionContexts;
 
-		FrameEventListener() {
-			nodes = new CopyOnWriteArrayList<>();
-			executionContexts = new CopyOnWriteArrayList<>();
-		}
+        FrameEventListener() {
+            nodes = new CopyOnWriteArrayList<>();
+            executionContexts = new CopyOnWriteArrayList<>();
+        }
 
-		public Node findNodeById(final Integer nodeId) {
+        public Node findNodeById(final Integer nodeId) {
 
-			for (final Node node : nodes) {
-				if (Objects.equals(node.getNodeId(), nodeId)) {
-					return node;
-				}
-			}
-			return null;
-		}
+            for (final Node node : nodes) {
+                if (Objects.equals(node.getNodeId(), nodeId)) {
+                    return node;
+                }
+            }
+            return null;
+        }
 
-		public ExecutionContextDescription getExecutionContextForFrame(final Integer nodeId) {
-			final Node node = findNodeById(nodeId);
-			if (node != null) {
-				return getExecutionContextForFrame(node.getFrameId());
-			}
-			return null;
-		}
+        public ExecutionContextDescription getExecutionContextForFrame(final Integer nodeId) {
+            final Node node = findNodeById(nodeId);
+            if (node != null) {
+                return getExecutionContextForFrame(node.getFrameId());
+            }
+            return null;
+        }
 
-		@SuppressWarnings("unchecked")
-		public ExecutionContextDescription getExecutionContextForFrame(final String frameId) {
+        @SuppressWarnings("unchecked")
+        public ExecutionContextDescription getExecutionContextForFrame(final String frameId) {
 
-			Map<String, Object> map;
-			for (final ExecutionContextDescription ecd : executionContexts) {
-				map = (Map<String, Object>) ecd.getAuxData();
-				if (Objects.equals(map.get("frameId"), frameId)) {
-					return ecd;
-				}
-			}
+            Map<String, Object> map;
+            for (final ExecutionContextDescription ecd : executionContexts) {
+                map = (Map<String, Object>) ecd.getAuxData();
+                if (Objects.equals(map.get("frameId"), frameId)) {
+                    return ecd;
+                }
+            }
 
-			return null;
-		}
+            return null;
+        }
 
-		@Override
-		public void onEvent(final Events event, final Object value) {
-			if (Events.DOMSetChildNodes == event) {
-				nodes.clear();
-				final SetChildNodes scn = (SetChildNodes) value;
-				nodes.addAll(scn.getNodes());
-			}
-			if (Events.RuntimeExecutionContextCreated == event) {
-				final ExecutionContextCreated exc = (ExecutionContextCreated) value;
-				executionContexts.add(exc.getContext());
-			}
-		}
+        @Override
+        public void onEvent(final Events event, final Object value) {
+            if (Events.DOMSetChildNodes == event) {
+                nodes.clear();
+                final SetChildNodes scn = (SetChildNodes) value;
+                nodes.addAll(scn.getNodes());
+            }
+            if (Events.RuntimeExecutionContextCreated == event) {
+                final ExecutionContextCreated exc = (ExecutionContextCreated) value;
+                executionContexts.add(exc.getContext());
+            }
+        }
 
-	}
+    }
 }
