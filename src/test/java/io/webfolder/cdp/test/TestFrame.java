@@ -14,7 +14,6 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
-import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.event.Events;
 import io.webfolder.cdp.event.dom.SetChildNodes;
 import io.webfolder.cdp.event.runtime.ExecutionContextCreated;
@@ -53,7 +52,6 @@ public class TestFrame {
         Logger logger = loggerContext.getLogger("cdp4j.flow");
         logger.addAppender((Appender<ILoggingEvent>) appender);
 
-        factory = new Launcher().launch();
         eventListener = new FrameEventListener();
 
         session = factory.create();
