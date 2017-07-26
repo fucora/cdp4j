@@ -40,7 +40,9 @@ import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Logger;
@@ -53,7 +55,8 @@ import io.webfolder.cdp.session.Option;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
-public class TestSession {
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class TestAll {
 
     private static CdpAppender appender;
 
@@ -82,7 +85,7 @@ public class TestSession {
 
         session.enableConsoleLog();
 
-        URL url = TestSession.class.getResource("/session-test.html");
+        URL url = TestAll.class.getResource("/session-test.html");
         session.navigate(url.toString());
     }
 
@@ -95,7 +98,7 @@ public class TestSession {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void test() {
+    public void t01_test() {
         session.activate();
         session.getTitle();
 
@@ -238,5 +241,13 @@ public class TestSession {
         assertArrayEquals(failedExpecteds.toArray(new String[] { }), failedActuals.toArray(new String[] { }));
 
         assertEquals(expecteds.size(), actuals.size());
+    }
+
+    @Test
+    public void t02_Frame() {
+        TestFrame frame = new TestFrame(factory);
+        TestFrame.init();
+        frame.test();
+        TestFrame.dispose();
     }
 }

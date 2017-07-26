@@ -8,7 +8,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Logger;
@@ -26,15 +25,20 @@ import io.webfolder.cdp.type.dom.Node;
 import io.webfolder.cdp.type.runtime.ExecutionContextDescription;
 
 public class TestFrame {
-    private static CdpAppender appender;
 
     private static SessionFactory factory;
 
     private static Session session;
 
+    private static FrameEventListener eventListener;
+
     private static LoggerContext loggerContext;
 
-    private static FrameEventListener eventListener;
+    private static CdpAppender appender;
+
+    public TestFrame(SessionFactory factory) {
+        TestFrame.factory = factory;
+    }
 
     @BeforeClass
     @SuppressWarnings("unchecked")
@@ -57,18 +61,16 @@ public class TestFrame {
         session.getCommand().getRuntime().enable();
         session.enableConsoleLog();
 
-        URL url = TestSession.class.getResource("/frame-test.html");
+        URL url = TestAll.class.getResource("/frame-test.html");
         session.navigate(url.toString());
     }
 
     @AfterClass
     public static void dispose() {
         appender.stop();
-        loggerContext.stop();
         factory.close();
     }
 
-    @Test
     public void test() {
         session.wait(1000);
 
