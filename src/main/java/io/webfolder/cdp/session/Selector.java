@@ -75,7 +75,23 @@ public interface Selector {
     default boolean matches(
                     final String selector,
                     final Object ...args) {
-        Integer nodeId = getThis().getNodeId(selector, args);
+		return matches(null, selector, args);
+	}
+
+	/**
+	 * This method returns <code>true</code> if the element would be selected by
+	 * the specified selector string; otherwise, returns <code>false</code>.
+	 * 
+	 * @param selector
+	 *            css or xpath selector
+	 * @param args
+	 *            format string
+	 * 
+	 * @return <code>true</code> if the element selected by the specified
+	 *         selector
+	 */
+	default boolean matches(Integer contextId, final String selector, final Object... args) {
+		Integer nodeId = getThis().getNodeId(contextId, selector, args);
         if (nodeId == null || EMPTY_NODE_ID.equals(nodeId)) {
             return false;
         }
@@ -83,6 +99,7 @@ public interface Selector {
         getThis().logExit("matches", format(selector, args), retValue);
         return retValue;
     }
+
 
     /**
      * Gets the property value of the matched element
@@ -343,7 +360,15 @@ public interface Selector {
         return getObjectIds(selector, EMPTY_ARGS);
     }
 
-    default String getObjectId(
+	default String getObjectId(Integer contextId, String selector, Object... args) {
+		return getObjectIdWithContext(contextId, selector, args);
+	}
+	default String getObjectId(String selector, Object... args) {
+		return getObjectIdWithContext(null, selector, args);
+	}
+
+	default String getObjectIdWithContext(
+			Integer contextId,
                 final String selector,
                 final Object ...args) {
         final DOM     dom    = getThis().getCommand().getDOM();
@@ -355,7 +380,7 @@ public interface Selector {
             final String   expression    = format(func, format(selector.replace("\"", "\\\""), args));
             final Boolean  includeCmdApi = xpath ? TRUE : FALSE;
             EvaluateResult result        = runtime.evaluate(expression, null, includeCmdApi,
-                                                                null, null, null,
+					null, contextId, null,
                                                                 null, null, null);
             if (result == null) {
                 return null;
@@ -418,7 +443,7 @@ public interface Selector {
         return getObjectId(selector, EMPTY_ARGS);
     }
 
-    default Integer getNodeId(
+	default Integer getNodeId(Integer context,
                 final String selector,
                 final Object ...args) {
         if (selector == null || selector.trim().isEmpty()) {
@@ -427,8 +452,9 @@ public interface Selector {
         boolean sizzle = getThis().useSizzle();
         Integer nodeId = EMPTY_NODE_ID;
         DOM dom = getThis().getCommand().getDOM();
-        if (sizzle) {
-            String objectId = getThis().getObjectId(format(selector, args));
+		final boolean xpath = selector.charAt(0) == '/';
+		if (sizzle || xpath) {
+			String objectId = getThis().getObjectId(context, format(selector, args));
             if (objectId != null) {
                 nodeId = dom.requestNode(objectId);
                 getThis().releaseObject(objectId);
@@ -453,7 +479,7 @@ public interface Selector {
     }
 
     default Integer getNodeId(final String selector) {
-        return getNodeId(selector, EMPTY_ARGS);
+		return getNodeId(null, selector, EMPTY_ARGS);
     }
 
     default Session releaseObject(final String objectId) {
