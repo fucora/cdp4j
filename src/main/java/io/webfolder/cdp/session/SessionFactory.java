@@ -215,8 +215,8 @@ public class SessionFactory implements AutoCloseable {
             return session;
         } else {
             String    createUrl = format("http://%s:%d/json/new", host, port);
-            Reader       reader = null;
-            URL             url = null;
+            Reader    reader    = null;
+            URL       url       = null;
             try {
                 url = new URL(createUrl);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -326,8 +326,8 @@ public class SessionFactory implements AutoCloseable {
             }
         }
         String closeSession = format("http://%s:%d/json/close/%s", host, port, sessionId);
-        URL             url = null;
-        Reader       reader = null;
+        URL    url          = null;
+        Reader reader       = null;
         if (found) {
             try {
                 if (isHeadless()) {
@@ -426,8 +426,8 @@ public class SessionFactory implements AutoCloseable {
             }
         } else {
             String closeSession = format("http://%s:%d/json/activate/%s", host, port, sessionId);
-            URL             url = null;
-            Reader       reader = null;
+            URL    url          = null;
+            Reader reader       = null;
             try {
                 url = new URL(closeSession);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -489,8 +489,8 @@ public class SessionFactory implements AutoCloseable {
 
     protected Map<String, Object> getVersion() {
         String listSessions = format("http://%s:%d/json/version", host, port);
-        URL             url = null;
-        Reader       reader = null;
+        URL    url          = null;
+        Reader reader       = null;
         try {
             url = new URL(listSessions);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
