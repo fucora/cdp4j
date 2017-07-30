@@ -66,7 +66,25 @@ public interface Mouse {
      * 
      * @return this
      */
-    default Session click(final String selector, final Object ...args) {
+	default Session click(String selector, final Object... args) {
+		return click(null, selector, args);
+	}
+
+	/**
+	 * Click on the specified element.
+	 * 
+	 * There are some preconditions for an element to be clicked. The element
+	 * must be visible and it must have a height and width greater then 0.
+	 *
+	 * @param
+	 * @param selector
+	 *            css or xpath selector
+	 * @param args
+	 *            format string
+	 * 
+	 * @return this
+	 */
+	default Session click(Integer contextId, final String selector, final Object... args) {
         getThis().logEntry("click", format(selector, args));
         DOM dom = getThis().getCommand().getDOM();
         Integer nodeId = getThis().getNodeId(format(selector, args));
