@@ -52,7 +52,7 @@ public interface Runtime {
      * @param returnByValue Whether the result is expected to be a JSON object that should be sent by value.
      * @param generatePreview Whether preview should be generated for the result.
      * @param userGesture Whether execution should be treated as initiated by user in the UI.
-     * @param awaitPromise Whether execution should wait for promise to be resolved. If the result of evaluation is not a Promise, it's considered to be an error.
+     * @param awaitPromise Whether execution should <code>await</code> for resulting value and return once awaited promise is resolved.
      * 
      * @return EvaluateResult
      */
@@ -84,7 +84,7 @@ public interface Runtime {
      * @param returnByValue Whether the result is expected to be a JSON object which should be sent by value.
      * @param generatePreview Whether preview should be generated for the result.
      * @param userGesture Whether execution should be treated as initiated by user in the UI.
-     * @param awaitPromise Whether execution should wait for promise to be resolved. If the result of evaluation is not a Promise, it's considered to be an error.
+     * @param awaitPromise Whether execution should <code>await</code> for resulting value and return once awaited promise is resolved.
      * 
      * @return CallFunctionOnResult
      */
@@ -167,7 +167,7 @@ public interface Runtime {
      * @param includeCommandLineAPI Determines whether Command Line API should be available during the evaluation.
      * @param returnByValue Whether the result is expected to be a JSON object which should be sent by value.
      * @param generatePreview Whether preview should be generated for the result.
-     * @param awaitPromise Whether execution should wait for promise to be resolved. If the result of evaluation is not a Promise, it's considered to be an error.
+     * @param awaitPromise Whether execution should <code>await</code> for resulting value and return once awaited promise is resolved.
      * 
      * @return RunScriptResult
      */

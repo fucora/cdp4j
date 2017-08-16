@@ -52,6 +52,8 @@ public class HighlightConfig {
 
     private String selectorList;
 
+    private RGBA cssGridColor;
+
     /**
      * Whether the node info tooltip should be shown (default: false).
      */
@@ -212,5 +214,19 @@ public class HighlightConfig {
      */
     public void setSelectorList(String selectorList) {
         this.selectorList = selectorList;
+    }
+
+    /**
+     * The grid layout color (default: transparent).
+     */
+    public RGBA getCssGridColor() {
+        return cssGridColor;
+    }
+
+    /**
+     * The grid layout color (default: transparent).
+     */
+    public void setCssGridColor(RGBA cssGridColor) {
+        this.cssGridColor = cssGridColor;
     }
 }

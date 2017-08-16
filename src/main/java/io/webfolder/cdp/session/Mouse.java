@@ -91,7 +91,7 @@ public interface Mouse {
         if (nodeId == null || Constant.EMPTY_NODE_ID.equals(nodeId)) {
             throw new ElementNotFoundException(format(selector, args));
         }
-        BoxModel boxModel = dom.getBoxModel(nodeId);
+        BoxModel boxModel = dom.getBoxModel(nodeId, null, null);
         if (boxModel == null) {
             return getThis();
         }
@@ -101,12 +101,12 @@ public interface Mouse {
                     content.size() < 2) {
             return getThis();
         }
-        int left = (int) floor(content.get(0));
-        int  top = (int) floor(content.get(1));
+        double left = floor(content.get(0));
+        double top  = floor(content.get(1));
         int clickCount = 1;
         Input input = getThis().getCommand().getInput();
-        input.dispatchMouseEvent(MousePressed, left, top, null, null, Left, clickCount);
-        input.dispatchMouseEvent(MouseReleased, left, top, null, null, Left, clickCount);
+        input.dispatchMouseEvent(MousePressed, left, top, null, null, Left, clickCount, null, null);
+        input.dispatchMouseEvent(MouseReleased, left, top, null, null, Left, clickCount, null, null);
         return getThis();
     }
 

@@ -279,15 +279,17 @@ public interface DOM {
     void setInspectedNode(Integer nodeId);
 
     /**
-     * Resolves JavaScript node object for given node id.
+     * Resolves the JavaScript node object for a given NodeId or BackendNodeId.
      * 
      * @param nodeId Id of the node to resolve.
+     * @param backendNodeId Backend identifier of the node to resolve.
      * @param objectGroup Symbolic group name that can be used to release multiple objects.
      * 
      * @return JavaScript object wrapper for given node.
      */
     @Returns("object")
-    RemoteObject resolveNode(Integer nodeId, @Optional String objectGroup);
+    RemoteObject resolveNode(@Optional Integer nodeId, @Optional Integer backendNodeId,
+            @Optional String objectGroup);
 
     /**
      * Returns attributes for the specified node.
@@ -345,30 +347,39 @@ public interface DOM {
     /**
      * Focuses the given element.
      * 
-     * @param nodeId Id of the node to focus.
+     * @param nodeId Identifier of the node.
+     * @param backendNodeId Identifier of the backend node.
+     * @param objectId JavaScript object id of the node wrapper.
      */
     @Experimental
-    void focus(Integer nodeId);
+    void focus(@Optional Integer nodeId, @Optional Integer backendNodeId,
+            @Optional String objectId);
 
     /**
      * Sets files for the given file input element.
      * 
-     * @param nodeId Id of the file input node to set files for.
      * @param files Array of file paths to set.
+     * @param nodeId Identifier of the node.
+     * @param backendNodeId Identifier of the backend node.
+     * @param objectId JavaScript object id of the node wrapper.
      */
     @Experimental
-    void setFileInputFiles(Integer nodeId, List<String> files);
+    void setFileInputFiles(List<String> files, @Optional Integer nodeId,
+            @Optional Integer backendNodeId, @Optional String objectId);
 
     /**
      * Returns boxes for the currently selected nodes.
      * 
-     * @param nodeId Id of the node to get box model for.
+     * @param nodeId Identifier of the node.
+     * @param backendNodeId Identifier of the backend node.
+     * @param objectId JavaScript object id of the node wrapper.
      * 
      * @return Box model for the node.
      */
     @Experimental
     @Returns("model")
-    BoxModel getBoxModel(Integer nodeId);
+    BoxModel getBoxModel(@Optional Integer nodeId, @Optional Integer backendNodeId,
+            @Optional String objectId);
 
     /**
      * Returns node id at given location.
@@ -436,14 +447,12 @@ public interface DOM {
     PerformSearchResult performSearch(String query);
 
     /**
-     * Resolves JavaScript node object for given node id.
-     * 
-     * @param nodeId Id of the node to resolve.
+     * Resolves the JavaScript node object for a given NodeId or BackendNodeId.
      * 
      * @return JavaScript object wrapper for given node.
      */
     @Returns("object")
-    RemoteObject resolveNode(Integer nodeId);
+    RemoteObject resolveNode();
 
     /**
      * Creates a deep copy of the specified node and places it into the target container before the given anchor.
@@ -467,6 +476,29 @@ public interface DOM {
      */
     @Returns("nodeId")
     Integer moveTo(Integer nodeId, Integer targetNodeId);
+
+    /**
+     * Focuses the given element.
+     */
+    @Experimental
+    void focus();
+
+    /**
+     * Sets files for the given file input element.
+     * 
+     * @param files Array of file paths to set.
+     */
+    @Experimental
+    void setFileInputFiles(List<String> files);
+
+    /**
+     * Returns boxes for the currently selected nodes.
+     * 
+     * @return Box model for the node.
+     */
+    @Experimental
+    @Returns("model")
+    BoxModel getBoxModel();
 
     /**
      * Returns node id at given location.

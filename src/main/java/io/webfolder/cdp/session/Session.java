@@ -351,7 +351,7 @@ public class Session implements AutoCloseable,
         Rect cs = metrics.getContentSize();
         Emulation emulation = getThis().getCommand().getEmulation();
         emulation.setDeviceMetricsOverride(cs.getWidth().intValue(), cs.getHeight().intValue(), 1D, false);
-        byte[] data = page.captureScreenshot(Png, null, true);        
+        byte[] data = page.captureScreenshot(Png, null, null, true);        
         emulation.clearDeviceMetricsOverride();
         emulation.resetPageScaleFactor();
         css.getStyleSheetText(styleSheetId);

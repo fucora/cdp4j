@@ -118,7 +118,7 @@ public interface Navigator {
     public default String getPathname() {
         DOM dom = getThis().getCommand().getDOM();
         Integer nodeId = dom.getDocument().getNodeId();
-        RemoteObject remoteObject = dom.resolveNode(nodeId);
+        RemoteObject remoteObject = dom.resolveNode(nodeId, null, null);
         String pathname = (String) getThis().getPropertyByObjectId(remoteObject.getObjectId(), "location.pathname");
         getThis().releaseObject(remoteObject.getObjectId());
         System.out.println(pathname);
@@ -163,7 +163,7 @@ public interface Navigator {
     default String getTitle() {
         DOM dom = getThis().getCommand().getDOM();
         Integer nodeId = dom.getDocument().getNodeId();
-        RemoteObject remoteObject = dom.resolveNode(nodeId);
+        RemoteObject remoteObject = dom.resolveNode(nodeId, null, null);
         String title = (String) getThis().getPropertyByObjectId(remoteObject.getObjectId(), "title");
         getThis().logExit("getTitle", title);
         getThis().releaseObject(remoteObject.getObjectId());
@@ -180,7 +180,7 @@ public interface Navigator {
             getThis().disableFlowLog();
             DOM dom = getThis().getCommand().getDOM();
             Integer nodeId = dom.getDocument().getNodeId();
-            RemoteObject remoteObject = dom.resolveNode(nodeId);
+            RemoteObject remoteObject = dom.resolveNode(nodeId, null, null);
             String readyState = (String) getThis().getPropertyByObjectId(remoteObject.getObjectId(), "readyState");
             getThis().releaseObject(remoteObject.getObjectId());
             boolean domReady = "complete".equals(readyState);

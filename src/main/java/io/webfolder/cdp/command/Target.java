@@ -37,7 +37,7 @@ import java.util.List;
 @Domain("Target")
 public interface Target {
     /**
-     * Controls whether to discover available targets and notify via <tt>targetCreated/targetDestroyed</tt> events.
+     * Controls whether to discover available targets and notify via <tt>targetCreated/targetInfoChanged/targetDestroyed</tt> events.
      * 
      * @param discover Whether to discover available targets.
      */
@@ -61,10 +61,12 @@ public interface Target {
     void setRemoteLocations(List<RemoteLocation> locations);
 
     /**
-     * Sends protocol message to the target with given id.
+     * Sends protocol message over session with given id.
      * 
+     * @param sessionId Identifier of the session.
+     * @param targetId Deprecated.
      */
-    void sendMessageToTarget(String targetId, String message);
+    void sendMessageToTarget(String message, @Optional String sessionId, @Optional String targetId);
 
     /**
      * Returns information about a target.
@@ -90,16 +92,18 @@ public interface Target {
      * Attaches to the target with given id.
      * 
      * 
-     * @return Whether attach succeeded.
+     * @return Id assigned to the session.
      */
-    @Returns("success")
-    Boolean attachToTarget(String targetId);
+    @Returns("sessionId")
+    String attachToTarget(String targetId);
 
     /**
-     * Detaches from the target with given id.
+     * Detaches session with given id.
      * 
+     * @param sessionId Session to detach.
+     * @param targetId Deprecated.
      */
-    void detachFromTarget(String targetId);
+    void detachFromTarget(@Optional String sessionId, @Optional String targetId);
 
     /**
      * Creates a new empty BrowserContext. Similar to an incognito profile but you can have more than one.
@@ -137,6 +141,17 @@ public interface Target {
      */
     @Returns("targetInfos")
     List<TargetInfo> getTargets();
+
+    /**
+     * Sends protocol message over session with given id.
+     * 
+     */
+    void sendMessageToTarget(String message);
+
+    /**
+     * Detaches session with given id.
+     */
+    void detachFromTarget();
 
     /**
      * Creates a new page.

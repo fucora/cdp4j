@@ -52,10 +52,8 @@ public interface Emulation {
      * @param screenOrientation Screen orientation override.
      */
     void setDeviceMetricsOverride(Integer width, Integer height, Double deviceScaleFactor,
-            Boolean mobile, @Experimental @Optional Double scale,
-            @Experimental @Optional Integer screenWidth,
-            @Experimental @Optional Integer screenHeight, 
-            @Experimental @Optional Integer positionX,
+            Boolean mobile, @Optional Double scale, @Experimental @Optional Integer screenWidth,
+            @Experimental @Optional Integer screenHeight, @Experimental @Optional Integer positionX,
             @Experimental @Optional Integer positionY,
             @Experimental @Optional Boolean dontSetVisibleSize,
             @Optional ScreenOrientation screenOrientation);
@@ -114,12 +112,15 @@ public interface Emulation {
     void clearGeolocationOverride();
 
     /**
-     * Toggles mouse event-based touch event emulation.
+     * Enables touch on platforms which do not support them.
      * 
      * @param enabled Whether the touch event emulation should be enabled.
-     * @param configuration Touch/gesture events configuration. Default: current platform.
+     * @param maxTouchPoints Maximum touch points supported. Defaults to one.
      */
-    void setTouchEmulationEnabled(Boolean enabled, @Optional Platform configuration);
+    void setTouchEmulationEnabled(Boolean enabled, @Optional Integer maxTouchPoints);
+
+    @Experimental
+    void setEmitTouchEventsForMouse(Boolean enabled, @Optional Platform configuration);
 
     /**
      * Emulates the given media for CSS media queries.
@@ -179,11 +180,14 @@ public interface Emulation {
     void setGeolocationOverride();
 
     /**
-     * Toggles mouse event-based touch event emulation.
+     * Enables touch on platforms which do not support them.
      * 
      * @param enabled Whether the touch event emulation should be enabled.
      */
     void setTouchEmulationEnabled(Boolean enabled);
+
+    @Experimental
+    void setEmitTouchEventsForMouse(Boolean enabled);
 
     /**
      * Turns on virtual time for all frames (replacing real-time with a synthetic time source) and sets the current virtual time policy.  Note this supersedes any previous time budget.

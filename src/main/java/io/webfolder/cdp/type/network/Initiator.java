@@ -66,28 +66,28 @@ public class Initiator {
     }
 
     /**
-     * Initiator URL, set for Parser type only.
+     * Initiator URL, set for Parser type or for Script type (when script is importing module).
      */
     public String getUrl() {
         return url;
     }
 
     /**
-     * Initiator URL, set for Parser type only.
+     * Initiator URL, set for Parser type or for Script type (when script is importing module).
      */
     public void setUrl(String url) {
         this.url = url;
     }
 
     /**
-     * Initiator line number, set for Parser type only (0-based).
+     * Initiator line number, set for Parser type or for Script type (when script is importing module) (0-based).
      */
     public Double getLineNumber() {
         return lineNumber;
     }
 
     /**
-     * Initiator line number, set for Parser type only (0-based).
+     * Initiator line number, set for Parser type or for Script type (when script is importing module) (0-based).
      */
     public void setLineNumber(Double lineNumber) {
         this.lineNumber = lineNumber;

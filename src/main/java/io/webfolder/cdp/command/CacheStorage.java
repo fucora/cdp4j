@@ -26,6 +26,7 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.cachestorage.Cache;
+import io.webfolder.cdp.type.cachestorage.CachedResponse;
 import io.webfolder.cdp.type.cachestorage.RequestEntriesResult;
 import java.util.List;
 
@@ -67,4 +68,15 @@ public interface CacheStorage {
      * @param request URL spec of the request.
      */
     void deleteEntry(String cacheId, String request);
+
+    /**
+     * Fetches cache entry.
+     * 
+     * @param cacheId Id of cache that contains the enty.
+     * @param requestURL URL spec of the request.
+     * 
+     * @return Response read from the cache.
+     */
+    @Returns("response")
+    CachedResponse requestCachedResponse(String cacheId, String requestURL);
 }

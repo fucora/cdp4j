@@ -343,7 +343,7 @@ public interface Selector {
                 return emptyList();
             }
             for (Integer next : nodeIds) {
-                RemoteObject remoteObject = dom.resolveNode(next);
+                RemoteObject remoteObject = dom.resolveNode(next, null, null);
                 if (remoteObject == null) {
                     return null;
                 }
@@ -428,7 +428,7 @@ public interface Selector {
             if (nodeId == null || nodeId.intValue() == 0) {
                 return null;
             }
-            RemoteObject remoteObject = dom.resolveNode(nodeId);
+            RemoteObject remoteObject = dom.resolveNode(nodeId, null, null);
             if (remoteObject == null) {
                 return null;
             }

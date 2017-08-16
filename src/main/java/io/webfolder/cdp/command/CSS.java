@@ -29,8 +29,8 @@ import io.webfolder.cdp.type.css.CSSComputedStyleProperty;
 import io.webfolder.cdp.type.css.CSSMedia;
 import io.webfolder.cdp.type.css.CSSRule;
 import io.webfolder.cdp.type.css.CSSStyle;
+import io.webfolder.cdp.type.css.GetBackgroundColorsResult;
 import io.webfolder.cdp.type.css.GetInlineStylesForNodeResult;
-import io.webfolder.cdp.type.css.GetLayoutTreeAndStylesResult;
 import io.webfolder.cdp.type.css.GetMatchedStylesForNodeResult;
 import io.webfolder.cdp.type.css.PlatformFontUsage;
 import io.webfolder.cdp.type.css.RuleUsage;
@@ -45,7 +45,7 @@ import java.util.List;
  * All CSS objects (stylesheets, rules, and styles) have an associated <code>id</code> used in subsequent operations on the related object
  * Each object type has a specific <code>id</code> structure, and those are not interchangeable between objects of different kinds
  * CSS objects can be loaded using the <code>get*ForNode()</code> calls (which accept a DOM node id)
- * A client can also discover all the existing stylesheets with the <code>getAllStyleSheets()</code> method (or keeping track of the <code>styleSheetAdded</code>/<code>styleSheetRemoved</code> events) and subsequently load the required stylesheet contents using the <code>getStyleSheet[Text]()</code> methods
+ * A client can also keep track of stylesheets via the <code>styleSheetAdded</code>/<code>styleSheetRemoved</code> events and subsequently load the required stylesheet contents using the <code>getStyleSheet[Text]()</code> methods
  */
 @Experimental
 @Domain("CSS")
@@ -204,19 +204,12 @@ public interface CSS {
     @Experimental
     void setEffectivePropertyValueForNode(Integer nodeId, String propertyName, String value);
 
-    @Experimental
-    @Returns("backgroundColors")
-    List<String> getBackgroundColors(Integer nodeId);
-
     /**
-     * For the main document and any content documents, return the LayoutTreeNodes and a whitelisted subset of the computed style. It only returns pushed nodes, on way to pull all nodes is to call DOM.getDocument with a depth of -1.
      * 
-     * @param computedStyleWhitelist Whitelist of computed styles to return.
-     * 
-     * @return GetLayoutTreeAndStylesResult
+     * @return GetBackgroundColorsResult
      */
     @Experimental
-    GetLayoutTreeAndStylesResult getLayoutTreeAndStyles(List<String> computedStyleWhitelist);
+    GetBackgroundColorsResult getBackgroundColors(Integer nodeId);
 
     /**
      * Enables the selector recording.

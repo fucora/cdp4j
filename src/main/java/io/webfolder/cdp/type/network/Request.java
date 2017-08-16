@@ -22,8 +22,8 @@
  */
 package io.webfolder.cdp.type.network;
 
-import io.webfolder.cdp.type.constant.MixedContentType;
 import io.webfolder.cdp.type.constant.ReferrerPolicy;
+import io.webfolder.cdp.type.security.MixedContentType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -104,14 +104,14 @@ public class Request {
     }
 
     /**
-     * The mixed content status of the request, as defined in http://www.w3.org/TR/mixed-content/
+     * The mixed content type of the request.
      */
     public MixedContentType getMixedContentType() {
         return mixedContentType;
     }
 
     /**
-     * The mixed content status of the request, as defined in http://www.w3.org/TR/mixed-content/
+     * The mixed content type of the request.
      */
     public void setMixedContentType(MixedContentType mixedContentType) {
         this.mixedContentType = mixedContentType;

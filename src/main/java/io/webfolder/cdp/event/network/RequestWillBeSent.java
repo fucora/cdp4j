@@ -37,8 +37,6 @@ import io.webfolder.cdp.type.page.ResourceType;
 public class RequestWillBeSent {
     private String requestId;
 
-    private String frameId;
-
     private String loaderId;
 
     private String documentURL;
@@ -55,6 +53,8 @@ public class RequestWillBeSent {
 
     private ResourceType type;
 
+    private String frameId;
+
     /**
      * Request identifier.
      */
@@ -70,28 +70,14 @@ public class RequestWillBeSent {
     }
 
     /**
-     * Frame identifier.
-     */
-    public String getFrameId() {
-        return frameId;
-    }
-
-    /**
-     * Frame identifier.
-     */
-    public void setFrameId(String frameId) {
-        this.frameId = frameId;
-    }
-
-    /**
-     * Loader identifier.
+     * Loader identifier. Empty string if the request is fetched form worker.
      */
     public String getLoaderId() {
         return loaderId;
     }
 
     /**
-     * Loader identifier.
+     * Loader identifier. Empty string if the request is fetched form worker.
      */
     public void setLoaderId(String loaderId) {
         this.loaderId = loaderId;
@@ -140,14 +126,14 @@ public class RequestWillBeSent {
     }
 
     /**
-     * UTC Timestamp.
+     * Timestamp.
      */
     public Double getWallTime() {
         return wallTime;
     }
 
     /**
-     * UTC Timestamp.
+     * Timestamp.
      */
     public void setWallTime(Double wallTime) {
         this.wallTime = wallTime;
@@ -193,5 +179,19 @@ public class RequestWillBeSent {
      */
     public void setType(ResourceType type) {
         this.type = type;
+    }
+
+    /**
+     * Frame identifier.
+     */
+    public String getFrameId() {
+        return frameId;
+    }
+
+    /**
+     * Frame identifier.
+     */
+    public void setFrameId(String frameId) {
+        this.frameId = frameId;
     }
 }

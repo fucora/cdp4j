@@ -40,6 +40,8 @@ public class Frame {
 
     private String mimeType;
 
+    private String unreachableUrl;
+
     /**
      * Frame unique identifier.
      */
@@ -136,5 +138,19 @@ public class Frame {
      */
     public void setMimeType(String mimeType) {
         this.mimeType = mimeType;
+    }
+
+    /**
+     * If the frame failed to load, this contains the URL that could not be loaded.
+     */
+    public String getUnreachableUrl() {
+        return unreachableUrl;
+    }
+
+    /**
+     * If the frame failed to load, this contains the URL that could not be loaded.
+     */
+    public void setUnreachableUrl(String unreachableUrl) {
+        this.unreachableUrl = unreachableUrl;
     }
 }

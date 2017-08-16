@@ -26,6 +26,7 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.browser.Bounds;
+import io.webfolder.cdp.type.browser.GetVersionResult;
 import io.webfolder.cdp.type.browser.GetWindowForTargetResult;
 
 /**
@@ -42,6 +43,13 @@ public interface Browser {
      * @return GetWindowForTargetResult
      */
     GetWindowForTargetResult getWindowForTarget(String targetId);
+
+    /**
+     * Returns version information.
+     * 
+     * @return GetVersionResult
+     */
+    GetVersionResult getVersion();
 
     /**
      * Set position and/or size of the browser window.

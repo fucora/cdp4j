@@ -35,8 +35,6 @@ import io.webfolder.cdp.type.page.ResourceType;
 public class ResponseReceived {
     private String requestId;
 
-    private String frameId;
-
     private String loaderId;
 
     private Double timestamp;
@@ -44,6 +42,8 @@ public class ResponseReceived {
     private ResourceType type;
 
     private Response response;
+
+    private String frameId;
 
     /**
      * Request identifier.
@@ -60,28 +60,14 @@ public class ResponseReceived {
     }
 
     /**
-     * Frame identifier.
-     */
-    public String getFrameId() {
-        return frameId;
-    }
-
-    /**
-     * Frame identifier.
-     */
-    public void setFrameId(String frameId) {
-        this.frameId = frameId;
-    }
-
-    /**
-     * Loader identifier.
+     * Loader identifier. Empty string if the request is fetched form worker.
      */
     public String getLoaderId() {
         return loaderId;
     }
 
     /**
-     * Loader identifier.
+     * Loader identifier. Empty string if the request is fetched form worker.
      */
     public void setLoaderId(String loaderId) {
         this.loaderId = loaderId;
@@ -127,5 +113,19 @@ public class ResponseReceived {
      */
     public void setResponse(Response response) {
         this.response = response;
+    }
+
+    /**
+     * Frame identifier.
+     */
+    public String getFrameId() {
+        return frameId;
+    }
+
+    /**
+     * Frame identifier.
+     */
+    public void setFrameId(String frameId) {
+        this.frameId = frameId;
     }
 }

@@ -40,8 +40,14 @@ public enum ReferrerPolicy {
     @SerializedName("origin-when-cross-origin")
     OriginWhenCrossOrigin("origin-when-cross-origin"),
 
-    @SerializedName("no-referrer-when-downgrade-origin-when-cross-origin")
-    NoReferrerWhenDowngradeOriginWhenCrossOrigin("no-referrer-when-downgrade-origin-when-cross-origin");
+    @SerializedName("same-origin")
+    SameOrigin("same-origin"),
+
+    @SerializedName("strict-origin")
+    StrictOrigin("strict-origin"),
+
+    @SerializedName("strict-origin-when-cross-origin")
+    StrictOriginWhenCrossOrigin("strict-origin-when-cross-origin");
 
     public final String value;
 

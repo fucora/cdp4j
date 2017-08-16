@@ -28,6 +28,7 @@ import java.util.Map;
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
+import io.webfolder.cdp.type.network.AuthChallenge;
 import io.webfolder.cdp.type.network.Request;
 import io.webfolder.cdp.type.page.ResourceType;
 
@@ -41,8 +42,10 @@ public class RequestIntercepted {
     private String interceptionId;
 
     private Request request;
-    
+
     private ResourceType resourceType;
+
+    private Boolean isNavigationRequest;
 
     private Map<String, Object> redirectHeaders = new HashMap<>();
 
@@ -50,15 +53,17 @@ public class RequestIntercepted {
 
     private String redirectUrl;
 
+    private AuthChallenge authChallenge;
+
     /**
-     * Each request the page makes will have a unique id, however if any redirects are encountered while processing that fetch, they will be reported with the same id as the original fetch.
+     * Each request the page makes will have a unique id, however if any redirects are encountered while processing that fetch, they will be reported with the same id as the original fetch. Likewise if HTTP authentication is needed then the same fetch id will be used.
      */
     public String getInterceptionId() {
         return interceptionId;
     }
 
     /**
-     * Each request the page makes will have a unique id, however if any redirects are encountered while processing that fetch, they will be reported with the same id as the original fetch.
+     * Each request the page makes will have a unique id, however if any redirects are encountered while processing that fetch, they will be reported with the same id as the original fetch. Likewise if HTTP authentication is needed then the same fetch id will be used.
      */
     public void setInterceptionId(String interceptionId) {
         this.interceptionId = interceptionId;
@@ -70,21 +75,35 @@ public class RequestIntercepted {
 
     public void setRequest(Request request) {
         this.request = request;
-    }    
-    
+    }
+
     /**
      * How the requested resource will be used.
      */
     public ResourceType getResourceType() {
-      return resourceType;
+        return resourceType;
     }
 
     /**
      * How the requested resource will be used.
      */
     public void setResourceType(ResourceType resourceType) {
-      this.resourceType = resourceType;
-    }    
+        this.resourceType = resourceType;
+    }
+
+    /**
+     * Whether this is a navigation request, which can abort the navigation completely.
+     */
+    public Boolean isIsNavigationRequest() {
+        return isNavigationRequest;
+    }
+
+    /**
+     * Whether this is a navigation request, which can abort the navigation completely.
+     */
+    public void setIsNavigationRequest(Boolean isNavigationRequest) {
+        this.isNavigationRequest = isNavigationRequest;
+    }
 
     /**
      * HTTP response headers, only sent if a redirect was intercepted.
@@ -126,5 +145,19 @@ public class RequestIntercepted {
      */
     public void setRedirectUrl(String redirectUrl) {
         this.redirectUrl = redirectUrl;
+    }
+
+    /**
+     * Details of the Authorization Challenge encountered. If this is set then continueInterceptedRequest must contain an authChallengeResponse.
+     */
+    public AuthChallenge getAuthChallenge() {
+        return authChallenge;
+    }
+
+    /**
+     * Details of the Authorization Challenge encountered. If this is set then continueInterceptedRequest must contain an authChallengeResponse.
+     */
+    public void setAuthChallenge(AuthChallenge authChallenge) {
+        this.authChallenge = authChallenge;
     }
 }

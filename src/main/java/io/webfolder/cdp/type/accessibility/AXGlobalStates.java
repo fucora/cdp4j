@@ -28,6 +28,9 @@ import com.google.gson.annotations.SerializedName;
  * States which apply to every AX node
  */
 public enum AXGlobalStates {
+    @SerializedName("busy")
+    Busy("busy"),
+
     @SerializedName("disabled")
     Disabled("disabled"),
 

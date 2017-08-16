@@ -25,6 +25,7 @@ package io.webfolder.cdp.command;
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
+import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.io.ReadResult;
 
 /**
@@ -50,6 +51,16 @@ public interface IO {
      * @param handle Handle of the stream to close.
      */
     void close(String handle);
+
+    /**
+     * Return UUID of Blob object specified by a remote object id.
+     * 
+     * @param objectId Object id of a Blob object wrapper.
+     * 
+     * @return UUID of the specified Blob.
+     */
+    @Returns("uuid")
+    String resolveBlob(String objectId);
 
     /**
      * Read a chunk of the stream

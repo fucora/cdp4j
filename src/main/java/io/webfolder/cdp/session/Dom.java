@@ -175,7 +175,7 @@ public interface Dom {
             throw new ElementNotFoundException(format(selector, args));
         }
         DOM dom = getThis().getCommand().getDOM();
-        dom.focus(nodeId);
+        dom.focus(nodeId, null, null);
         return getThis();
     }
 
@@ -453,7 +453,7 @@ public interface Dom {
         }
         getThis().logEntry("setFiles", format(selector) + "\", \"" + Arrays.toString(files));
         DOM dom = getThis().getCommand().getDOM();
-        dom.setFileInputFiles(nodeId, asList(files));
+        dom.setFileInputFiles(asList(files), nodeId, null, null);
         return getThis();
     }
 
@@ -841,7 +841,7 @@ public interface Dom {
         if (nodeId == null || Constant.EMPTY_NODE_ID.equals(nodeId)) {
             throw new ElementNotFoundException(format(selector, args));
         }
-        return getThis().getCommand().getDOM().getBoxModel(nodeId);
+        return getThis().getCommand().getDOM().getBoxModel(nodeId, null, null);
     }
 
     Session getThis();

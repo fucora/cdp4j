@@ -9,6 +9,8 @@ public class TargetInfo {
 
     private String url;
 
+    private Boolean attached;
+
     public String getTargetId() {
         return targetId;
     }
@@ -39,5 +41,19 @@ public class TargetInfo {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    /**
+     * Whether the target has an attached client.
+     */
+    public Boolean isAttached() {
+        return attached;
+    }
+
+    /**
+     * Whether the target has an attached client.
+     */
+    public void setAttached(Boolean attached) {
+        this.attached = attached;
     }
 }

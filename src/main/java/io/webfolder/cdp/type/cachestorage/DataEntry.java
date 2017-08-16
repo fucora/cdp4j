@@ -30,6 +30,8 @@ public class DataEntry {
 
     private String response;
 
+    private Double responseTime;
+
     /**
      * Request url spec.
      */
@@ -45,16 +47,30 @@ public class DataEntry {
     }
 
     /**
-     * Response stataus text.
+     * Response status text.
      */
     public String getResponse() {
         return response;
     }
 
     /**
-     * Response stataus text.
+     * Response status text.
      */
     public void setResponse(String response) {
         this.response = response;
+    }
+
+    /**
+     * Number of seconds since epoch.
+     */
+    public Double getResponseTime() {
+        return responseTime;
+    }
+
+    /**
+     * Number of seconds since epoch.
+     */
+    public void setResponseTime(Double responseTime) {
+        this.responseTime = responseTime;
     }
 }

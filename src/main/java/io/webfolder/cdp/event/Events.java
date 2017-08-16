@@ -86,6 +86,7 @@ import io.webfolder.cdp.event.network.WebSocketHandshakeResponseReceived;
 import io.webfolder.cdp.event.network.WebSocketWillSendHandshakeRequest;
 import io.webfolder.cdp.event.overlay.InspectNodeRequested;
 import io.webfolder.cdp.event.overlay.NodeHighlightRequested;
+import io.webfolder.cdp.event.overlay.ScreenshotRequested;
 import io.webfolder.cdp.event.page.DomContentEventFired;
 import io.webfolder.cdp.event.page.FrameAttached;
 import io.webfolder.cdp.event.page.FrameClearedScheduledNavigation;
@@ -100,9 +101,9 @@ import io.webfolder.cdp.event.page.InterstitialShown;
 import io.webfolder.cdp.event.page.JavascriptDialogClosed;
 import io.webfolder.cdp.event.page.JavascriptDialogOpening;
 import io.webfolder.cdp.event.page.LoadEventFired;
-import io.webfolder.cdp.event.page.NavigationRequested;
 import io.webfolder.cdp.event.page.ScreencastFrame;
 import io.webfolder.cdp.event.page.ScreencastVisibilityChanged;
+import io.webfolder.cdp.event.performance.Metrics;
 import io.webfolder.cdp.event.profiler.ConsoleProfileFinished;
 import io.webfolder.cdp.event.profiler.ConsoleProfileStarted;
 import io.webfolder.cdp.event.runtime.ConsoleAPICalled;
@@ -117,6 +118,8 @@ import io.webfolder.cdp.event.security.SecurityStateChanged;
 import io.webfolder.cdp.event.serviceworker.WorkerErrorReported;
 import io.webfolder.cdp.event.serviceworker.WorkerRegistrationUpdated;
 import io.webfolder.cdp.event.serviceworker.WorkerVersionUpdated;
+import io.webfolder.cdp.event.storage.CacheStorageContentUpdated;
+import io.webfolder.cdp.event.storage.CacheStorageListUpdated;
 import io.webfolder.cdp.event.target.AttachedToTarget;
 import io.webfolder.cdp.event.target.DetachedFromTarget;
 import io.webfolder.cdp.event.target.ReceivedMessageFromTarget;
@@ -139,6 +142,11 @@ public enum Events {
      * Fired when debugging target has crashed
      */
     InspectorTargetCrashed("Inspector", "targetCrashed", TargetCrashed.class),
+
+    /**
+     * Current values of the metrics
+     */
+    PerformanceMetrics("Performance", "metrics", Metrics.class),
 
     PageDomContentEventFired("Page", "domContentEventFired", DomContentEventFired.class),
 
@@ -178,7 +186,8 @@ public enum Events {
     /**
      * Fired when frame no longer has a scheduled navigation
      */
-    PageFrameClearedScheduledNavigation("Page", "frameClearedScheduledNavigation", FrameClearedScheduledNavigation.class),
+    PageFrameClearedScheduledNavigation("Page", "frameClearedScheduledNavigation",
+            FrameClearedScheduledNavigation.class),
 
     PageFrameResized("Page", "frameResized", FrameResized.class),
 
@@ -216,12 +225,6 @@ public enum Events {
     PageInterstitialHidden("Page", "interstitialHidden", InterstitialHidden.class),
 
     /**
-     * Fired when a navigation is started if navigation throttles are enabled
-     * The navigation will be deferred until processNavigation is called
-     */
-    PageNavigationRequested("Page", "navigationRequested", NavigationRequested.class),
-
-    /**
      * Fired when the node should be highlighted This happens after call to
      * <code>setInspectMode</code>
      */
@@ -232,6 +235,11 @@ public enum Events {
      * <code>setInspectMode</code> or when user manually inspects an element
      */
     OverlayInspectNodeRequested("Overlay", "inspectNodeRequested", InspectNodeRequested.class),
+
+    /**
+     * Fired when user asks to capture screenshot of some area on the page
+     */
+    OverlayScreenshotRequested("Overlay", "screenshotRequested", ScreenshotRequested.class),
 
     /**
      * Notification sent after the virual time budget for the current
@@ -290,12 +298,14 @@ public enum Events {
     /**
      * Fired when WebSocket is about to initiate handshake
      */
-    NetworkWebSocketWillSendHandshakeRequest("Network", "webSocketWillSendHandshakeRequest", WebSocketWillSendHandshakeRequest.class),
+    NetworkWebSocketWillSendHandshakeRequest("Network", "webSocketWillSendHandshakeRequest",
+            WebSocketWillSendHandshakeRequest.class),
 
     /**
      * Fired when WebSocket handshake response becomes available
      */
-    NetworkWebSocketHandshakeResponseReceived("Network", "webSocketHandshakeResponseReceived", WebSocketHandshakeResponseReceived.class),
+    NetworkWebSocketHandshakeResponseReceived("Network", "webSocketHandshakeResponseReceived",
+            WebSocketHandshakeResponseReceived.class),
 
     /**
      * Fired upon WebSocket creation
@@ -455,10 +465,11 @@ public enum Events {
     TargetTargetCreated("Target", "targetCreated", TargetCreated.class),
 
     /**
-     * Issued when some information about a target has changed. This only happens between targetCreated and targetDestroyed
+     * Issued when some information about a target has changed This only happens
+     * between <code>targetCreated</code> and <code>targetDestroyed</code>
      */
     TargetTargetInfoChanged("Target", "targetInfoChanged", TargetInfoChanged.class),
-      
+
     /**
      * Issued when a target is destroyed
      */
@@ -472,12 +483,14 @@ public enum Events {
 
     /**
      * Issued when detached from target for any reason (including
-     * <code>detachFromTarget</code> command)
+     * <code>detachFromTarget</code> command) Can be issued multiple times per
+     * target if multiple sessions have been attached to it
      */
     TargetDetachedFromTarget("Target", "detachedFromTarget", DetachedFromTarget.class),
 
     /**
-     * Notifies about new protocol message from attached target
+     * Notifies about a new protocol message received from the session (as
+     * reported in <code>attachedToTarget</code> event)
      */
     TargetReceivedMessageFromTarget("Target", "receivedMessageFromTarget", ReceivedMessageFromTarget.class),
 
@@ -521,6 +534,16 @@ public enum Events {
      * Event for when an animation has been cancelled
      */
     AnimationAnimationCanceled("Animation", "animationCanceled", AnimationCanceled.class),
+
+    /**
+     * A cache has been added/deleted
+     */
+    StorageCacheStorageListUpdated("Storage", "cacheStorageListUpdated", CacheStorageListUpdated.class),
+
+    /**
+     * A cache's contents have been modified
+     */
+    StorageCacheStorageContentUpdated("Storage", "cacheStorageContentUpdated", CacheStorageContentUpdated.class),
 
     /**
      * Issued when new message was logged

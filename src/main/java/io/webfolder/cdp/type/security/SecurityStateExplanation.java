@@ -22,6 +22,9 @@
  */
 package io.webfolder.cdp.type.security;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * An explanation of an factor contributing to the security state
  */
@@ -32,7 +35,9 @@ public class SecurityStateExplanation {
 
     private String description;
 
-    private Boolean hasCertificate;
+    private MixedContentType mixedContentType;
+
+    private List<String> certificate = new ArrayList<>();
 
     /**
      * Security state representing the severity of the factor being explained.
@@ -77,16 +82,30 @@ public class SecurityStateExplanation {
     }
 
     /**
-     * True if the page has a certificate.
+     * The type of mixed content described by the explanation.
      */
-    public Boolean isHasCertificate() {
-        return hasCertificate;
+    public MixedContentType getMixedContentType() {
+        return mixedContentType;
     }
 
     /**
-     * True if the page has a certificate.
+     * The type of mixed content described by the explanation.
      */
-    public void setHasCertificate(Boolean hasCertificate) {
-        this.hasCertificate = hasCertificate;
+    public void setMixedContentType(MixedContentType mixedContentType) {
+        this.mixedContentType = mixedContentType;
+    }
+
+    /**
+     * Page certificate.
+     */
+    public List<String> getCertificate() {
+        return certificate;
+    }
+
+    /**
+     * Page certificate.
+     */
+    public void setCertificate(List<String> certificate) {
+        this.certificate = certificate;
     }
 }

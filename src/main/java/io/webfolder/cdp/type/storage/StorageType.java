@@ -56,7 +56,10 @@ public enum StorageType {
     CacheStorage("cache_storage"),
 
     @SerializedName("all")
-    All("all");
+    All("all"),
+
+    @SerializedName("other")
+    Other("other");
 
     public final String value;
 

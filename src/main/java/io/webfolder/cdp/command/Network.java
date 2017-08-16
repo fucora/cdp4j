@@ -26,8 +26,10 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
 import io.webfolder.cdp.annotation.Returns;
+import io.webfolder.cdp.type.network.AuthChallengeResponse;
 import io.webfolder.cdp.type.network.ConnectionType;
 import io.webfolder.cdp.type.network.Cookie;
+import io.webfolder.cdp.type.network.CookieParam;
 import io.webfolder.cdp.type.network.CookieSameSite;
 import io.webfolder.cdp.type.network.ErrorReason;
 import io.webfolder.cdp.type.network.GetResponseBodyResult;
@@ -151,23 +153,31 @@ public interface Network {
     /**
      * Sets a cookie with the given cookie data; may overwrite equivalent cookies if they exist.
      * 
+     * @param name Cookie name.
+     * @param value Cookie value.
      * @param url The request-URI to associate with the setting of the cookie. This value can affect the default domain and path values of the created cookie.
-     * @param name The name of the cookie.
-     * @param value The value of the cookie.
-     * @param domain If omitted, the cookie becomes a host-only cookie.
-     * @param path Defaults to the path portion of the url parameter.
-     * @param secure Defaults ot false.
-     * @param httpOnly Defaults to false.
-     * @param sameSite Defaults to browser default behavior.
-     * @param expirationDate If omitted, the cookie becomes a session cookie.
+     * @param domain Cookie domain.
+     * @param path Cookie path.
+     * @param secure True if cookie is secure.
+     * @param httpOnly True if cookie is http-only.
+     * @param sameSite Cookie SameSite type.
+     * @param expires Cookie expiration date, session cookie if not set
      * 
      * @return True if successfully set cookie.
      */
     @Experimental
     @Returns("success")
-    Boolean setCookie(String url, String name, String value, @Optional String domain,
+    Boolean setCookie(String name, String value, @Optional String url, @Optional String domain,
             @Optional String path, @Optional Boolean secure, @Optional Boolean httpOnly,
-            @Optional CookieSameSite sameSite, @Optional Double expirationDate);
+            @Optional CookieSameSite sameSite, @Optional Double expires);
+
+    /**
+     * Sets given cookies.
+     * 
+     * @param cookies Cookies to be set.
+     */
+    @Experimental
+    void setCookies(List<CookieParam> cookies);
 
     /**
      * Tells whether emulation of network conditions is supported.
@@ -229,17 +239,19 @@ public interface Network {
     /**
      * Response to Network.requestIntercepted which either modifies the request to continue with any modifications, or blocks it, or completes it with the provided response bytes. If a network fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted event will be sent with the same InterceptionId.
      * 
-     * @param errorReason If set this causes the request to fail with the given reason.
-     * @param rawResponse If set the requests completes using with the provided base64 encoded raw response, including HTTP status line and headers etc...
-     * @param url If set the request url will be modified in a way that's not observable by page.
-     * @param method If set this allows the request method to be overridden.
-     * @param postData If set this allows postData to be set.
-     * @param headers If set this allows the request headers to be changed.
+     * @param errorReason If set this causes the request to fail with the given reason. Passing <code>Aborted</code> for requests marked with <code>isNavigationRequest</code> also cancels the navigation. Must not be set in response to an authChallenge.
+     * @param rawResponse If set the requests completes using with the provided base64 encoded raw response, including HTTP status line and headers etc... Must not be set in response to an authChallenge.
+     * @param url If set the request url will be modified in a way that's not observable by page. Must not be set in response to an authChallenge.
+     * @param method If set this allows the request method to be overridden. Must not be set in response to an authChallenge.
+     * @param postData If set this allows postData to be set. Must not be set in response to an authChallenge.
+     * @param headers If set this allows the request headers to be changed. Must not be set in response to an authChallenge.
+     * @param authChallengeResponse Response to a requestIntercepted with an authChallenge. Must not be set otherwise.
      */
     @Experimental
     void continueInterceptedRequest(String interceptionId, @Optional ErrorReason errorReason,
             @Optional String rawResponse, @Optional String url, @Optional String method,
-            @Optional String postData, @Optional Map<String, Object> headers);
+            @Optional String postData, @Optional Map<String, Object> headers,
+            @Optional AuthChallengeResponse authChallengeResponse);
 
     /**
      * Enables network tracking, network events will now be delivered to the client.
@@ -258,15 +270,14 @@ public interface Network {
     /**
      * Sets a cookie with the given cookie data; may overwrite equivalent cookies if they exist.
      * 
-     * @param url The request-URI to associate with the setting of the cookie. This value can affect the default domain and path values of the created cookie.
-     * @param name The name of the cookie.
-     * @param value The value of the cookie.
+     * @param name Cookie name.
+     * @param value Cookie value.
      * 
      * @return True if successfully set cookie.
      */
     @Experimental
     @Returns("success")
-    Boolean setCookie(String url, String name, String value);
+    Boolean setCookie(String name, String value);
 
     /**
      * Activates emulation of network conditions.

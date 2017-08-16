@@ -10,9 +10,25 @@ import io.webfolder.cdp.type.target.TargetInfo;
 @Domain("Target")
 @EventName("attachedToTarget")
 public class AttachedToTarget {
+    private String sessionId;
+
     private TargetInfo targetInfo;
 
     private Boolean waitingForDebugger;
+
+    /**
+     * Identifier assigned to the session used to send/receive messages.
+     */
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    /**
+     * Identifier assigned to the session used to send/receive messages.
+     */
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
     public TargetInfo getTargetInfo() {
         return targetInfo;

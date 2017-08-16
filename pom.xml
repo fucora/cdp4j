@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.webfolder</groupId>
     <artifactId>cdp4j</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0-SNAPSHOT</version>
     <name>cdp4j</name>
     <licenses>
         <license>
@@ -124,6 +124,7 @@
                         <exclude>LICENSE</exclude>
                         <exclude>pom.xml</exclude>
                         <exclude>circle.yml</exclude>
+                        <exclude>_config.yml</exclude>
                         <exclude>src/test/resources/**</exclude>
                         <exclude>src/main/resources/**</exclude>
                     </excludes>

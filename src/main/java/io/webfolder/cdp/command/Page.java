@@ -36,8 +36,8 @@ import io.webfolder.cdp.type.page.GetAppManifestResult;
 import io.webfolder.cdp.type.page.GetLayoutMetricsResult;
 import io.webfolder.cdp.type.page.GetNavigationHistoryResult;
 import io.webfolder.cdp.type.page.GetResourceContentResult;
-import io.webfolder.cdp.type.page.NavigationResponse;
 import io.webfolder.cdp.type.page.TransitionType;
+import io.webfolder.cdp.type.page.Viewport;
 import java.util.List;
 
 /**
@@ -55,12 +55,39 @@ public interface Page {
      */
     void disable();
 
+    /**
+     * Deprecated, please use addScriptToEvaluateOnNewDocument instead.
+     * 
+     * 
+     * @return Identifier of the added script.
+     */
     @Experimental
     @Returns("identifier")
     String addScriptToEvaluateOnLoad(String scriptSource);
 
+    /**
+     * Deprecated, please use removeScriptToEvaluateOnNewDocument instead.
+     * 
+     */
     @Experimental
     void removeScriptToEvaluateOnLoad(String identifier);
+
+    /**
+     * Evaluates given script in every frame upon creation (before loading frame's scripts).
+     * 
+     * 
+     * @return Identifier of the added script.
+     */
+    @Experimental
+    @Returns("identifier")
+    String addScriptToEvaluateOnNewDocument(String source);
+
+    /**
+     * Removes given script from the list.
+     * 
+     */
+    @Experimental
+    void removeScriptToEvaluateOnNewDocument(String identifier);
 
     /**
      * Controls whether browser will open a new inspector window for connected pages.
@@ -77,6 +104,14 @@ public interface Page {
      * @param scriptToEvaluateOnLoad If set, the script will be injected into all frames of the inspected page after reload.
      */
     void reload(@Optional Boolean ignoreCache, @Optional String scriptToEvaluateOnLoad);
+
+    /**
+     * Enable Chrome's experimental ad filter on all sites.
+     * 
+     * @param enabled Whether to block ads.
+     */
+    @Experimental
+    void setAdBlockingEnabled(Boolean enabled);
 
     /**
      * Navigates current page to the given URL.
@@ -183,21 +218,19 @@ public interface Page {
      * @param height Overriding height value in pixels (minimum 0, maximum 10000000). 0 disables the override.
      * @param deviceScaleFactor Overriding device scale factor value. 0 disables the override.
      * @param mobile Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text autosizing and more.
-     * @param fitWindow Whether a view that exceeds the available browser window area should be scaled down to fit.
      * @param scale Scale to apply to resulting view image. Ignored in |fitWindow| mode.
-     * @param offsetX X offset to shift resulting view image by. Ignored in |fitWindow| mode.
-     * @param offsetY Y offset to shift resulting view image by. Ignored in |fitWindow| mode.
      * @param screenWidth Overriding screen width value in pixels (minimum 0, maximum 10000000). Only used for |mobile==true|.
      * @param screenHeight Overriding screen height value in pixels (minimum 0, maximum 10000000). Only used for |mobile==true|.
      * @param positionX Overriding view X position on screen in pixels (minimum 0, maximum 10000000). Only used for |mobile==true|.
      * @param positionY Overriding view Y position on screen in pixels (minimum 0, maximum 10000000). Only used for |mobile==true|.
+     * @param dontSetVisibleSize Do not set visible view size, rely upon explicit setVisibleSize call.
      * @param screenOrientation Screen orientation override.
      */
     @Experimental
     void setDeviceMetricsOverride(Integer width, Integer height, Double deviceScaleFactor,
-            Boolean mobile, Boolean fitWindow, @Optional Double scale, @Optional Double offsetX,
-            @Optional Double offsetY, @Optional Integer screenWidth, @Optional Integer screenHeight,
-            @Optional Integer positionX, @Optional Integer positionY,
+            Boolean mobile, @Optional Double scale, @Optional Integer screenWidth,
+            @Optional Integer screenHeight, @Optional Integer positionX,
+            @Optional Integer positionY, @Optional Boolean dontSetVisibleSize,
             @Optional ScreenOrientation screenOrientation);
 
     /**
@@ -251,6 +284,7 @@ public interface Page {
      * 
      * @param format Image compression format (defaults to png).
      * @param quality Compression quality from range [0..100] (jpeg only).
+     * @param clip Capture the screenshot of a given region only.
      * @param fromSurface Capture the screenshot from the surface, rather than the view. Defaults to true.
      * 
      * @return Base64-encoded image data.
@@ -258,7 +292,7 @@ public interface Page {
     @Experimental
     @Returns("data")
     byte[] captureScreenshot(@Optional ImageFormat format, @Optional Integer quality,
-            @Experimental @Optional Boolean fromSurface);
+            @Experimental @Optional Viewport clip, @Experimental @Optional Boolean fromSurface);
 
     /**
      * Print page as PDF.
@@ -274,6 +308,7 @@ public interface Page {
      * @param marginLeft Left margin in inches. Defaults to 1cm (~0.4 inches).
      * @param marginRight Right margin in inches. Defaults to 1cm (~0.4 inches).
      * @param pageRanges Paper ranges to print, e.g., '1-5, 8, 11-13'. Defaults to the empty string, which means print all pages.
+     * @param ignoreInvalidPageRanges Whether to silently ignore invalid but successfully parsed page ranges, such as '3-2'. Defaults to false.
      * 
      * @return Base64-encoded pdf data.
      */
@@ -282,7 +317,8 @@ public interface Page {
     byte[] printToPDF(@Optional Boolean landscape, @Optional Boolean displayHeaderFooter,
             @Optional Boolean printBackground, @Optional Double scale, @Optional Double paperWidth,
             @Optional Double paperHeight, @Optional Double marginTop, @Optional Double marginBottom,
-            @Optional Double marginLeft, @Optional Double marginRight, @Optional String pageRanges);
+            @Optional Double marginLeft, @Optional Double marginRight, @Optional String pageRanges,
+            @Optional Boolean ignoreInvalidPageRanges);
 
     /**
      * Starts sending each frame using the <tt>screencastFrame</tt> event.
@@ -331,20 +367,6 @@ public interface Page {
     void requestAppBanner();
 
     /**
-     * Toggles navigation throttling which allows programatic control over navigation and redirect response.
-     * 
-     */
-    @Experimental
-    void setControlNavigations(Boolean enabled);
-
-    /**
-     * Should be sent in response to a navigationRequested or a redirectRequested event, telling the browser how to handle the navigation.
-     * 
-     */
-    @Experimental
-    void processNavigation(NavigationResponse response, Integer navigationId);
-
-    /**
      * Returns metrics relating to the layouting of the page, such as viewport bounds/scale.
      * 
      * @return GetLayoutMetricsResult
@@ -358,10 +380,18 @@ public interface Page {
      * @param frameId Id of the frame in which the isolated world should be created.
      * @param worldName An optional name which is reported in the Execution Context.
      * @param grantUniveralAccess Whether or not universal access should be granted to the isolated world. This is a powerful option, use with caution.
+     * 
+     * @return Execution context of the isolated world.
      */
     @Experimental
-    void createIsolatedWorld(String frameId, @Optional String worldName,
+    @Returns("executionContextId")
+    Integer createIsolatedWorld(String frameId, @Optional String worldName,
             @Optional Boolean grantUniveralAccess);
+
+    /**
+     * Brings page to front (activates tab).
+     */
+    void bringToFront();
 
     /**
      * Reloads given page optionally ignoring the cache.
@@ -398,11 +428,10 @@ public interface Page {
      * @param height Overriding height value in pixels (minimum 0, maximum 10000000). 0 disables the override.
      * @param deviceScaleFactor Overriding device scale factor value. 0 disables the override.
      * @param mobile Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text autosizing and more.
-     * @param fitWindow Whether a view that exceeds the available browser window area should be scaled down to fit.
      */
     @Experimental
     void setDeviceMetricsOverride(Integer width, Integer height, Double deviceScaleFactor,
-            Boolean mobile, Boolean fitWindow);
+            Boolean mobile);
 
     /**
      * Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position unavailable.
@@ -452,7 +481,10 @@ public interface Page {
      * Creates an isolated world for the given frame.
      * 
      * @param frameId Id of the frame in which the isolated world should be created.
+     * 
+     * @return Execution context of the isolated world.
      */
     @Experimental
-    void createIsolatedWorld(String frameId);
+    @Returns("executionContextId")
+    Integer createIsolatedWorld(String frameId);
 }

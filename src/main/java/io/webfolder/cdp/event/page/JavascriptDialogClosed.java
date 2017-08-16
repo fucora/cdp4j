@@ -33,6 +33,8 @@ import io.webfolder.cdp.annotation.EventName;
 public class JavascriptDialogClosed {
     private Boolean result;
 
+    private String userInput;
+
     /**
      * Whether dialog was confirmed.
      */
@@ -45,5 +47,19 @@ public class JavascriptDialogClosed {
      */
     public void setResult(Boolean result) {
         this.result = result;
+    }
+
+    /**
+     * User input in case of prompt.
+     */
+    public String getUserInput() {
+        return userInput;
+    }
+
+    /**
+     * User input in case of prompt.
+     */
+    public void setUserInput(String userInput) {
+        this.userInput = userInput;
     }
 }

@@ -59,6 +59,8 @@ public class Layer {
 
     private List<ScrollRect> scrollRects = new ArrayList<>();
 
+    private StickyPositionConstraint stickyPositionConstraint;
+
     /**
      * The unique id for this layer.
      */
@@ -267,5 +269,19 @@ public class Layer {
      */
     public void setScrollRects(List<ScrollRect> scrollRects) {
         this.scrollRects = scrollRects;
+    }
+
+    /**
+     * Sticky position constraint information
+     */
+    public StickyPositionConstraint getStickyPositionConstraint() {
+        return stickyPositionConstraint;
+    }
+
+    /**
+     * Sticky position constraint information
+     */
+    public void setStickyPositionConstraint(StickyPositionConstraint stickyPositionConstraint) {
+        this.stickyPositionConstraint = stickyPositionConstraint;
     }
 }

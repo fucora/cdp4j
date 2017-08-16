@@ -35,6 +35,8 @@ public class FunctionCoverage {
 
     private List<CoverageRange> ranges = new ArrayList<>();
 
+    private Boolean isBlockCoverage;
+
     /**
      * JavaScript function name.
      */
@@ -61,5 +63,19 @@ public class FunctionCoverage {
      */
     public void setRanges(List<CoverageRange> ranges) {
         this.ranges = ranges;
+    }
+
+    /**
+     * Whether coverage data for this function has block granularity.
+     */
+    public Boolean isIsBlockCoverage() {
+        return isBlockCoverage;
+    }
+
+    /**
+     * Whether coverage data for this function has block granularity.
+     */
+    public void setIsBlockCoverage(Boolean isBlockCoverage) {
+        this.isBlockCoverage = isBlockCoverage;
     }
 }

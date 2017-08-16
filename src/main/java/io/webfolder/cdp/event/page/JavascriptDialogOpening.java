@@ -32,9 +32,27 @@ import io.webfolder.cdp.type.page.DialogType;
 @Domain("Page")
 @EventName("javascriptDialogOpening")
 public class JavascriptDialogOpening {
+    private String url;
+
     private String message;
 
     private DialogType type;
+
+    private String defaultPrompt;
+
+    /**
+     * Frame url.
+     */
+    public String getUrl() {
+        return url;
+    }
+
+    /**
+     * Frame url.
+     */
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     /**
      * Message that will be displayed by the dialog.
@@ -62,5 +80,19 @@ public class JavascriptDialogOpening {
      */
     public void setType(DialogType type) {
         this.type = type;
+    }
+
+    /**
+     * Default dialog prompt.
+     */
+    public String getDefaultPrompt() {
+        return defaultPrompt;
+    }
+
+    /**
+     * Default dialog prompt.
+     */
+    public void setDefaultPrompt(String defaultPrompt) {
+        this.defaultPrompt = defaultPrompt;
     }
 }
