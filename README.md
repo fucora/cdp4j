@@ -68,7 +68,7 @@ Download
 --------
 [cdp4j-2.0.0.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.0.0/cdp4j-2.0.0.jar) - 757 KB
 
-[cdp4j-2.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.0.0/cdp4j-1.2.0-sources.jar) - 448 KB
+[cdp4j-2.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.0.0/cdp4j-2.0.0-sources.jar) - 448 KB
 
 Supported Platforms
 -------------------
