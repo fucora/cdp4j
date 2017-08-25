@@ -1,7 +1,7 @@
 cdp4j - Chrome DevTools Protocol for Java
 =================================================
 
-[![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
+[![License](http://img.shields.io/badge/license-AGPL-blue.svg)](https://github.com/webfolderio/cdp4j/blob/master/LICENSE)
 [![circleci](https://img.shields.io/circleci/project/github/webfolderio/cdp4j.svg?label=linux)](https://circleci.com/gh/webfolderio/cdp4j) [![AppVeyor](https://img.shields.io/appveyor/ci/WebFolder/cdp4j.svg?label=windows)](https://ci.appveyor.com/project/WebFolder/cdp4j) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/66358e2e3fc1495aaad32e3bf7dc99bd)](https://www.codacy.com/app/WebFolder/cdp4j?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=webfolderio/cdp4j&amp;utm_campaign=Badge_Grade)
 [![CLA assistant](https://cla-assistant.io/readme/badge/webfolderio/cdp4j)](https://cla-assistant.io/webfolderio/cdp4j)
 
@@ -68,7 +68,7 @@ Download
 --------
 [cdp4j-2.0.0.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.0.0/cdp4j-2.0.0.jar) - 757 KB
 
-[cdp4j-2.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.0.0/cdp4j-1.2.0-sources.jar) - 455 KB
+[cdp4j-2.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.0.0/cdp4j-1.2.0-sources.jar) - 448 KB
 
 Supported Platforms
 -------------------
