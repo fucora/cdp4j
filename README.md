@@ -2,7 +2,6 @@ cdp4j - Chrome DevTools Protocol for Java
 =================================================
 
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
-[![Join Gitter Chat Channel -](https://badges.gitter.im/cdp4j.svg)](https://gitter.im/cdp4j/Lobby)
 [![circleci](https://img.shields.io/circleci/project/github/webfolderio/cdp4j.svg?label=linux)](https://circleci.com/gh/webfolderio/cdp4j) [![AppVeyor](https://img.shields.io/appveyor/ci/WebFolder/cdp4j.svg?label=windows)](https://ci.appveyor.com/project/WebFolder/cdp4j) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/66358e2e3fc1495aaad32e3bf7dc99bd)](https://www.codacy.com/app/WebFolder/cdp4j?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=webfolderio/cdp4j&amp;utm_campaign=Badge_Grade)
 [![CLA assistant](https://cla-assistant.io/readme/badge/webfolderio/cdp4j)](https://cla-assistant.io/webfolderio/cdp4j)
 
@@ -31,10 +30,6 @@ Features
 * set & get values of form elements
 * Supports event handling
 
-Discuss
--------
-Join us in our [Gitter chat room](https://gitter.im/cdp4j/Lobby).
-
 Supported Java Versions
 -----------------------
 
@@ -45,8 +40,10 @@ Both the JRE and the JDK are suitable for use with this library.
 Licensing
 ---------
 
-cdp4j is released under the terms of the MIT License (MIT).
-You are free to use cdp4j or any of its constituent parts in any other project (even commercial projects) so long as its copyright headers are left intact.
+cdp4j is licensed as [AGPL](https://github.com/webfolderio/cdp4j/blob/master/LICENSE) software.
+
+Buying a license is __mandatory__ as soon as you develop commercial activities distributing the
+cormorant software inside your product or deploying it on a network without disclosing the source code of your own applications under the AGPL license.
 
 Stability
 ---------
@@ -63,15 +60,15 @@ Add the following to your POM's `<dependencies>` tag:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>cdp4j</artifactId>
-    <version>1.2.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
 Download
 --------
-[cdp4j-1.2.0.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/1.2.0/cdp4j-1.2.0.jar) - 722 KB
+[cdp4j-2.0.0.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.0.0/cdp4j-2.0.0.jar) - 757 KB
 
-[cdp4j-1.2.0-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/1.2.0/cdp4j-1.2.0-sources.jar) - 496 KB
+[cdp4j-2.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.0.0/cdp4j-1.2.0-sources.jar) - 455 KB
 
 Supported Platforms
 -------------------
@@ -323,6 +320,4 @@ Getting Help
 
 ![WebFolder](https://raw.githubusercontent.com/webfolderio/cdp4j/master/images/logo.png)
 
-cdp4j is an MIT licensed open source project and completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing. You can support cdp4j development by
-**buying** support package. Please [contact us](https://webfolder.io/support) for support packages & pricing.
-
+You can support cdp4j development by **buying** support package. Please [contact us](https://webfolder.io/support) for support packages & pricing.
