@@ -187,11 +187,14 @@ public class Session implements AutoCloseable,
      * @return this
      */
     public Session waitDocumentReady(final int timeout) {
+        long start = System.currentTimeMillis();
         if (isDomReady()) {
             return getThis();
         }
         logEntry("waitDocumentReady", format("[timeout=%d]", timeout));
         command.getPage().enable();
+        int elapsed = (int)(System.currentTimeMillis() - start);
+        final int adjustedTimeout = Math.max(1, timeout - elapsed);
         CountDownLatch latch = new CountDownLatch(1);
         addEventListener((e, d) -> {
             if (PageLoadEventFired.equals(e)) {
@@ -199,7 +202,9 @@ public class Session implements AutoCloseable,
             }
         });
         try {
-            latch.await(timeout, MILLISECONDS);
+            if(!latch.await(adjustedTimeout, MILLISECONDS)) {
+                throw new CdpException("Page not loaded within " + timeout + " ms");
+            }
         } catch (InterruptedException e) {
             throw new CdpException(e);
         }
