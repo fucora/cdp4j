@@ -42,6 +42,8 @@ Licensing
 
 cdp4j is licensed as [AGPL](https://github.com/webfolderio/cdp4j/blob/master/LICENSE) software.
 
+__Open Source != Free Software__. The source may be viewable on GitHub but that doesn't mean anyone can use it for any purpose.
+
 Buying a license is __mandatory__ as soon as you develop commercial activities distributing the
 cdp4j software inside your product or deploying it on a network without disclosing the source code of your own applications under the AGPL license.
 
