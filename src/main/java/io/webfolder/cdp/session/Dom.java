@@ -859,10 +859,6 @@ public interface Dom {
      * @return Outer HTML markup.
      */
     default String getOuterHtml(String selector, Object... args) {
-        String objectId = getThis().getObjectId(selector, args);
-        if (objectId == null) {
-            throw new ElementNotFoundException(format(selector, args));
-        }
         Integer nodeId = getThis().getNodeId(null, selector, args);
         return getThis().getCommand().getDOM().getOuterHTML(nodeId);
     }
