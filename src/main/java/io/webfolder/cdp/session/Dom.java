@@ -839,5 +839,33 @@ public interface Dom {
         return getThis().getCommand().getDOM().getBoxModel(nodeId, null, null);
     }
 
+    /**
+     * Returns node's HTML markup.
+     * 
+     * @param selector css or xpath selector
+     * 
+     * @return Outer HTML markup.
+     */
+    default String getOuterHtml(String selector) {
+        return getOuterHtml(selector, Constant.EMPTY_ARGS);
+    }
+
+    /**
+     * Returns node's HTML markup.
+     * 
+     * @param selector css or xpath selector
+     * @param args fromat string
+     * 
+     * @return Outer HTML markup.
+     */
+    default String getOuterHtml(String selector, Object... args) {
+        String objectId = getThis().getObjectId(selector, args);
+        if (objectId == null) {
+            throw new ElementNotFoundException(format(selector, args));
+        }
+        Integer nodeId = getThis().getNodeId(null, selector, args);
+        return getThis().getCommand().getDOM().getOuterHTML(nodeId);
+    }
+
     Session getThis();
 }
