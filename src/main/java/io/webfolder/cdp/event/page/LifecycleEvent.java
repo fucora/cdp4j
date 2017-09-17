@@ -15,17 +15,34 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.webfolder.cdp.event.emulation;
+package io.webfolder.cdp.event.page;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
-import io.webfolder.cdp.annotation.Experimental;
 
 /**
- * Notification sent after the virtual time budget for the current VirtualTimePolicy has run out
+ * Fired for top level page lifecycle events such as navigation, load, paint, etc
  */
-@Experimental
-@Domain("Emulation")
-@EventName("virtualTimeBudgetExpired")
-public class VirtualTimeBudgetExpired {
+@Domain("Page")
+@EventName("lifecycleEvent")
+public class LifecycleEvent {
+    private String name;
+
+    private Double timestamp;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Double timestamp) {
+        this.timestamp = timestamp;
+    }
 }

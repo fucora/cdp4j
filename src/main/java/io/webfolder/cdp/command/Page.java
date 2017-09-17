@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
 import io.webfolder.cdp.annotation.Returns;
+import io.webfolder.cdp.type.constant.DownloadBehavior;
 import io.webfolder.cdp.type.constant.ImageFormat;
 import io.webfolder.cdp.type.constant.Platform;
 import io.webfolder.cdp.type.debugger.SearchMatch;
@@ -213,11 +214,11 @@ public interface Page {
      * @param height Overriding height value in pixels (minimum 0, maximum 10000000). 0 disables the override.
      * @param deviceScaleFactor Overriding device scale factor value. 0 disables the override.
      * @param mobile Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text autosizing and more.
-     * @param scale Scale to apply to resulting view image. Ignored in |fitWindow| mode.
-     * @param screenWidth Overriding screen width value in pixels (minimum 0, maximum 10000000). Only used for |mobile==true|.
-     * @param screenHeight Overriding screen height value in pixels (minimum 0, maximum 10000000). Only used for |mobile==true|.
-     * @param positionX Overriding view X position on screen in pixels (minimum 0, maximum 10000000). Only used for |mobile==true|.
-     * @param positionY Overriding view Y position on screen in pixels (minimum 0, maximum 10000000). Only used for |mobile==true|.
+     * @param scale Scale to apply to resulting view image.
+     * @param screenWidth Overriding screen width value in pixels (minimum 0, maximum 10000000).
+     * @param screenHeight Overriding screen height value in pixels (minimum 0, maximum 10000000).
+     * @param positionX Overriding view X position on screen in pixels (minimum 0, maximum 10000000).
+     * @param positionY Overriding view Y position on screen in pixels (minimum 0, maximum 10000000).
      * @param dontSetVisibleSize Do not set visible view size, rely upon explicit setVisibleSize call.
      * @param screenOrientation Screen orientation override.
      */
@@ -389,6 +390,15 @@ public interface Page {
     void bringToFront();
 
     /**
+     * Set the behavior when downloading a file.
+     * 
+     * @param behavior Whether to allow all or deny all download requests, or use default Chrome behavior if available (otherwise deny).
+     * @param downloadPath The default path to save downloaded files to. This is requred if behavior is set to 'allow'
+     */
+    @Experimental
+    void setDownloadBehavior(DownloadBehavior behavior, @Optional String downloadPath);
+
+    /**
      * Reloads given page optionally ignoring the cache.
      */
     void reload();
@@ -482,4 +492,12 @@ public interface Page {
     @Experimental
     @Returns("executionContextId")
     Integer createIsolatedWorld(String frameId);
+
+    /**
+     * Set the behavior when downloading a file.
+     * 
+     * @param behavior Whether to allow all or deny all download requests, or use default Chrome behavior if available (otherwise deny).
+     */
+    @Experimental
+    void setDownloadBehavior(DownloadBehavior behavior);
 }

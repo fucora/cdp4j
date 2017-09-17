@@ -15,17 +15,24 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.webfolder.cdp.event.emulation;
+package io.webfolder.cdp.type.audits;
 
-import io.webfolder.cdp.annotation.Domain;
-import io.webfolder.cdp.annotation.EventName;
-import io.webfolder.cdp.annotation.Experimental;
+public class GetEncodedResponseResult {
+    private String body;
 
-/**
- * Notification sent after the virtual time budget for the current VirtualTimePolicy has run out
- */
-@Experimental
-@Domain("Emulation")
-@EventName("virtualTimeBudgetExpired")
-public class VirtualTimeBudgetExpired {
+    private Integer originalSize;
+
+    private Integer encodedSize;
+
+    public String getBody() {
+        return body;
+    }
+
+    public Integer getOriginalSize() {
+        return originalSize;
+    }
+
+    public Integer getEncodedSize() {
+        return encodedSize;
+    }
 }

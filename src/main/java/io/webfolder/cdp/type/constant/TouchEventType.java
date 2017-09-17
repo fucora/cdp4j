@@ -27,7 +27,10 @@ public enum TouchEventType {
     TouchEnd("touchEnd"),
 
     @SerializedName("touchMove")
-    TouchMove("touchMove");
+    TouchMove("touchMove"),
+
+    @SerializedName("touchCancel")
+    TouchCancel("touchCancel");
 
     public final String value;
 

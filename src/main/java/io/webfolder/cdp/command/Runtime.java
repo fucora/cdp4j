@@ -20,12 +20,14 @@ package io.webfolder.cdp.command;
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
+import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.runtime.AwaitPromiseResult;
 import io.webfolder.cdp.type.runtime.CallArgument;
 import io.webfolder.cdp.type.runtime.CallFunctionOnResult;
 import io.webfolder.cdp.type.runtime.CompileScriptResult;
 import io.webfolder.cdp.type.runtime.EvaluateResult;
 import io.webfolder.cdp.type.runtime.GetPropertiesResult;
+import io.webfolder.cdp.type.runtime.RemoteObject;
 import io.webfolder.cdp.type.runtime.RunScriptResult;
 import java.util.List;
 
@@ -72,21 +74,34 @@ public interface Runtime {
     /**
      * Calls function with given declaration on the given object. Object group of the result is inherited from the target object.
      * 
-     * @param objectId Identifier of the object to call function on.
      * @param functionDeclaration Declaration of the function to call.
+     * @param objectId Identifier of the object to call function on. Either objectId or executionContextId should be specified.
      * @param arguments Call arguments. All call arguments must belong to the same JavaScript world as the target object.
      * @param silent In silent mode exceptions thrown during evaluation are not reported and do not pause execution. Overrides <code>setPauseOnException</code> state.
      * @param returnByValue Whether the result is expected to be a JSON object which should be sent by value.
      * @param generatePreview Whether preview should be generated for the result.
      * @param userGesture Whether execution should be treated as initiated by user in the UI.
      * @param awaitPromise Whether execution should <code>await</code> for resulting value and return once awaited promise is resolved.
+     * @param executionContextId Specifies execution context which global object will be used to call function on. Either executionContextId or objectId should be specified.
+     * @param objectGroup Symbolic group name that can be used to release multiple objects. If objectGroup is not specified and objectId is, objectGroup will be inherited from object.
      * 
      * @return CallFunctionOnResult
      */
-    CallFunctionOnResult callFunctionOn(String objectId, String functionDeclaration,
+    CallFunctionOnResult callFunctionOn(@Optional String objectId, String functionDeclaration,
             @Optional List<CallArgument> arguments, @Optional Boolean silent,
             @Optional Boolean returnByValue, @Experimental @Optional Boolean generatePreview,
-            @Experimental @Optional Boolean userGesture, @Optional Boolean awaitPromise);
+            @Experimental @Optional Boolean userGesture, @Optional Boolean awaitPromise,
+            @Optional Integer executionContextId, @Optional String objectGroup);
+
+    /**
+     * Calls function with given declaration on the given object. Object group of the result is inherited from the target object.
+     * 
+     * @param objectId Identifier of the object to call function on.
+     * @param functionDeclaration Declaration of the function to call.
+     * 
+     * @return CallFunctionOnResult
+     */
+    CallFunctionOnResult callFunctionOn(String objectId, String functionDeclaration);
 
     /**
      * Returns properties of a given object. Object group of the result is inherited from the target object.
@@ -171,6 +186,10 @@ public interface Runtime {
             @Optional Boolean includeCommandLineAPI, @Optional Boolean returnByValue,
             @Optional Boolean generatePreview, @Optional Boolean awaitPromise);
 
+    @Experimental
+    @Returns("objects")
+    RemoteObject queryObjects(String prototypeObjectId);
+
     /**
      * Evaluates expression on global object.
      * 
@@ -192,12 +211,11 @@ public interface Runtime {
     /**
      * Calls function with given declaration on the given object. Object group of the result is inherited from the target object.
      * 
-     * @param objectId Identifier of the object to call function on.
      * @param functionDeclaration Declaration of the function to call.
      * 
      * @return CallFunctionOnResult
      */
-    CallFunctionOnResult callFunctionOn(String objectId, String functionDeclaration);
+    CallFunctionOnResult callFunctionOn(String functionDeclaration);
 
     /**
      * Returns properties of a given object. Object group of the result is inherited from the target object.

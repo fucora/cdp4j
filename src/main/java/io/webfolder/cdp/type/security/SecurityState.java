@@ -32,9 +32,6 @@ public enum SecurityState {
     @SerializedName("insecure")
     Insecure("insecure"),
 
-    @SerializedName("warning")
-    Warning("warning"),
-
     @SerializedName("secure")
     Secure("secure"),
 

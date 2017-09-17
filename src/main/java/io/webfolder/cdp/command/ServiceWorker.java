@@ -37,6 +37,8 @@ public interface ServiceWorker {
 
     void stopWorker(String versionId);
 
+    void stopAllWorkers();
+
     void inspectWorker(String versionId);
 
     void setForceUpdateOnPageLoad(Boolean forceUpdateOnPageLoad);

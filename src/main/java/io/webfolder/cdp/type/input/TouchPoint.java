@@ -18,19 +18,16 @@
 package io.webfolder.cdp.type.input;
 
 import io.webfolder.cdp.annotation.Experimental;
-import io.webfolder.cdp.type.constant.TouchPointState;
 
 @Experimental
 public class TouchPoint {
-    private TouchPointState state;
+    private Double x;
 
-    private Integer x;
+    private Double y;
 
-    private Integer y;
+    private Double radiusX;
 
-    private Integer radiusX;
-
-    private Integer radiusY;
+    private Double radiusY;
 
     private Double rotationAngle;
 
@@ -39,72 +36,58 @@ public class TouchPoint {
     private Double id;
 
     /**
-     * State of the touch point.
+     * X coordinate of the event relative to the main frame's viewport in CSS pixels.
      */
-    public TouchPointState getState() {
-        return state;
-    }
-
-    /**
-     * State of the touch point.
-     */
-    public void setState(TouchPointState state) {
-        this.state = state;
-    }
-
-    /**
-     * X coordinate of the event relative to the main frame's viewport.
-     */
-    public Integer getX() {
+    public Double getX() {
         return x;
     }
 
     /**
-     * X coordinate of the event relative to the main frame's viewport.
+     * X coordinate of the event relative to the main frame's viewport in CSS pixels.
      */
-    public void setX(Integer x) {
+    public void setX(Double x) {
         this.x = x;
     }
 
     /**
-     * Y coordinate of the event relative to the main frame's viewport. 0 refers to the top of the viewport and Y increases as it proceeds towards the bottom of the viewport.
+     * Y coordinate of the event relative to the main frame's viewport in CSS pixels. 0 refers to the top of the viewport and Y increases as it proceeds towards the bottom of the viewport.
      */
-    public Integer getY() {
+    public Double getY() {
         return y;
     }
 
     /**
-     * Y coordinate of the event relative to the main frame's viewport. 0 refers to the top of the viewport and Y increases as it proceeds towards the bottom of the viewport.
+     * Y coordinate of the event relative to the main frame's viewport in CSS pixels. 0 refers to the top of the viewport and Y increases as it proceeds towards the bottom of the viewport.
      */
-    public void setY(Integer y) {
+    public void setY(Double y) {
         this.y = y;
     }
 
     /**
-     * X radius of the touch area (default: 1).
+     * X radius of the touch area (default: 1.0).
      */
-    public Integer getRadiusX() {
+    public Double getRadiusX() {
         return radiusX;
     }
 
     /**
-     * X radius of the touch area (default: 1).
+     * X radius of the touch area (default: 1.0).
      */
-    public void setRadiusX(Integer radiusX) {
+    public void setRadiusX(Double radiusX) {
         this.radiusX = radiusX;
     }
 
     /**
-     * Y radius of the touch area (default: 1).
+     * Y radius of the touch area (default: 1.0).
      */
-    public Integer getRadiusY() {
+    public Double getRadiusY() {
         return radiusY;
     }
 
     /**
-     * Y radius of the touch area (default: 1).
+     * Y radius of the touch area (default: 1.0).
      */
-    public void setRadiusY(Integer radiusY) {
+    public void setRadiusY(Double radiusY) {
         this.radiusY = radiusY;
     }
 

@@ -188,7 +188,7 @@ public interface Selector {
                                                         "else return index(obj[property[0]], property.slice(1), value); }" +
                                                         "return index(this, property, value); }",
                                                         arguments,
-                                                        FALSE, TRUE, FALSE, FALSE, FALSE);
+                                                        FALSE, TRUE, FALSE, FALSE, FALSE, null, null);
         String error = null;
         if (callFunctionOn != null) {
             RemoteObject result = callFunctionOn.getResult();
@@ -257,7 +257,7 @@ public interface Selector {
                                                         arguments,
                                                         FALSE, TRUE,
                                                         FALSE, FALSE,
-                                                        FALSE);
+                                                        FALSE, null, null);
         Object value = null;
         String error = null;
         if (callFunctionOn != null) {

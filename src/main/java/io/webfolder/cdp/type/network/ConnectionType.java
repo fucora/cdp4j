@@ -20,7 +20,7 @@ package io.webfolder.cdp.type.network;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Loading priority of a resource request
+ * The underlying connection technology that the browser is supposedly using
  */
 public enum ConnectionType {
     @SerializedName("none")

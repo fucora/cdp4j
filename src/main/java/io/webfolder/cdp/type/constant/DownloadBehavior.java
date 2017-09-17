@@ -15,17 +15,28 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.webfolder.cdp.event.emulation;
+package io.webfolder.cdp.type.constant;
 
-import io.webfolder.cdp.annotation.Domain;
-import io.webfolder.cdp.annotation.EventName;
-import io.webfolder.cdp.annotation.Experimental;
+import com.google.gson.annotations.SerializedName;
 
-/**
- * Notification sent after the virtual time budget for the current VirtualTimePolicy has run out
- */
-@Experimental
-@Domain("Emulation")
-@EventName("virtualTimeBudgetExpired")
-public class VirtualTimeBudgetExpired {
+public enum DownloadBehavior {
+    @SerializedName("deny")
+    Deny("deny"),
+
+    @SerializedName("allow")
+    Allow("allow"),
+
+    @SerializedName("default")
+    Default("default");
+
+    public final String value;
+
+    DownloadBehavior(String value) {
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return value;
+    }
 }

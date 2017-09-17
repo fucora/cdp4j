@@ -15,17 +15,28 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.webfolder.cdp.event.emulation;
+package io.webfolder.cdp.type.profiler;
 
-import io.webfolder.cdp.annotation.Domain;
-import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
 
 /**
- * Notification sent after the virtual time budget for the current VirtualTimePolicy has run out
+ * Describes a type collected during runtime
  */
 @Experimental
-@Domain("Emulation")
-@EventName("virtualTimeBudgetExpired")
-public class VirtualTimeBudgetExpired {
+public class TypeObject {
+    private String name;
+
+    /**
+     * Name of a type collected with type profiling.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Name of a type collected with type profiling.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 }

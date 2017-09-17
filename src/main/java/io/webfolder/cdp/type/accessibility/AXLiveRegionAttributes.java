@@ -32,9 +32,6 @@ public enum AXLiveRegionAttributes {
     @SerializedName("relevant")
     Relevant("relevant"),
 
-    @SerializedName("busy")
-    Busy("busy"),
-
     @SerializedName("root")
     Root("root");
 

@@ -125,7 +125,7 @@ public interface JavaScript {
                                                         asList(objArgument),
                                                         FALSE, FALSE,
                                                         FALSE, FALSE,
-                                                        FALSE);
+                                                        FALSE, null, null);
 
         getThis().releaseObject(windowResult.getResult().getObjectId());
 
@@ -170,7 +170,7 @@ public interface JavaScript {
                                                 argsFunc,
                                                 FALSE, TRUE,
                                                 FALSE, FALSE,
-                                                FALSE);
+                                                FALSE, null, null);
 
         getThis().releaseObject(funcObj.getResult().getObjectId());
         getThis().releaseObject(func.getResult().getObjectId());
@@ -248,7 +248,7 @@ public interface JavaScript {
                                                         asList(objArgument),
                                                         FALSE, FALSE,
                                                         FALSE, FALSE,
-                                                        FALSE);
+                                                        FALSE, null, null);
 
         getThis().releaseObject(windowResult.getResult().getObjectId());
 
@@ -329,7 +329,7 @@ public interface JavaScript {
                                                 asList(argVariableName, argVariableValue),
                                                 FALSE, FALSE,
                                                 FALSE, FALSE,
-                                                FALSE);
+                                                FALSE, null, null);
 
         getThis().releaseObject(windowResult.getResult().getObjectId());
 

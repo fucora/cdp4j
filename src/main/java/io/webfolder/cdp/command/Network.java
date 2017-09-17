@@ -137,13 +137,16 @@ public interface Network {
     List<Cookie> getAllCookies();
 
     /**
-     * Deletes browser cookie with given name, domain and path.
+     * Deletes browser cookies with matching name and url or domain/path pair.
      * 
-     * @param cookieName Name of the cookie to remove.
-     * @param url URL to match cooke domain and path.
+     * @param name Name of the cookies to remove.
+     * @param url If specified, deletes all the cookies with the given name where domain and path match provided URL.
+     * @param domain If specified, deletes only cookies with the exact domain.
+     * @param path If specified, deletes only cookies with the exact path.
      */
     @Experimental
-    void deleteCookie(String cookieName, String url);
+    void deleteCookies(String name, @Optional String url, @Optional String domain,
+            @Optional String path);
 
     /**
      * Sets a cookie with the given cookie data; may overwrite equivalent cookies if they exist.
@@ -187,9 +190,9 @@ public interface Network {
      * Activates emulation of network conditions.
      * 
      * @param offline True to emulate internet disconnection.
-     * @param latency Additional latency (ms).
-     * @param downloadThroughput Maximal aggregated download throughput.
-     * @param uploadThroughput Maximal aggregated upload throughput.
+     * @param latency Minimum latency from request sent to response headers received (ms).
+     * @param downloadThroughput Maximal aggregated download throughput (bytes/sec). -1 disables download throttling.
+     * @param uploadThroughput Maximal aggregated upload throughput (bytes/sec).  -1 disables upload throttling.
      * @param connectionType Connection type if known.
      */
     void emulateNetworkConditions(Boolean offline, Double latency, Double downloadThroughput,
@@ -228,8 +231,14 @@ public interface Network {
     @Returns("tableNames")
     List<String> getCertificate(String origin);
 
+    /**
+     * Sets the requests to intercept that match a the provided patterns.
+     * 
+     * @param enabled Whether requests should be intercepted. If patterns is not set, matches all and resets any previously set patterns. Other parameters are ignored if false.
+     * @param patterns URLs matching any of these patterns will be forwarded and wait for the corresponding continueInterceptedRequest call. Wildcards ('*' -> zero or more, '?' -> exactly one) are allowed. Escape character is backslash. If omitted equivalent to ['*'] (intercept all).
+     */
     @Experimental
-    void setRequestInterceptionEnabled(Boolean enabled);
+    void setRequestInterceptionEnabled(Boolean enabled, @Optional List<String> patterns);
 
     /**
      * Response to Network.requestIntercepted which either modifies the request to continue with any modifications, or blocks it, or completes it with the provided response bytes. If a network fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted event will be sent with the same InterceptionId.
@@ -263,6 +272,14 @@ public interface Network {
     List<Cookie> getCookies();
 
     /**
+     * Deletes browser cookies with matching name and url or domain/path pair.
+     * 
+     * @param name Name of the cookies to remove.
+     */
+    @Experimental
+    void deleteCookies(String name);
+
+    /**
      * Sets a cookie with the given cookie data; may overwrite equivalent cookies if they exist.
      * 
      * @param name Cookie name.
@@ -278,12 +295,20 @@ public interface Network {
      * Activates emulation of network conditions.
      * 
      * @param offline True to emulate internet disconnection.
-     * @param latency Additional latency (ms).
-     * @param downloadThroughput Maximal aggregated download throughput.
-     * @param uploadThroughput Maximal aggregated upload throughput.
+     * @param latency Minimum latency from request sent to response headers received (ms).
+     * @param downloadThroughput Maximal aggregated download throughput (bytes/sec). -1 disables download throttling.
+     * @param uploadThroughput Maximal aggregated upload throughput (bytes/sec).  -1 disables upload throttling.
      */
     void emulateNetworkConditions(Boolean offline, Double latency, Double downloadThroughput,
             Double uploadThroughput);
+
+    /**
+     * Sets the requests to intercept that match a the provided patterns.
+     * 
+     * @param enabled Whether requests should be intercepted. If patterns is not set, matches all and resets any previously set patterns. Other parameters are ignored if false.
+     */
+    @Experimental
+    void setRequestInterceptionEnabled(Boolean enabled);
 
     /**
      * Response to Network.requestIntercepted which either modifies the request to continue with any modifications, or blocks it, or completes it with the provided response bytes. If a network fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted event will be sent with the same InterceptionId.

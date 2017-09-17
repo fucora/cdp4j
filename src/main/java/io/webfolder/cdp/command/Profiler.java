@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ import io.webfolder.cdp.annotation.Optional;
 import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.profiler.Profile;
 import io.webfolder.cdp.type.profiler.ScriptCoverage;
+import io.webfolder.cdp.type.profiler.ScriptTypeProfile;
 import java.util.List;
 
 @Domain("Profiler")
@@ -47,9 +48,10 @@ public interface Profiler {
      * Enable precise code coverage. Coverage data for JavaScript executed before enabling precise code coverage may be incomplete. Enabling prevents running optimized code and resets execution counters.
      * 
      * @param callCount Collect accurate call counts beyond simple 'covered' or 'not covered'.
+     * @param detailed Collect block-based coverage.
      */
     @Experimental
-    void startPreciseCoverage(@Optional Boolean callCount);
+    void startPreciseCoverage(@Optional Boolean callCount, @Optional Boolean detailed);
 
     /**
      * Disable precise code coverage. Disabling releases unnecessary execution count records and allows executing optimized code.
@@ -74,6 +76,27 @@ public interface Profiler {
     @Experimental
     @Returns("result")
     List<ScriptCoverage> getBestEffortCoverage();
+
+    /**
+     * Enable type profile.
+     */
+    @Experimental
+    void startTypeProfile();
+
+    /**
+     * Disable type profile. Disabling releases type profile data collected so far.
+     */
+    @Experimental
+    void stopTypeProfile();
+
+    /**
+     * Collect type profile.
+     * 
+     * @return Type profile for all scripts since startTypeProfile() was turned on.
+     */
+    @Experimental
+    @Returns("result")
+    List<ScriptTypeProfile> takeTypeProfile();
 
     /**
      * Enable precise code coverage. Coverage data for JavaScript executed before enabling precise code coverage may be incomplete. Enabling prevents running optimized code and resets execution counters.

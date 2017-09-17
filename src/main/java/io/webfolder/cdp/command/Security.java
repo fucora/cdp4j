@@ -38,11 +38,6 @@ public interface Security {
     void disable();
 
     /**
-     * Displays native dialog with the certificate details.
-     */
-    void showCertificateViewer();
-
-    /**
      * Handles a certificate error that fired a certificateError event.
      * 
      * @param eventId The ID of the event.

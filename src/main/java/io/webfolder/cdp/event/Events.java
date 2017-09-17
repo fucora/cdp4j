@@ -53,6 +53,7 @@ import io.webfolder.cdp.event.domstorage.DomStorageItemRemoved;
 import io.webfolder.cdp.event.domstorage.DomStorageItemUpdated;
 import io.webfolder.cdp.event.domstorage.DomStorageItemsCleared;
 import io.webfolder.cdp.event.emulation.VirtualTimeBudgetExpired;
+import io.webfolder.cdp.event.emulation.VirtualTimePaused;
 import io.webfolder.cdp.event.heapprofiler.AddHeapSnapshotChunk;
 import io.webfolder.cdp.event.heapprofiler.HeapStatsUpdate;
 import io.webfolder.cdp.event.heapprofiler.LastSeenObjectId;
@@ -95,6 +96,7 @@ import io.webfolder.cdp.event.page.InterstitialHidden;
 import io.webfolder.cdp.event.page.InterstitialShown;
 import io.webfolder.cdp.event.page.JavascriptDialogClosed;
 import io.webfolder.cdp.event.page.JavascriptDialogOpening;
+import io.webfolder.cdp.event.page.LifecycleEvent;
 import io.webfolder.cdp.event.page.LoadEventFired;
 import io.webfolder.cdp.event.page.ScreencastFrame;
 import io.webfolder.cdp.event.page.ScreencastVisibilityChanged;
@@ -146,6 +148,12 @@ public enum Events {
     PageDomContentEventFired("Page", "domContentEventFired", DomContentEventFired.class),
 
     PageLoadEventFired("Page", "loadEventFired", LoadEventFired.class),
+
+    /**
+     * Fired for top level page lifecycle events such as navigation, load,
+     * paint, etc
+     */
+    PageLifecycleEvent("Page", "lifecycleEvent", LifecycleEvent.class),
 
     /**
      * Fired when frame has been attached to its parent
@@ -237,10 +245,15 @@ public enum Events {
     OverlayScreenshotRequested("Overlay", "screenshotRequested", ScreenshotRequested.class),
 
     /**
-     * Notification sent after the virual time budget for the current
+     * Notification sent after the virtual time budget for the current
      * VirtualTimePolicy has run out
      */
     EmulationVirtualTimeBudgetExpired("Emulation", "virtualTimeBudgetExpired", VirtualTimeBudgetExpired.class),
+
+    /**
+     * Notification sent after the virtual time has paused
+     */
+    EmulationVirtualTimePaused("Emulation", "virtualTimePaused", VirtualTimePaused.class),
 
     /**
      * The security state of the page changed
@@ -651,9 +664,9 @@ public enum Events {
 
     public final java.lang.String name;
 
-    public final java.lang.Class<?> klass;
+    public final Class<?> klass;
 
-    Events(java.lang.String domain, java.lang.String name, java.lang.Class<?> klass) {
+    Events(String domain, java.lang.String name, Class<?> klass) {
         this.domain = domain;
         this.name = name;
         this.klass = klass;

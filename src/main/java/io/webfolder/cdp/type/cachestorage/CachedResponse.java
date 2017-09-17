@@ -21,23 +21,7 @@ package io.webfolder.cdp.type.cachestorage;
  * Cached response
  */
 public class CachedResponse {
-    private Object headers;
-
     private String body;
-
-    /**
-     * Response headers
-     */
-    public Object getHeaders() {
-        return headers;
-    }
-
-    /**
-     * Response headers
-     */
-    public void setHeaders(Object headers) {
-        this.headers = headers;
-    }
 
     /**
      * Entry content, base64-encoded.

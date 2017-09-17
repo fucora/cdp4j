@@ -15,35 +15,46 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.webfolder.cdp.command;
+package io.webfolder.cdp.type.profiler;
 
-import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
-import io.webfolder.cdp.type.memory.GetDOMCountersResult;
-import io.webfolder.cdp.type.memory.PressureLevel;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Source offset and types for a parameter or return value
+ */
 @Experimental
-@Domain("Memory")
-public interface Memory {
-    /**
-     * 
-     * @return GetDOMCountersResult
-     */
-    GetDOMCountersResult getDOMCounters();
+public class TypeProfileEntry {
+    private Integer offset;
 
-    void prepareForLeakDetection();
+    private List<TypeObject> types = new ArrayList<>();
 
     /**
-     * Enable/disable suppressing memory pressure notifications in all processes.
-     * 
-     * @param suppressed If true, memory pressure notifications will be suppressed.
+     * Source offset of the parameter or end of function for return values.
      */
-    void setPressureNotificationsSuppressed(Boolean suppressed);
+    public Integer getOffset() {
+        return offset;
+    }
 
     /**
-     * Simulate a memory pressure notification in all processes.
-     * 
-     * @param level Memory pressure level of the notification.
+     * Source offset of the parameter or end of function for return values.
      */
-    void simulatePressureNotification(PressureLevel level);
+    public void setOffset(Integer offset) {
+        this.offset = offset;
+    }
+
+    /**
+     * The types for this parameter or return value.
+     */
+    public List<TypeObject> getTypes() {
+        return types;
+    }
+
+    /**
+     * The types for this parameter or return value.
+     */
+    public void setTypes(List<TypeObject> types) {
+        this.types = types;
+    }
 }

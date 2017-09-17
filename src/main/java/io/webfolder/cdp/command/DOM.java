@@ -170,12 +170,15 @@ public interface DOM {
     /**
      * Returns node's HTML markup.
      * 
-     * @param nodeId Id of the node to get markup for.
+     * @param nodeId Identifier of the node.
+     * @param backendNodeId Identifier of the backend node.
+     * @param objectId JavaScript object id of the node wrapper.
      * 
      * @return Outer HTML markup.
      */
     @Returns("outerHTML")
-    String getOuterHTML(Integer nodeId);
+    String getOuterHTML(@Optional Integer nodeId, @Optional Integer backendNodeId,
+            @Optional String objectId);
 
     /**
      * Sets node HTML markup, returns new node id.
@@ -401,6 +404,22 @@ public interface DOM {
     Integer getRelayoutBoundary(Integer nodeId);
 
     /**
+     * Describes node given its id, does not require domain to be enabled. Does not start tracking any objects, can be used for automation.
+     * 
+     * @param nodeId Identifier of the node.
+     * @param backendNodeId Identifier of the backend node.
+     * @param objectId JavaScript object id of the node wrapper.
+     * @param depth The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
+     * @param pierce Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false).
+     * 
+     * @return Node description.
+     */
+    @Returns("node")
+    Node describeNode(@Optional Integer nodeId, @Optional Integer backendNodeId,
+            @Optional String objectId, @Experimental @Optional Integer depth,
+            @Experimental @Optional Boolean pierce);
+
+    /**
      * Returns the root DOM node (and optionally the subtree) to the caller.
      * 
      * @return Resulting node.
@@ -430,6 +449,16 @@ public interface DOM {
      * @param text Text with a number of attributes. Will parse this text using HTML parser.
      */
     void setAttributesAsText(Integer nodeId, String text);
+
+    /**
+     * Returns node's HTML markup.
+     * 
+     * @param nodeId Identifier of the node.
+     * 
+     * @return Outer HTML markup.
+     */
+    @Returns("outerHTML")
+    String getOuterHTML(Integer nodeId);
 
     /**
      * Searches for a given string in the DOM tree. Use <tt>getSearchResults</tt> to access search results or <tt>cancelSearch</tt> to end this search session.
@@ -506,4 +535,12 @@ public interface DOM {
     @Experimental
     @Returns("nodeId")
     Integer getNodeForLocation(Integer x, Integer y);
+
+    /**
+     * Describes node given its id, does not require domain to be enabled. Does not start tracking any objects, can be used for automation.
+     * 
+     * @return Node description.
+     */
+    @Returns("node")
+    Node describeNode();
 }

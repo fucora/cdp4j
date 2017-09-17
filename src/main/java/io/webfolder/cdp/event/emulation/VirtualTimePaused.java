@@ -22,10 +22,25 @@ import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
 
 /**
- * Notification sent after the virtual time budget for the current VirtualTimePolicy has run out
+ * Notification sent after the virtual time has paused
  */
 @Experimental
 @Domain("Emulation")
-@EventName("virtualTimeBudgetExpired")
-public class VirtualTimeBudgetExpired {
+@EventName("virtualTimePaused")
+public class VirtualTimePaused {
+    private Integer virtualTimeElapsed;
+
+    /**
+     * The amount of virtual time that has elapsed in milliseconds since virtual time was first enabled.
+     */
+    public Integer getVirtualTimeElapsed() {
+        return virtualTimeElapsed;
+    }
+
+    /**
+     * The amount of virtual time that has elapsed in milliseconds since virtual time was first enabled.
+     */
+    public void setVirtualTimeElapsed(Integer virtualTimeElapsed) {
+        this.virtualTimeElapsed = virtualTimeElapsed;
+    }
 }

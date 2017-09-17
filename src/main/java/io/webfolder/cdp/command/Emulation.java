@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,11 +38,11 @@ public interface Emulation {
      * @param height Overriding height value in pixels (minimum 0, maximum 10000000). 0 disables the override.
      * @param deviceScaleFactor Overriding device scale factor value. 0 disables the override.
      * @param mobile Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text autosizing and more.
-     * @param scale Scale to apply to resulting view image. Ignored in |fitWindow| mode.
-     * @param screenWidth Overriding screen width value in pixels (minimum 0, maximum 10000000). Only used for |mobile==true|.
-     * @param screenHeight Overriding screen height value in pixels (minimum 0, maximum 10000000). Only used for |mobile==true|.
-     * @param positionX Overriding view X position on screen in pixels (minimum 0, maximum 10000000). Only used for |mobile==true|.
-     * @param positionY Overriding view Y position on screen in pixels (minimum 0, maximum 10000000). Only used for |mobile==true|.
+     * @param scale Scale to apply to resulting view image.
+     * @param screenWidth Overriding screen width value in pixels (minimum 0, maximum 10000000).
+     * @param screenHeight Overriding screen height value in pixels (minimum 0, maximum 10000000).
+     * @param positionX Overriding view X position on screen in pixels (minimum 0, maximum 10000000).
+     * @param positionY Overriding view Y position on screen in pixels (minimum 0, maximum 10000000).
      * @param dontSetVisibleSize Do not set visible view size, rely upon explicit setVisibleSize call.
      * @param screenOrientation Screen orientation override.
      */
@@ -148,6 +148,14 @@ public interface Emulation {
      */
     @Experimental
     void setVirtualTimePolicy(VirtualTimePolicy policy, @Optional Integer budget);
+
+    /**
+     * Overrides value returned by the javascript navigator object.
+     * 
+     * @param platform The platform navigator.platform should return.
+     */
+    @Experimental
+    void setNavigatorOverrides(String platform);
 
     /**
      * Sets or clears an override of the default background color of the frame. This override is used if the content does not specify one.

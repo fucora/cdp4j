@@ -35,6 +35,8 @@ public class CallFrame {
 
     private Location location;
 
+    private String url;
+
     private List<Scope> scopeChain = new ArrayList<>();
 
     @SerializedName("this")
@@ -96,6 +98,20 @@ public class CallFrame {
      */
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    /**
+     * JavaScript script name or url.
+     */
+    public String getUrl() {
+        return url;
+    }
+
+    /**
+     * JavaScript script name or url.
+     */
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     /**

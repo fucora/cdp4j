@@ -17,42 +17,67 @@
  */
 package io.webfolder.cdp.type.cachestorage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Data entry
  */
 public class DataEntry {
-    private String request;
+    private String requestURL;
 
-    private String response;
+    private String requestMethod;
+
+    private List<Header> requestHeaders = new ArrayList<>();
 
     private Double responseTime;
 
+    private Integer responseStatus;
+
+    private String responseStatusText;
+
+    private List<Header> responseHeaders = new ArrayList<>();
+
     /**
-     * Request url spec.
+     * Request URL.
      */
-    public String getRequest() {
-        return request;
+    public String getRequestURL() {
+        return requestURL;
     }
 
     /**
-     * Request url spec.
+     * Request URL.
      */
-    public void setRequest(String request) {
-        this.request = request;
+    public void setRequestURL(String requestURL) {
+        this.requestURL = requestURL;
     }
 
     /**
-     * Response status text.
+     * Request method.
      */
-    public String getResponse() {
-        return response;
+    public String getRequestMethod() {
+        return requestMethod;
     }
 
     /**
-     * Response status text.
+     * Request method.
      */
-    public void setResponse(String response) {
-        this.response = response;
+    public void setRequestMethod(String requestMethod) {
+        this.requestMethod = requestMethod;
+    }
+
+    /**
+     * Request headers
+     */
+    public List<Header> getRequestHeaders() {
+        return requestHeaders;
+    }
+
+    /**
+     * Request headers
+     */
+    public void setRequestHeaders(List<Header> requestHeaders) {
+        this.requestHeaders = requestHeaders;
     }
 
     /**
@@ -67,5 +92,47 @@ public class DataEntry {
      */
     public void setResponseTime(Double responseTime) {
         this.responseTime = responseTime;
+    }
+
+    /**
+     * HTTP response status code.
+     */
+    public Integer getResponseStatus() {
+        return responseStatus;
+    }
+
+    /**
+     * HTTP response status code.
+     */
+    public void setResponseStatus(Integer responseStatus) {
+        this.responseStatus = responseStatus;
+    }
+
+    /**
+     * HTTP response status text.
+     */
+    public String getResponseStatusText() {
+        return responseStatusText;
+    }
+
+    /**
+     * HTTP response status text.
+     */
+    public void setResponseStatusText(String responseStatusText) {
+        this.responseStatusText = responseStatusText;
+    }
+
+    /**
+     * Response headers
+     */
+    public List<Header> getResponseHeaders() {
+        return responseHeaders;
+    }
+
+    /**
+     * Response headers
+     */
+    public void setResponseHeaders(List<Header> responseHeaders) {
+        this.responseHeaders = responseHeaders;
     }
 }

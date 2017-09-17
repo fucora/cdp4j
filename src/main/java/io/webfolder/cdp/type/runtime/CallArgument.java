@@ -29,14 +29,14 @@ public class CallArgument {
     private String objectId;
 
     /**
-     * Primitive value.
+     * Primitive value or serializable javascript object.
      */
     public Object getValue() {
         return value;
     }
 
     /**
-     * Primitive value.
+     * Primitive value or serializable javascript object.
      */
     public void setValue(Object value) {
         this.value = value;

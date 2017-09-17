@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -81,8 +81,8 @@ public interface Input {
     /**
      * Dispatches a touch event to the page.
      * 
-     * @param type Type of the touch event.
-     * @param touchPoints Touch points.
+     * @param type Type of the touch event. TouchEnd and TouchCancel must not contain any touch points, while TouchStart and TouchMove must contains at least one.
+     * @param touchPoints Active touch points on the touch device. One event per any changed point (compared to previous touch event in a sequence) is generated, emulating pressing/moving/releasing points one by one.
      * @param modifiers Bit field representing pressed modifier keys. Alt=1, Ctrl=2, Meta/Command=4, Shift=8 (default: 0).
      * @param timestamp Time at which the event occurred.
      */
@@ -176,8 +176,8 @@ public interface Input {
     /**
      * Dispatches a touch event to the page.
      * 
-     * @param type Type of the touch event.
-     * @param touchPoints Touch points.
+     * @param type Type of the touch event. TouchEnd and TouchCancel must not contain any touch points, while TouchStart and TouchMove must contains at least one.
+     * @param touchPoints Active touch points on the touch device. One event per any changed point (compared to previous touch event in a sequence) is generated, emulating pressing/moving/releasing points one by one.
      */
     @Experimental
     void dispatchTouchEvent(TouchEventType type, List<TouchPoint> touchPoints);
