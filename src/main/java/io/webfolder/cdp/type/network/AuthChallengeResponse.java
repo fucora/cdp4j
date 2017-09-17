@@ -18,13 +18,14 @@
 package io.webfolder.cdp.type.network;
 
 import io.webfolder.cdp.annotation.Experimental;
+import io.webfolder.cdp.type.constant.AuthResponse;
 
 /**
  * Response to an AuthChallenge
  */
 @Experimental
 public class AuthChallengeResponse {
-    private io.webfolder.cdp.type.constant.AuthChallengeResponse response;
+    private AuthResponse response;
 
     private String username;
 
@@ -33,14 +34,14 @@ public class AuthChallengeResponse {
     /**
      * The decision on what to do in response to the authorization challenge.  Default means deferring to the default behavior of the net stack, which will likely either the Cancel authentication or display a popup dialog box.
      */
-    public io.webfolder.cdp.type.constant.AuthChallengeResponse getResponse() {
+    public AuthResponse getResponse() {
         return response;
     }
 
     /**
      * The decision on what to do in response to the authorization challenge.  Default means deferring to the default behavior of the net stack, which will likely either the Cancel authentication or display a popup dialog box.
      */
-    public void setResponse(io.webfolder.cdp.type.constant.AuthChallengeResponse response) {
+    public void setResponse(AuthResponse response) {
         this.response = response;
     }
 

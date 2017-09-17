@@ -17,18 +17,19 @@
  */
 package io.webfolder.cdp.sample;
 
-import static java.util.Base64.getEncoder;
+import static io.webfolder.cdp.event.Events.NetworkRequestIntercepted;
 
-import java.util.Collections;
 import java.util.Map;
 
 import com.google.gson.Gson;
 
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.command.Network;
+import io.webfolder.cdp.event.network.RequestIntercepted;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
-import static java.util.Arrays.asList;
+import io.webfolder.cdp.type.constant.AuthResponse;
+import io.webfolder.cdp.type.network.AuthChallengeResponse;
 
 public class BasicAuthentication {
 
@@ -37,21 +38,36 @@ public class BasicAuthentication {
 
         Launcher launcher = new Launcher();
 
-        try (SessionFactory factory = launcher.launch(asList("--headless", "--disable-gpu"));
+        try (SessionFactory factory = launcher.launch();
                             Session session = factory.create()) {
 
             Network network = session.getCommand().getNetwork();
             network.enable();
+            network.setRequestInterceptionEnabled(true);
 
-            Map<String, Object> headers = Collections.<String, Object>singletonMap("Authorization",
-                                            "Basic " + new String(getEncoder().encode("user:password".getBytes())));
-
-            network.setExtraHTTPHeaders(headers);
+            session.addEventListener((e, v) -> {
+                if (NetworkRequestIntercepted.equals(e)) {
+                    RequestIntercepted ri = (RequestIntercepted) v;
+                    if (ri.getAuthChallenge() != null) {
+                        AuthChallengeResponse acr = new AuthChallengeResponse();
+                        acr.setUsername("user");
+                        acr.setPassword("password");
+                        acr.setResponse(AuthResponse.ProvideCredentials);
+                        network.continueInterceptedRequest(ri.getInterceptionId(), null,
+                                                           null, null,
+                                                           null, null,
+                                                           null,  acr);
+                    } else {
+                        network.continueInterceptedRequest(ri.getInterceptionId());
+                    }
+                }
+            });
 
             session.navigate("https://httpbin.org/basic-auth/user/password");
             session.wait(1000);
 
             String content = (String) session.evaluate("window.document.body.textContent");
+            System.out.println(content);
             Map<String, Object> map = new Gson().fromJson(content, Map.class);
             Object authenticated = map.get("authenticated");
             Object user = map.get("user");

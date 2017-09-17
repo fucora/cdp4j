@@ -19,7 +19,7 @@ package io.webfolder.cdp.type.constant;
 
 import com.google.gson.annotations.SerializedName;
 
-public enum AuthChallengeResponse {
+public enum AuthResponse {
     @SerializedName("Default")
     Default("Default"),
 
@@ -31,7 +31,7 @@ public enum AuthChallengeResponse {
 
     public final String value;
 
-    AuthChallengeResponse(String value) {
+    AuthResponse(String value) {
         this.value = value;
     }
 
