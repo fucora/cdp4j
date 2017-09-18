@@ -105,6 +105,8 @@ public class Session implements AutoCloseable,
 
     private final ReentrantLock lock = new ReentrantLock(true);
 
+    private Listener listeners;
+
     private static final ThreadLocal<Boolean> ENABLE_ENTRY_EXIT_LOG = 
                                                     withInitial(() -> { return TRUE; });
 
@@ -130,6 +132,7 @@ public class Session implements AutoCloseable,
         this.logFlow          = loggerFactory.getLogger("cdp4j.flow");
         this.gson             = gson;
         this.command          = new Command(this);
+        this.listeners        = new Listener(this);
     }
 
     public String getId() {
@@ -394,6 +397,10 @@ public class Session implements AutoCloseable,
 
     public Command getCommand() {
         return command;
+    }
+
+    public Listener listeners() {
+        return listeners;
     }
 
     @Override
