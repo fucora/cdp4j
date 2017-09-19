@@ -41,7 +41,7 @@ public class DownloadFile {
             Page page = session.getCommand().getPage();
             Path downloadPath = Paths.get(".").toAbsolutePath();
             page.setDownloadBehavior(Allow, downloadPath.toString());
-            // link must be visibile before downloading the file
+            // link must be visible before downloading the file
             session.evaluate("document.querySelector(\"[href$=deb]\").scrollIntoView()");
             // click the download link
             session.click("[href$=deb]");
