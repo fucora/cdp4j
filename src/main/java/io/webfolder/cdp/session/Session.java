@@ -205,7 +205,7 @@ public class Session implements AutoCloseable,
             }
         });
         try {
-            if(!latch.await(adjustedTimeout, MILLISECONDS)) {
+            if( ! latch.await(adjustedTimeout, MILLISECONDS) ) {
                 throw new CdpException("Page not loaded within " + timeout + " ms");
             }
         } catch (InterruptedException e) {
