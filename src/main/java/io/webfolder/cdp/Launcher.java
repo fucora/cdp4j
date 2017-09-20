@@ -163,28 +163,28 @@ public class Launcher {
         }
         Path remoteProfileData = get(getProperty("java.io.tmpdir"))
                                         .resolve("remote-profile");
-        List<String> list = new ArrayList<>();
-        list.add(chromePath);
-        list.add(format("--remote-debugging-port=%d", factory.getPort()));
-        list.add(format("--user-data-dir=%s", remoteProfileData.toString()));
+        List<String> args = new ArrayList<>();
+        args.add(chromePath);
+        args.add(format("--remote-debugging-port=%d", factory.getPort()));
+        args.add(format("--user-data-dir=%s", remoteProfileData.toString()));
         if ( ! DEFAULT_HOST.equals(factory.getHost()) ) {
-            list.add(format("--remote-debugging-address=%s", factory.getHost()));
+            args.add(format("--remote-debugging-address=%s", factory.getHost()));
         }
-        list.add("--disable-translate");
-        list.add("--disable-extensions");
-        list.add("--no-default-browser-check");
-        list.add("--disable-plugin-power-saver");
-        list.add("--disable-sync");
-        list.add("--no-first-run");
-        list.add("--safebrowsing-disable-auto-update");
-        list.add("--disable-popup-blocking");
+        args.add("--disable-translate");
+        args.add("--disable-extensions");
+        args.add("--no-default-browser-check");
+        args.add("--disable-plugin-power-saver");
+        args.add("--disable-sync");
+        args.add("--no-first-run");
+        args.add("--safebrowsing-disable-auto-update");
+        args.add("--disable-popup-blocking");
 
         if ( ! arguments.isEmpty() ) {
-            list.addAll(arguments);
+            args.addAll(arguments);
         }
 
         try {
-            Process process = getRuntime().exec(list.toArray(new String[0]));
+            Process process = getRuntime().exec(args.toArray(new String[0]));
 
             process.getOutputStream().close();
             process.getInputStream().close();
@@ -193,7 +193,7 @@ public class Launcher {
                 throw new CdpException("No process: the chrome process is not alive.");
             }
 
-            processManager.onStart(process);
+            processManager.onStart(process, args);
         } catch (IOException e) {
             throw new CdpException(e);
         }

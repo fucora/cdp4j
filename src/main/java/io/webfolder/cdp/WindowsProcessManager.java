@@ -17,6 +17,8 @@
  */
 package io.webfolder.cdp;
 
+import java.util.List;
+
 import org.jvnet.winp.WinProcess;
 import org.jvnet.winp.WinpException;
 
@@ -26,12 +28,14 @@ public class WindowsProcessManager implements ProcessManager {
 
     private String commandLine;
 
-    public void onStart(Process process) {
+    @Override
+    public void onStart(Process process, List<String> args) {
         WinProcess winProcess = new WinProcess(process);
         this.pid = winProcess.getPid();
         this.commandLine = winProcess.getCommandLine();
     }
 
+    @Override
     public synchronized void kill() {
         try {
             WinProcess process = new WinProcess(pid);
