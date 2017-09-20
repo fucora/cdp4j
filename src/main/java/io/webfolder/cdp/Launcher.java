@@ -170,13 +170,27 @@ public class Launcher {
         if ( ! DEFAULT_HOST.equals(factory.getHost()) ) {
             args.add(format("--remote-debugging-address=%s", factory.getHost()));
         }
+        // Disable built-in Google Translate service
         args.add("--disable-translate");
+        // Disable all chrome extensions entirely
         args.add("--disable-extensions");
+        // Disable various background network services, including extension updating,
+        // safe browsing service, upgrade detector, translate, UMA
+        args.add("--disable-background-networking");
+        // Disable fetching safebrowsing lists, likely redundant due to disable-background-networking
+        args.add("--safebrowsing-disable-auto-update");
+        // Disable syncing to a Google account
+        args.add("--disable-sync");
+        // Disable reporting to UMA, but allows for collection
+        args.add("--metrics-recording-only");
+        // Disable installation of default apps on first run
+        args.add("--disable-default-apps");
+        // Mute any audio
+        args.add("--mute-audio");
+        // Skip first run wizards
+        args.add("--no-first-run");
         args.add("--no-default-browser-check");
         args.add("--disable-plugin-power-saver");
-        args.add("--disable-sync");
-        args.add("--no-first-run");
-        args.add("--safebrowsing-disable-auto-update");
         args.add("--disable-popup-blocking");
 
         if ( ! arguments.isEmpty() ) {
