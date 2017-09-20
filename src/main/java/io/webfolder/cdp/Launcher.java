@@ -161,44 +161,59 @@ public class Launcher {
         if (chromePath == null || chromePath.trim().isEmpty()) {
             throw new CdpException("chrome not found");
         }
-        Path remoteProfileData = get(getProperty("java.io.tmpdir"))
-                                        .resolve("remote-profile");
-        List<String> args = new ArrayList<>();
-        args.add(chromePath);
-        args.add(format("--remote-debugging-port=%d", factory.getPort()));
-        args.add(format("--user-data-dir=%s", remoteProfileData.toString()));
-        if ( ! DEFAULT_HOST.equals(factory.getHost()) ) {
-            args.add(format("--remote-debugging-address=%s", factory.getHost()));
+
+        List<String> list = new ArrayList<>();
+        list.add(chromePath);
+
+        list.add(format("--remote-debugging-port=%d", factory.getPort()));
+
+        boolean foundUserDataDir = false;
+
+        for (String next : arguments) {
+            if (next.startsWith("--user-data-dir=")) {
+                foundUserDataDir = true;
+                break;
+            }
         }
+
+        if ( ! foundUserDataDir ) {
+            Path remoteProfileData = get(getProperty("java.io.tmpdir")).resolve("remote-profile");
+            list.add(format("--user-data-dir=%s", remoteProfileData.toString()));
+        }
+
+        if ( ! DEFAULT_HOST.equals(factory.getHost()) ) {
+            list.add(format("--remote-debugging-address=%s", factory.getHost()));
+        }
+
         // Disable built-in Google Translate service
-        args.add("--disable-translate");
+        list.add("--disable-translate");
         // Disable all chrome extensions entirely
-        args.add("--disable-extensions");
+        list.add("--disable-extensions");
         // Disable various background network services, including extension updating,
         // safe browsing service, upgrade detector, translate, UMA
-        args.add("--disable-background-networking");
+        list.add("--disable-background-networking");
         // Disable fetching safebrowsing lists, likely redundant due to disable-background-networking
-        args.add("--safebrowsing-disable-auto-update");
+        list.add("--safebrowsing-disable-auto-update");
         // Disable syncing to a Google account
-        args.add("--disable-sync");
+        list.add("--disable-sync");
         // Disable reporting to UMA, but allows for collection
-        args.add("--metrics-recording-only");
+        list.add("--metrics-recording-only");
         // Disable installation of default apps on first run
-        args.add("--disable-default-apps");
+        list.add("--disable-default-apps");
         // Mute any audio
-        args.add("--mute-audio");
+        list.add("--mute-audio");
         // Skip first run wizards
-        args.add("--no-first-run");
-        args.add("--no-default-browser-check");
-        args.add("--disable-plugin-power-saver");
-        args.add("--disable-popup-blocking");
+        list.add("--no-first-run");
+        list.add("--no-default-browser-check");
+        list.add("--disable-plugin-power-saver");
+        list.add("--disable-popup-blocking");
 
         if ( ! arguments.isEmpty() ) {
-            args.addAll(arguments);
+            list.addAll(arguments);
         }
 
         try {
-            Process process = getRuntime().exec(args.toArray(new String[0]));
+            Process process = getRuntime().exec(list.toArray(new String[0]));
 
             process.getOutputStream().close();
             process.getInputStream().close();
@@ -207,7 +222,7 @@ public class Launcher {
                 throw new CdpException("No process: the chrome process is not alive.");
             }
 
-            processManager.onStart(process, args);
+            processManager.onStart(process, list);
         } catch (IOException e) {
             throw new CdpException(e);
         }
