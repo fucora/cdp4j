@@ -43,6 +43,14 @@ public class Launcher {
 
     private final SessionFactory factory;
 
+    private static final String  OS       = getProperty("os.name").toLowerCase(ENGLISH);
+
+    private static final boolean WINDOWS  = OS.startsWith("windows");
+
+    private static final boolean OSX      = OS.startsWith("mac");
+
+    private ProcessManager processManager = new ProcessManager() { };
+
     public Launcher() {
         this(new SessionFactory());
     }
@@ -67,20 +75,15 @@ public class Launcher {
     }
 
     public String findChrome() {
-        String os = getProperty("os.name")
-                        .toLowerCase(ENGLISH);
-        boolean windows = os.startsWith("windows");
-        boolean osx = os.startsWith("mac");
-
         String chromePath = null;
         chromePath = getCustomChromeBinary();
-        if (chromePath == null && windows) {
+        if (chromePath == null && WINDOWS) {
           chromePath = findChromeWinPath();
         }
-        if (chromePath == null && osx) {
+        if (chromePath == null && OSX) {
           chromePath = findChromeOsxPath();
         }
-        if (chromePath == null && !windows) {
+        if ( chromePath == null && ! WINDOWS ) {
           chromePath = "google-chrome";
         }
         return chromePath;
@@ -182,8 +185,15 @@ public class Launcher {
 
         try {
             Process process = getRuntime().exec(list.toArray(new String[0]));
+
             process.getOutputStream().close();
             process.getInputStream().close();
+
+            if ( ! process.isAlive() ) {
+                throw new CdpException("No process: the chrome process is not alive.");
+            }
+
+            processManager.onStart(process);
         } catch (IOException e) {
             throw new CdpException(e);
         }
@@ -225,5 +235,13 @@ public class Launcher {
             // ignore
         }
         return ! list.isEmpty() ? true : false;
+    }
+
+    public void setProcessManager(ProcessManager processManager) {
+        this.processManager = processManager;
+    }
+
+    public ProcessManager getProcessManager() {
+        return processManager;
     }
 }
