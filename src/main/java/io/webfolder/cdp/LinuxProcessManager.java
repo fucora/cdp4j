@@ -64,12 +64,21 @@ public class LinuxProcessManager extends ProcessManager {
             // ignored
         }
         for (Integer next : children(cdp4jId)) {
-            kill(next.intValue());
+            kill(next.intValue(), this.cdp4jId);
         }
-        kill(pid);
+        kill(pid, this.cdp4jId);
     }
 
-    protected void kill(int pid) {
+    protected void kill(int pid, String cdp4jId) {
+        Path envFile = get("/proc").resolve(valueOf(pid));
+        try {
+            Map<String, String> environment = readEnvironmentVariables(envFile);
+            if ( ! cdp4jId.equals(environment.get("CDP4J_ID")) ) {
+                return;
+            }
+        } catch (IOException e) {
+            return;
+        }
         try {
             Class<?> clazz = Class.forName("java.lang.UNIXProcess");
             Method destroyProcess = clazz.getDeclaredMethod("destroyProcess", int.class, boolean.class);
