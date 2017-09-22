@@ -17,13 +17,9 @@
  */
 package io.webfolder.cdp;
 
-import java.util.List;
+public abstract class ProcessManager {
 
-public interface ProcessManager {
+    abstract void setProcess(Process process);
 
-    default void onStart(Process process, List<String> args) {
-    }
-
-    default void kill() {
-    }
+    public abstract void kill();
 }

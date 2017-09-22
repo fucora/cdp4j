@@ -18,6 +18,7 @@
 package io.webfolder.cdp;
 
 import static io.webfolder.cdp.session.SessionFactory.DEFAULT_HOST;
+import static java.lang.Long.toHexString;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.String.format;
 import static java.lang.System.getProperty;
@@ -26,6 +27,7 @@ import static java.nio.file.Paths.get;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Locale.ENGLISH;
+import static java.util.concurrent.ThreadLocalRandom.current;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +51,18 @@ public class Launcher {
 
     private static final boolean OSX      = OS.startsWith("mac");
 
-    private ProcessManager processManager = new ProcessManager() { };
+    private ProcessManager processManager = new NullProcessManager();
+
+    private static class NullProcessManager extends ProcessManager {
+
+        @Override
+        void setProcess(Process process) {
+        }
+
+        @Override
+        public void kill() {
+        }
+    }
 
     public Launcher() {
         this(new SessionFactory());
@@ -213,7 +226,9 @@ public class Launcher {
         }
 
         try {
-            Process process = getRuntime().exec(list.toArray(new String[0]));
+            ProcessBuilder builder = new ProcessBuilder(list);
+            builder.environment().put("CDP4J_ID", toHexString(current().nextLong()));
+            Process process = builder.start();
 
             process.getOutputStream().close();
             process.getInputStream().close();
@@ -222,7 +237,7 @@ public class Launcher {
                 throw new CdpException("No process: the chrome process is not alive.");
             }
 
-            processManager.onStart(process, list);
+            processManager.setProcess(process);
         } catch (IOException e) {
             throw new CdpException(e);
         }

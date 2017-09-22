@@ -17,35 +17,36 @@
  */
 package io.webfolder.cdp;
 
-import java.util.List;
-
 import org.jvnet.winp.WinProcess;
-import org.jvnet.winp.WinpException;
 
-public class WindowsProcessManager implements ProcessManager {
+public class WindowsProcessManager extends ProcessManager {
 
     private int pid;
 
-    private String commandLine;
+    private String cdp4jId;
 
     @Override
-    public void onStart(Process process, List<String> args) {
+    void setProcess(Process process) {
         WinProcess winProcess = new WinProcess(process);
-        this.pid = winProcess.getPid();
-        this.commandLine = winProcess.getCommandLine();
+        pid = winProcess.getPid();
+        cdp4jId = winProcess.getEnvironmentVariables().get("CDP4J_ID");
     }
 
     @Override
-    public synchronized void kill() {
+    public void kill() {
+        if (pid == 0 ||
+                cdp4jId == null ||
+                cdp4jId.trim().isEmpty()) {
+            return;
+        }
         try {
             WinProcess process = new WinProcess(pid);
-            if ( pid > 0 &&
-                    commandLine != null &&
-                    process.getCommandLine() != null &&
-                    commandLine.equals(process.getCommandLine()) ) {
+            String cdp4jId = process.getEnvironmentVariables().get("CDP4J_ID");
+            if (pid == process.getPid() &&
+                        this.cdp4jId.equals(cdp4jId)) {
                 process.killRecursively();
             }
-        } catch (WinpException e) {
+        } catch (Throwable t) {
             // ignored
         }
     }
