@@ -106,7 +106,7 @@ public class LinuxProcessManager extends ProcessManager {
                 Map<String, String> environment = readEnvironmentVariables(environ);
                 String childCdp4jId = environment.get("CDP4J_ID");
                 if (cdp4jId.equals(childCdp4jId)) {
-                    children.add(new Integer(parseInt(next.getFileName().toString())));
+                    children.add(parseInt(next.getFileName().toString()));
                 }
             }
         } catch (Throwable e) {

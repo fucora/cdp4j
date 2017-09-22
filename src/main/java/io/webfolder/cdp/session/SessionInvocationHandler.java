@@ -161,9 +161,9 @@ class SessionInvocationHandler implements InvocationHandler {
                 } else if (Boolean.class.equals(retType)) {
                     return resultObject.get(returns).getAsBoolean() ? Boolean.TRUE : Boolean.FALSE;
                 } else if (Integer.class.equals(retType)) {
-                    return new Integer(resultObject.get(returns).getAsInt());
+                    return resultObject.get(returns).getAsInt();
                 } else if (Double.class.equals(retType)) {
-                    return new Double(resultObject.get(returns).getAsDouble());
+                    return resultObject.get(returns).getAsDouble();
                 }
             }
 
