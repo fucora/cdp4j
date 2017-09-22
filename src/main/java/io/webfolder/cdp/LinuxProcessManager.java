@@ -39,7 +39,8 @@ public class LinuxProcessManager extends ProcessManager {
             // ignored
         }
         try {
-            Map<String, String> environment = readEnvironmentVariables(get("/proc").resolve(valueOf(pid)));
+            Path envFile = get("/proc").resolve(valueOf(pid));
+            Map<String, String> environment = readEnvironmentVariables(envFile);
             cdp4jId = environment.get("CDP4J_ID");
         } catch (IOException e) {
             // ignored
@@ -53,8 +54,17 @@ public class LinuxProcessManager extends ProcessManager {
                 cdp4jId.trim().isEmpty()) {
             return;
         }
+        try {
+            Path envFile = get("/proc").resolve(valueOf(pid));
+            Map<String, String> environment = readEnvironmentVariables(envFile);
+            if ( ! cdp4jId.equals(environment.get("CDP4J_ID")) ) {
+                return;
+            }
+        } catch (IOException e) {
+            // ignored
+        }
         for (Integer next : children(cdp4jId)) {
-            kill(next.intValue());;
+            kill(next.intValue());
         }
         kill(pid);
     }
