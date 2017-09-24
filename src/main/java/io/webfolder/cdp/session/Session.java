@@ -19,7 +19,7 @@ package io.webfolder.cdp.session;
 
 import static io.webfolder.cdp.event.Events.LogEntryAdded;
 import static io.webfolder.cdp.event.Events.NetworkResponseReceived;
-import static io.webfolder.cdp.event.Events.PageLoadEventFired;
+import static io.webfolder.cdp.event.Events.PageLifecycleEvent;
 import static io.webfolder.cdp.event.Events.RuntimeConsoleAPICalled;
 import static io.webfolder.cdp.session.Constant.WAIT_PERIOD;
 import static io.webfolder.cdp.session.Constant.WAIT_TIMEOUT;
@@ -54,6 +54,7 @@ import io.webfolder.cdp.command.Emulation;
 import io.webfolder.cdp.command.Page;
 import io.webfolder.cdp.event.log.EntryAdded;
 import io.webfolder.cdp.event.network.ResponseReceived;
+import io.webfolder.cdp.event.page.LifecycleEvent;
 import io.webfolder.cdp.event.runtime.ConsoleAPICalled;
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.listener.EventListener;
@@ -202,7 +203,8 @@ public class Session implements AutoCloseable,
         final int adjustedTimeout = Math.max(1, timeout - elapsed);
         CountDownLatch latch = new CountDownLatch(1);
         addEventListener((e, d) -> {
-            if (PageLoadEventFired.equals(e)) {
+            if (PageLifecycleEvent.equals(e) &&
+                    "load".equalsIgnoreCase(((LifecycleEvent) d).getName())) {
                 latch.countDown();
             }
         });
