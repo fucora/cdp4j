@@ -29,19 +29,19 @@ import java.util.Map.Entry;
 import io.webfolder.cdp.event.Events;
 import io.webfolder.cdp.listener.*;
 
-public class Listener {
+public class ListenerManager {
 
     private Map<Events, List<AbstractListener<?>>> listeners = new HashMap<>();
 
-    public Listener(final Session session) {
+    public ListenerManager(final Session session) {
         session.addEventListener(new RootListener(this));
     }
 
     private static class RootListener implements EventListener<Object> {
 
-        private Listener that;
+        private ListenerManager that;
 
-        public RootListener(Listener that) {
+        public RootListener(ListenerManager that) {
             this.that = that;
         }
 
