@@ -33,6 +33,7 @@ public interface Constant {
     int UP_ARROW    = 38;
     int RIGHT_ARROW = 39;
     int DOWN_ARROW  = 40;
+
     List<Integer> SPECIAL_KEYS = asList(
                                     TAB, ENTER,
                                     BACKSPACE, LEFT_ARROW,
@@ -46,5 +47,5 @@ public interface Constant {
 
     int WAIT_TIMEOUT = 10 * 1000; // 10 seconds
 
-    int WAIT_PERIOD = 500;
+    int WAIT_PERIOD = 500; // 0.5 seconds
 }
