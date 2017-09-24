@@ -66,6 +66,7 @@ public class LinuxProcessManager extends ProcessManager {
                 return;
             }
         } catch (Throwable e) {
+            return;
         }
         try {
             Class<?> clazz = forName("java.lang.UNIXProcess");
