@@ -31,8 +31,8 @@ public class LinuxProcessManager extends ProcessManager {
 
     private String cdp4jId;
 
-	@Override
-	void setProcess(Process process) {
+    @Override
+    void setProcess(Process process) {
         try {
             Field pidField = process.getClass().getDeclaredField("pid");
             pidField.setAccessible(true);
@@ -40,33 +40,33 @@ public class LinuxProcessManager extends ProcessManager {
         } catch (Throwable e) {
             // ignored
         }
-	}
+    }
 
     @Override
     void setCdp4jId(String cdp4jId) {
-    	this.cdp4jId = cdp4jId;
+        this.cdp4jId = cdp4jId;
     }
 
     @Override
     public void kill() {
-    	ProcessBuilder builder = new ProcessBuilder("strings",
-    												"-a",
-    												"/proc/" + pid + "/cmdline");
-    	try {
-			Process process = builder.start();
-			boolean ok = process.waitFor(5, SECONDS);
-			if ( ! ok ) {
-				return;
-			}
-			if ( process.exitValue() != 0 ) {
-				return;
-			}
-			String stdout = toString(process.getInputStream());
-			if ( ! stdout.contains("cdp4jId=" + cdp4jId) ) {
-				return;
-			}
-		} catch (Throwable e) {
-		}
+        ProcessBuilder builder = new ProcessBuilder("strings",
+                                                    "-a",
+                                                    "/proc/" + pid + "/cmdline");
+        try {
+            Process process = builder.start();
+            boolean ok = process.waitFor(5, SECONDS);
+            if ( ! ok ) {
+                return;
+            }
+            if ( process.exitValue() != 0 ) {
+                return;
+            }
+            String stdout = toString(process.getInputStream());
+            if ( ! stdout.contains("cdp4jId=" + cdp4jId) ) {
+                return;
+            }
+        } catch (Throwable e) {
+        }
         try {
             Class<?> clazz = forName("java.lang.UNIXProcess");
             Method destroyProcess = clazz.getDeclaredMethod("destroyProcess", int.class, boolean.class);

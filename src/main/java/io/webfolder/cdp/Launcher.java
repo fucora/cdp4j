@@ -55,13 +55,13 @@ public class Launcher {
 
     private static class NullProcessManager extends ProcessManager {
 
-		@Override
-		void setProcess(Process process) {
-		}
+        @Override
+        void setProcess(Process process) {
+        }
 
-		@Override
-		void setCdp4jId(String cdp4jId) {
-		}
+        @Override
+        void setCdp4jId(String cdp4jId) {
+        }
 
         @Override
         public void kill() {
@@ -230,8 +230,8 @@ public class Launcher {
         }
 
         try {
-        	String cdp4jId = toHexString(current().nextLong());
-        	list.add("--cdp4jId=" + cdp4jId);
+            String cdp4jId = toHexString(current().nextLong());
+            list.add("--cdp4jId=" + cdp4jId);
             ProcessBuilder builder = new ProcessBuilder(list);
             builder.environment().put("CDP4J_ID", cdp4jId);
             Process process = builder.start();
