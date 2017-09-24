@@ -64,7 +64,8 @@ public class Launcher {
         }
 
         @Override
-        public void kill() {
+        public boolean kill() {
+            return false;
         }
     }
 

@@ -48,7 +48,7 @@ public class LinuxProcessManager extends ProcessManager {
     }
 
     @Override
-    public void kill() {
+    public boolean kill() {
         ProcessBuilder builder = new ProcessBuilder("strings",
                                                     "-a",
                                                     "/proc/" + pid + "/cmdline");
@@ -56,17 +56,17 @@ public class LinuxProcessManager extends ProcessManager {
             Process process = builder.start();
             boolean ok = process.waitFor(5, SECONDS);
             if ( ! ok ) {
-                return;
+                return false;
             }
             if ( process.exitValue() != 0 ) {
-                return;
+                return false;
             }
             String stdout = toString(process.getInputStream());
             if ( ! stdout.contains("cdp4jId=" + cdp4jId) ) {
-                return;
+                return false;
             }
         } catch (Throwable e) {
-            return;
+            return false;
         }
         try {
             Class<?> clazz = forName("java.lang.UNIXProcess");
@@ -74,8 +74,9 @@ public class LinuxProcessManager extends ProcessManager {
             destroyProcess.setAccessible(true);
             boolean force = false;
             destroyProcess.invoke(null, pid, force);
+            return true;
         } catch (Throwable e) {
-            // ignored
+            return false;
         }
     }
 

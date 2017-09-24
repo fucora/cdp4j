@@ -25,7 +25,6 @@ public class WindowsProcessManager extends ProcessManager {
 
     private String cdp4jId;
 
-
     @Override
     void setProcess(Process process) {
         WinProcess winProcess = new WinProcess(process);
@@ -39,11 +38,11 @@ public class WindowsProcessManager extends ProcessManager {
     }
 
     @Override
-    public void kill() {
+    public boolean kill() {
         if (pid == 0 ||
                 cdp4jId == null ||
                 cdp4jId.trim().isEmpty()) {
-            return;
+            return false;
         }
         try {
             WinProcess process = new WinProcess(pid);
@@ -51,9 +50,12 @@ public class WindowsProcessManager extends ProcessManager {
             if (pid == process.getPid() &&
                         this.cdp4jId.equals(cdp4jId)) {
                 process.killRecursively();
+                return true;
+            } else {
+                return false;
             }
         } catch (Throwable t) {
-            // ignored
+            return false;
         }
     }
 }

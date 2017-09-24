@@ -23,5 +23,5 @@ public abstract class ProcessManager {
 
     abstract void setCdp4jId(String cdp4jId);
 
-    public abstract void kill();
+    public abstract boolean kill();
 }
