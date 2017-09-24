@@ -21,6 +21,8 @@ import static io.webfolder.cdp.event.Events.LogEntryAdded;
 import static io.webfolder.cdp.event.Events.NetworkResponseReceived;
 import static io.webfolder.cdp.event.Events.PageLoadEventFired;
 import static io.webfolder.cdp.event.Events.RuntimeConsoleAPICalled;
+import static io.webfolder.cdp.session.Constant.WAIT_PERIOD;
+import static io.webfolder.cdp.session.Constant.WAIT_TIMEOUT;
 import static io.webfolder.cdp.type.constant.ImageFormat.Png;
 import static io.webfolder.cdp.type.page.ResourceType.Document;
 import static io.webfolder.cdp.type.page.ResourceType.XHR;
@@ -179,7 +181,7 @@ public class Session implements AutoCloseable,
      * @return this
      */
     public Session waitDocumentReady() {
-        return waitDocumentReady(Constant.WAIT_TIMEOUT);
+        return waitDocumentReady(WAIT_TIMEOUT);
     }
 
     /**
@@ -221,11 +223,11 @@ public class Session implements AutoCloseable,
     }
 
     public boolean waitUntil(final Predicate<Session> predicate) {
-        return waitUntil(predicate, Constant.WAIT_TIMEOUT, Constant.WAIT_PERIOD);
+        return waitUntil(predicate, WAIT_TIMEOUT, WAIT_PERIOD);
     }
 
     public boolean waitUntil(final Predicate<Session> predicate, final int timeout) {
-        return waitUntil(predicate, timeout, Constant.WAIT_PERIOD);
+        return waitUntil(predicate, timeout, WAIT_PERIOD);
     }
 
     public boolean waitUntil(
