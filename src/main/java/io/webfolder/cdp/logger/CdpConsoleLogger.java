@@ -17,17 +17,28 @@
  */
 package io.webfolder.cdp.logger;
 
+import static io.webfolder.cdp.logger.CdpLogLevel.Debug;
+import static io.webfolder.cdp.logger.CdpLogLevel.Error;
+import static io.webfolder.cdp.logger.CdpLogLevel.Info;
+import static io.webfolder.cdp.logger.CdpLogLevel.Warn;
 import static io.webfolder.cdp.logger.MessageFormatter.arrayFormat;
-import static io.webfolder.cdp.logger.MessageFormatter.format;
-import static java.lang.System.getProperty;
 
 public class CdpConsoleLogger implements CdpLogger {
 
-    private final String LEVEL = getProperty("cdp.console.defaultLogLevel", "info");
+    private final CdpLogLevel level;
+
+    public CdpConsoleLogger() {
+        this(Info);
+    }
+
+    public CdpConsoleLogger(final CdpLogLevel level) {
+        this.level = level;
+    }
 
     @Override
     public void info(String message, Object... args) {
-        if ("info".equals(LEVEL) || "debug".equals(LEVEL)) {
+        if (Info.equals(level) ||
+                Debug.equals(level)) {
             FormattingTuple tuple = arrayFormat(message, args);
             System.out.println("[INFO] " + tuple.getMessage());
         }
@@ -35,15 +46,17 @@ public class CdpConsoleLogger implements CdpLogger {
 
     @Override
     public void debug(String message, Object... args) {
-        if ("debug".equals(LEVEL)) {
+        if (Debug.equals(level)) {
             FormattingTuple tuple = arrayFormat(message, args);
-            System.out.println("[INFO] " + tuple.getMessage());
+            System.out.println("[DEBUG] " + tuple.getMessage());
         }
     }
 
     @Override
     public void warning(String message, Object... args) {
-        if ("info".equals(LEVEL) || "debug".equals(LEVEL)) {
+        if (Info.equals(level)     ||
+                Warn.equals(level) ||
+                Debug.equals(level)) {
             FormattingTuple tuple = arrayFormat(message, args);
             System.out.println("[WARN] " + tuple.getMessage());
         }
@@ -51,7 +64,10 @@ public class CdpConsoleLogger implements CdpLogger {
 
     @Override
     public void error(String message, Object... args) {
-        if ("info".equals(LEVEL) || "debug".equals(LEVEL) || "error".equals(LEVEL)) {
+        if (Info.equals(level)      ||
+                Warn.equals(level)  ||
+                Error.equals(level) ||
+                Debug.equals(level)) {
             FormattingTuple tuple = arrayFormat(message, args);
             System.out.println("[ERROR] " + tuple.getMessage());
         }
@@ -59,9 +75,14 @@ public class CdpConsoleLogger implements CdpLogger {
 
     @Override
     public void error(String message, Throwable t) {
-        if ("info".equals(LEVEL) || "debug".equals(LEVEL) || "error".equals(LEVEL)) {
-            FormattingTuple tuple = format(message, t.getMessage());
-            System.err.println("[ERROR] " + tuple.getMessage());
+        if (Info.equals(level)      ||
+                Warn.equals(level)  ||
+                Error.equals(level) ||
+                Debug.equals(level)) {
+            System.err.println("[ERROR] " + message);
+            if ( t != null ) {
+                t.printStackTrace();
+            }
         }
     }
 }
