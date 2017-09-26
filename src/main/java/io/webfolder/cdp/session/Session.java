@@ -568,4 +568,9 @@ public class Session implements AutoCloseable,
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Session [sessionId=" + sessionId + "]";
+    }
 }

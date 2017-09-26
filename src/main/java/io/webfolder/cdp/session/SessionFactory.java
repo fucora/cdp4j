@@ -553,4 +553,9 @@ public class SessionFactory implements AutoCloseable {
     public List<String> listBrowserContextIds() {
         return unmodifiableList(browserContextList);
     }
+
+    @Override
+    public String toString() {
+        return "SessionFactory [host=" + host + ", port=" + port + ", sessions=" + sessions + "]";
+    }
 }
