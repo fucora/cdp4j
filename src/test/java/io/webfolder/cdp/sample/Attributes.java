@@ -32,7 +32,6 @@ public class Attributes {
 
         try (SessionFactory factory = launcher.launch();
                             Session session = factory.create()) {
-
             session.navigate(url.toString());
             session.waitDocumentReady();
             String value = session.getAttribute("input", "value");
@@ -40,7 +39,6 @@ public class Attributes {
             session.setAttribute("input", "value", "bar");
             value = session.getAttribute("input", "value");
             System.out.println("New Value: " + value);
-
         }
     }
 }

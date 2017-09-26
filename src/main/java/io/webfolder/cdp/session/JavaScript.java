@@ -323,7 +323,7 @@ public interface JavaScript {
                 .getCommand()
                 .getRuntime()
                 .callFunctionOn(windowResult.getResult().getObjectId(),
-                        "function(is, value) { console.info(Object.prototype.toString.call(value)); function index(obj, is, value) { if (typeof is == 'string') return index(obj, is.split('.'), value); " +
+                        "function(is, value) { function index(obj, is, value) { if (typeof is == 'string') return index(obj, is.split('.'), value); " +
                         "else if (is.length === 1 && value !== undefined) return obj[is[0]] = value; else if (is.length === 0) " +
                         "return obj; else return index(obj[is[0]], is.slice(1), value); } index(window, is, value); }",
                                                 asList(argVariableName, argVariableValue),

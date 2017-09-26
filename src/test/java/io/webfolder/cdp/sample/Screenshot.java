@@ -32,7 +32,6 @@ import io.webfolder.cdp.session.SessionFactory;
 public class Screenshot {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-
         Launcher launcher = new Launcher();
 
         Path file = createTempFile("screenshot", ".png");

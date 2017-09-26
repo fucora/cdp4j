@@ -26,7 +26,6 @@ import io.webfolder.cdp.session.SessionFactory;
 public class Sizzle {
 
     public static void main(String[] args) throws InterruptedException {
-
         URL url = Sizzle.class.getResource("/sizzle.html");
 
         Launcher launcher = new Launcher();
@@ -42,6 +41,5 @@ public class Sizzle {
             session.click("p:contains('hello')");
             session.wait(100);
         }
-
     }
 }

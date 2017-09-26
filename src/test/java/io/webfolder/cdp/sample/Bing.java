@@ -30,7 +30,6 @@ public class Bing {
 
         try (SessionFactory factory = launcher.launch();
                             Session session = factory.create()) {
-
             session
                 .navigate("https://www.bing.com")
                 .waitDocumentReady()

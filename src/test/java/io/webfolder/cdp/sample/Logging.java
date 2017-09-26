@@ -24,12 +24,10 @@ import io.webfolder.cdp.session.SessionFactory;
 public class Logging {
 
     public static void main(String[] args) {
-
         Launcher launcher = new Launcher();
 
         try (SessionFactory factory = launcher.launch();
                             Session session = factory.create()) {
-
             session.navigate("about:blank");
             session.waitDocumentReady();
 
@@ -45,7 +43,6 @@ public class Logging {
 
             session.evaluate("fetch('https://google.com')");
             session.wait(2000);
-
         }
     }
 }

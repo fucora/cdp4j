@@ -28,12 +28,10 @@ import io.webfolder.cdp.session.SessionFactory;
 public class GoogleTranslate {
 
     public static void main(String[] args) {
-
         Launcher launcher = new Launcher();
 
         try (SessionFactory factory = launcher.launch();
                                 Session session = factory.create()) {
-            
             session.installSizzle();
 
             Network network = session.getCommand().getNetwork();
@@ -71,7 +69,6 @@ public class GoogleTranslate {
                     .wait(2000);
         
             System.out.println(session.getText("#gt-res-dir-ctr"));
-
         }
     }
 }

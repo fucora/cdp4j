@@ -24,7 +24,6 @@ import io.webfolder.cdp.session.SessionFactory;
 public class SendKeys {
 
     public static void main(String[] args) {
-
         Launcher launcher = new Launcher();
         
         try (SessionFactory factory = launcher.launch();
@@ -36,6 +35,5 @@ public class SendKeys {
             session.sendEnter();
             session.wait(5000);
         }
-
     }
 }

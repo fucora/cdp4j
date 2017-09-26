@@ -167,7 +167,7 @@ public class Session implements AutoCloseable,
     }
 
     /**
-     * User {@link Session#getListenerManager()}
+     * Use {@link Session#getListenerManager()}
      */
     @Deprecated
     public void addEventListener(EventListener<?> eventListener) {
@@ -175,7 +175,7 @@ public class Session implements AutoCloseable,
     }
 
     /**
-     * User {@link Session#getListenerManager()}
+     * Use {@link Session#getListenerManager()}
      */
     @Deprecated
     public void removeEventEventListener(EventListener<?> eventListener) {

@@ -36,7 +36,6 @@ public class DownloadFile {
                             Session session = factory.create()) {
             session.navigate("https://webfolder.io/download");
             session.waitDocumentReady();
-            session.wait(2000);
             session.getCommand().getNetwork().enable();
             Page page = session.getCommand().getPage();
             Path downloadPath = Paths.get(".").toAbsolutePath();

@@ -28,7 +28,6 @@ public class SharedSession {
 
         try (SessionFactory factory = launcher.launch();
                             Session session = factory.create()) {
-
             try (Session firstSession = factory.create()) {
                 firstSession.navigate("https://httpbin.org/cookies/set?SESSION_ID=1");
                 firstSession.wait(1000);
@@ -42,7 +41,6 @@ public class SharedSession {
                 secondSession.wait(1000);
                 System.out.println(session2);
             }
-
         }
     }
 }

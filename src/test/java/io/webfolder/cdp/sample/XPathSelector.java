@@ -24,7 +24,6 @@ import io.webfolder.cdp.session.SessionFactory;
 public class XPathSelector {
 
     public static void main(String[] args) {
-
         Launcher launcher = new Launcher();
 
         try (SessionFactory factory = launcher.launch();
@@ -37,6 +36,5 @@ public class XPathSelector {
 
             System.out.println(title);
         }
-
     }
 }

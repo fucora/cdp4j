@@ -39,8 +39,6 @@ public class ExecuteJavascript {
 
             Integer intResult = session.callFunction("foo", Integer.class);
             System.out.println(intResult);
-
         }
-
     }
 }

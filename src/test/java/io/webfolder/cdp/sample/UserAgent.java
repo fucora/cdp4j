@@ -29,14 +29,12 @@ public class UserAgent {
 
     @SuppressWarnings("rawtypes")
     public static void main(String[] args) {
-        
         Launcher launcher = new Launcher();
 
         try (SessionFactory factory = launcher.launch();
                             Session session = factory.create()) {
 
             session.setUserAgent("My Browser");
-            session.wait(500);
             session.navigate("https://httpbin.org/headers");
             session.waitDocumentReady();
             String response = (String) session.evaluate("document.body.textContent");
@@ -46,8 +44,6 @@ public class UserAgent {
             Map headers = (Map) json.get("headers");
 
             System.out.println(headers.get("User-Agent"));
-            
         }
-
     }
 }

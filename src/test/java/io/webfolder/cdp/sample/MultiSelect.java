@@ -28,7 +28,6 @@ import io.webfolder.cdp.session.SessionFactory;
 public class MultiSelect {
 
     public static void main(String[] args) {
-
         URL url = MultiSelect.class.getResource("/multi-select.html");
 
         Launcher launcher = new Launcher();

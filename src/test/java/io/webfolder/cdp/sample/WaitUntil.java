@@ -26,7 +26,6 @@ import io.webfolder.cdp.session.SessionFactory;
 public class WaitUntil {
 
     public static void main(String[] args) {
-
         URL url = WaitUntil.class.getResource("/dom-change-sample.html");
 
         Launcher launcher = new Launcher();
@@ -44,7 +43,6 @@ public class WaitUntil {
                 String time = session.getText("#time");
                 System.out.println(time);
             }
-
         }
     }
 }

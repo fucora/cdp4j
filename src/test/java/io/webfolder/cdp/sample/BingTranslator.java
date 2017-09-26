@@ -34,7 +34,6 @@ public class BingTranslator {
 
         try (SessionFactory factory = launcher.launch();
                             Session session = factory.create()) {
-
             session
                 .navigate("https://www.bing.com/translator")
                 .waitDocumentReady()
@@ -67,7 +66,6 @@ public class BingTranslator {
             }
             
             System.out.println(builder.toString());
-
         }
     }
 }
