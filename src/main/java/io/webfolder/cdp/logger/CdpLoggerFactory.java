@@ -50,8 +50,9 @@ public class CdpLoggerFactory {
     public CdpLogger getLogger(String name) {
         try {
             switch (loggerType) {
-                case Slf4j: return new CdpSlf4jLogger(name);
-                default   : return NULL_LOGGER;
+                case Slf4j  : return new CdpSlf4jLogger(name);
+                case Console: return new CdpConsoleLogger();
+                default     : return NULL_LOGGER;
             }
         } catch (Throwable e) {
             log.warning(e.getMessage());

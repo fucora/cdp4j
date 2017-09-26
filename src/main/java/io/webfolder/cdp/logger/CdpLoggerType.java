@@ -19,5 +19,6 @@ package io.webfolder.cdp.logger;
 
 public enum CdpLoggerType {
     Null,
-    Slf4j
+    Slf4j,
+    Console
 }

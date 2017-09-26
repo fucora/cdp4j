@@ -17,6 +17,7 @@
  */
 package io.webfolder.cdp.session;
 
+import static io.webfolder.cdp.logger.CdpLoggerType.Console;
 import static io.webfolder.cdp.logger.CdpLoggerType.Slf4j;
 import static java.lang.String.format;
 import static java.lang.String.valueOf;
@@ -147,11 +148,19 @@ public class SessionFactory implements AutoCloseable {
                     final int connectionTimeout,
                     final CdpLoggerType loggerType,
                     final ExecutorService threadPool) {
-        this.host              = host;
-        this.port              = port;
-        this.connectionTimeout = connectionTimeout;
-        this.factory           = new WebSocketFactory();
-        this.loggerFactory     = new CdpLoggerFactory(loggerType);
+        this.host                   = host;
+        this.port                   = port;
+        this.connectionTimeout      = connectionTimeout;
+        this.factory                = new WebSocketFactory();
+        CdpLoggerType cdpLoggerType = loggerType;
+        try {
+            SessionFactory.class.getClassLoader().loadClass("org.slf4j.Logger");
+        } catch (ClassNotFoundException e) {
+            if (Slf4j.equals(loggerType)) {
+                cdpLoggerType = Console;
+            }
+        }
+        this.loggerFactory     = new CdpLoggerFactory(cdpLoggerType);
         this.threadPool        = threadPool;
         this.log               = loggerFactory.getLogger("cdp4j.factory");
         this.gson              = new GsonBuilder()
