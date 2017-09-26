@@ -45,7 +45,6 @@ public class PrintToPDF {
 
                 session.navigate("https://webfolder.io/linux?cdp4j");
                 session.waitDocumentReady();
-                session.wait(1000);
 
                 byte[] content = session
                                     .getCommand()
