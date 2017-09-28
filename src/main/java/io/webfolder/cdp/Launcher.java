@@ -56,11 +56,7 @@ public class Launcher {
     private static class NullProcessManager extends ProcessManager {
 
         @Override
-        void setProcess(Process process) {
-        }
-
-        @Override
-        void setCdp4jId(String cdp4jId) {
+        void setProcess(CdpProcess process) {
         }
 
         @Override
@@ -244,8 +240,7 @@ public class Launcher {
                 throw new CdpException("No process: the chrome process is not alive.");
             }
 
-            processManager.setProcess(process);
-            processManager.setCdp4jId(cdp4jId);
+            processManager.setProcess(new CdpProcess(process, cdp4jId));
         } catch (IOException e) {
             throw new CdpException(e);
         }

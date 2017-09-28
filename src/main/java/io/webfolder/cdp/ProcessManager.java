@@ -19,9 +19,7 @@ package io.webfolder.cdp;
 
 public abstract class ProcessManager {
 
-    abstract void setProcess(Process process);
-
-    abstract void setCdp4jId(String cdp4jId);
+    abstract void setProcess(CdpProcess process);
 
     public abstract boolean kill();
 }

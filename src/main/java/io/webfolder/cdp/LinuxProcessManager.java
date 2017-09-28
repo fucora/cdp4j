@@ -32,19 +32,15 @@ public class LinuxProcessManager extends ProcessManager {
     private String cdp4jId;
 
     @Override
-    void setProcess(Process process) {
+    void setProcess(CdpProcess process) {
         try {
             Field pidField = process.getClass().getDeclaredField("pid");
             pidField.setAccessible(true);
-            this.pid = (int) pidField.get(process);
+            this.pid = (int) pidField.get(process.getProcess());
+            this.cdp4jId = process.getCdp4jProcessId();
         } catch (Throwable e) {
             // ignored
         }
-    }
-
-    @Override
-    void setCdp4jId(String cdp4jId) {
-        this.cdp4jId = cdp4jId;
     }
 
     @Override
