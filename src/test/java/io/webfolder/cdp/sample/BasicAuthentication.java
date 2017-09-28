@@ -17,12 +17,15 @@
  */
 package io.webfolder.cdp.sample;
 
+import static io.webfolder.cdp.event.Events.NetworkRequestIntercepted;
+
 import java.util.Map;
 
 import com.google.gson.Gson;
 
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.command.Network;
+import io.webfolder.cdp.event.network.RequestIntercepted;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 import io.webfolder.cdp.type.constant.AuthResponse;
@@ -42,9 +45,9 @@ public class BasicAuthentication {
             network.enable();
             network.setRequestInterceptionEnabled(true);
 
-            session.
-                getListenerManager()
-                .addNetworkRequestInterceptedListener(ri -> {
+            session.addEventListener((e, v) -> {
+                if (NetworkRequestIntercepted.equals(e)) {
+                    RequestIntercepted ri = (RequestIntercepted) v;
                     if (ri.getAuthChallenge() != null) {
                         AuthChallengeResponse acr = new AuthChallengeResponse();
                         acr.setUsername("user");
@@ -56,8 +59,9 @@ public class BasicAuthentication {
                                                            null,  acr);
                     } else {
                         network.continueInterceptedRequest(ri.getInterceptionId());
-                    }                    
-                });
+                    }
+                }
+            });
 
             session.navigate("https://httpbin.org/basic-auth/user/password");
             session.wait(1000);

@@ -108,8 +108,6 @@ public class Session implements AutoCloseable,
 
     private final ReentrantLock lock = new ReentrantLock(true);
 
-    private ListenerManager listenerManager;
-
     private static final ThreadLocal<Boolean> ENABLE_ENTRY_EXIT_LOG = 
                                                     withInitial(() -> { return TRUE; });
 
@@ -135,7 +133,6 @@ public class Session implements AutoCloseable,
         this.logFlow          = loggerFactory.getLogger("cdp4j.flow");
         this.gson             = gson;
         this.command          = new Command(this);
-        this.listenerManager  = new ListenerManager(this);
     }
 
     public String getId() {
@@ -169,7 +166,6 @@ public class Session implements AutoCloseable,
     /**
      * Use {@link Session#getListenerManager()}
      */
-    @Deprecated
     public void addEventListener(EventListener<?> eventListener) {
         eventListeners.add(eventListener);
     }
@@ -177,7 +173,6 @@ public class Session implements AutoCloseable,
     /**
      * Use {@link Session#getListenerManager()}
      */
-    @Deprecated
     public void removeEventEventListener(EventListener<?> eventListener) {
         if (eventListener != null) {
             eventListeners.remove(eventListener);
@@ -409,10 +404,6 @@ public class Session implements AutoCloseable,
 
     public Command getCommand() {
         return command;
-    }
-
-    public ListenerManager getListenerManager() {
-        return listenerManager;
     }
 
     @Override

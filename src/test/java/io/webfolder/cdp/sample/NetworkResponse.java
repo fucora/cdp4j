@@ -17,7 +17,10 @@
  */
 package io.webfolder.cdp.sample;
 
+import static io.webfolder.cdp.event.Events.NetworkResponseReceived;
+
 import io.webfolder.cdp.Launcher;
+import io.webfolder.cdp.event.network.ResponseReceived;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 import io.webfolder.cdp.type.network.GetResponseBodyResult;
@@ -26,23 +29,25 @@ import io.webfolder.cdp.type.network.Response;
 public class NetworkResponse {
 
     public static void main(String[] args) {
+        
         Launcher launcher = new Launcher();
 
         try (SessionFactory factory = launcher.launch();
                             Session session = factory.create()) {
             session.getCommand().getNetwork().enable();
             session.navigate("http://cnn.com");
-            session
-                    .getListenerManager()
-                    .addNetworkResponseReceivedListener(rr -> {
-                Response response = rr.getResponse();
-                GetResponseBodyResult rb = session.getCommand().getNetwork().getResponseBody(rr.getRequestId());
-                String body = rb.getBody();
-                System.out.println("----------------------------------------");
-                System.out.println("URL       : " + response.getUrl());
-                System.out.println("Status    : HTTP " + response.getStatus().intValue() + " " + response.getStatusText());
-                System.out.println("Mime Type : " + response.getMimeType());
-                System.out.println("Content   : " + body.substring(0, body.length() > 1024 ? 1024 : body.length()));
+            session.addEventListener((e, d) -> {
+                if (NetworkResponseReceived.equals(e)) {
+                    ResponseReceived rr = (ResponseReceived) d;
+                    Response response = rr.getResponse();
+                    GetResponseBodyResult rb = session.getCommand().getNetwork().getResponseBody(rr.getRequestId());
+                    String body = rb.getBody();
+                    System.out.println("----------------------------------------");
+                    System.out.println("URL       : " + response.getUrl());
+                    System.out.println("Status    : HTTP " + response.getStatus().intValue() + " " + response.getStatusText());
+                    System.out.println("Mime Type : " + response.getMimeType());
+                    System.out.println("Content   : " + body.substring(0, body.length() > 1024 ? 1024 : body.length()));
+                }
             });
             session.waitDocumentReady();
         }
