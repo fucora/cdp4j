@@ -45,11 +45,11 @@ public class Launcher {
 
     private final SessionFactory factory;
 
-    private static final String  OS       = getProperty("os.name").toLowerCase(ENGLISH);
+    private static final String  OS      = getProperty("os.name").toLowerCase(ENGLISH);
 
-    private static final boolean WINDOWS  = OS.startsWith("windows");
+    private static final boolean WINDOWS = OS.startsWith("windows");
 
-    private static final boolean OSX      = OS.startsWith("mac");
+    private static final boolean OSX     = OS.startsWith("mac");
 
     private ProcessManager processManager = new NullProcessManager();
 

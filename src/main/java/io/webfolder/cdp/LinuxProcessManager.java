@@ -66,7 +66,9 @@ public class LinuxProcessManager extends ProcessManager {
         }
         try {
             Class<?> clazz = forName("java.lang.UNIXProcess");
-            Method destroyProcess = clazz.getDeclaredMethod("destroyProcess", int.class, boolean.class);
+            Method destroyProcess = clazz.getDeclaredMethod("destroyProcess",
+                                                                int.class,
+                                                                boolean.class);
             destroyProcess.setAccessible(true);
             boolean force = false;
             destroyProcess.invoke(null, pid, force);
