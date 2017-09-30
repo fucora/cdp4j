@@ -87,6 +87,7 @@
        <artifact>com.neovisionaries:nv-websocket-client</artifact>
        <excludes>
         <exclude>com/neovisionaries/ws/client/WebSocketOutputStream.class</exclude>
+        <exclude>com/neovisionaries/ws/client/WebSocketInputStream.class</exclude>
        </excludes>
       </filter>
      </filters>
