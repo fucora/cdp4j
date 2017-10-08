@@ -202,6 +202,18 @@
     </configuration>
    </plugin>
    <plugin>
+    <groupId>io.github.zlika</groupId>
+    <artifactId>reproducible-build-maven-plugin</artifactId>
+    <version>0.3</version>
+    <executions>
+     <execution>
+      <goals>
+       <goal>strip-jar</goal>
+      </goals>
+     </execution>
+    </executions>
+   </plugin>
+   <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-gpg-plugin</artifactId>
     <version>1.5</version>
