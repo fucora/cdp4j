@@ -314,7 +314,7 @@ mvn test -Dchrome_binary=/usr/lic/chromium-dev/chromium-dev
 Reproducible Builds
 -------------------
 
-The binaries released with each restic version starting at 2.1.0 are reproducible,
+The binaries released with each cdp4j version starting at 2.1.0 are reproducible,
 which means that you can easily reproduce a byte identical version from the source code for that release.
 
 How it is tested
