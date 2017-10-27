@@ -35,7 +35,6 @@ public class NetworkResponse {
         try (SessionFactory factory = launcher.launch();
                             Session session = factory.create()) {
             session.getCommand().getNetwork().enable();
-            session.navigate("http://cnn.com");
             session.addEventListener((e, d) -> {
                 if (NetworkResponseReceived.equals(e)) {
                     ResponseReceived rr = (ResponseReceived) d;
@@ -49,6 +48,7 @@ public class NetworkResponse {
                     System.out.println("Content   : " + body.substring(0, body.length() > 1024 ? 1024 : body.length()));
                 }
             });
+            session.navigate("http://cnn.com");
             session.waitDocumentReady();
         }
     }

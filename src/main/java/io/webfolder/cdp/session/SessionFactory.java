@@ -255,8 +255,8 @@ public class SessionFactory implements AutoCloseable {
         if (webSocketDebuggerUrl == null) {
             throw new CdpException("SessionId not found: " + sessionId);
         }
-        Reader       reader = null;
-        Session     session = null;
+        Reader    reader    = null;
+        Session   session   = null;
         WebSocket webSocket = null;
         try {
             Map<Integer, WSContext> contextList = new ConcurrentHashMap<>();
