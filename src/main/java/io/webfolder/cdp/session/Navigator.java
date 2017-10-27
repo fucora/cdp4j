@@ -151,6 +151,22 @@ public interface Navigator {
     }
 
     /**
+     * Gets the full HTML contents of the page, including the doctype.
+     * 
+     * @return string content of the document
+     */
+    default String getContent() {
+        getThis().disableFlowLog();
+        DOM dom = getThis().getCommand().getDOM();
+        Integer nodeId = dom.getDocument().getNodeId();
+        RemoteObject remoteObject = dom.resolveNode(nodeId, null, null);
+        String title = (String) getThis().getPropertyByObjectId(remoteObject.getObjectId(), "documentElement.outerHTML");
+        getThis().logExit("getContent", title);
+        getThis().releaseObject(remoteObject.getObjectId());
+        return title;
+    }
+
+    /**
      * Gets the title of the document.
      * 
      * @return string containing the document's title
