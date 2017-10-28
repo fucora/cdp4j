@@ -57,6 +57,7 @@ import io.webfolder.cdp.event.network.ResponseReceived;
 import io.webfolder.cdp.event.page.LifecycleEvent;
 import io.webfolder.cdp.event.runtime.ConsoleAPICalled;
 import io.webfolder.cdp.exception.CdpException;
+import io.webfolder.cdp.exception.LoadTimeoutException;
 import io.webfolder.cdp.listener.EventListener;
 import io.webfolder.cdp.listener.TerminateEvent;
 import io.webfolder.cdp.listener.TerminateListener;
@@ -213,15 +214,15 @@ public class Session implements AutoCloseable,
         });
         try {
             if( ! latch.await(adjustedTimeout, MILLISECONDS) ) {
-                throw new CdpException("Page not loaded within " + timeout + " ms");
+                throw new LoadTimeoutException("Page not loaded within " + timeout + " ms");
             }
         } catch (InterruptedException e) {
             throw new CdpException(e);
         }
         if ( ! isDomReady() ) {
-            waitUntil(s -> s.isDomReady());
+            waitUntil(s -> s.isDomReady(), timeout);
         }
-        if ( ! isDomReady()) {
+        if ( ! isDomReady() ) {
             throw new CdpException("DOM is not ready");
         }
         return this;
