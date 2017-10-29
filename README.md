@@ -221,7 +221,7 @@ public class PrintToPDF {
             String context = factory.createBrowserContext();
             try (Session session = factory.create(context)) {
 
-                session.navigate("https://webfolder.io/linux?cdp4j");
+                session.navigate("https://webfolder.io?cdp4j");
                 session.waitDocumentReady();
                 session.wait(1000);
 
@@ -332,4 +332,4 @@ Getting Help
 
 ![WebFolder](https://raw.githubusercontent.com/webfolderio/cdp4j/master/images/logo.png)
 
-You can support cdp4j development by **buying** support package. Please [contact us](https://webfolder.io/support) for support packages & pricing.
+You can support cdp4j development by **buying** support package. Please [contact us](https://webfolder.io/support.html) for support packages & pricing.
