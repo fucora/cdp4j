@@ -33,7 +33,7 @@ Features
 Supported Java Versions
 -----------------------
 
-Oracle & OpenJDK Java 8.
+Oracle & OpenJDK Java 8 & 9.
 
 Both the JRE and the JDK are suitable for use with this library.
 
