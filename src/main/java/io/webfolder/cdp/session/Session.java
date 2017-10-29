@@ -217,11 +217,12 @@ public class Session implements AutoCloseable,
         } catch (InterruptedException e) {
             throw new CdpException(e);
         }
-        if ( ! isDomReady() ) {
-            waitUntil(s -> s.isDomReady(), timeout);
+        if (isDomReady()) {
+            return this;
         }
+        waitUntil(s -> s.isDomReady(), timeout);
         if ( ! isDomReady() ) {
-            throw new CdpException("DOM is not ready");
+                throw new LoadTimeoutException("Page not loaded within " + timeout + " ms");
         }
         return this;
     }
