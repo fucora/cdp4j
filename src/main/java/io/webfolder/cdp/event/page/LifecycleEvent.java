@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,9 +26,25 @@ import io.webfolder.cdp.annotation.EventName;
 @Domain("Page")
 @EventName("lifecycleEvent")
 public class LifecycleEvent {
+    private String frameId;
+
     private String name;
 
     private Double timestamp;
+
+    /**
+     * Id of the frame.
+     */
+    public String getFrameId() {
+        return frameId;
+    }
+
+    /**
+     * Id of the frame.
+     */
+    public void setFrameId(String frameId) {
+        this.frameId = frameId;
+    }
 
     public String getName() {
         return name;

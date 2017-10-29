@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,6 +28,7 @@ import java.util.Map;
 import io.webfolder.cdp.command.DOM;
 import io.webfolder.cdp.command.Network;
 import io.webfolder.cdp.exception.CdpException;
+import io.webfolder.cdp.type.dom.Node;
 import io.webfolder.cdp.type.runtime.RemoteObject;
 
 public interface Navigator {
@@ -190,7 +191,14 @@ public interface Navigator {
         try {
             getThis().disableFlowLog();
             DOM dom = getThis().getCommand().getDOM();
-            Integer nodeId = dom.getDocument().getNodeId();
+            if (dom == null) {
+                return false;
+            }
+            Node document = dom.getDocument();
+            if (document == null) {
+                return false;
+            }
+            Integer nodeId = document.getNodeId();
             RemoteObject remoteObject = dom.resolveNode(nodeId, null, null);
             String readyState = (String) getThis().getPropertyByObjectId(remoteObject.getObjectId(), "readyState");
             getThis().releaseObject(remoteObject.getObjectId());

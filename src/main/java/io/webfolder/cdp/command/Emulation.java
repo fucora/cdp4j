@@ -25,6 +25,7 @@ import io.webfolder.cdp.type.constant.Platform;
 import io.webfolder.cdp.type.dom.RGBA;
 import io.webfolder.cdp.type.emulation.ScreenOrientation;
 import io.webfolder.cdp.type.emulation.VirtualTimePolicy;
+import io.webfolder.cdp.type.page.Viewport;
 
 /**
  * This domain emulates different environments for the page
@@ -45,13 +46,15 @@ public interface Emulation {
      * @param positionY Overriding view Y position on screen in pixels (minimum 0, maximum 10000000).
      * @param dontSetVisibleSize Do not set visible view size, rely upon explicit setVisibleSize call.
      * @param screenOrientation Screen orientation override.
+     * @param viewport If set, the visible area of the page will be overridden to this viewport. This viewport change is not observed by the page, e.g. viewport-relative elements do not change positions.
      */
     void setDeviceMetricsOverride(Integer width, Integer height, Double deviceScaleFactor,
             Boolean mobile, @Optional Double scale, @Experimental @Optional Integer screenWidth,
             @Experimental @Optional Integer screenHeight, @Experimental @Optional Integer positionX,
             @Experimental @Optional Integer positionY,
             @Experimental @Optional Boolean dontSetVisibleSize,
-            @Optional ScreenOrientation screenOrientation);
+            @Optional ScreenOrientation screenOrientation,
+            @Experimental @Optional Viewport viewport);
 
     /**
      * Clears the overriden device metrics.
@@ -145,9 +148,11 @@ public interface Emulation {
      * Turns on virtual time for all frames (replacing real-time with a synthetic time source) and sets the current virtual time policy.  Note this supersedes any previous time budget.
      * 
      * @param budget If set, after this many virtual milliseconds have elapsed virtual time will be paused and a virtualTimeBudgetExpired event is sent.
+     * @param maxVirtualTimeTaskStarvationCount If set this specifies the maximum number of tasks that can be run before virtual is forced forwards to prevent deadlock.
      */
     @Experimental
-    void setVirtualTimePolicy(VirtualTimePolicy policy, @Optional Integer budget);
+    void setVirtualTimePolicy(VirtualTimePolicy policy, @Optional Integer budget,
+            @Optional Integer maxVirtualTimeTaskStarvationCount);
 
     /**
      * Overrides value returned by the javascript navigator object.

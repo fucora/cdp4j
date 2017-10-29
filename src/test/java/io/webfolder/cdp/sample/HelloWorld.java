@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,7 +31,7 @@ public class HelloWorld {
 
             session.navigate("https://webfolder.io?cdp4j");
             session.waitDocumentReady();
-            String content = (String) session.getProperty("//body", "outerText");
+            String content = session.getContent();
             System.out.println(content);
 
         }

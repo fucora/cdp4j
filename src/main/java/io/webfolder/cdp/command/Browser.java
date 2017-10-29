@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,6 +30,11 @@ import io.webfolder.cdp.type.browser.GetWindowForTargetResult;
 @Experimental
 @Domain("Browser")
 public interface Browser {
+    /**
+     * Close browser gracefully.
+     */
+    void close();
+
     /**
      * Get the browser window that contains the devtools target.
      * 

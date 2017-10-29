@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@ import io.webfolder.cdp.command.Input;
 /**
  * Interface representing basic keyboard operations.
  */
-public interface Keyboard {
+public interface Keyboard extends Constant {
 
     /**
      * Use this method to simulate typing into an element, which may set its value.
@@ -47,12 +47,12 @@ public interface Keyboard {
                     KeyDown, null, null, c,
                     null, null, null, null,
                     null, null, null, null,
-                    null);
+                    null, null);
             input.dispatchKeyEvent(
                     KeyUp, null, null, c,
                     null, null, null, null,
                     null, null, null, null,
-                    null);
+                    null, null);
         }
         return getThis();
     }
@@ -67,10 +67,10 @@ public interface Keyboard {
         Input input = getThis().getCommand().getInput();
         input.dispatchKeyEvent(KeyDown, null, null, null,
                                 null, null, null, "Tab",
-                                9, 9, null, null, null);
+                                TAB, TAB, null, null, null, null);
         input.dispatchKeyEvent(KeyUp, null, null, null,
                                 null, null, null, "Tab",
-                                9, 9, null, null, null);
+                                TAB, TAB, null, null, null, null);
         return getThis();
     }
 
@@ -84,10 +84,10 @@ public interface Keyboard {
         Input input = getThis().getCommand().getInput();
         input.dispatchKeyEvent(KeyDown, null, null, "\r",
                                 null, null, null, "Enter",
-                                13, 13, null, null, null);
+                                ENTER, ENTER, null, null, null, null);
         input.dispatchKeyEvent(KeyUp, null, null, null,
                                 null, null, null, "Enter",
-                                13, 13, null, null, null);
+                                ENTER, ENTER, null, null, null, null);
         return getThis();
     }
 
@@ -98,7 +98,7 @@ public interface Keyboard {
      */
     default Session sendBackspace() {
         getThis().logEntry("sendBackspace");
-        return sendKeyCode(46);
+        return sendKeyCode(BACKSPACE);
     }
 
     /**
@@ -108,7 +108,7 @@ public interface Keyboard {
      */
     default Session sendLeftArrow() {
         getThis().logEntry("sendLeftArrow");
-        return sendKeyCode(37);
+        return sendKeyCode(LEFT_ARROW);
     }
 
     /**
@@ -118,7 +118,7 @@ public interface Keyboard {
      */
     default Session sendUpArrow() {
         getThis().logEntry("sendUpArrow");
-        return sendKeyCode(38);
+        return sendKeyCode(UP_ARROW);
     }
 
     /**
@@ -128,7 +128,7 @@ public interface Keyboard {
      */
     default Session sendRightArrow() {
         getThis().logEntry("sendRightArrow");
-        return sendKeyCode(39);
+        return sendKeyCode(RIGHT_ARROW);
     }
 
     /**
@@ -138,7 +138,7 @@ public interface Keyboard {
      */
     default Session sendDownArrow() {
         getThis().logEntry("sendDownArrow");
-        return sendKeyCode(40);
+        return sendKeyCode(DOWN_ARROW);
     }
 
     /**
@@ -148,7 +148,7 @@ public interface Keyboard {
      */
     default Session sendEsc() {
         getThis().logEntry("sendEsc");
-        return sendKeyCode(27);
+        return sendKeyCode(ESC);
     }
 
     /**
@@ -163,10 +163,10 @@ public interface Keyboard {
         Input input = getThis().getCommand().getInput();
         input.dispatchKeyEvent(KeyDown, null, null, null,
                                 null, null, null, null,
-                                keyCode, keyCode, null, null, null);
+                                keyCode, keyCode, null, null, null, null);
         input.dispatchKeyEvent(KeyUp, null, null, null,
                                 null, null, null, null,
-                                keyCode, keyCode, null, null, null);
+                                keyCode, keyCode, null, null, null, null);
         return getThis();
     }
 

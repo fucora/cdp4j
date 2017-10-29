@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,10 @@ package io.webfolder.cdp.type.log;
 
 import io.webfolder.cdp.type.constant.LogEntrySeverity;
 import io.webfolder.cdp.type.constant.LogEntrySource;
+import io.webfolder.cdp.type.runtime.RemoteObject;
 import io.webfolder.cdp.type.runtime.StackTrace;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Log entry
@@ -42,6 +45,8 @@ public class LogEntry {
     private String networkRequestId;
 
     private String workerId;
+
+    private List<RemoteObject> args = new ArrayList<>();
 
     /**
      * Log entry source.
@@ -167,5 +172,19 @@ public class LogEntry {
      */
     public void setWorkerId(String workerId) {
         this.workerId = workerId;
+    }
+
+    /**
+     * Call arguments.
+     */
+    public List<RemoteObject> getArgs() {
+        return args;
+    }
+
+    /**
+     * Call arguments.
+     */
+    public void setArgs(List<RemoteObject> args) {
+        this.args = args;
     }
 }

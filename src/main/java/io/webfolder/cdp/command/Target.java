@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -122,12 +122,14 @@ public interface Target {
      * @param width Frame width in DIP (headless chrome only).
      * @param height Frame height in DIP (headless chrome only).
      * @param browserContextId The browser context to create the page in (headless chrome only).
+     * @param enableBeginFrameControl Whether BeginFrames for this target will be controlled via DevTools (headless chrome only, not supported on MacOS yet, false by default).
      * 
      * @return The id of the page opened.
      */
     @Returns("targetId")
     String createTarget(String url, @Optional Integer width, @Optional Integer height,
-            @Optional String browserContextId);
+            @Optional String browserContextId,
+            @Experimental @Optional Boolean enableBeginFrameControl);
 
     /**
      * Retrieves a list of available targets.

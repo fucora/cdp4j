@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -52,6 +52,9 @@ public enum LogEntrySource {
 
     @SerializedName("intervention")
     Intervention("intervention"),
+
+    @SerializedName("recommendation")
+    Recommendation("recommendation"),
 
     @SerializedName("other")
     Other("other");

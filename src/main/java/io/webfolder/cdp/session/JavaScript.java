@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -120,8 +120,8 @@ public interface JavaScript {
         CallFunctionOnResult funcObj = getThis()
                 .getCommand()
                 .getRuntime()
-                .callFunctionOn(windowResult.getResult().getObjectId(),
-                        "function(functionName) { return functionName.split('.').reduce((o, i) => o[i], this); }",
+                .callFunctionOn("function(functionName) { return functionName.split('.').reduce((o, i) => o[i], this); }",
+                                                        windowResult.getResult().getObjectId(),
                                                         asList(objArgument),
                                                         FALSE, FALSE,
                                                         FALSE, FALSE,
@@ -142,7 +142,7 @@ public interface JavaScript {
 
         StringJoiner argNames = new StringJoiner(",");
 
-        List<CallArgument> argsFunc = new ArrayList<>();
+        List<CallArgument> argsFunc = new ArrayList<>(arguments.length);
 
         int i = 0;
         if ( arguments != null && arguments.length > 0) {
@@ -163,10 +163,10 @@ public interface JavaScript {
         CallFunctionOnResult func = getThis()
                                         .getCommand()
                                         .getRuntime()
-                                        .callFunctionOn(funcObj.getResult().getObjectId(),
-                                                format("function(%s) { const result = this.apply(this, Array.prototype.slice.call(arguments)); " +
+                                        .callFunctionOn(format("function(%s) { const result = this.apply(this, Array.prototype.slice.call(arguments)); " +
                                                         "return typeof result === 'undefined' ? undefined : JSON.stringify({ result : result }); }",
                                                         argNames.toString()),
+                                                funcObj.getResult().getObjectId(),
                                                 argsFunc,
                                                 FALSE, TRUE,
                                                 FALSE, FALSE,
@@ -242,9 +242,10 @@ public interface JavaScript {
         CallFunctionOnResult obj = getThis()
                 .getCommand()
                 .getRuntime()
-                .callFunctionOn(windowResult.getResult().getObjectId(),
+                .callFunctionOn(
                         "function(functionName) { const result = functionName.split('.').reduce((o, i) => o[i], this); " +
                                 "return typeof result === 'undefined' ? undefined : JSON.stringify({ result : result }); }",
+                                                        windowResult.getResult().getObjectId(),
                                                         asList(objArgument),
                                                         FALSE, FALSE,
                                                         FALSE, FALSE,
@@ -322,10 +323,9 @@ public interface JavaScript {
         CallFunctionOnResult obj = getThis()
                 .getCommand()
                 .getRuntime()
-                .callFunctionOn(windowResult.getResult().getObjectId(),
-                        "function(is, value) { function index(obj, is, value) { if (typeof is == 'string') return index(obj, is.split('.'), value); " +
+                .callFunctionOn("function(is, value) { function index(obj, is, value) { if (typeof is == 'string') return index(obj, is.split('.'), value); " +
                         "else if (is.length === 1 && value !== undefined) return obj[is[0]] = value; else if (is.length === 0) " +
-                        "return obj; else return index(obj[is[0]], is.slice(1), value); } index(window, is, value); }",
+                        "return obj; else return index(obj[is[0]], is.slice(1), value); } index(window, is, value); }", windowResult.getResult().getObjectId(),
                                                 asList(argVariableName, argVariableValue),
                                                 FALSE, FALSE,
                                                 FALSE, FALSE,

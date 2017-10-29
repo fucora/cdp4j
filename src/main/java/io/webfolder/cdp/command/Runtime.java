@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -87,21 +87,11 @@ public interface Runtime {
      * 
      * @return CallFunctionOnResult
      */
-    CallFunctionOnResult callFunctionOn(@Optional String objectId, String functionDeclaration,
+    CallFunctionOnResult callFunctionOn(String functionDeclaration, @Optional String objectId,
             @Optional List<CallArgument> arguments, @Optional Boolean silent,
             @Optional Boolean returnByValue, @Experimental @Optional Boolean generatePreview,
             @Experimental @Optional Boolean userGesture, @Optional Boolean awaitPromise,
             @Optional Integer executionContextId, @Optional String objectGroup);
-
-    /**
-     * Calls function with given declaration on the given object. Object group of the result is inherited from the target object.
-     * 
-     * @param objectId Identifier of the object to call function on.
-     * @param functionDeclaration Declaration of the function to call.
-     * 
-     * @return CallFunctionOnResult
-     */
-    CallFunctionOnResult callFunctionOn(String objectId, String functionDeclaration);
 
     /**
      * Returns properties of a given object. Object group of the result is inherited from the target object.
@@ -191,6 +181,15 @@ public interface Runtime {
     RemoteObject queryObjects(String prototypeObjectId);
 
     /**
+     * Returns all let, const and class variables from global scope.
+     * 
+     * @param executionContextId Specifies in which execution context to lookup global scope variables.
+     */
+    @Experimental
+    @Returns("names")
+    List<String> globalLexicalScopeNames(@Optional Integer executionContextId);
+
+    /**
      * Evaluates expression on global object.
      * 
      * @param expression Expression to evaluate.
@@ -245,4 +244,11 @@ public interface Runtime {
      * @return RunScriptResult
      */
     RunScriptResult runScript(String scriptId);
+
+    /**
+     * Returns all let, const and class variables from global scope.
+     */
+    @Experimental
+    @Returns("names")
+    List<String> globalLexicalScopeNames();
 }

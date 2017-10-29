@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,9 +39,9 @@ public class Animation {
 
     private Double currentTime;
 
-    private AnimationEffect source;
-
     private AnimationType type;
+
+    private AnimationEffect source;
 
     private String cssId;
 
@@ -144,20 +144,6 @@ public class Animation {
     }
 
     /**
-     * <code>Animation</code>'s source animation node.
-     */
-    public AnimationEffect getSource() {
-        return source;
-    }
-
-    /**
-     * <code>Animation</code>'s source animation node.
-     */
-    public void setSource(AnimationEffect source) {
-        this.source = source;
-    }
-
-    /**
      * Animation type of <code>Animation</code>.
      */
     public AnimationType getType() {
@@ -169,6 +155,20 @@ public class Animation {
      */
     public void setType(AnimationType type) {
         this.type = type;
+    }
+
+    /**
+     * <code>Animation</code>'s source animation node.
+     */
+    public AnimationEffect getSource() {
+        return source;
+    }
+
+    /**
+     * <code>Animation</code>'s source animation node.
+     */
+    public void setSource(AnimationEffect source) {
+        this.source = source;
     }
 
     /**

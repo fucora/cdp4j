@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -108,7 +108,8 @@ public interface Dom {
         }
         CallFunctionOnResult functionResult = getThis()
             .getCommand().getRuntime()
-            .callFunctionOn(objectId, "function() { this.select(); }");
+            .callFunctionOn("function() { this.select(); }", objectId, null, null, null, null,
+                                                                       null, null, null, null);
         if (functionResult != null) {
             RemoteObject result = functionResult.getResult();
             if (result != null) {
@@ -252,8 +253,11 @@ public interface Dom {
         if (objectId == null) {
             throw new ElementNotFoundException(format(selector, args));
         }
-        CallFunctionOnResult result = getThis().getCommand().getRuntime().callFunctionOn(objectId,
-                                                    format("function() { this.selectedIndex = %d }", index));
+        CallFunctionOnResult result = getThis().getCommand().getRuntime().callFunctionOn(
+                                                    format("function() { this.selectedIndex = %d }", index),
+                                                    objectId,
+                                                    null, null, null, null,
+                                                    null, null, null, null);
         if (result != null && result.getResult() != null) {
             getThis().releaseObject(result.getResult().getObjectId());
         }
@@ -297,11 +301,14 @@ public interface Dom {
                 if (length.intValue() <= 0) {
                     getThis().releaseObject(objectId);
                 } else {
-                    CallFunctionOnResult result = getThis().getCommand().getRuntime().callFunctionOn(pd.getValue().getObjectId(),
+                    CallFunctionOnResult result = getThis().getCommand().getRuntime().callFunctionOn(
                             "function() { let options = []; for (let i = 0; i < this.length; i++) " +
                             "{ options.push({ index : this[i].index, selected: this[i].selected, " +
                             "value: this[i].value, text: this[i].textContent, group: this[i].parentElement.tagName" +
-                            "=== 'OPTGROUP' ? this[i].parentElement.getAttribute('label') : null }); } return JSON.stringify(options); }");
+                            "=== 'OPTGROUP' ? this[i].parentElement.getAttribute('label') : null }); } return JSON.stringify(options); }",
+                            pd.getValue().getObjectId(),
+                            null, null, null, null,
+                            null, null, null, null);
                     if (result != null && result.getResult() != null) {
                         String json = (String) result.getResult().getValue();
                         getThis().releaseObject(result.getResult().getObjectId());
@@ -390,8 +397,11 @@ public interface Dom {
                                 getThis().error("invalid index value [{}]", index.intValue());
                                 continue;
                             }
-                            CallFunctionOnResult result = getThis().getCommand().getRuntime().callFunctionOn(pd.getValue().getObjectId(),
-                                    format("function() { this[%d].selected = true }", index));
+                            CallFunctionOnResult result = getThis().getCommand().getRuntime().callFunctionOn(
+                                    format("function() { this[%d].selected = true }", index),
+                                    pd.getValue().getObjectId(),
+                                    null, null, null, null,
+                                    null, null, null, null);
                             if (result != null && result.getResult() != null) {
                                 getThis().releaseObject(result.getResult().getObjectId());
                             }

@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -71,13 +71,15 @@ public interface Debugger {
      * @param lineNumber Line number to set breakpoint at.
      * @param url URL of the resources to set breakpoint on.
      * @param urlRegex Regex pattern for the URLs of the resources to set breakpoints on. Either <code>url</code> or <code>urlRegex</code> must be specified.
+     * @param scriptHash Script hash of the resources to set breakpoint on.
      * @param columnNumber Offset in the line to set breakpoint at.
      * @param condition Expression to use as a breakpoint condition. When specified, debugger will only stop on the breakpoint if this expression evaluates to true.
      * 
      * @return SetBreakpointByUrlResult
      */
     SetBreakpointByUrlResult setBreakpointByUrl(Integer lineNumber, @Optional String url,
-            @Optional String urlRegex, @Optional Integer columnNumber, @Optional String condition);
+            @Optional String urlRegex, @Experimental @Optional String scriptHash,
+            @Optional Integer columnNumber, @Optional String condition);
 
     /**
      * Sets JavaScript breakpoint at a given location.

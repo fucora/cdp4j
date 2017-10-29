@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -130,8 +130,8 @@ import io.webfolder.cdp.event.tracing.TracingComplete;
 
 public enum Events {
     /**
-     * Fired when remote debugging connection is about to be terminated Contains
-     * detach reason
+     * Fired when remote debugging connection is about to be terminated
+     * Contains detach reason
      */
     InspectorDetached("Inspector", "detached", Detached.class),
 
@@ -150,8 +150,7 @@ public enum Events {
     PageLoadEventFired("Page", "loadEventFired", LoadEventFired.class),
 
     /**
-     * Fired for top level page lifecycle events such as navigation, load,
-     * paint, etc
+     * Fired for top level page lifecycle events such as navigation, load, paint, etc
      */
     PageLifecycleEvent("Page", "lifecycleEvent", LifecycleEvent.class),
 
@@ -161,8 +160,8 @@ public enum Events {
     PageFrameAttached("Page", "frameAttached", FrameAttached.class),
 
     /**
-     * Fired once navigation of the frame has completed Frame is now associated
-     * with the new loader
+     * Fired once navigation of the frame has completed
+     * Frame is now associated with the new loader
      */
     PageFrameNavigated("Page", "frameNavigated", FrameNavigated.class),
 
@@ -189,20 +188,17 @@ public enum Events {
     /**
      * Fired when frame no longer has a scheduled navigation
      */
-    PageFrameClearedScheduledNavigation("Page", "frameClearedScheduledNavigation",
-            FrameClearedScheduledNavigation.class),
+    PageFrameClearedScheduledNavigation("Page", "frameClearedScheduledNavigation", FrameClearedScheduledNavigation.class),
 
     PageFrameResized("Page", "frameResized", FrameResized.class),
 
     /**
-     * Fired when a JavaScript initiated dialog (alert, confirm, prompt, or
-     * onbeforeunload) is about to open
+     * Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) is about to open
      */
     PageJavascriptDialogOpening("Page", "javascriptDialogOpening", JavascriptDialogOpening.class),
 
     /**
-     * Fired when a JavaScript initiated dialog (alert, confirm, prompt, or
-     * onbeforeunload) has been closed
+     * Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) has been closed
      */
     PageJavascriptDialogClosed("Page", "javascriptDialogClosed", JavascriptDialogClosed.class),
 
@@ -212,8 +208,7 @@ public enum Events {
     PageScreencastFrame("Page", "screencastFrame", ScreencastFrame.class),
 
     /**
-     * Fired when the page with currently enabled screencast was shown or hidden
-     * </code>
+     * Fired when the page with currently enabled screencast was shown or hidden </code>
      */
     PageScreencastVisibilityChanged("Page", "screencastVisibilityChanged", ScreencastVisibilityChanged.class),
 
@@ -228,14 +223,14 @@ public enum Events {
     PageInterstitialHidden("Page", "interstitialHidden", InterstitialHidden.class),
 
     /**
-     * Fired when the node should be highlighted This happens after call to
-     * <code>setInspectMode</code>
+     * Fired when the node should be highlighted
+     * This happens after call to <code>setInspectMode</code>
      */
     OverlayNodeHighlightRequested("Overlay", "nodeHighlightRequested", NodeHighlightRequested.class),
 
     /**
-     * Fired when the node should be inspected This happens after call to
-     * <code>setInspectMode</code> or when user manually inspects an element
+     * Fired when the node should be inspected
+     * This happens after call to <code>setInspectMode</code> or when user manually inspects an element
      */
     OverlayInspectNodeRequested("Overlay", "inspectNodeRequested", InspectNodeRequested.class),
 
@@ -245,8 +240,7 @@ public enum Events {
     OverlayScreenshotRequested("Overlay", "screenshotRequested", ScreenshotRequested.class),
 
     /**
-     * Notification sent after the virtual time budget for the current
-     * VirtualTimePolicy has run out
+     * Notification sent after the virtual time budget for the current VirtualTimePolicy has run out
      */
     EmulationVirtualTimeBudgetExpired("Emulation", "virtualTimeBudgetExpired", VirtualTimeBudgetExpired.class),
 
@@ -261,10 +255,9 @@ public enum Events {
     SecuritySecurityStateChanged("Security", "securityStateChanged", SecurityStateChanged.class),
 
     /**
-     * There is a certificate error If overriding certificate errors is enabled,
-     * then it should be handled with the handleCertificateError command Note:
-     * this event does not fire if the certificate error has been allowed
-     * internally
+     * There is a certificate error
+     * If overriding certificate errors is enabled, then it should be handled with the handleCertificateError command
+     * Note: this event does not fire if the certificate error has been allowed internally
      */
     SecurityCertificateError("Security", "certificateError", CertificateError.class),
 
@@ -306,14 +299,12 @@ public enum Events {
     /**
      * Fired when WebSocket is about to initiate handshake
      */
-    NetworkWebSocketWillSendHandshakeRequest("Network", "webSocketWillSendHandshakeRequest",
-            WebSocketWillSendHandshakeRequest.class),
+    NetworkWebSocketWillSendHandshakeRequest("Network", "webSocketWillSendHandshakeRequest", WebSocketWillSendHandshakeRequest.class),
 
     /**
      * Fired when WebSocket handshake response becomes available
      */
-    NetworkWebSocketHandshakeResponseReceived("Network", "webSocketHandshakeResponseReceived",
-            WebSocketHandshakeResponseReceived.class),
+    NetworkWebSocketHandshakeResponseReceived("Network", "webSocketHandshakeResponseReceived", WebSocketHandshakeResponseReceived.class),
 
     /**
      * Fired upon WebSocket creation
@@ -346,8 +337,7 @@ public enum Events {
     NetworkEventSourceMessageReceived("Network", "eventSourceMessageReceived", EventSourceMessageReceived.class),
 
     /**
-     * Details of an intercepted HTTP request, which must be either allowed,
-     * blocked, modified or mocked
+     * Details of an intercepted HTTP request, which must be either allowed, blocked, modified or mocked
      */
     NetworkRequestIntercepted("Network", "requestIntercepted", RequestIntercepted.class),
 
@@ -361,14 +351,13 @@ public enum Events {
 
     DOMStorageDomStorageItemUpdated("DOMStorage", "domStorageItemUpdated", DomStorageItemUpdated.class),
 
-    ApplicationCacheApplicationCacheStatusUpdated("ApplicationCache", "applicationCacheStatusUpdated",
-            ApplicationCacheStatusUpdated.class),
+    ApplicationCacheApplicationCacheStatusUpdated("ApplicationCache", "applicationCacheStatusUpdated", ApplicationCacheStatusUpdated.class),
 
     ApplicationCacheNetworkStateUpdated("ApplicationCache", "networkStateUpdated", NetworkStateUpdated.class),
 
     /**
-     * Fired when <code>Document</code> has been totally updated Node ids are no
-     * longer valid
+     * Fired when <code>Document</code> has been totally updated
+     * Node ids are no longer valid
      */
     DOMDocumentUpdated("DOM", "documentUpdated", DocumentUpdated.class),
 
@@ -389,8 +378,7 @@ public enum Events {
     DOMAttributeRemoved("DOM", "attributeRemoved", AttributeRemoved.class),
 
     /**
-     * Fired when <code>Element</code>'s inline style is modified via a CSS
-     * property modification
+     * Fired when <code>Element</code>'s inline style is modified via a CSS property modification
      */
     DOMInlineStyleInvalidated("DOM", "inlineStyleInvalidated", InlineStyleInvalidated.class),
 
@@ -440,9 +428,8 @@ public enum Events {
     DOMDistributedNodesUpdated("DOM", "distributedNodesUpdated", DistributedNodesUpdated.class),
 
     /**
-     * Fires whenever a MediaQuery result changes (for example, after a browser
-     * window has been resized ) The current implementation considers only
-     * viewport-dependent media features
+     * Fires whenever a MediaQuery result changes (for example, after a browser window has been resized
+     * ) The current implementation considers only viewport-dependent media features
      */
     CSSMediaQueryResultChanged("CSS", "mediaQueryResultChanged", MediaQueryResultChanged.class),
 
@@ -452,8 +439,7 @@ public enum Events {
     CSSFontsUpdated("CSS", "fontsUpdated", FontsUpdated.class),
 
     /**
-     * Fired whenever a stylesheet is changed as a result of the client
-     * operation
+     * Fired whenever a stylesheet is changed as a result of the client operation
      */
     CSSStyleSheetChanged("CSS", "styleSheetChanged", StyleSheetChanged.class),
 
@@ -473,8 +459,8 @@ public enum Events {
     TargetTargetCreated("Target", "targetCreated", TargetCreated.class),
 
     /**
-     * Issued when some information about a target has changed This only happens
-     * between <code>targetCreated</code> and <code>targetDestroyed</code>
+     * Issued when some information about a target has changed
+     * This only happens between <code>targetCreated</code> and <code>targetDestroyed</code>
      */
     TargetTargetInfoChanged("Target", "targetInfoChanged", TargetInfoChanged.class),
 
@@ -484,26 +470,22 @@ public enum Events {
     TargetTargetDestroyed("Target", "targetDestroyed", TargetDestroyed.class),
 
     /**
-     * Issued when attached to target because of auto-attach or
-     * <code>attachToTarget</code> command
+     * Issued when attached to target because of auto-attach or <code>attachToTarget</code> command
      */
     TargetAttachedToTarget("Target", "attachedToTarget", AttachedToTarget.class),
 
     /**
-     * Issued when detached from target for any reason (including
-     * <code>detachFromTarget</code> command) Can be issued multiple times per
-     * target if multiple sessions have been attached to it
+     * Issued when detached from target for any reason (including <code>detachFromTarget</code> command)
+     * Can be issued multiple times per target if multiple sessions have been attached to it
      */
     TargetDetachedFromTarget("Target", "detachedFromTarget", DetachedFromTarget.class),
 
     /**
-     * Notifies about a new protocol message received from the session (as
-     * reported in <code>attachedToTarget</code> event)
+     * Notifies about a new protocol message received from the session (as reported in <code>attachedToTarget</code> event)
      */
     TargetReceivedMessageFromTarget("Target", "receivedMessageFromTarget", ReceivedMessageFromTarget.class),
 
-    ServiceWorkerWorkerRegistrationUpdated("ServiceWorker", "workerRegistrationUpdated",
-            WorkerRegistrationUpdated.class),
+    ServiceWorkerWorkerRegistrationUpdated("ServiceWorker", "workerRegistrationUpdated", WorkerRegistrationUpdated.class),
 
     ServiceWorkerWorkerVersionUpdated("ServiceWorker", "workerVersionUpdated", WorkerVersionUpdated.class),
 
@@ -514,15 +496,13 @@ public enum Events {
     LayerTreeLayerPainted("LayerTree", "layerPainted", LayerPainted.class),
 
     /**
-     * Contains an bucket of collected trace events When tracing is stopped
-     * collected events will be send as a sequence of dataCollected events
-     * followed by tracingComplete event
+     * Contains an bucket of collected trace events
+     * When tracing is stopped collected events will be send as a sequence of dataCollected events followed by tracingComplete event
      */
     TracingDataCollected("Tracing", "dataCollected", DataCollected.class),
 
     /**
-     * Signals that tracing is stopped and there is no trace buffers pending
-     * flush, all data were delivered via dataCollected events
+     * Signals that tracing is stopped and there is no trace buffers pending flush, all data were delivered via dataCollected events
      */
     TracingTracingComplete("Tracing", "tracingComplete", TracingComplete.class),
 
@@ -559,8 +539,7 @@ public enum Events {
     LogEntryAdded("Log", "entryAdded", EntryAdded.class),
 
     /**
-     * Informs that port was successfully bound and got a specified connection
-     * id
+     * Informs that port was successfully bound and got a specified connection id
      */
     TetheringAccepted("Tethering", "accepted", Accepted.class),
 
@@ -595,14 +574,13 @@ public enum Events {
     RuntimeConsoleAPICalled("Runtime", "consoleAPICalled", ConsoleAPICalled.class),
 
     /**
-     * Issued when object should be inspected (for example, as a result of
-     * inspect() command line API call)
+     * Issued when object should be inspected (for example, as a result of inspect() command line API call)
      */
     RuntimeInspectRequested("Runtime", "inspectRequested", InspectRequested.class),
 
     /**
-     * Fired when virtual machine parses script This event is also fired for all
-     * known and uncollected scripts upon enabling debugger
+     * Fired when virtual machine parses script
+     * This event is also fired for all known and uncollected scripts upon enabling debugger
      */
     DebuggerScriptParsed("Debugger", "scriptParsed", ScriptParsed.class),
 
@@ -617,8 +595,7 @@ public enum Events {
     DebuggerBreakpointResolved("Debugger", "breakpointResolved", BreakpointResolved.class),
 
     /**
-     * Fired when the virtual machine stopped on breakpoint or exception or any
-     * other stop criteria
+     * Fired when the virtual machine stopped on breakpoint or exception or any other stop criteria
      */
     DebuggerPaused("Debugger", "paused", Paused.class),
 
@@ -633,7 +610,8 @@ public enum Events {
     ConsoleMessageAdded("Console", "messageAdded", MessageAdded.class),
 
     /**
-     * Sent when new profile recording is started using console profile() call
+     * Sent when new profile recording is started using console
+     * profile() call
      */
     ProfilerConsoleProfileStarted("Profiler", "consoleProfileStarted", ConsoleProfileStarted.class),
 
@@ -643,20 +621,16 @@ public enum Events {
 
     HeapProfilerResetProfiles("HeapProfiler", "resetProfiles", ResetProfiles.class),
 
-    HeapProfilerReportHeapSnapshotProgress("HeapProfiler", "reportHeapSnapshotProgress",
-            ReportHeapSnapshotProgress.class),
+    HeapProfilerReportHeapSnapshotProgress("HeapProfiler", "reportHeapSnapshotProgress", ReportHeapSnapshotProgress.class),
 
     /**
-     * If heap objects tracking has been started then backend regularly sends a
-     * current value for last seen object id and corresponding timestamp If the
-     * were changes in the heap since last event then one or more
-     * heapStatsUpdate events will be sent before a new lastSeenObjectId event
+     * If heap objects tracking has been started then backend regularly sends a current value for last seen object id and corresponding timestamp
+     * If the were changes in the heap since last event then one or more heapStatsUpdate events will be sent before a new lastSeenObjectId event
      */
     HeapProfilerLastSeenObjectId("HeapProfiler", "lastSeenObjectId", LastSeenObjectId.class),
 
     /**
-     * If heap objects tracking has been started then backend may send update
-     * for one or more fragments
+     * If heap objects tracking has been started then backend may send update for one or more fragments
      */
     HeapProfilerHeapStatsUpdate("HeapProfiler", "heapStatsUpdate", HeapStatsUpdate.class);
 
@@ -667,13 +641,13 @@ public enum Events {
     public final Class<?> klass;
 
     Events(String domain, java.lang.String name, Class<?> klass) {
-        this.domain = domain;
-        this.name = name;
-        this.klass = klass;
+      this.domain = domain;
+      this.name = name;
+      this.klass = klass;
     }
 
     @java.lang.Override
     public java.lang.String toString() {
-        return domain + "." + name;
+      return domain + "." + name;
     }
-}
+  }

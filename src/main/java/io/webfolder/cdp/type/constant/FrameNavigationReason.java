@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,11 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum FrameNavigationReason {
-    @SerializedName("formSubmission")
-    FormSubmission("formSubmission"),
+    @SerializedName("formSubmissionGet")
+    FormSubmissionGet("formSubmissionGet"),
+
+    @SerializedName("formSubmissionPost")
+    FormSubmissionPost("formSubmissionPost"),
 
     @SerializedName("httpHeaderRefresh")
     HttpHeaderRefresh("httpHeaderRefresh"),

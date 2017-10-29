@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -181,6 +181,16 @@ public interface DOM {
             @Optional String objectId);
 
     /**
+     * Returns node's HTML markup.
+     * 
+     * @param nodeId Identifier of the node.
+     * 
+     * @return Outer HTML markup.
+     */
+    @Returns("outerHTML")
+    String getOuterHTML(Integer nodeId);
+    
+    /**
      * Sets node HTML markup, returns new node id.
      * 
      * @param nodeId Id of the node to set markup for.
@@ -201,7 +211,7 @@ public interface DOM {
             @Experimental @Optional Boolean includeUserAgentShadowDOM);
 
     /**
-     * Returns search results from given <tt>fromIndex</tt> to given <tt>toIndex</tt> from the sarch with the given identifier.
+     * Returns search results from given <tt>fromIndex</tt> to given <tt>toIndex</tt> from the search with the given identifier.
      * 
      * @param searchId Unique search session identifier.
      * @param fromIndex Start index of the search result to be returned.
@@ -453,12 +463,10 @@ public interface DOM {
     /**
      * Returns node's HTML markup.
      * 
-     * @param nodeId Identifier of the node.
-     * 
      * @return Outer HTML markup.
      */
     @Returns("outerHTML")
-    String getOuterHTML(Integer nodeId);
+    String getOuterHTML();
 
     /**
      * Searches for a given string in the DOM tree. Use <tt>getSearchResults</tt> to access search results or <tt>cancelSearch</tt> to end this search session.

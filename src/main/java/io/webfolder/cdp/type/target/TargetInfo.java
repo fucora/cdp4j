@@ -11,6 +11,8 @@ public class TargetInfo {
 
     private Boolean attached;
 
+    private String openerId;
+
     public String getTargetId() {
         return targetId;
     }
@@ -55,5 +57,19 @@ public class TargetInfo {
      */
     public void setAttached(Boolean attached) {
         this.attached = attached;
+    }
+
+    /**
+     * Opener target Id
+     */
+    public String getOpenerId() {
+        return openerId;
+    }
+
+    /**
+     * Opener target Id
+     */
+    public void setOpenerId(String openerId) {
+        this.openerId = openerId;
     }
 }

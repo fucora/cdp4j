@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@ import java.util.Map;
 public class Response {
     private String url;
 
-    private Double status;
+    private Integer status;
 
     private String statusText;
 
@@ -80,14 +80,14 @@ public class Response {
     /**
      * HTTP response status code.
      */
-    public Double getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
     /**
      * HTTP response status code.
      */
-    public void setStatus(Double status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

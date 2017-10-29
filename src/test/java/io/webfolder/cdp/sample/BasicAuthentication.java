@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,6 +18,7 @@
 package io.webfolder.cdp.sample;
 
 import static io.webfolder.cdp.event.Events.NetworkRequestIntercepted;
+import static java.util.Arrays.asList;
 
 import java.util.Map;
 
@@ -30,6 +31,8 @@ import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 import io.webfolder.cdp.type.constant.AuthResponse;
 import io.webfolder.cdp.type.network.AuthChallengeResponse;
+import io.webfolder.cdp.type.network.RequestPattern;
+import io.webfolder.cdp.type.page.ResourceType;
 
 public class BasicAuthentication {
 
@@ -43,9 +46,13 @@ public class BasicAuthentication {
 
             Network network = session.getCommand().getNetwork();
             network.enable();
-            network.setRequestInterceptionEnabled(true);
+            RequestPattern pattern = new RequestPattern();
+            pattern.setUrlPattern("*");
+            pattern.setResourceType(ResourceType.Document);
+            network.setRequestInterception(asList(pattern));
 
             session.addEventListener((e, v) -> {
+                
                 if (NetworkRequestIntercepted.equals(e)) {
                     RequestIntercepted ri = (RequestIntercepted) v;
                     if (ri.getAuthChallenge() != null) {

@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -47,5 +47,5 @@ public interface Constant {
 
     int WAIT_TIMEOUT = 10 * 1000; // 10 seconds
 
-    int WAIT_PERIOD = 500; // 0.5 seconds
+    int WAIT_PERIOD = 100; // 0.1 seconds
 }

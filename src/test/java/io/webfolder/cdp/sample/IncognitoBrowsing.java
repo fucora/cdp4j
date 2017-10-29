@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -36,7 +36,7 @@ public class IncognitoBrowsing {
             try (Session firstSession = factory.create(firstContext)) {
                 firstSession.navigate("https://httpbin.org/cookies/set?SESSION_ID=1");
                 firstSession.wait(500);
-                String session1 = (String) firstSession.evaluate("window.document.body.textContent");
+                String session1 = (String) firstSession.getContent();
                 factory.disposeBrowserContext(firstContext);
 
                 System.out.println(session1);
@@ -46,7 +46,7 @@ public class IncognitoBrowsing {
             try (Session secondSession = factory.create(secondContext)) {
                 secondSession.navigate("https://httpbin.org/cookies");
                 secondSession.wait(500);
-                String session2 = (String) secondSession.evaluate("window.document.body.textContent");
+                String session2 = (String) secondSession.getContent();
                 factory.disposeBrowserContext(secondContext);
                 
                 System.out.println(session2);            

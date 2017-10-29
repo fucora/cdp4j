@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,16 +34,16 @@ public class DownloadFile {
 
         try (SessionFactory factory = launcher.launch();
                             Session session = factory.create()) {
-            session.navigate("https://webfolder.io/download");
+            session.navigate("https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html");
             session.waitDocumentReady();
             session.getCommand().getNetwork().enable();
             Page page = session.getCommand().getPage();
             Path downloadPath = Paths.get(".").toAbsolutePath();
             page.setDownloadBehavior(Allow, downloadPath.toString());
             // link must be visible before downloading the file
-            session.evaluate("document.querySelector(\"[href$=deb]\").scrollIntoView()");
+            session.evaluate("document.querySelector(\"code\").scrollIntoView()");
             // click the download link
-            session.click("[href$=deb]");
+            session.click("code");
             session.wait(2000 * 200);
         }
     }

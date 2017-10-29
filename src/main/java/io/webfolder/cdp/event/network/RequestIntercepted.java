@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,6 +38,8 @@ public class RequestIntercepted {
 
     private Request request;
 
+    private String frameId;
+
     private ResourceType resourceType;
 
     private Boolean isNavigationRequest;
@@ -70,6 +72,20 @@ public class RequestIntercepted {
 
     public void setRequest(Request request) {
         this.request = request;
+    }
+
+    /**
+     * The id of the frame that initiated the request.
+     */
+    public String getFrameId() {
+        return frameId;
+    }
+
+    /**
+     * The id of the frame that initiated the request.
+     */
+    public void setFrameId(String frameId) {
+        this.frameId = frameId;
     }
 
     /**

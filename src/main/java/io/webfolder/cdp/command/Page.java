@@ -221,13 +221,14 @@ public interface Page {
      * @param positionY Overriding view Y position on screen in pixels (minimum 0, maximum 10000000).
      * @param dontSetVisibleSize Do not set visible view size, rely upon explicit setVisibleSize call.
      * @param screenOrientation Screen orientation override.
+     * @param viewport The viewport dimensions and scale. If not set, the override is cleared.
      */
     @Experimental
     void setDeviceMetricsOverride(Integer width, Integer height, Double deviceScaleFactor,
             Boolean mobile, @Optional Double scale, @Optional Integer screenWidth,
             @Optional Integer screenHeight, @Optional Integer positionX,
             @Optional Integer positionY, @Optional Boolean dontSetVisibleSize,
-            @Optional ScreenOrientation screenOrientation);
+            @Optional ScreenOrientation screenOrientation, @Optional Viewport viewport);
 
     /**
      * Clears the overriden device metrics.

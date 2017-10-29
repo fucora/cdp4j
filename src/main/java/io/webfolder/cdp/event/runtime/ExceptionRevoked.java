@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,14 +45,14 @@ public class ExceptionRevoked {
     }
 
     /**
-     * The id of revoked exception, as reported in <code>exceptionUnhandled</code>.
+     * The id of revoked exception, as reported in <code>exceptionThrown</code>.
      */
     public Integer getExceptionId() {
         return exceptionId;
     }
 
     /**
-     * The id of revoked exception, as reported in <code>exceptionUnhandled</code>.
+     * The id of revoked exception, as reported in <code>exceptionThrown</code>.
      */
     public void setExceptionId(Integer exceptionId) {
         this.exceptionId = exceptionId;

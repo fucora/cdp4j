@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,6 @@ import static io.webfolder.cdp.event.Events.LogEntryAdded;
 import static io.webfolder.cdp.event.Events.NetworkResponseReceived;
 import static io.webfolder.cdp.event.Events.PageLifecycleEvent;
 import static io.webfolder.cdp.event.Events.RuntimeConsoleAPICalled;
-import static io.webfolder.cdp.session.Constant.WAIT_PERIOD;
-import static io.webfolder.cdp.session.Constant.WAIT_TIMEOUT;
 import static io.webfolder.cdp.type.constant.ImageFormat.Png;
 import static io.webfolder.cdp.type.page.ResourceType.Document;
 import static io.webfolder.cdp.type.page.ResourceType.XHR;
@@ -317,11 +315,11 @@ public class Session implements AutoCloseable,
         getCommand().getNetwork().enable();
         addEventListener((e, d) -> {
             if (NetworkResponseReceived.equals(e)) {
-                ResponseReceived   rr = (ResponseReceived) d;
-                Response     response = rr.getResponse();
-                final String      url = response.getUrl();
-                final String   status = response.getStatus().intValue() + " " + response.getStatusText();
-                final String mimeType = response.getMimeType();
+                ResponseReceived rr = (ResponseReceived) d;
+                Response         response = rr.getResponse();
+                final String     url      = response.getUrl();
+                final String     status   = response.getStatus().intValue() + " " + response.getStatusText();
+                final String     mimeType = response.getMimeType();
                 if (Document.equals(rr.getType()) || XHR.equals(rr.getType())) {
                     log.info("[{}] [{}] [{}] [{}] [{}]", new Object[] {
                         rr.getType().toString().toUpperCase(ENGLISH),

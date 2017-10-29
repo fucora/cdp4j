@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -180,13 +180,14 @@ public interface Selector {
         CallFunctionOnResult callFunctionOn = getThis()
                                                 .getCommand()
                                                 .getRuntime()
-                                                .callFunctionOn(objectId,
+                                                .callFunctionOn(
                                                         "function(property, value) { function index(obj, property, value) { " +
                                                         "if (typeof property == 'string') return index(obj, property.split('.'), value); " +
                                                         "else if (property.length == 1 && value !== undefined) return obj[property[0]] = value; " +
                                                         "else if (property.length == 0) return obj; " +
                                                         "else return index(obj[property[0]], property.slice(1), value); }" +
                                                         "return index(this, property, value); }",
+                                                        objectId,
                                                         arguments,
                                                         FALSE, TRUE, FALSE, FALSE, FALSE, null, null);
         String error = null;
@@ -252,8 +253,9 @@ public interface Selector {
         CallFunctionOnResult callFunctionOn = getThis()
                                                 .getCommand()
                                                 .getRuntime()
-                                                .callFunctionOn(objectId,
+                                                .callFunctionOn(
                                                         "function(property) { return property.split('.').reduce((o, i) => o[i], this); }",
+                                                        objectId,
                                                         arguments,
                                                         FALSE, TRUE,
                                                         FALSE, FALSE,

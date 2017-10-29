@@ -1,5 +1,5 @@
 /**
- * cpd4j - Chrome DevTools Protocol for Java
+ * cdp4j - Chrome DevTools Protocol for Java
  * Copyright © 2017 WebFolder OÜ (support@webfolder.io)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,6 +28,7 @@ import io.webfolder.cdp.type.network.CookieParam;
 import io.webfolder.cdp.type.network.CookieSameSite;
 import io.webfolder.cdp.type.network.ErrorReason;
 import io.webfolder.cdp.type.network.GetResponseBodyResult;
+import io.webfolder.cdp.type.network.RequestPattern;
 import java.util.List;
 import java.util.Map;
 
@@ -232,13 +233,12 @@ public interface Network {
     List<String> getCertificate(String origin);
 
     /**
-     * Sets the requests to intercept that match a the provided patterns.
+     * Sets the requests to intercept that match a the provided patterns and optionally resource types.
      * 
-     * @param enabled Whether requests should be intercepted. If patterns is not set, matches all and resets any previously set patterns. Other parameters are ignored if false.
-     * @param patterns URLs matching any of these patterns will be forwarded and wait for the corresponding continueInterceptedRequest call. Wildcards ('*' -> zero or more, '?' -> exactly one) are allowed. Escape character is backslash. If omitted equivalent to ['*'] (intercept all).
+     * @param patterns Requests matching any of these patterns will be forwarded and wait for the corresponding continueInterceptedRequest call.
      */
     @Experimental
-    void setRequestInterceptionEnabled(Boolean enabled, @Optional List<String> patterns);
+    void setRequestInterception(List<RequestPattern> patterns);
 
     /**
      * Response to Network.requestIntercepted which either modifies the request to continue with any modifications, or blocks it, or completes it with the provided response bytes. If a network fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted event will be sent with the same InterceptionId.
@@ -301,14 +301,6 @@ public interface Network {
      */
     void emulateNetworkConditions(Boolean offline, Double latency, Double downloadThroughput,
             Double uploadThroughput);
-
-    /**
-     * Sets the requests to intercept that match a the provided patterns.
-     * 
-     * @param enabled Whether requests should be intercepted. If patterns is not set, matches all and resets any previously set patterns. Other parameters are ignored if false.
-     */
-    @Experimental
-    void setRequestInterceptionEnabled(Boolean enabled);
 
     /**
      * Response to Network.requestIntercepted which either modifies the request to continue with any modifications, or blocks it, or completes it with the provided response bytes. If a network fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted event will be sent with the same InterceptionId.

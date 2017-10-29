@@ -53,13 +53,14 @@ public interface Input {
      * @param autoRepeat Whether the event was generated from auto repeat (default: false).
      * @param isKeypad Whether the event was generated from the keypad (default: false).
      * @param isSystemKey Whether the event was a system key event (default: false).
+     * @param location Whether the event was from the left or right side of the keyboard. 1=Left, 2=Right (default: 0).
      */
     void dispatchKeyEvent(KeyEventType type, @Optional Integer modifiers,
             @Optional Double timestamp, @Optional String text, @Optional String unmodifiedText,
             @Optional String keyIdentifier, @Optional String code, @Optional String key,
             @Optional Integer windowsVirtualKeyCode, @Optional Integer nativeVirtualKeyCode,
-            @Optional Boolean autoRepeat, @Optional Boolean isKeypad,
-            @Optional Boolean isSystemKey);
+            @Optional Boolean autoRepeat, @Optional Boolean isKeypad, @Optional Boolean isSystemKey,
+            @Experimental @Optional Integer location);
 
     /**
      * Dispatches a mouse event to the page.
