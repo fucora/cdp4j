@@ -26,7 +26,7 @@ class CdpThreadFactory implements ThreadFactory {
 
     @Override
     public Thread newThread(Runnable r) {
-        Thread thread = new Thread(r, "cpd4j-" + counter.incrementAndGet());
+        Thread thread = new Thread(r, "cdp4j-" + counter.incrementAndGet());
         thread.setDaemon(true);
         return thread;
     }
