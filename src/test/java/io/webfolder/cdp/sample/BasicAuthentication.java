@@ -49,7 +49,11 @@ public class BasicAuthentication {
             RequestPattern pattern = new RequestPattern();
             pattern.setUrlPattern("*");
             pattern.setResourceType(ResourceType.Document);
+
             network.setRequestInterception(asList(pattern));
+            // Disable newtork caching when intercepting
+            // https://github.com/GoogleChrome/puppeteer/pull/1154
+            network.setCacheDisabled(Boolean.TRUE);
 
             session.addEventListener((e, v) -> {
                 
