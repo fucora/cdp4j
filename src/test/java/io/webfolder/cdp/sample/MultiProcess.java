@@ -23,7 +23,7 @@ public class MultiProcess {
         new Thread() {
 
             public void run() {
-                Launcher launcher1 = new Launcher(getFreePorts(DEFAULT_PORT));
+                Launcher launcher1 = new Launcher(getFreePort(DEFAULT_PORT));
 
                 Path remoteProfileData1 = get(getProperty("java.io.tmpdir")).resolve("remote-profile-" + new Random().nextInt());
                 SessionFactory factory1 = launcher1.launch(asList("--user-data-dir=" + remoteProfileData1.toString()));
@@ -41,7 +41,7 @@ public class MultiProcess {
         new Thread() {
 
             public void run() {
-                Launcher launcher2 = new Launcher(getFreePorts(DEFAULT_PORT));
+                Launcher launcher2 = new Launcher(getFreePort(DEFAULT_PORT));
                 Path remoteProfileData2 = get(getProperty("java.io.tmpdir")).resolve("remote-profile-" + new Random().nextInt());
                 SessionFactory factory2 = launcher2.launch(asList("--user-data-dir=" + remoteProfileData2.toString()));
 
@@ -56,12 +56,12 @@ public class MultiProcess {
         }.start();
     }
 
-    protected static int getFreePorts(int portNumber) {
+    protected static int getFreePort(int portNumber) {
         try (ServerSocket socket = new ServerSocket(portNumber)) {
             int freePort = socket.getLocalPort();
             return freePort;
         } catch (IOException e) {
-            return getFreePorts(portNumber + 1);
+            return getFreePort(portNumber + 1);
         }
     }
 }
