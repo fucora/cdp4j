@@ -291,6 +291,8 @@ Samples
 
 [Crawler.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Crawler.java)
 
+[MultiProcess.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/MultiProcess.java)
+
 Building cdp4j
 --------------
 
