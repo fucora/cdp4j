@@ -34,7 +34,7 @@ public class LinuxProcessManager extends ProcessManager {
     @Override
     void setProcess(CdpProcess process) {
         try {
-            Field pidField = process.getClass().getDeclaredField("pid");
+            Field pidField = process.getProcess().getClass().getDeclaredField("pid");
             pidField.setAccessible(true);
             this.pid = (int) pidField.get(process.getProcess());
             this.cdp4jId = process.getCdp4jProcessId();
