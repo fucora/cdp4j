@@ -17,7 +17,6 @@
  */
 package io.webfolder.cdp.session;
 
-import static io.webfolder.cdp.logger.CdpLoggerType.Console;
 import static io.webfolder.cdp.logger.CdpLoggerType.Slf4j;
 import static java.lang.String.format;
 import static java.lang.String.valueOf;
@@ -148,19 +147,11 @@ public class SessionFactory implements AutoCloseable {
                     final int connectionTimeout,
                     final CdpLoggerType loggerType,
                     final ExecutorService threadPool) {
-        this.host                   = host;
-        this.port                   = port;
-        this.connectionTimeout      = connectionTimeout;
-        this.factory                = new WebSocketFactory();
-        CdpLoggerType cdpLoggerType = loggerType;
-        try {
-            SessionFactory.class.getClassLoader().loadClass("org.slf4j.Logger");
-        } catch (ClassNotFoundException e) {
-            if (Slf4j.equals(loggerType)) {
-                cdpLoggerType = Console;
-            }
-        }
-        this.loggerFactory     = new CdpLoggerFactory(cdpLoggerType);
+        this.host              = host;
+        this.port              = port;
+        this.connectionTimeout = connectionTimeout;
+        this.factory           = new WebSocketFactory();
+        this.loggerFactory     = new CdpLoggerFactory();
         this.threadPool        = threadPool;
         this.log               = loggerFactory.getLogger("cdp4j.factory");
         this.gson              = new GsonBuilder()
@@ -201,7 +192,8 @@ public class SessionFactory implements AutoCloseable {
         for (SessionInfo info : list()) {
             boolean page   = "page".equals(info.getType());
             boolean newTab = "chrome://newtab/".equals(info.getUrl()) ||
-                                "chrome://welcome/".equals(info.getUrl());
+                                "chrome://welcome/".equals(info.getUrl()) ||
+                                info.getUrl().startsWith("chrome://welcome-win10");
             if (page && newTab) {
                 existingNewSessionId = info.getId();
                 break;
@@ -218,9 +210,9 @@ public class SessionFactory implements AutoCloseable {
             Session session = connect(existingNewSessionId);
             return session;
         } else {
-            String    createUrl = format("http://%s:%d/json/new", host, port);
-            Reader    reader    = null;
-            URL       url       = null;
+            String createUrl = format("http://%s:%d/json/new", host, port);
+            Reader reader    = null;
+            URL    url       = null;
             try {
                 url = new URL(createUrl);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();

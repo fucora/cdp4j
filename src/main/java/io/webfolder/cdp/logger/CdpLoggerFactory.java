@@ -17,6 +17,9 @@
  */
 package io.webfolder.cdp.logger;
 
+import static io.webfolder.cdp.logger.CdpLoggerType.Console;
+import static io.webfolder.cdp.logger.CdpLoggerType.Slf4j;
+
 import java.util.logging.Logger;
 
 public class CdpLoggerFactory {
@@ -43,6 +46,10 @@ public class CdpLoggerFactory {
         public void error(String message, Throwable t) { }
     };
 
+    public CdpLoggerFactory() {
+        this(getDefaultLoggerType());
+    }
+
     public CdpLoggerFactory(final CdpLoggerType loggerType) {
         this.loggerType = loggerType;
     }
@@ -58,5 +65,16 @@ public class CdpLoggerFactory {
             log.warning(e.getMessage());
             return NULL_LOGGER;
         }
+    }
+
+    public static CdpLoggerType getDefaultLoggerType() {
+        CdpLoggerType cdpLoggerType = Console;
+        try {
+            CdpLoggerFactory.class.getClassLoader().loadClass("org.slf4j.Logger");
+            cdpLoggerType = Slf4j;
+        } catch (ClassNotFoundException e) {
+            // ignore
+        }
+        return cdpLoggerType;
     }
 }

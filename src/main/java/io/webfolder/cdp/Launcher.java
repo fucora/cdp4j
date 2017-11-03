@@ -89,18 +89,18 @@ public class Launcher {
     }
 
     public String findChrome() {
-        String chromePath = null;
-        chromePath = getCustomChromeBinary();
-        if (chromePath == null && WINDOWS) {
-          chromePath = findChromeWinPath();
+        String chromeExecutablePath = null;
+        chromeExecutablePath = getCustomChromeBinary();
+        if (chromeExecutablePath == null && WINDOWS) {
+          chromeExecutablePath = findChromeWinPath();
         }
-        if (chromePath == null && OSX) {
-          chromePath = findChromeOsxPath();
+        if (chromeExecutablePath == null && OSX) {
+          chromeExecutablePath = findChromeOsxPath();
         }
-        if ( chromePath == null && ! WINDOWS ) {
-          chromePath = "google-chrome";
+        if ( chromeExecutablePath == null && ! WINDOWS ) {
+          chromeExecutablePath = "google-chrome";
         }
-        return chromePath;
+        return chromeExecutablePath;
       }
 
     public String findChromeWinPath() {
@@ -150,6 +150,14 @@ public class Launcher {
         );
     }
 
+    public SessionFactory launch(Path chromeExecutablePath, List<String> arguments) {
+        return launch(chromeExecutablePath.toString(), arguments);
+    }
+
+    public SessionFactory launch(Path chromeExecutablePath) {
+        return launch(chromeExecutablePath, new ArrayList<String>());
+    }
+
     public SessionFactory launch() {
         return launch(findChrome(), new ArrayList<String>());
     }
@@ -163,21 +171,21 @@ public class Launcher {
      * @deprecated As of release 1.1.0, replaced by {@link #launch(String, List)}
      */
     @Deprecated
-    public SessionFactory launch(String chromePath, String... arguments) {
+    public SessionFactory launch(String chromeExecutablePath, String... arguments) {
         return launch(findChrome(), asList(arguments));
     }
 
-    public SessionFactory launch(String chromePath, List<String> arguments) {
+    public SessionFactory launch(String chromeExecutablePath, List<String> arguments) {
         if (launched()) {
             return factory;
         }
 
-        if (chromePath == null || chromePath.trim().isEmpty()) {
+        if (chromeExecutablePath == null || chromeExecutablePath.trim().isEmpty()) {
             throw new CdpException("chrome not found");
         }
 
         List<String> list = new ArrayList<>();
-        list.add(chromePath);
+        list.add(chromeExecutablePath);
 
         list.add(format("--remote-debugging-port=%d", factory.getPort()));
 
