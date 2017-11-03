@@ -194,7 +194,7 @@ public class ChromiumDownloader implements Downloader {
                     setPosixFilePermissions(destinationRoot.resolve("chrome"), permissions);
                 }
                 if ( ! permissions.contains(GROUP_EXECUTE) ) {
-                    permissions.add(OWNER_EXECUTE);
+                    permissions.add(GROUP_EXECUTE);
                     setPosixFilePermissions(destinationRoot.resolve("chrome"), permissions);
                 }
             }
