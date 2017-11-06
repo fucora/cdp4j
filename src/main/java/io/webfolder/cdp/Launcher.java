@@ -45,11 +45,11 @@ public class Launcher {
 
     private final SessionFactory factory;
 
-    private static final String  OS      = getProperty("os.name").toLowerCase(ENGLISH);
+    private static final String  OS       = getProperty("os.name").toLowerCase(ENGLISH);
 
-    private static final boolean WINDOWS = OS.startsWith("windows");
+    private static final boolean WINDOWS  = OS.startsWith("windows");
 
-    private static final boolean OSX     = OS.startsWith("mac");
+    private static final boolean OSX      = OS.startsWith("mac");
 
     private ProcessManager processManager = new NullProcessManager();
 
@@ -166,15 +166,6 @@ public class Launcher {
         return launch(findChrome(), arguments);
     }
 
-    /**
-     *
-     * @deprecated As of release 1.1.0, replaced by {@link #launch(String, List)}
-     */
-    @Deprecated
-    public SessionFactory launch(String chromeExecutablePath, String... arguments) {
-        return launch(findChrome(), asList(arguments));
-    }
-
     public SessionFactory launch(String chromeExecutablePath, List<String> arguments) {
         if (launched()) {
             return factory;
@@ -254,7 +245,7 @@ public class Launcher {
         }
 
         if ( ! launched() ) {
-            int       counter  =  0;
+                  int counter  =  0;
             final int maxCount = 20;
             while ( ! launched() && counter < maxCount ) {
                 try {

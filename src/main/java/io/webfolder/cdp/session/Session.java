@@ -145,8 +145,11 @@ public class Session implements AutoCloseable,
     public void close() {
         logEntry("close");
         if (connected.get()) {
-            sesessionFactory.close(sessionId, this);
-            connected.set(false);
+            try {
+                sesessionFactory.close(this);
+            } finally {
+                connected.set(false);
+            }
         }
     }
 
@@ -190,41 +193,60 @@ public class Session implements AutoCloseable,
     /**
      * waits until document is ready
      * 
-     * @param timeout
+     * @param timeout the maximum time to wait in milliseconds
      * 
      * @return this
      */
     public Session waitDocumentReady(final int timeout) {
         long start = System.currentTimeMillis();
+        logEntry("waitDocumentReady", format("[timeout=%d]", timeout));
         if (isDomReady()) {
             return getThis();
         }
-        logEntry("waitDocumentReady", format("[timeout=%d]", timeout));
+        CountDownLatch latch  = new CountDownLatch(2);
+        AtomicBoolean  loaded = new AtomicBoolean(false);
+        AtomicBoolean  ready  = new AtomicBoolean(false);
         command.getPage().enable();
-        int elapsed = (int)(System.currentTimeMillis() - start);
-        final int adjustedTimeout = Math.max(1, timeout - elapsed);
-        CountDownLatch latch = new CountDownLatch(1);
-        addEventListener((e, d) -> {
+        EventListener<?> loadListener = (e, d) -> {
             if (PageLifecycleEvent.equals(e) &&
                     "load".equalsIgnoreCase(((LifecycleEvent) d).getName())) {
                 latch.countDown();
+                loaded.set(true);
+                if (isDomReady()) {
+                    ready.set(true);
+                }
+            }
+        };
+        addEventListener(loadListener);
+        sesessionFactory.getThreadPool().execute(() -> {
+            try {
+                waitUntil(s -> s.isDomReady() || ready.get(), timeout, false);
+            } finally {
+                latch.countDown();
+                if ( ! loaded.get() ) {
+                    latch.countDown();
+                }
+                if ( ! ready.get() && isDomReady() ) {
+                    ready.set(true);
+                }
             }
         });
         try {
-            if( ! latch.await(adjustedTimeout, MILLISECONDS) && ! isDomReady() ) {
-                throw new LoadTimeoutException("Page not loaded within " + timeout + " ms");
-            }
+            latch.await(timeout, MILLISECONDS);
         } catch (InterruptedException e) {
-            throw new CdpException(e);
+            throw new LoadTimeoutException(e);
+        } finally {
+            removeEventEventListener(loadListener);
         }
-        if (isDomReady()) {
-            return this;
-        }
-        waitUntil(s -> s.isDomReady(), timeout);
-        if ( ! isDomReady() ) {
-                throw new LoadTimeoutException("Page not loaded within " + timeout + " ms");
+        long elapsed = System.currentTimeMillis() - start;
+        if ( elapsed > timeout && ! isDomReady() ) {
+            throw new LoadTimeoutException("Page not loaded within " + timeout + " ms");
         }
         return this;
+    }
+
+    private boolean waitUntil(Predicate<Session> predicate, int timeout, boolean log) {
+        return waitUntil(predicate, timeout, WAIT_PERIOD, log);
     }
 
     public boolean waitUntil(final Predicate<Session> predicate) {
@@ -232,20 +254,28 @@ public class Session implements AutoCloseable,
     }
 
     public boolean waitUntil(final Predicate<Session> predicate, final int timeout) {
-        return waitUntil(predicate, timeout, WAIT_PERIOD);
+        return waitUntil(predicate, timeout, WAIT_PERIOD, true);
+    }
+
+    public boolean waitUntil(
+            final Predicate<Session> predicate,
+            final int timeout,
+            final int period) {
+        return waitUntil(predicate, timeout, period, true);
     }
 
     public boolean waitUntil(
                     final Predicate<Session> predicate,
                     final int timeout,
-                    final int period) {
+                    final int period,
+                    final boolean log) {
         final int count = (int) floor(timeout / period);
         for (int i = 0; i < count; i++) {
             final boolean wakeup = predicate.test(getThis());
             if (wakeup) {
                 return true;
             } else {
-                wait(period);
+                wait(period, log);
             }
         }
         return false;
@@ -319,7 +349,7 @@ public class Session implements AutoCloseable,
                 ResponseReceived rr = (ResponseReceived) d;
                 Response         response = rr.getResponse();
                 final String     url      = response.getUrl();
-                final String     status   = response.getStatus().intValue() + " " + response.getStatusText();
+                final int        status   = response.getStatus().intValue();
                 final String     mimeType = response.getMimeType();
                 if (Document.equals(rr.getType()) || XHR.equals(rr.getType())) {
                     log.info("[{}] [{}] [{}] [{}] [{}]", new Object[] {
@@ -344,18 +374,15 @@ public class Session implements AutoCloseable,
     }
 
     public byte[] captureScreenshot() {
-        String frameId = getThis().getFrameId();
         DOM dom = getThis().getCommand().getDOM();
         dom.enable();
         CSS css = getThis().getCommand().getCSS();
         css.enable();
-        String styleSheetId = css.createStyleSheet(frameId);
         SourceRange location = new SourceRange();
         location.setEndColumn(0);
         location.setEndLine(0);
         location.setStartColumn(0);
         location.setStartLine(0);
-        css.addRule(styleSheetId, "::-webkit-scrollbar { display: none !important; }", location);
         Page page = getThis().getCommand().getPage();
         GetLayoutMetricsResult metrics = page.getLayoutMetrics();
         Rect cs = metrics.getContentSize();
@@ -364,8 +391,6 @@ public class Session implements AutoCloseable,
         byte[] data = page.captureScreenshot(Png, null, null, true);        
         emulation.clearDeviceMetricsOverride();
         emulation.resetPageScaleFactor();
-        css.getStyleSheetText(styleSheetId);
-        css.setStyleSheetText(styleSheetId, "");
         return data;
     }
 
@@ -379,10 +404,25 @@ public class Session implements AutoCloseable,
      * @return this
      */
     public Session wait(int timeout) {
+        return wait(timeout, true);
+    }
+
+    /**
+     * Causes the current thread to wait until waiting time elapses.
+     * 
+     * @param timeout the maximum time to wait in milliseconds
+     * 
+     * @throws CdpException if the session held by another thread at the time of invocation.
+     * 
+     * @return this
+     */
+    public Session wait(int timeout, boolean log) {
         if (lock.tryLock()) {
             Condition condition = lock.newCondition();
             try {
-                logEntry("wait", timeout + "ms");
+                if (log) {
+                    logEntry("wait", timeout + "ms");
+                }
                 condition.await(timeout, MILLISECONDS);
             } catch (InterruptedException e) {
                 throw new CdpException(e);

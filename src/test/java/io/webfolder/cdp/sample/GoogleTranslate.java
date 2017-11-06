@@ -17,6 +17,8 @@
  */
 package io.webfolder.cdp.sample;
 
+import static java.lang.Boolean.TRUE;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,17 +38,16 @@ public class GoogleTranslate {
 
             Network network = session.getCommand().getNetwork();
             network.enable();
-            session.wait(1000);
-            
+            network.setCacheDisabled(TRUE);
+
             Map<String, Object> headers = new HashMap<>();
             headers.put("Accept-Language", "en-US,en;q=1");
             headers.put("Cookie", "");
             network.setExtraHTTPHeaders(headers);
-            session.wait(500);
             
             session.navigate("https://translate.google.co.uk");
             session.waitDocumentReady();
-            
+
             String appName = session.getText("#gt-appname");
             if ( ! appName.equals("Translate") ) {
                 session.clearCookies();
@@ -66,8 +67,8 @@ public class GoogleTranslate {
                     .focus("textarea:first")
                     .wait(500)
                     .sendKeys("hello world")
-                    .wait(2000);
-        
+                    .wait(1000);
+
             System.out.println(session.getText("#gt-res-dir-ctr"));
         }
     }

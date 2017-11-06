@@ -200,12 +200,15 @@ public interface Navigator {
             }
             Integer nodeId = document.getNodeId();
             RemoteObject remoteObject = dom.resolveNode(nodeId, null, null);
+            if (remoteObject == null) {
+                return false;
+            }
             String readyState = (String) getThis().getPropertyByObjectId(remoteObject.getObjectId(), "readyState");
             getThis().releaseObject(remoteObject.getObjectId());
-            boolean domReady = "complete".equals(readyState);
-            return domReady;            
+            return "complete".equals(readyState);
         } catch (CdpException e) {
-            return TRUE.equals(getThis().evaluate("window.document.readyState === 'complete'"));
+            return getThis().isConnected() &&
+                        TRUE.equals(getThis().evaluate("window.document.readyState === 'complete'"));
         } finally {
             getThis().enableFlowLog();
         }

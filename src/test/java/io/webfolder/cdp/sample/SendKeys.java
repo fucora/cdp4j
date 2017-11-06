@@ -33,7 +33,7 @@ public class SendKeys {
             session.waitDocumentReady();
             session.sendKeys("webfolder.io");
             session.sendEnter();
-            session.wait(5000);
+            session.wait(2000);
         }
     }
 }

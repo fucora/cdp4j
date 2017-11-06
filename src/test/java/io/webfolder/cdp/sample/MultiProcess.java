@@ -16,42 +16,40 @@ import io.webfolder.cdp.session.SessionFactory;
 
 public class MultiProcess {
 
-
     // port number and user-data-dir must be different for each chrome process
     // As an alternative @see IncognitoBrowsing.java for incognito mode (private browsing).
     public static void main(String[] args) {
         new Thread() {
 
             public void run() {
-                Launcher launcher1 = new Launcher(getFreePort(DEFAULT_PORT));
+                Launcher launcher = new Launcher(getFreePort(DEFAULT_PORT));
+                Path remoteProfileData = get(getProperty("java.io.tmpdir")).resolve("remote-profile-" + new Random().nextInt());
+                SessionFactory factory = launcher.launch(asList("--user-data-dir=" + remoteProfileData.toString()));
 
-                Path remoteProfileData1 = get(getProperty("java.io.tmpdir")).resolve("remote-profile-" + new Random().nextInt());
-                SessionFactory factory1 = launcher1.launch(asList("--user-data-dir=" + remoteProfileData1.toString()));
-
-                try (SessionFactory sf = factory1) {
+                try (SessionFactory sf = factory) {
                     try (Session session = sf.create()) {
                         session.navigate("https://webfolder.io");
                         session.waitDocumentReady();
                         System.out.println("Content Length: " + session.getContent().length());
                     }
-                }                
+                }
             }
         }.start();
-        
+
         new Thread() {
 
             public void run() {
-                Launcher launcher2 = new Launcher(getFreePort(DEFAULT_PORT));
-                Path remoteProfileData2 = get(getProperty("java.io.tmpdir")).resolve("remote-profile-" + new Random().nextInt());
-                SessionFactory factory2 = launcher2.launch(asList("--user-data-dir=" + remoteProfileData2.toString()));
+                Launcher launcher = new Launcher(getFreePort(DEFAULT_PORT));
+                Path remoteProfileData = get(getProperty("java.io.tmpdir")).resolve("remote-profile-" + new Random().nextInt());
+                SessionFactory factory = launcher.launch(asList("--user-data-dir=" + remoteProfileData.toString()));
 
-                try (SessionFactory sf = factory2) {
+                try (SessionFactory sf = factory) {
                     try (Session session = sf.create()) {
                         session.navigate("https://webfolder.io");
                         session.waitDocumentReady();
                         System.out.println("Content Length: " + session.getContent().length());
                     }
-                }                
+                }
             }
         }.start();
     }

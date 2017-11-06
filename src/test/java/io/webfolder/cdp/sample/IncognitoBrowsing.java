@@ -19,6 +19,7 @@ package io.webfolder.cdp.sample;
 
 import static java.util.Arrays.asList;
 
+import io.webfolder.cdp.AdaptiveProcessManager;
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
@@ -29,28 +30,45 @@ public class IncognitoBrowsing {
     // https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md
     public static void main(String[] args) {
         Launcher launcher = new Launcher();
+        launcher.setProcessManager(new AdaptiveProcessManager());
 
         try (SessionFactory factory = launcher.launch(asList("--headless", "--disable-gpu"))) {
+
             String firstContext = factory.createBrowserContext();
 
             try (Session firstSession = factory.create(firstContext)) {
                 firstSession.navigate("https://httpbin.org/cookies/set?SESSION_ID=1");
-                firstSession.wait(500);
-                String session1 = (String) firstSession.getContent();
+                firstSession.waitDocumentReady();
+                String session1Content = (String) firstSession.evaluate("window.document.body.textContent");
                 factory.disposeBrowserContext(firstContext);
 
-                System.out.println(session1);
+                System.out.println(session1Content);
+            }
+
+            // firstSession & anotherSession share same SESSSION_ID value
+
+            try (Session anotherSession = factory.create(firstContext)) {
+                anotherSession.navigate("https://httpbin.org/cookies");
+                anotherSession.waitDocumentReady();
+                String anotherSessionContent = (String) anotherSession.evaluate("window.document.body.textContent");
+                System.out.println(anotherSessionContent);
             }
 
             String  secondContext = factory.createBrowserContext();
             try (Session secondSession = factory.create(secondContext)) {
                 secondSession.navigate("https://httpbin.org/cookies");
-                secondSession.wait(500);
-                String session2 = (String) secondSession.getContent();
-                factory.disposeBrowserContext(secondContext);
-                
-                System.out.println(session2);            
+                secondSession.waitDocumentReady();
+                String session2Content = (String) secondSession.evaluate("window.document.body.textContent");
+                System.out.println(session2Content); 
             }
+
+            // Dispose first context
+            factory.disposeBrowserContext(firstContext);
+
+            // Dispose second context
+            factory.disposeBrowserContext(secondContext);
+
+            launcher.getProcessManager().kill();
         }
     }
 }

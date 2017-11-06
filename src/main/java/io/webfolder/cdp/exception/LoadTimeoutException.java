@@ -24,4 +24,8 @@ public class LoadTimeoutException extends CdpException {
     public LoadTimeoutException(String message) {
         super(message);
     }
+
+    public LoadTimeoutException(Throwable e) {
+        super(e);
+    }
 }

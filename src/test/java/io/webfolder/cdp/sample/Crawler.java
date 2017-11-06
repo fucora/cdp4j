@@ -17,14 +17,18 @@
  */
 package io.webfolder.cdp.sample;
 
+import static io.webfolder.cdp.event.Events.NetworkLoadingFinished;
 import static io.webfolder.cdp.event.Events.NetworkResponseReceived;
 import static java.util.Base64.getDecoder;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.synchronizedSet;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -34,6 +38,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import io.webfolder.cdp.Launcher;
+import io.webfolder.cdp.event.network.LoadingFinished;
 import io.webfolder.cdp.event.network.ResponseReceived;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
@@ -72,6 +77,8 @@ public class Crawler {
         private Map<String, Object> responseHeaders;
 
         private String url;
+
+        private String requestId;
 
         public String getDocument() {
             return document;
@@ -113,6 +120,14 @@ public class Crawler {
         public void setUrl(String url) {
             this.url = url;
         }
+
+        public String getRequestId() {
+            return requestId;
+        }
+
+        public void setRequestId(String requestId) {
+            this.requestId = requestId;
+        }
     }
 
     public static class HttpClient implements AutoCloseable {
@@ -122,6 +137,8 @@ public class Crawler {
         private Session session;
 
         private int pageLoadTimeout;
+
+        private Set<String> finishedResources = synchronizedSet(new HashSet<>());
 
         public HttpClient(SessionFactory factory, int pageLoadTimeout) {
             this.factory = factory;
@@ -136,6 +153,10 @@ public class Crawler {
             session.getCommand().getNetwork().enable();
 
             session.addEventListener((e, d) -> {
+                if (NetworkLoadingFinished.equals(e)) {
+                    LoadingFinished lf = (LoadingFinished) d;
+                    finishedResources.add(lf.getRequestId());
+                }
                 if (NetworkResponseReceived.equals(e)) {
                     ResponseReceived rr = (ResponseReceived) d;
 
@@ -143,27 +164,29 @@ public class Crawler {
                             ! rr.getResponse().getUrl().startsWith("http://") ) {
                         return;
                     }
+
                     ResourceType type = rr.getType();
 
                     if (ResourceType.Document.equals(type)) {
-                        
                         webResource.setResponseHeaders(rr.getResponse().getHeaders());
                         webResource.setStatus(rr.getResponse().getStatus().intValue());
                         webResource.setUrl(rr.getResponse().getUrl());
-
-                        GetResponseBodyResult rb = session.getCommand().getNetwork().getResponseBody(rr.getRequestId());
-                        if ( rb.getBase64Encoded() ) {
-                            webResource.setContent(getDecoder().decode(rb.getBody()));
-                        } else {
-                            webResource.setDocument(rb.getBody());
-                        }
+                        webResource.setRequestId(rr.getRequestId());
                     }
                 }
             });
 
             session.navigate(url);
-
             session.waitDocumentReady(pageLoadTimeout);
+
+            for (String requestId : finishedResources) {
+                GetResponseBodyResult rb = session.getCommand().getNetwork().getResponseBody(requestId);
+                if ( rb.getBase64Encoded() ) {
+                    webResource.setContent(getDecoder().decode(rb.getBody()));
+                } else {
+                    webResource.setDocument(rb.getBody());
+                }
+            }
 
             String ct = (String) webResource.getResponseHeaders().get("content-type");
             if ( ct != null && "text/html".equals(ct) ) {

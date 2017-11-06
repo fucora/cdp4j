@@ -25,6 +25,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Scanner;
 
+import io.webfolder.cdp.exception.CdpException;
+
 public class LinuxProcessManager extends ProcessManager {
 
     private int pid;
@@ -37,10 +39,10 @@ public class LinuxProcessManager extends ProcessManager {
             Field pidField = process.getProcess().getClass().getDeclaredField("pid");
             pidField.setAccessible(true);
             this.pid = (int) pidField.get(process.getProcess());
-            this.cdp4jId = process.getCdp4jProcessId();
         } catch (Throwable e) {
-            // ignored
+            throw new CdpException(e);
         }
+        this.cdp4jId = process.getCdp4jProcessId();
     }
 
     @Override

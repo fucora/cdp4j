@@ -26,6 +26,7 @@ import static java.util.Arrays.asList;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import io.webfolder.cdp.AdaptiveProcessManager;
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
@@ -36,14 +37,16 @@ public class PrintToPDF {
     // https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md
     public static void main(String[] args) throws IOException {
         Launcher launcher = new Launcher();
+        launcher.setProcessManager(new AdaptiveProcessManager());
 
-        Path file = createTempFile("webfolder-linux-setup", ".pdf");
+        Path file = createTempFile("cdp4j", ".pdf");
 
-        try (SessionFactory factory = launcher.launch(asList("--headless", "--disable-gpu"))) {
+        try (SessionFactory factory = launcher.launch(asList("--disable-gpu", "--headless"))) {
+
             String context = factory.createBrowserContext();
             try (Session session = factory.create(context)) {
 
-                session.navigate("https://webfolder.io?cdp4j");
+                session.navigate("https://webfolder.io/cdp4j.html");
                 session.waitDocumentReady();
 
                 byte[] content = session
@@ -52,11 +55,15 @@ public class PrintToPDF {
                                     .printToPDF();
 
                 write(file, content);
+            }
 
-                if (isDesktopSupported()) {
-                    getDesktop().open(file.toFile());
-                }
-            }   
+            factory.disposeBrowserContext(context);
         }
+
+        if (isDesktopSupported()) {
+            getDesktop().open(file.toFile());
+        }
+
+        launcher.getProcessManager().kill();
     }
 }

@@ -44,13 +44,13 @@ public class MultiSelect {
                 }
             });
 
-            session.wait(2000);
+            session.wait(1000);
             session.clearOptions("select");
 
             System.out.println("Selected Option count: " +
             session.getOptions("select").stream().filter(o -> o.isSelected()).count());
 
-            session.wait(2000);
+            session.wait(1000);
             session.setSelectedOptions("select", asList(0, 1, 2));
             System.out.println("Selected options:");
             session.getOptions("select").stream().forEach(o -> {

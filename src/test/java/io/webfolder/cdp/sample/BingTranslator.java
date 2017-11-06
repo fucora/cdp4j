@@ -43,13 +43,13 @@ public class BingTranslator {
 
             session
                 .click(".sourceText #LS_LangList") // click source language
-                .wait(2000)
+                .wait(500)
                 .click(".sourceText td[value='en']") // choose English
-                .wait(2000)
+                .wait(500)
                 .click(".destinationText #LS_LangList") // click destination language
-                .wait(2000)
+                .wait(500)
                 .click(".destinationText td[value='et']") // choose Estonian
-                .wait(2000);
+                .wait(500);
 
             StringBuilder builder = new StringBuilder();
             

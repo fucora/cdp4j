@@ -20,6 +20,7 @@ package io.webfolder.cdp.session;
 import static io.webfolder.cdp.logger.CdpLoggerType.Slf4j;
 import static java.lang.String.format;
 import static java.lang.String.valueOf;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Locale.ENGLISH;
 import static java.util.concurrent.Executors.newCachedThreadPool;
@@ -29,6 +30,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -296,6 +298,9 @@ public class SessionFactory implements AutoCloseable {
             TypeToken<?> type = TypeToken.getParameterized(List.class, SessionInfo.class);
             List<SessionInfo> list = gson.fromJson(reader, type.getType());
             return list;
+        } catch (ConnectException | SocketTimeoutException e) {
+            log.debug(e.getMessage());
+            return emptyList();
         } catch (IOException e) {
             throw new CdpException(e);
         } finally {
@@ -309,13 +314,10 @@ public class SessionFactory implements AutoCloseable {
         }
     }
 
-    public void close(String sessionId) {
-        close(sessionId, null);
-    }
-
-    public void close(String sessionId, Session session) {
+    public void close(Session session) {
+        String sessionId = session.getId();
         boolean found = false;
-        for (SessionInfo info : list()) {
+        for (SessionInfo info : list(connectionTimeout)) {
             if (info.getId().equals(sessionId)) {
                 found = true;
                 break;
@@ -367,9 +369,18 @@ public class SessionFactory implements AutoCloseable {
 
     @Override
     public void close() {
-        threadPool.shutdownNow();
+        boolean headless = isHeadless() && headlessSession != null;
+        if (headless) {
+            for (String browserContextId : browserContextList) {
+                try {
+                    disposeBrowserContext(browserContextId);
+                } catch (Throwable t) {
+                    log.error(t.getMessage(), t);
+                }
+            }
+        }
         for (Session session : sessions) {
-            if (isHeadless() &&
+            if (headless &&
                         session.getId().equals(headlessSession.getId())) {
                 continue;
             }
@@ -379,20 +390,15 @@ public class SessionFactory implements AutoCloseable {
                 log.error(t.getMessage(), t);
             }
         }
-        if ( isHeadless() && headlessSession != null ) {
+        threadPool.shutdownNow();
+        if (headless) {
+            browserContextList.clear();
             headlessSession.dispose();
         }
         sessions.clear();
         targets.clear();
-        for (String browserContextId : browserContextList) {
-            try {
-                disposeBrowserContext(browserContextId);
-            } catch (Throwable t) {
-                log.error(t.getMessage(), t);
-            }
-        }
         headlessSession = null;
-        headless.set(false);
+        this.headless.set(false);
     }
 
     public void activate(String sessionId) {
@@ -544,6 +550,10 @@ public class SessionFactory implements AutoCloseable {
 
     public List<String> listBrowserContextIds() {
         return unmodifiableList(browserContextList);
+    }
+
+    ExecutorService getThreadPool() {
+        return threadPool;
     }
 
     @Override
