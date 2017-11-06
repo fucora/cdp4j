@@ -275,7 +275,11 @@ public class Session implements AutoCloseable,
             if (wakeup) {
                 return true;
             } else {
-                wait(period, log);
+                if ( ! isConnected() ) {
+                    return false;
+                } else {
+                    wait(period, log);
+                }
             }
         }
         return false;

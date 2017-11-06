@@ -41,7 +41,7 @@ public class Bing {
                 .wait(1000);
 
             String firstResult = session.getText("strong").toLowerCase(ENGLISH);
-    
+ 
             System.out.println("Query String : " + session.getQueryString());
             System.out.println("Path name    : " + session.getPathname());
     
