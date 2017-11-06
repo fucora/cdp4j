@@ -53,21 +53,25 @@ public class FollowRedirects {
                 if (NetworkRequestIntercepted.equals(e)) {
                     RequestIntercepted ri = (RequestIntercepted) d;
                     boolean isRedirect = ri.getRedirectStatusCode() != null;
+
                     if (isRedirect) {
+
                         System.out.println("");
                         System.out.println("Redirect URL         : " + ri.getRedirectUrl());
                         System.out.println("Redirect Status Code : " + ri.getRedirectStatusCode());
                         System.out.println("Redirect Header      : " + ri.getRedirectHeaders());
                         System.out.println("");
+
+                        if ( ! followRedirect ) {
+                            return;
+                        }
                     }
-                    if ( isRedirect && ! followRedirect ) {
-                        return;
-                    }
+
                     network.continueInterceptedRequest(ri.getInterceptionId());
                 }
             });
 
-            session.navigate("https://httpbin.org/redirect-to?url=https://webfolder.io");
+            session.navigate("https://httpbin.org/redirect-to?url=https://webfolder.io?cdp4j");
             session.waitDocumentReady();
         }
     }
