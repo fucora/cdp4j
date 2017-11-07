@@ -39,7 +39,6 @@ public class CloseSessionOnRedirect {
 
             Network network = session.getCommand().getNetwork();
             network.enable();
-
             
             session.addEventListener((e, d) -> {
                 if (NetworkRequestWillBeSent.equals(e)) {
