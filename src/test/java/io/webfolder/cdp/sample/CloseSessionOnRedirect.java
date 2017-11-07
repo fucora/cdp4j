@@ -40,15 +40,23 @@ public class CloseSessionOnRedirect {
             Network network = session.getCommand().getNetwork();
             network.enable();
 
+            
             session.addEventListener((e, d) -> {
                 if (NetworkRequestWillBeSent.equals(e)) {
                     RequestWillBeSent rws = (RequestWillBeSent) d;
                     Response rr = rws.getRedirectResponse();
-                    if ( rr != null && rr.getStatus() != null ) {
-                        System.out.println("Redirect URL        : " + rws.getRequest().getUrl());
-                        System.out.println("Redirect Status Code: " + rr.getStatus());
-                        session.close();
+
+                    boolean isRedirect = rr != null && rr.getStatus() != null;
+
+                    if (isRedirect) {
                         terminateSession = true;
+                        session.close();
+
+                        System.out.println("");
+                        System.out.println("Redirect URL         : " + rws.getRequest().getUrl());
+                        System.out.println("Redirect Status Code : " + rr.getStatus());
+                        System.out.println("Redirect Header      : " + rws.getRedirectResponse().getHeaders());
+                        System.out.println("");
                     }
                 }
             });
