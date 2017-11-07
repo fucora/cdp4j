@@ -26,7 +26,7 @@ import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 import io.webfolder.cdp.type.network.Response;
 
-public class StopSessionOnRedirect {
+public class CloseSessionOnRedirect {
 
     private static boolean terminateSession;
 
