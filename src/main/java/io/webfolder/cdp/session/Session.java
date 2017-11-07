@@ -198,6 +198,9 @@ public class Session implements AutoCloseable,
      * @return this
      */
     public Session waitDocumentReady(final int timeout) {
+        if ( ! isConnected() ) {
+            return this;
+        }
         long start = System.currentTimeMillis();
         logEntry("waitDocumentReady", format("[timeout=%d]", timeout));
         if (isDomReady()) {
@@ -206,41 +209,43 @@ public class Session implements AutoCloseable,
         CountDownLatch latch  = new CountDownLatch(2);
         AtomicBoolean  loaded = new AtomicBoolean(false);
         AtomicBoolean  ready  = new AtomicBoolean(false);
-        command.getPage().enable();
-        EventListener<?> loadListener = (e, d) -> {
-            if (PageLifecycleEvent.equals(e) &&
-                    "load".equalsIgnoreCase(((LifecycleEvent) d).getName())) {
-                latch.countDown();
-                loaded.set(true);
-                if (isDomReady()) {
-                    ready.set(true);
-                }
-            }
-        };
-        addEventListener(loadListener);
-        sesessionFactory.getThreadPool().execute(() -> {
-            try {
-                waitUntil(s -> s.isDomReady() || ready.get(), timeout, false);
-            } finally {
-                latch.countDown();
-                if ( ! loaded.get() ) {
+        if (isConnected()) {
+            command.getPage().enable();
+            EventListener<?> loadListener = (e, d) -> {
+                if (PageLifecycleEvent.equals(e) &&
+                        "load".equalsIgnoreCase(((LifecycleEvent) d).getName())) {
                     latch.countDown();
+                    loaded.set(true);
+                    if (isDomReady()) {
+                        ready.set(true);
+                    }
                 }
-                if ( ! ready.get() && isDomReady() ) {
-                    ready.set(true);
+            };
+            addEventListener(loadListener);
+            sesessionFactory.getThreadPool().execute(() -> {
+                try {
+                    waitUntil(s -> ! isConnected() || s.isDomReady() || ready.get(), timeout, false);
+                } finally {
+                    latch.countDown();
+                    if ( ! loaded.get() ) {
+                        latch.countDown();
+                    }
+                    if ( ! ready.get() && isConnected() && isDomReady() ) {
+                        ready.set(true);
+                    }
                 }
+            });
+            try {
+                latch.await(timeout, MILLISECONDS);
+            } catch (InterruptedException e) {
+                throw new LoadTimeoutException(e);
+            } finally {
+                removeEventEventListener(loadListener);
             }
-        });
-        try {
-            latch.await(timeout, MILLISECONDS);
-        } catch (InterruptedException e) {
-            throw new LoadTimeoutException(e);
-        } finally {
-            removeEventEventListener(loadListener);
-        }
-        long elapsed = System.currentTimeMillis() - start;
-        if ( elapsed > timeout && ! isDomReady() ) {
-            throw new LoadTimeoutException("Page not loaded within " + timeout + " ms");
+            long elapsed = System.currentTimeMillis() - start;
+            if ( elapsed > timeout && isConnected() && ! isDomReady() ) {
+                throw new LoadTimeoutException("Page not loaded within " + timeout + " ms");
+            }
         }
         return this;
     }
