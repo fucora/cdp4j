@@ -30,7 +30,6 @@ public class CloseSessionOnRedirect {
 
     private static boolean terminateSession;
 
-    // Prefer to use FollowRedirects.java if Chrome version >= 64
     public static void main(String[] args) {
         Launcher launcher = new Launcher();
 
