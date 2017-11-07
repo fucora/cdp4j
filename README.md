@@ -62,15 +62,15 @@ Add the following to your POM's `<dependencies>` tag:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>cdp4j</artifactId>
-    <version>2.1.2</version>
+    <version>2.1.4</version>
 </dependency>
 ```
 
 Download
 --------
-[cdp4j-2.1.2.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.1.2/cdp4j-2.1.2.jar) - 775 KB
+[cdp4j-2.1.4.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.1.4/cdp4j-2.1.4.jar) - 782 KB
 
-[cdp4j-2.1.2-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.1.2/cdp4j-2.1.2-sources.jar) - 486 KB
+[cdp4j-2.1.4-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.1.4/cdp4j-2.1.4-sources.jar) - 490 KB
 
 Supported Platforms
 -------------------
