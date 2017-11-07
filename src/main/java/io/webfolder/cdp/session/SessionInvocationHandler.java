@@ -74,13 +74,6 @@ class SessionInvocationHandler implements InvocationHandler {
                 final Method method,
                 final Object[] args) throws Throwable {
 
-        if ( ! session.isConnected() ) {
-            log.error("Unable to invoke {}.{}()", new Object[] {
-                    method.getDeclaringClass().getName(), method.getName()
-            });
-            throw new CdpException("WebSocket connection is not alive");
-        }
-
         final Class<?> klass = method.getDeclaringClass();
         final String  domain = klass.getAnnotation(Domain.class).value();
         final String command = method.getName();
@@ -110,13 +103,18 @@ class SessionInvocationHandler implements InvocationHandler {
 
         log.debug(json);
 
-        WSContext context = new WSContext();
-        contextList.put(id, context);
+        WSContext context = null;
 
-        webSocket.sendText(json);
-        context.await();
+        if (session.isConnected() && webSocket.isOpen()) {
+            context = new WSContext();
+            contextList.put(id, context);
+            webSocket.sendText(json);
+            context.await();
+        } else {
+            throw new CdpException("WebSocket connection is not alive");
+        }
 
-        if (context.getError() != null) {
+        if ( context.getError() != null ) {
             throw context.getError();
         }
 
