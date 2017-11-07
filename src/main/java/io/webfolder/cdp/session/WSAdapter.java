@@ -110,7 +110,7 @@ class WSAdapter extends WebSocketAdapter {
                 String id = idElement.getAsString();
                 if (id != null) {
                     int valId = (int) parseDouble(id);
-                    WSContext context = contextList.get(valId);
+                    WSContext context = contextList.remove(valId);
                     if (context != null) {
                         JsonObject error = object.getAsJsonObject("error");
                         if (error != null) {
@@ -120,10 +120,8 @@ class WSAdapter extends WebSocketAdapter {
                             context.setError(new CommandException(code, message +
                                                         (messageData != null && messageData.isJsonPrimitive() ? ". " +
                                                         messageData.getAsString() : "")));
-                            contextList.remove(valId);
                         } else {
                             context.setData(json);
-                            contextList.remove(valId);
                         }
                     }
                 }
