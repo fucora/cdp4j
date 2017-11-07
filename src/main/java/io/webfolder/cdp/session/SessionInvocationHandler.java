@@ -105,7 +105,7 @@ class SessionInvocationHandler implements InvocationHandler {
 
         WSContext context = null;
 
-        if (session.isConnected() && webSocket.isOpen()) {
+        if (session.isConnected()) {
             context = new WSContext();
             contextList.put(id, context);
             webSocket.sendText(json);

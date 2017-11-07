@@ -155,7 +155,7 @@ public class Session implements AutoCloseable,
     }
 
     public boolean isConnected() {
-        return connected.get();
+        return connected.get() && webSocket.isOpen();
     }
 
     /**
