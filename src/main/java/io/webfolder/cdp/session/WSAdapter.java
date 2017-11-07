@@ -120,8 +120,10 @@ class WSAdapter extends WebSocketAdapter {
                             context.setError(new CommandException(code, message +
                                                         (messageData != null && messageData.isJsonPrimitive() ? ". " +
                                                         messageData.getAsString() : "")));
+                            contextList.remove(valId);
                         } else {
                             context.setData(json);
+                            contextList.remove(valId);
                         }
                     }
                 }
