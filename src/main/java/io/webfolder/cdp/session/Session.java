@@ -17,6 +17,7 @@
  */
 package io.webfolder.cdp.session;
 
+import static com.neovisionaries.ws.client.WebSocketCloseCode.NORMAL;
 import static io.webfolder.cdp.event.Events.LogEntryAdded;
 import static io.webfolder.cdp.event.Events.NetworkResponseReceived;
 import static io.webfolder.cdp.event.Events.PageLifecycleEvent;
@@ -485,7 +486,7 @@ public class Session implements AutoCloseable,
         eventListeners.clear();
         invocationHandler.dispose();
         try {
-            webSocket.disconnect();
+            webSocket.disconnect(NORMAL, null, 1000); // max wait time to close: 1 seconds
         } catch (Throwable t) {
         }
     }
