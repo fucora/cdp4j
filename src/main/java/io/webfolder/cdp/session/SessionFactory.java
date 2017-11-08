@@ -91,6 +91,8 @@ public class SessionFactory implements AutoCloseable {
 
     private volatile Session headlessSession;
 
+    private String browserVersion;
+
     public SessionFactory() {
         this(DEFAULT_HOST,
                 DEFAULT_PORT,
@@ -480,6 +482,7 @@ public class SessionFactory implements AutoCloseable {
             headless = new AtomicBoolean();
             Map<String, Object> version = getVersion();
             String ua = (String) version.get("User-Agent");
+            browserVersion = (String) version.get("Browser");
             if (ua == null || ua.trim().isEmpty()) {
                 headless.set(false);
             } else if (ua.toLowerCase(ENGLISH).contains("headless")) {
@@ -554,6 +557,10 @@ public class SessionFactory implements AutoCloseable {
 
     ExecutorService getThreadPool() {
         return threadPool;
+    }
+
+    public String getBrowserVersion() {
+        return browserVersion;
     }
 
     @Override

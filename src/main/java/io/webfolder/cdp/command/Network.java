@@ -308,4 +308,21 @@ public interface Network {
      */
     @Experimental
     void continueInterceptedRequest(String interceptionId);
+
+    /**
+     * Sets the requests to intercept that match a the provided patterns.
+     * 
+     * @param enabled Whether requests should be intercepted. If patterns is not set, matches all and resets any previously set patterns. Other parameters are ignored if false.
+     * @param patterns URLs matching any of these patterns will be forwarded and wait for the corresponding continueInterceptedRequest call. Wildcards ('*' -> zero or more, '?' -> exactly one) are allowed. Escape character is backslash. If omitted equivalent to ['*'] (intercept all).
+     */
+    @Experimental
+    void setRequestInterceptionEnabled(Boolean enabled, @Optional List<String> patterns);
+
+    /**
+     * Sets the requests to intercept that match a the provided patterns.
+     * 
+     * @param enabled Whether requests should be intercepted. If patterns is not set, matches all and resets any previously set patterns. Other parameters are ignored if false.
+     */
+    @Experimental
+    void setRequestInterceptionEnabled(Boolean enabled);
 }
