@@ -48,6 +48,7 @@ public class CloseSessionOnRedirect {
 
                     if (isRedirect) {
                         terminateSession = true;
+                        session.getCommand().getPage().stopLoading();
                         session.close();
 
                         System.out.println("");
