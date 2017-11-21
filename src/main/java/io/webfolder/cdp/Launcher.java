@@ -22,7 +22,6 @@ import static java.lang.Long.toHexString;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.String.format;
 import static java.lang.System.getProperty;
-import static java.lang.Thread.sleep;
 import static java.nio.file.Paths.get;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -33,23 +32,19 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.session.SessionFactory;
-import io.webfolder.cdp.session.SessionInfo;
 
-public class Launcher {
+public class Launcher extends AbstractLauncher {
 
-    private final SessionFactory factory;
+    private static final String OS = getProperty("os.name").toLowerCase(ENGLISH);
 
-    private static final String  OS       = getProperty("os.name").toLowerCase(ENGLISH);
+    private static final boolean WINDOWS = OS.startsWith("windows");
 
-    private static final boolean WINDOWS  = OS.startsWith("windows");
-
-    private static final boolean OSX      = OS.startsWith("mac");
+    private static final boolean OSX = OS.startsWith("mac");
 
     private ProcessManager processManager = new NullProcessManager();
 
@@ -70,11 +65,11 @@ public class Launcher {
     }
 
     public Launcher(int port) {
-      this(new SessionFactory(port));
+        this(new SessionFactory(port));
     }
 
     public Launcher(final SessionFactory factory) {
-        this.factory = factory;
+        super(factory);
     }
 
     private String getCustomChromeBinary() {
@@ -88,41 +83,42 @@ public class Launcher {
         return null;
     }
 
+    @Override
     public String findChrome() {
         String chromeExecutablePath = null;
         chromeExecutablePath = getCustomChromeBinary();
         if (chromeExecutablePath == null && WINDOWS) {
-          chromeExecutablePath = findChromeWinPath();
+            chromeExecutablePath = findChromeWinPath();
         }
         if (chromeExecutablePath == null && OSX) {
-          chromeExecutablePath = findChromeOsxPath();
+            chromeExecutablePath = findChromeOsxPath();
         }
-        if ( chromeExecutablePath == null && ! WINDOWS ) {
-          chromeExecutablePath = "google-chrome";
+        if (chromeExecutablePath == null && !WINDOWS) {
+            chromeExecutablePath = "google-chrome";
         }
         return chromeExecutablePath;
-      }
+    }
 
     public String findChromeWinPath() {
-      try {
-          for (String path : getChromeWinPaths()) {
-              final Process process = getRuntime().exec(new String[] {
-                      "cmd", "/c", "echo", path
-              });
-              final int exitCode = process.waitFor();
-              if (exitCode == 0) {
-                  final String location = toString(process.getInputStream()).trim().replace("\"", "");
-                  final File chrome = new File(location);
-                  if (chrome.exists() && chrome.canExecute()) {
-                      return chrome.toString();
-                  }
-              }
-          }
-          throw new CdpException("Unable to find chrome.exe");
-      } catch (Throwable e) {
-          // ignore
-      }
-      return null;
+        try {
+            for (String path : getChromeWinPaths()) {
+                final Process process = getRuntime().exec(new String[]{
+                        "cmd", "/c", "echo", path
+                });
+                final int exitCode = process.waitFor();
+                if (exitCode == 0) {
+                    final String location = toString(process.getInputStream()).trim().replace("\"", "");
+                    final File chrome = new File(location);
+                    if (chrome.exists() && chrome.canExecute()) {
+                        return chrome.toString();
+                    }
+                }
+            }
+            throw new CdpException("Unable to find chrome.exe");
+        } catch (Throwable e) {
+            // ignore
+        }
+        return null;
     }
 
     protected List<String> getChromeWinPaths() {
@@ -155,74 +151,20 @@ public class Launcher {
     }
 
     public SessionFactory launch(Path chromeExecutablePath) {
-        return launch(chromeExecutablePath, new ArrayList<String>());
+        return launch(chromeExecutablePath, emptyList());
     }
 
-    public SessionFactory launch() {
-        return launch(findChrome(), new ArrayList<String>());
-    }
+    @Override
+    protected void internalLaunch(List<String> list, List<String> arguments) {
+        boolean foundUserDataDir = arguments.stream().anyMatch(arg -> arg.startsWith("--user-data-dir="));
 
-    public SessionFactory launch(List<String> arguments) {
-        return launch(findChrome(), arguments);
-    }
-
-    public SessionFactory launch(String chromeExecutablePath, List<String> arguments) {
-        if (launched()) {
-            return factory;
-        }
-
-        if (chromeExecutablePath == null || chromeExecutablePath.trim().isEmpty()) {
-            throw new CdpException("chrome not found");
-        }
-
-        List<String> list = new ArrayList<>();
-        list.add(chromeExecutablePath);
-
-        list.add(format("--remote-debugging-port=%d", factory.getPort()));
-
-        boolean foundUserDataDir = false;
-
-        for (String next : arguments) {
-            if (next.startsWith("--user-data-dir=")) {
-                foundUserDataDir = true;
-                break;
-            }
-        }
-
-        if ( ! foundUserDataDir ) {
+        if (!foundUserDataDir) {
             Path remoteProfileData = get(getProperty("java.io.tmpdir")).resolve("remote-profile");
             list.add(format("--user-data-dir=%s", remoteProfileData.toString()));
         }
 
-        if ( ! DEFAULT_HOST.equals(factory.getHost()) ) {
+        if (!DEFAULT_HOST.equals(factory.getHost())) {
             list.add(format("--remote-debugging-address=%s", factory.getHost()));
-        }
-
-        // Disable built-in Google Translate service
-        list.add("--disable-translate");
-        // Disable all chrome extensions entirely
-        list.add("--disable-extensions");
-        // Disable various background network services, including extension updating,
-        // safe browsing service, upgrade detector, translate, UMA
-        list.add("--disable-background-networking");
-        // Disable fetching safebrowsing lists, likely redundant due to disable-background-networking
-        list.add("--safebrowsing-disable-auto-update");
-        // Disable syncing to a Google account
-        list.add("--disable-sync");
-        // Disable reporting to UMA, but allows for collection
-        list.add("--metrics-recording-only");
-        // Disable installation of default apps on first run
-        list.add("--disable-default-apps");
-        // Mute any audio
-        list.add("--mute-audio");
-        // Skip first run wizards
-        list.add("--no-first-run");
-        list.add("--no-default-browser-check");
-        list.add("--disable-plugin-power-saver");
-        list.add("--disable-popup-blocking");
-
-        if ( ! arguments.isEmpty() ) {
-            list.addAll(arguments);
         }
 
         try {
@@ -235,7 +177,7 @@ public class Launcher {
             process.getOutputStream().close();
             process.getInputStream().close();
 
-            if ( ! process.isAlive() ) {
+            if (!process.isAlive()) {
                 throw new CdpException("No process: the chrome process is not alive.");
             }
 
@@ -243,26 +185,6 @@ public class Launcher {
         } catch (IOException e) {
             throw new CdpException(e);
         }
-
-        if ( ! launched() ) {
-                  int counter  =  0;
-            final int maxCount = 20;
-            while ( ! launched() && counter < maxCount ) {
-                try {
-                    sleep(500);
-                    counter += 1;
-                } catch (InterruptedException e) {
-                    break;
-                }
-            }
-        }
-
-        if ( ! launched() ) {
-            throw new CdpException("Unable to connect to the chrome remote debugging server [" +
-                            factory.getHost() + ":" + factory.getPort() + "]");
-        }
-
-        return factory;
     }
 
     protected String toString(InputStream is) {
@@ -272,22 +194,16 @@ public class Launcher {
         }
     }
 
-    public boolean launched() {
-        List<SessionInfo> list = emptyList();
-        try {
-            int timeout = 1000; // milliseconds
-            list = factory.list(timeout);
-        } catch (Throwable t) {
-            // ignore
-        }
-        return ! list.isEmpty() ? true : false;
-    }
-
     public void setProcessManager(ProcessManager processManager) {
         this.processManager = processManager;
     }
 
     public ProcessManager getProcessManager() {
         return processManager;
+    }
+
+    @Override
+    public void kill() {
+        getProcessManager().kill();
     }
 }
