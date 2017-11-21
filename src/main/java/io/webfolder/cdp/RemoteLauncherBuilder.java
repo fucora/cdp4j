@@ -11,7 +11,7 @@ public class RemoteLauncherBuilder {
 
     public RemoteLauncherBuilder withHost(String host) {
         if (host == null)
-            throw new NullPointerException();
+            throw new IllegalArgumentException();
         this.host = host;
         return this;
     }
@@ -28,14 +28,14 @@ public class RemoteLauncherBuilder {
 
     public RemoteLauncherBuilder withUser(String user) {
         if (user == null)
-            throw new NullPointerException();
+            throw new IllegalArgumentException();
         this.user = user;
         return this;
     }
 
     public RemoteLauncherBuilder withPassword(String password) {
         if (password == null)
-            throw new NullPointerException();
+            throw new IllegalArgumentException();
         this.password = password;
         return this;
     }
@@ -43,14 +43,14 @@ public class RemoteLauncherBuilder {
 
     public RemoteLauncherBuilder withPrivateKey(String privateKey) {
         if (privateKey == null)
-            throw new NullPointerException();
+            throw new IllegalArgumentException();
         this.privateKey = privateKey;
         return this;
     }
 
     public RemoteLauncherBuilder withChromeExecutable(String chromeExecutable) {
         if (chromeExecutable == null)
-            throw new NullPointerException();
+            throw new IllegalArgumentException();
         this.chromeExecutable = chromeExecutable;
         return this;
     }

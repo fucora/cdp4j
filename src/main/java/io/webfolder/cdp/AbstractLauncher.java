@@ -4,15 +4,11 @@ import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.session.SessionFactory;
 import io.webfolder.cdp.session.SessionInfo;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.webfolder.cdp.session.SessionFactory.DEFAULT_HOST;
 import static java.lang.String.format;
-import static java.lang.System.getProperty;
 import static java.lang.Thread.sleep;
-import static java.nio.file.Paths.get;
 import static java.util.Collections.emptyList;
 
 abstract class AbstractLauncher {

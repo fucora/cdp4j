@@ -85,7 +85,7 @@ public class RemoteLauncher extends AbstractLauncher {
         }
     }
 
-    synchronized Shell getShell() throws IOException {
+    synchronized public Shell getShell() throws IOException {
         if (shell == null) {
             shell = password.isEmpty()
                     ?
