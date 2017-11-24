@@ -262,6 +262,7 @@
    <groupId>com.jcabi</groupId>
    <artifactId>jcabi-ssh</artifactId>
    <version>1.6</version>
+   <scope>provided</scope>
   </dependency>
   <dependency>
    <groupId>ch.qos.logback</groupId>

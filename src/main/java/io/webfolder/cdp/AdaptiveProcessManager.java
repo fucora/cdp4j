@@ -36,10 +36,9 @@ public class AdaptiveProcessManager extends ProcessManager {
     private static final boolean JAVA_8  = getProperty("java.version").startsWith("1.8.");
 
     public AdaptiveProcessManager() {
-        //if ( ! JAVA_8 ) {
-        //   processManager = new DefaultProcessManager();
-        //} else
-        if (WINDOWS) {
+        if ( ! JAVA_8 ) {
+           processManager = new DefaultProcessManager();
+        } else if (WINDOWS) {
             processManager = new WindowsProcessManager();
         } else if (LINUX) {
             processManager = new LinuxProcessManager();

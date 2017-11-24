@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package io.webfolder.cdp;
 
 import com.jcabi.ssh.Shell;
@@ -32,14 +31,21 @@ import java.util.regex.Pattern;
 import static java.util.stream.Collectors.joining;
 
 public class RemoteLauncher extends AbstractLauncher {
+
     private final String host;
+
     private final int sshPort;
+
     private final String user;
+
     private final String password;
+
     private final String privateKey;
+
     private final String chromeExecutable;
 
     private Shell shell;
+
     private int pid = -1;
 
     RemoteLauncher(String host, int sshPort, int chromePort, String user, String password, String privateKey, String chromeExecutable) {
