@@ -46,7 +46,6 @@ public interface Mouse {
      * @return this
      */
     default Session click(final String selector) {
-        getThis();
         return click(selector, Constant.EMPTY_ARGS);
     }
 
