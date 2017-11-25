@@ -139,14 +139,13 @@ public class ChromiumDownloader implements Downloader {
         String url = null;
 
         if (WINDOWS) {
-            url = format("%s/Win_x64/%d/chrome-win32.zip", DOWNLOAD_HOST);
+            url = format("%s/Win_x64/%d/chrome-win32.zip", DOWNLOAD_HOST, version.revision);
         } else if ("linux".contains(OS)) {
-            url = format("%s/Linux_x64/%d/chrome-linux.zip", DOWNLOAD_HOST);
+            url = format("%s/Linux_x64/%d/chrome-linux.zip", DOWNLOAD_HOST, version.revision);
         } else if ("mac".contains(OS)) {
-            url = format("%s/Mac/%d/chrome-mac.zip", DOWNLOAD_HOST);
+            url = format("%s/Mac/%d/chrome-mac.zip", DOWNLOAD_HOST, version.revision);
         }
 
-        url = format(url, version.revision);
         try {
             URL u = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) u.openConnection();
