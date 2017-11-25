@@ -19,7 +19,8 @@ package io.webfolder.cdp;
 
 public enum ChromiumVersion {
 
-    v64_0_3249_0(511134);
+    v64_0_3249_0(511134),
+    v64_0_3276_0(518818);
 
     public final int revision;
 
