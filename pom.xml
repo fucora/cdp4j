@@ -97,6 +97,7 @@
       <transformer
        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
        <manifestEntries>
+        <Automatic-Module-Name>io.webfolder.cdp4j</Automatic-Module-Name>
         <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
         <Bundle-Name>${project.name}</Bundle-Name>
         <Bundle-Description>cdp4j - Chrome DevTools Protocol for Java</Bundle-Description>
