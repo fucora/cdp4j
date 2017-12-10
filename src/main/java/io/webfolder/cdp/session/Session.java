@@ -47,8 +47,6 @@ import java.util.function.Predicate;
 import com.google.gson.Gson;
 import com.neovisionaries.ws.client.WebSocket;
 
-import io.webfolder.cdp.command.CSS;
-import io.webfolder.cdp.command.DOM;
 import io.webfolder.cdp.command.Emulation;
 import io.webfolder.cdp.command.Page;
 import io.webfolder.cdp.event.log.EntryAdded;
@@ -384,10 +382,6 @@ public class Session implements AutoCloseable,
     }
 
     public byte[] captureScreenshot() {
-        DOM dom = getThis().getCommand().getDOM();
-        dom.enable();
-        CSS css = getThis().getCommand().getCSS();
-        css.enable();
         SourceRange location = new SourceRange();
         location.setEndColumn(0);
         location.setEndLine(0);
