@@ -35,14 +35,16 @@ public class CSSRule {
     private List<CSSMedia> media = new ArrayList<>();
 
     /**
-     * The css style sheet identifier (absent for user agent stylesheet and user-specified stylesheet rules) this rule came from.
+     * The css style sheet identifier (absent for user agent stylesheet and user-specified
+     * stylesheet rules) this rule came from.
      */
     public String getStyleSheetId() {
         return styleSheetId;
     }
 
     /**
-     * The css style sheet identifier (absent for user agent stylesheet and user-specified stylesheet rules) this rule came from.
+     * The css style sheet identifier (absent for user agent stylesheet and user-specified
+     * stylesheet rules) this rule came from.
      */
     public void setStyleSheetId(String styleSheetId) {
         this.styleSheetId = styleSheetId;
@@ -91,14 +93,16 @@ public class CSSRule {
     }
 
     /**
-     * Media list array (for rules involving media queries). The array enumerates media queries starting with the innermost one, going outwards.
+     * Media list array (for rules involving media queries). The array enumerates media queries
+     * starting with the innermost one, going outwards.
      */
     public List<CSSMedia> getMedia() {
         return media;
     }
 
     /**
-     * Media list array (for rules involving media queries). The array enumerates media queries starting with the innermost one, going outwards.
+     * Media list array (for rules involving media queries). The array enumerates media queries
+     * starting with the innermost one, going outwards.
      */
     public void setMedia(List<CSSMedia> media) {
         this.media = media;

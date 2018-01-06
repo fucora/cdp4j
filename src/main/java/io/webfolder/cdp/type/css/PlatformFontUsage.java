@@ -17,12 +17,9 @@
  */
 package io.webfolder.cdp.type.css;
 
-import io.webfolder.cdp.annotation.Experimental;
-
 /**
  * Information about amount of glyphs that were rendered with given font
  */
-@Experimental
 public class PlatformFontUsage {
     private String familyName;
 

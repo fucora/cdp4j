@@ -30,22 +30,18 @@ import io.webfolder.cdp.type.headlessexperimental.ScreenshotParams;
 @Domain("HeadlessExperimental")
 public interface HeadlessExperimental {
     /**
-     * Enables headless events for the target.
-     */
-    void enable();
-
-    /**
-     * Disables headless events for the target.
-     */
-    void disable();
-
-    /**
-     * Sends a BeginFrame to the target and returns when the frame was completed. Optionally captures a screenshot from the resulting frame. Requires that the target was created with enabled BeginFrameControl.
+     * Sends a BeginFrame to the target and returns when the frame was completed. Optionally captures a
+     * screenshot from the resulting frame. Requires that the target was created with enabled
+     * BeginFrameControl.
      * 
-     * @param frameTime Timestamp of this BeginFrame (milliseconds since epoch). If not set, the current time will be used.
-     * @param deadline Deadline of this BeginFrame (milliseconds since epoch). If not set, the deadline will be calculated from the frameTime and interval.
-     * @param interval The interval between BeginFrames that is reported to the compositor, in milliseconds. Defaults to a 60 frames/second interval, i.e. about 16.666 milliseconds.
-     * @param screenshot If set, a screenshot of the frame will be captured and returned in the response. Otherwise, no screenshot will be captured.
+     * @param frameTime Timestamp of this BeginFrame (milliseconds since epoch). If not set, the current time will
+     * be used.
+     * @param deadline Deadline of this BeginFrame (milliseconds since epoch). If not set, the deadline will be
+     * calculated from the frameTime and interval.
+     * @param interval The interval between BeginFrames that is reported to the compositor, in milliseconds.
+     * Defaults to a 60 frames/second interval, i.e. about 16.666 milliseconds.
+     * @param screenshot If set, a screenshot of the frame will be captured and returned in the response. Otherwise,
+     * no screenshot will be captured.
      * 
      * @return BeginFrameResult
      */
@@ -53,7 +49,19 @@ public interface HeadlessExperimental {
             @Optional Double interval, @Optional ScreenshotParams screenshot);
 
     /**
-     * Sends a BeginFrame to the target and returns when the frame was completed. Optionally captures a screenshot from the resulting frame. Requires that the target was created with enabled BeginFrameControl.
+     * Disables headless events for the target.
+     */
+    void disable();
+
+    /**
+     * Enables headless events for the target.
+     */
+    void enable();
+
+    /**
+     * Sends a BeginFrame to the target and returns when the frame was completed. Optionally captures a
+     * screenshot from the resulting frame. Requires that the target was created with enabled
+     * BeginFrameControl.
      * 
      * @return BeginFrameResult
      */

@@ -30,7 +30,8 @@ import io.webfolder.cdp.type.constant.Encoding;
 @Domain("Audits")
 public interface Audits {
     /**
-     * Returns the response body and size if it were re-encoded with the specified settings. Only applies to images.
+     * Returns the response body and size if it were re-encoded with the specified settings. Only
+     * applies to images.
      * 
      * @param requestId Identifier of the network request to get content for.
      * @param encoding The encoding to use.
@@ -43,7 +44,8 @@ public interface Audits {
             @Optional Double quality, @Optional Boolean sizeOnly);
 
     /**
-     * Returns the response body and size if it were re-encoded with the specified settings. Only applies to images.
+     * Returns the response body and size if it were re-encoded with the specified settings. Only
+     * applies to images.
      * 
      * @param requestId Identifier of the network request to get content for.
      * @param encoding The encoding to use.

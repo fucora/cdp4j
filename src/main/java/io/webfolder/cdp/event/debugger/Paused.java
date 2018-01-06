@@ -25,6 +25,7 @@ import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.constant.PauseReason;
 import io.webfolder.cdp.type.debugger.CallFrame;
 import io.webfolder.cdp.type.runtime.StackTrace;
+import io.webfolder.cdp.type.runtime.StackTraceId;
 
 /**
  * Fired when the virtual machine stopped on breakpoint or exception or any other stop criteria
@@ -41,6 +42,10 @@ public class Paused {
     private List<String> hitBreakpoints;
 
     private StackTrace asyncStackTrace;
+
+    private StackTraceId asyncStackTraceId;
+
+    private StackTraceId asyncCallStackTraceId;
 
     /**
      * Call stack the virtual machine stopped on.
@@ -110,5 +115,35 @@ public class Paused {
      */
     public void setAsyncStackTrace(StackTrace asyncStackTrace) {
         this.asyncStackTrace = asyncStackTrace;
+    }
+
+    /**
+     * Async stack trace, if any.
+     */
+    public StackTraceId getAsyncStackTraceId() {
+        return asyncStackTraceId;
+    }
+
+    /**
+     * Async stack trace, if any.
+     */
+    public void setAsyncStackTraceId(StackTraceId asyncStackTraceId) {
+        this.asyncStackTraceId = asyncStackTraceId;
+    }
+
+    /**
+     * Just scheduled async call will have this stack trace as parent stack during async execution.
+     * This field is available only after `Debugger.stepInto` call with `breakOnAsynCall` flag.
+     */
+    public StackTraceId getAsyncCallStackTraceId() {
+        return asyncCallStackTraceId;
+    }
+
+    /**
+     * Just scheduled async call will have this stack trace as parent stack during async execution.
+     * This field is available only after `Debugger.stepInto` call with `breakOnAsynCall` flag.
+     */
+    public void setAsyncCallStackTraceId(StackTraceId asyncCallStackTraceId) {
+        this.asyncCallStackTraceId = asyncCallStackTraceId;
     }
 }

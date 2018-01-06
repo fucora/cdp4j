@@ -17,14 +17,12 @@
  */
 package io.webfolder.cdp.type.dom;
 
-import io.webfolder.cdp.annotation.Experimental;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Box model
  */
-@Experimental
 public class BoxModel {
     private List<Double> content = new ArrayList<>();
 

@@ -49,18 +49,18 @@ public interface Storage {
     void trackCacheStorageForOrigin(String origin);
 
     /**
-     * Unregisters origin from receiving notifications for cache storage.
-     * 
-     * @param origin Security origin.
-     */
-    void untrackCacheStorageForOrigin(String origin);
-
-    /**
      * Registers origin to be notified when an update occurs to its IndexedDB.
      * 
      * @param origin Security origin.
      */
     void trackIndexedDBForOrigin(String origin);
+
+    /**
+     * Unregisters origin from receiving notifications for cache storage.
+     * 
+     * @param origin Security origin.
+     */
+    void untrackCacheStorageForOrigin(String origin);
 
     /**
      * Unregisters origin from receiving notifications for IndexedDB.

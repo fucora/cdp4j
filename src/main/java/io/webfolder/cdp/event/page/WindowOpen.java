@@ -19,13 +19,13 @@ package io.webfolder.cdp.event.page;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
-import io.webfolder.cdp.annotation.Experimental;
+import java.util.List;
 
 /**
- * Fired when window
- * open() was called
+ * Fired when a new window is going to be opened, via window
+ * open(), link click, form submission,
+ * etc
  */
-@Experimental
 @Domain("Page")
 @EventName("windowOpen")
 public class WindowOpen {
@@ -33,7 +33,7 @@ public class WindowOpen {
 
     private String windowName;
 
-    private String windowFeatures;
+    private List<String> windowFeatures;
 
     private Boolean userGesture;
 
@@ -52,42 +52,42 @@ public class WindowOpen {
     }
 
     /**
-     * Window name passed to window.open().
+     * Window name.
      */
     public String getWindowName() {
         return windowName;
     }
 
     /**
-     * Window name passed to window.open().
+     * Window name.
      */
     public void setWindowName(String windowName) {
         this.windowName = windowName;
     }
 
     /**
-     * Window features passed to window.open().
+     * An array of enabled window features.
      */
-    public String getWindowFeatures() {
+    public List<String> getWindowFeatures() {
         return windowFeatures;
     }
 
     /**
-     * Window features passed to window.open().
+     * An array of enabled window features.
      */
-    public void setWindowFeatures(String windowFeatures) {
+    public void setWindowFeatures(List<String> windowFeatures) {
         this.windowFeatures = windowFeatures;
     }
 
     /**
-     * Whether or not window.open() was triggered by user gesture.
+     * Whether or not it was triggered by user gesture.
      */
     public Boolean isUserGesture() {
         return userGesture;
     }
 
     /**
-     * Whether or not window.open() was triggered by user gesture.
+     * Whether or not it was triggered by user gesture.
      */
     public void setUserGesture(Boolean userGesture) {
         this.userGesture = userGesture;

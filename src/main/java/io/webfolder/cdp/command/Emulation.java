@@ -33,33 +33,22 @@ import io.webfolder.cdp.type.page.Viewport;
 @Domain("Emulation")
 public interface Emulation {
     /**
-     * Overrides the values of device screen dimensions (window.screen.width, window.screen.height, window.innerWidth, window.innerHeight, and "device-width"/"device-height"-related CSS media query results).
+     * Tells whether emulation is supported.
      * 
-     * @param width Overriding width value in pixels (minimum 0, maximum 10000000). 0 disables the override.
-     * @param height Overriding height value in pixels (minimum 0, maximum 10000000). 0 disables the override.
-     * @param deviceScaleFactor Overriding device scale factor value. 0 disables the override.
-     * @param mobile Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text autosizing and more.
-     * @param scale Scale to apply to resulting view image.
-     * @param screenWidth Overriding screen width value in pixels (minimum 0, maximum 10000000).
-     * @param screenHeight Overriding screen height value in pixels (minimum 0, maximum 10000000).
-     * @param positionX Overriding view X position on screen in pixels (minimum 0, maximum 10000000).
-     * @param positionY Overriding view Y position on screen in pixels (minimum 0, maximum 10000000).
-     * @param dontSetVisibleSize Do not set visible view size, rely upon explicit setVisibleSize call.
-     * @param screenOrientation Screen orientation override.
-     * @param viewport If set, the visible area of the page will be overridden to this viewport. This viewport change is not observed by the page, e.g. viewport-relative elements do not change positions.
+     * @return True if emulation is supported.
      */
-    void setDeviceMetricsOverride(Integer width, Integer height, Double deviceScaleFactor,
-            Boolean mobile, @Optional Double scale, @Experimental @Optional Integer screenWidth,
-            @Experimental @Optional Integer screenHeight, @Experimental @Optional Integer positionX,
-            @Experimental @Optional Integer positionY,
-            @Experimental @Optional Boolean dontSetVisibleSize,
-            @Optional ScreenOrientation screenOrientation,
-            @Experimental @Optional Viewport viewport);
+    @Returns("result")
+    Boolean canEmulate();
 
     /**
      * Clears the overriden device metrics.
      */
     void clearDeviceMetricsOverride();
+
+    /**
+     * Clears the overriden Geolocation Position and Error.
+     */
+    void clearGeolocationOverride();
 
     /**
      * Requests that page scale factor is reset to initial values.
@@ -68,54 +57,50 @@ public interface Emulation {
     void resetPageScaleFactor();
 
     /**
-     * Sets a specified page scale factor.
+     * Enables CPU throttling to emulate slow CPUs.
      * 
-     * @param pageScaleFactor Page scale factor.
+     * @param rate Throttling rate as a slowdown factor (1 is no throttle, 2 is 2x slowdown, etc).
      */
     @Experimental
-    void setPageScaleFactor(Double pageScaleFactor);
+    void setCPUThrottlingRate(Double rate);
 
     /**
-     * Resizes the frame/viewport of the page. Note that this does not affect the frame's container (e.g. browser window). Can be used to produce screenshots of the specified size. Not supported on Android.
+     * Sets or clears an override of the default background color of the frame. This override is used
+     * if the content does not specify one.
      * 
-     * @param width Frame width (DIP).
-     * @param height Frame height (DIP).
+     * @param color RGBA of the default background color. If not specified, any existing override will be
+     * cleared.
      */
-    @Experimental
-    void setVisibleSize(Integer width, Integer height);
+    void setDefaultBackgroundColorOverride(@Optional RGBA color);
 
     /**
-     * Switches script execution in the page.
+     * Overrides the values of device screen dimensions (window.screen.width, window.screen.height,
+     * window.innerWidth, window.innerHeight, and "device-width"/"device-height"-related CSS media
+     * query results).
      * 
-     * @param value Whether script execution should be disabled in the page.
+     * @param width Overriding width value in pixels (minimum 0, maximum 10000000). 0 disables the override.
+     * @param height Overriding height value in pixels (minimum 0, maximum 10000000). 0 disables the override.
+     * @param deviceScaleFactor Overriding device scale factor value. 0 disables the override.
+     * @param mobile Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text
+     * autosizing and more.
+     * @param scale Scale to apply to resulting view image.
+     * @param screenWidth Overriding screen width value in pixels (minimum 0, maximum 10000000).
+     * @param screenHeight Overriding screen height value in pixels (minimum 0, maximum 10000000).
+     * @param positionX Overriding view X position on screen in pixels (minimum 0, maximum 10000000).
+     * @param positionY Overriding view Y position on screen in pixels (minimum 0, maximum 10000000).
+     * @param dontSetVisibleSize Do not set visible view size, rely upon explicit setVisibleSize call.
+     * @param screenOrientation Screen orientation override.
+     * @param viewport If set, the visible area of the page will be overridden to this viewport. This viewport
+     * change is not observed by the page, e.g. viewport-relative elements do not change positions.
      */
-    @Experimental
-    void setScriptExecutionDisabled(Boolean value);
-
-    /**
-     * Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position unavailable.
-     * 
-     * @param latitude Mock latitude
-     * @param longitude Mock longitude
-     * @param accuracy Mock accuracy
-     */
-    @Experimental
-    void setGeolocationOverride(@Optional Double latitude, @Optional Double longitude,
-            @Optional Double accuracy);
-
-    /**
-     * Clears the overriden Geolocation Position and Error.
-     */
-    @Experimental
-    void clearGeolocationOverride();
-
-    /**
-     * Enables touch on platforms which do not support them.
-     * 
-     * @param enabled Whether the touch event emulation should be enabled.
-     * @param maxTouchPoints Maximum touch points supported. Defaults to one.
-     */
-    void setTouchEmulationEnabled(Boolean enabled, @Optional Integer maxTouchPoints);
+    void setDeviceMetricsOverride(Integer width, Integer height, Double deviceScaleFactor,
+            Boolean mobile, @Experimental @Optional Double scale,
+            @Experimental @Optional Integer screenWidth,
+            @Experimental @Optional Integer screenHeight, @Experimental @Optional Integer positionX,
+            @Experimental @Optional Integer positionY,
+            @Experimental @Optional Boolean dontSetVisibleSize,
+            @Optional ScreenOrientation screenOrientation,
+            @Experimental @Optional Viewport viewport);
 
     @Experimental
     void setEmitTouchEventsForMouse(Boolean enabled, @Optional Platform configuration);
@@ -128,31 +113,15 @@ public interface Emulation {
     void setEmulatedMedia(String media);
 
     /**
-     * Enables CPU throttling to emulate slow CPUs.
+     * Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position
+     * unavailable.
      * 
-     * @param rate Throttling rate as a slowdown factor (1 is no throttle, 2 is 2x slowdown, etc).
+     * @param latitude Mock latitude
+     * @param longitude Mock longitude
+     * @param accuracy Mock accuracy
      */
-    @Experimental
-    void setCPUThrottlingRate(Double rate);
-
-    /**
-     * Tells whether emulation is supported.
-     * 
-     * @return True if emulation is supported.
-     */
-    @Experimental
-    @Returns("result")
-    Boolean canEmulate();
-
-    /**
-     * Turns on virtual time for all frames (replacing real-time with a synthetic time source) and sets the current virtual time policy.  Note this supersedes any previous time budget.
-     * 
-     * @param budget If set, after this many virtual milliseconds have elapsed virtual time will be paused and a virtualTimeBudgetExpired event is sent.
-     * @param maxVirtualTimeTaskStarvationCount If set this specifies the maximum number of tasks that can be run before virtual is forced forwards to prevent deadlock.
-     */
-    @Experimental
-    void setVirtualTimePolicy(VirtualTimePolicy policy, @Optional Integer budget,
-            @Optional Integer maxVirtualTimeTaskStarvationCount);
+    void setGeolocationOverride(@Optional Double latitude, @Optional Double longitude,
+            @Optional Double accuracy);
 
     /**
      * Overrides value returned by the javascript navigator object.
@@ -163,28 +132,82 @@ public interface Emulation {
     void setNavigatorOverrides(String platform);
 
     /**
-     * Sets or clears an override of the default background color of the frame. This override is used if the content does not specify one.
+     * Sets a specified page scale factor.
      * 
-     * @param color RGBA of the default background color. If not specified, any existing override will be cleared.
+     * @param pageScaleFactor Page scale factor.
      */
     @Experimental
-    void setDefaultBackgroundColorOverride(@Optional RGBA color);
+    void setPageScaleFactor(Double pageScaleFactor);
 
     /**
-     * Overrides the values of device screen dimensions (window.screen.width, window.screen.height, window.innerWidth, window.innerHeight, and "device-width"/"device-height"-related CSS media query results).
+     * Switches script execution in the page.
+     * 
+     * @param value Whether script execution should be disabled in the page.
+     */
+    void setScriptExecutionDisabled(Boolean value);
+
+    /**
+     * Enables touch on platforms which do not support them.
+     * 
+     * @param enabled Whether the touch event emulation should be enabled.
+     * @param maxTouchPoints Maximum touch points supported. Defaults to one.
+     */
+    void setTouchEmulationEnabled(Boolean enabled, @Optional Integer maxTouchPoints);
+
+    /**
+     * Turns on virtual time for all frames (replacing real-time with a synthetic time source) and sets
+     * the current virtual time policy.  Note this supersedes any previous time budget.
+     * 
+     * @param budget If set, after this many virtual milliseconds have elapsed virtual time will be paused and a
+     * virtualTimeBudgetExpired event is sent.
+     * @param maxVirtualTimeTaskStarvationCount If set this specifies the maximum number of tasks that can be run before virtual is forced
+     * forwards to prevent deadlock.
+     * 
+     * @return Absolute timestamp at which virtual time was first enabled (milliseconds since epoch).
+     */
+    @Experimental
+    @Returns("virtualTimeBase")
+    Double setVirtualTimePolicy(VirtualTimePolicy policy, @Optional Double budget,
+            @Optional Integer maxVirtualTimeTaskStarvationCount);
+
+    /**
+     * Resizes the frame/viewport of the page. Note that this does not affect the frame's container
+     * (e.g. browser window). Can be used to produce screenshots of the specified size. Not supported
+     * on Android.
+     * 
+     * @param width Frame width (DIP).
+     * @param height Frame height (DIP).
+     */
+    @Experimental
+    void setVisibleSize(Integer width, Integer height);
+
+    /**
+     * Sets or clears an override of the default background color of the frame. This override is used
+     * if the content does not specify one.
+     */
+    void setDefaultBackgroundColorOverride();
+
+    /**
+     * Overrides the values of device screen dimensions (window.screen.width, window.screen.height,
+     * window.innerWidth, window.innerHeight, and "device-width"/"device-height"-related CSS media
+     * query results).
      * 
      * @param width Overriding width value in pixels (minimum 0, maximum 10000000). 0 disables the override.
      * @param height Overriding height value in pixels (minimum 0, maximum 10000000). 0 disables the override.
      * @param deviceScaleFactor Overriding device scale factor value. 0 disables the override.
-     * @param mobile Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text autosizing and more.
+     * @param mobile Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text
+     * autosizing and more.
      */
     void setDeviceMetricsOverride(Integer width, Integer height, Double deviceScaleFactor,
             Boolean mobile);
 
-    /**
-     * Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position unavailable.
-     */
     @Experimental
+    void setEmitTouchEventsForMouse(Boolean enabled);
+
+    /**
+     * Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position
+     * unavailable.
+     */
     void setGeolocationOverride();
 
     /**
@@ -194,19 +217,14 @@ public interface Emulation {
      */
     void setTouchEmulationEnabled(Boolean enabled);
 
-    @Experimental
-    void setEmitTouchEventsForMouse(Boolean enabled);
-
     /**
-     * Turns on virtual time for all frames (replacing real-time with a synthetic time source) and sets the current virtual time policy.  Note this supersedes any previous time budget.
+     * Turns on virtual time for all frames (replacing real-time with a synthetic time source) and sets
+     * the current virtual time policy.  Note this supersedes any previous time budget.
      * 
+     * 
+     * @return Absolute timestamp at which virtual time was first enabled (milliseconds since epoch).
      */
     @Experimental
-    void setVirtualTimePolicy(VirtualTimePolicy policy);
-
-    /**
-     * Sets or clears an override of the default background color of the frame. This override is used if the content does not specify one.
-     */
-    @Experimental
-    void setDefaultBackgroundColorOverride();
+    @Returns("virtualTimeBase")
+    Double setVirtualTimePolicy(VirtualTimePolicy policy);
 }

@@ -17,12 +17,9 @@
  */
 package io.webfolder.cdp.type.profiler;
 
-import io.webfolder.cdp.annotation.Experimental;
-
 /**
  * Specifies a number of samples attributed to a certain source position
  */
-@Experimental
 public class PositionTickInfo {
     private Integer line;
 

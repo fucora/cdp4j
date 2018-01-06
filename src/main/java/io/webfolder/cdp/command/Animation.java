@@ -27,29 +27,14 @@ import java.util.List;
 @Domain("Animation")
 public interface Animation {
     /**
-     * Enables animation domain notifications.
-     */
-    void enable();
-
-    /**
      * Disables animation domain notifications.
      */
     void disable();
 
     /**
-     * Gets the playback rate of the document timeline.
-     * 
-     * @return Playback rate for animations on page.
+     * Enables animation domain notifications.
      */
-    @Returns("playbackRate")
-    Double getPlaybackRate();
-
-    /**
-     * Sets the playback rate of the document timeline.
-     * 
-     * @param playbackRate Playback rate for animations on page
-     */
-    void setPlaybackRate(Double playbackRate);
+    void enable();
 
     /**
      * Returns the current time of the an animation.
@@ -62,29 +47,12 @@ public interface Animation {
     Double getCurrentTime(String id);
 
     /**
-     * Sets the paused state of a set of animations.
+     * Gets the playback rate of the document timeline.
      * 
-     * @param animations Animations to set the pause state of.
-     * @param paused Paused state to set to.
+     * @return Playback rate for animations on page.
      */
-    void setPaused(List<String> animations, Boolean paused);
-
-    /**
-     * Sets the timing of an animation node.
-     * 
-     * @param animationId Animation id.
-     * @param duration Duration of the animation.
-     * @param delay Delay of the animation.
-     */
-    void setTiming(String animationId, Double duration, Double delay);
-
-    /**
-     * Seek a set of animations to a particular time within each animation.
-     * 
-     * @param animations List of animation ids to seek.
-     * @param currentTime Set the current time of each animation.
-     */
-    void seekAnimations(List<String> animations, Double currentTime);
+    @Returns("playbackRate")
+    Double getPlaybackRate();
 
     /**
      * Releases a set of animations to no longer be manipulated.
@@ -102,4 +70,36 @@ public interface Animation {
      */
     @Returns("remoteObject")
     RemoteObject resolveAnimation(String animationId);
+
+    /**
+     * Seek a set of animations to a particular time within each animation.
+     * 
+     * @param animations List of animation ids to seek.
+     * @param currentTime Set the current time of each animation.
+     */
+    void seekAnimations(List<String> animations, Double currentTime);
+
+    /**
+     * Sets the paused state of a set of animations.
+     * 
+     * @param animations Animations to set the pause state of.
+     * @param paused Paused state to set to.
+     */
+    void setPaused(List<String> animations, Boolean paused);
+
+    /**
+     * Sets the playback rate of the document timeline.
+     * 
+     * @param playbackRate Playback rate for animations on page
+     */
+    void setPlaybackRate(Double playbackRate);
+
+    /**
+     * Sets the timing of an animation node.
+     * 
+     * @param animationId Animation id.
+     * @param duration Duration of the animation.
+     * @param delay Delay of the animation.
+     */
+    void setTiming(String animationId, Double duration, Double delay);
 }

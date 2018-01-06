@@ -35,14 +35,16 @@ public class CSSStyle {
     private SourceRange range;
 
     /**
-     * The css style sheet identifier (absent for user agent stylesheet and user-specified stylesheet rules) this rule came from.
+     * The css style sheet identifier (absent for user agent stylesheet and user-specified
+     * stylesheet rules) this rule came from.
      */
     public String getStyleSheetId() {
         return styleSheetId;
     }
 
     /**
-     * The css style sheet identifier (absent for user agent stylesheet and user-specified stylesheet rules) this rule came from.
+     * The css style sheet identifier (absent for user agent stylesheet and user-specified
+     * stylesheet rules) this rule came from.
      */
     public void setStyleSheetId(String styleSheetId) {
         this.styleSheetId = styleSheetId;

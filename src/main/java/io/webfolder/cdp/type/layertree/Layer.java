@@ -225,14 +225,16 @@ public class Layer {
     }
 
     /**
-     * Indicates whether this layer hosts any content, rather than being used for transform/scrolling purposes only.
+     * Indicates whether this layer hosts any content, rather than being used for
+     * transform/scrolling purposes only.
      */
     public Boolean isDrawsContent() {
         return drawsContent;
     }
 
     /**
-     * Indicates whether this layer hosts any content, rather than being used for transform/scrolling purposes only.
+     * Indicates whether this layer hosts any content, rather than being used for
+     * transform/scrolling purposes only.
      */
     public void setDrawsContent(Boolean drawsContent) {
         this.drawsContent = drawsContent;

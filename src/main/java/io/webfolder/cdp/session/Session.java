@@ -65,6 +65,7 @@ import io.webfolder.cdp.type.dom.Rect;
 import io.webfolder.cdp.type.log.LogEntry;
 import io.webfolder.cdp.type.network.Response;
 import io.webfolder.cdp.type.page.GetLayoutMetricsResult;
+import io.webfolder.cdp.type.page.NavigateResult;
 import io.webfolder.cdp.type.runtime.RemoteObject;
 
 public class Session implements AutoCloseable,
@@ -292,7 +293,8 @@ public class Session implements AutoCloseable,
     public Session navigate(final String url) {
         logEntry("navigate", url);
         command.getInspector().enable();
-        this.frameId = command.getPage().navigate(url);
+        NavigateResult navigate = command.getPage().navigate(url);
+        this.frameId = navigate.getFrameId();
         return this;
     }
 

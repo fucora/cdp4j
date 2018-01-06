@@ -19,12 +19,10 @@ package io.webfolder.cdp.event.network;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
-import io.webfolder.cdp.annotation.Experimental;
 
 /**
  * Fired when WebSocket is closed
  */
-@Experimental
 @Domain("Network")
 @EventName("webSocketClosed")
 public class WebSocketClosed {

@@ -17,12 +17,9 @@
  */
 package io.webfolder.cdp.type.page;
 
-import io.webfolder.cdp.annotation.Experimental;
-
 /**
  * Error while paring app manifest
  */
-@Experimental
 public class AppManifestError {
     private String message;
 

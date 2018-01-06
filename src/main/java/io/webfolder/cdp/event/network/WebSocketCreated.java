@@ -19,13 +19,11 @@ package io.webfolder.cdp.event.network;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
-import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.type.network.Initiator;
 
 /**
  * Fired upon WebSocket creation
  */
-@Experimental
 @Domain("Network")
 @EventName("webSocketCreated")
 public class WebSocketCreated {

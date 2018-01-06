@@ -19,6 +19,7 @@ package io.webfolder.cdp.type.debugger;
 
 import io.webfolder.cdp.type.runtime.ExceptionDetails;
 import io.webfolder.cdp.type.runtime.StackTrace;
+import io.webfolder.cdp.type.runtime.StackTraceId;
 import java.util.List;
 
 public class SetScriptSourceResult {
@@ -27,6 +28,8 @@ public class SetScriptSourceResult {
     private Boolean stackChanged;
 
     private StackTrace asyncStackTrace;
+
+    private StackTraceId asyncStackTraceId;
 
     private ExceptionDetails exceptionDetails;
 
@@ -40,6 +43,10 @@ public class SetScriptSourceResult {
 
     public StackTrace getAsyncStackTrace() {
         return asyncStackTrace;
+    }
+
+    public StackTraceId getAsyncStackTraceId() {
+        return asyncStackTraceId;
     }
 
     public ExceptionDetails getExceptionDetails() {

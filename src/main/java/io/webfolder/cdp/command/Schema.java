@@ -22,8 +22,9 @@ import io.webfolder.cdp.annotation.Returns;
 import java.util.List;
 
 /**
- * Provides information about the protocol schema
+ * This domain is deprecated
  */
+@Deprecated
 @Domain("Schema")
 public interface Schema {
     /**

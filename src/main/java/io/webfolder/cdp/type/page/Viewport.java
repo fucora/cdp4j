@@ -17,12 +17,9 @@
  */
 package io.webfolder.cdp.type.page;
 
-import io.webfolder.cdp.annotation.Experimental;
-
 /**
  * Viewport for capturing screenshot
  */
-@Experimental
 public class Viewport {
     private Double x;
 

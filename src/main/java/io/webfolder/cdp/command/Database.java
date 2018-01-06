@@ -27,21 +27,21 @@ import java.util.List;
 @Domain("Database")
 public interface Database {
     /**
-     * Enables database tracking, database events will now be delivered to the client.
-     */
-    void enable();
-
-    /**
      * Disables database tracking, prevents database events from being sent to the client.
      */
     void disable();
 
-    @Returns("tableNames")
-    List<String> getDatabaseTableNames(String databaseId);
+    /**
+     * Enables database tracking, database events will now be delivered to the client.
+     */
+    void enable();
 
     /**
      * 
      * @return ExecuteSQLResult
      */
     ExecuteSQLResult executeSQL(String databaseId, String query);
+
+    @Returns("tableNames")
+    List<String> getDatabaseTableNames(String databaseId);
 }

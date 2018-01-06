@@ -174,14 +174,16 @@ public class CSSStyleSheetHeader {
     }
 
     /**
-     * Whether this stylesheet is created for STYLE tag by parser. This flag is not set for document.written STYLE tags.
+     * Whether this stylesheet is created for STYLE tag by parser. This flag is not set for
+     * document.written STYLE tags.
      */
     public Boolean isIsInline() {
         return isInline;
     }
 
     /**
-     * Whether this stylesheet is created for STYLE tag by parser. This flag is not set for document.written STYLE tags.
+     * Whether this stylesheet is created for STYLE tag by parser. This flag is not set for
+     * document.written STYLE tags.
      */
     public void setIsInline(Boolean isInline) {
         this.isInline = isInline;

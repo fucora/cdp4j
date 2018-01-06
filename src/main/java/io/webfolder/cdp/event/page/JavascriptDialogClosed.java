@@ -21,7 +21,8 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 
 /**
- * Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) has been closed
+ * Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) has been
+ * closed
  */
 @Domain("Page")
 @EventName("javascriptDialogClosed")

@@ -27,27 +27,9 @@ import java.util.List;
 @Domain("ApplicationCache")
 public interface ApplicationCache {
     /**
-     * Returns array of frame identifiers with manifest urls for each frame containing a document associated with some application cache.
-     * 
-     * @return Array of frame identifiers with manifest urls for each frame containing a document associated with some application cache.
-     */
-    @Returns("frameIds")
-    List<FrameWithManifest> getFramesWithManifests();
-
-    /**
      * Enables application cache domain notifications.
      */
     void enable();
-
-    /**
-     * Returns manifest URL for document in the given frame.
-     * 
-     * @param frameId Identifier of the frame containing document whose manifest is retrieved.
-     * 
-     * @return Manifest URL for document in the given frame.
-     */
-    @Returns("manifestURL")
-    String getManifestForFrame(String frameId);
 
     /**
      * Returns relevant application cache data for the document in given frame.
@@ -58,4 +40,24 @@ public interface ApplicationCache {
      */
     @Returns("applicationCache")
     io.webfolder.cdp.type.applicationcache.ApplicationCache getApplicationCacheForFrame(String frameId);
+
+    /**
+     * Returns array of frame identifiers with manifest urls for each frame containing a document
+     * associated with some application cache.
+     * 
+     * @return Array of frame identifiers with manifest urls for each frame containing a document
+     * associated with some application cache.
+     */
+    @Returns("frameIds")
+    List<FrameWithManifest> getFramesWithManifests();
+
+    /**
+     * Returns manifest URL for document in the given frame.
+     * 
+     * @param frameId Identifier of the frame containing document whose manifest is retrieved.
+     * 
+     * @return Manifest URL for document in the given frame.
+     */
+    @Returns("manifestURL")
+    String getManifestForFrame(String frameId);
 }

@@ -54,14 +54,16 @@ public class ResourceTiming {
     private Double receiveHeadersEnd;
 
     /**
-     * Timing's requestTime is a baseline in seconds, while the other numbers are ticks in milliseconds relatively to this requestTime.
+     * Timing's requestTime is a baseline in seconds, while the other numbers are ticks in
+     * milliseconds relatively to this requestTime.
      */
     public Double getRequestTime() {
         return requestTime;
     }
 
     /**
-     * Timing's requestTime is a baseline in seconds, while the other numbers are ticks in milliseconds relatively to this requestTime.
+     * Timing's requestTime is a baseline in seconds, while the other numbers are ticks in
+     * milliseconds relatively to this requestTime.
      */
     public void setRequestTime(Double requestTime) {
         this.requestTime = requestTime;

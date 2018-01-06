@@ -28,6 +28,8 @@ import io.webfolder.cdp.annotation.EventName;
 public class LifecycleEvent {
     private String frameId;
 
+    private String loaderId;
+
     private String name;
 
     private Double timestamp;
@@ -44,6 +46,20 @@ public class LifecycleEvent {
      */
     public void setFrameId(String frameId) {
         this.frameId = frameId;
+    }
+
+    /**
+     * Loader identifier. Empty string if the request is fetched from worker.
+     */
+    public String getLoaderId() {
+        return loaderId;
+    }
+
+    /**
+     * Loader identifier. Empty string if the request is fetched from worker.
+     */
+    public void setLoaderId(String loaderId) {
+        this.loaderId = loaderId;
     }
 
     public String getName() {

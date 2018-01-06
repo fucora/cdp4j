@@ -51,6 +51,7 @@ import io.webfolder.cdp.command.Target;
 import io.webfolder.cdp.command.Tethering;
 import io.webfolder.cdp.command.Tracing;
 
+@SuppressWarnings("deprecation")
 public class Command {
 
     private final Session session;

@@ -28,60 +28,13 @@ import java.util.List;
 /**
  * Supports additional targets discovery and allows to attach to them
  */
-@Experimental
 @Domain("Target")
 public interface Target {
-    /**
-     * Controls whether to discover available targets and notify via <tt>targetCreated/targetInfoChanged/targetDestroyed</tt> events.
-     * 
-     * @param discover Whether to discover available targets.
-     */
-    void setDiscoverTargets(Boolean discover);
-
-    /**
-     * Controls whether to automatically attach to new targets which are considered to be related to this one. When turned on, attaches to all existing related targets as well. When turned off, automatically detaches from all currently attached targets.
-     * 
-     * @param autoAttach Whether to auto-attach to related targets.
-     * @param waitForDebuggerOnStart Whether to pause new targets when attaching to them. Use <code>Runtime.runIfWaitingForDebugger</code> to run paused targets.
-     */
-    void setAutoAttach(Boolean autoAttach, Boolean waitForDebuggerOnStart);
-
-    void setAttachToFrames(Boolean value);
-
-    /**
-     * Enables target discovery for the specified locations, when <tt>setDiscoverTargets</tt> was set to <tt>true</tt>.
-     * 
-     * @param locations List of remote locations.
-     */
-    void setRemoteLocations(List<RemoteLocation> locations);
-
-    /**
-     * Sends protocol message over session with given id.
-     * 
-     * @param sessionId Identifier of the session.
-     * @param targetId Deprecated.
-     */
-    void sendMessageToTarget(String message, @Optional String sessionId, @Optional String targetId);
-
-    /**
-     * Returns information about a target.
-     * 
-     */
-    @Returns("targetInfo")
-    TargetInfo getTargetInfo(String targetId);
-
     /**
      * Activates (focuses) the target.
      * 
      */
     void activateTarget(String targetId);
-
-    /**
-     * Closes the target. If the target is a page that gets closed too.
-     * 
-     */
-    @Returns("success")
-    Boolean closeTarget(String targetId);
 
     /**
      * Attaches to the target with given id.
@@ -93,27 +46,21 @@ public interface Target {
     String attachToTarget(String targetId);
 
     /**
-     * Detaches session with given id.
-     * 
-     * @param sessionId Session to detach.
-     * @param targetId Deprecated.
-     */
-    void detachFromTarget(@Optional String sessionId, @Optional String targetId);
-
-    /**
-     * Creates a new empty BrowserContext. Similar to an incognito profile but you can have more than one.
-     * 
-     * @return The id of the context created.
-     */
-    @Returns("browserContextId")
-    String createBrowserContext();
-
-    /**
-     * Deletes a BrowserContext, will fail of any open page uses it.
+     * Closes the target. If the target is a page that gets closed too.
      * 
      */
     @Returns("success")
-    Boolean disposeBrowserContext(String browserContextId);
+    Boolean closeTarget(String targetId);
+
+    /**
+     * Creates a new empty BrowserContext. Similar to an incognito profile but you can have more than
+     * one.
+     * 
+     * @return The id of the context created.
+     */
+    @Experimental
+    @Returns("browserContextId")
+    String createBrowserContext();
 
     /**
      * Creates a new page.
@@ -122,7 +69,8 @@ public interface Target {
      * @param width Frame width in DIP (headless chrome only).
      * @param height Frame height in DIP (headless chrome only).
      * @param browserContextId The browser context to create the page in (headless chrome only).
-     * @param enableBeginFrameControl Whether BeginFrames for this target will be controlled via DevTools (headless chrome only, not supported on MacOS yet, false by default).
+     * @param enableBeginFrameControl Whether BeginFrames for this target will be controlled via DevTools (headless chrome only,
+     * not supported on MacOS yet, false by default).
      * 
      * @return The id of the page opened.
      */
@@ -130,6 +78,30 @@ public interface Target {
     String createTarget(String url, @Optional Integer width, @Optional Integer height,
             @Optional String browserContextId,
             @Experimental @Optional Boolean enableBeginFrameControl);
+
+    /**
+     * Detaches session with given id.
+     * 
+     * @param sessionId Session to detach.
+     * @param targetId Deprecated.
+     */
+    void detachFromTarget(@Optional String sessionId, @Optional String targetId);
+
+    /**
+     * Deletes a BrowserContext, will fail of any open page uses it.
+     * 
+     */
+    @Experimental
+    @Returns("success")
+    Boolean disposeBrowserContext(String browserContextId);
+
+    /**
+     * Returns information about a target.
+     * 
+     */
+    @Experimental
+    @Returns("targetInfo")
+    TargetInfo getTargetInfo(String targetId);
 
     /**
      * Retrieves a list of available targets.
@@ -142,13 +114,42 @@ public interface Target {
     /**
      * Sends protocol message over session with given id.
      * 
+     * @param sessionId Identifier of the session.
+     * @param targetId Deprecated.
      */
-    void sendMessageToTarget(String message);
+    void sendMessageToTarget(String message, @Optional String sessionId, @Optional String targetId);
+
+    @Experimental
+    void setAttachToFrames(Boolean value);
 
     /**
-     * Detaches session with given id.
+     * Controls whether to automatically attach to new targets which are considered to be related to
+     * this one. When turned on, attaches to all existing related targets as well. When turned off,
+     * automatically detaches from all currently attached targets.
+     * 
+     * @param autoAttach Whether to auto-attach to related targets.
+     * @param waitForDebuggerOnStart Whether to pause new targets when attaching to them. Use `Runtime.runIfWaitingForDebugger`
+     * to run paused targets.
      */
-    void detachFromTarget();
+    @Experimental
+    void setAutoAttach(Boolean autoAttach, Boolean waitForDebuggerOnStart);
+
+    /**
+     * Controls whether to discover available targets and notify via
+     * `targetCreated/targetInfoChanged/targetDestroyed` events.
+     * 
+     * @param discover Whether to discover available targets.
+     */
+    void setDiscoverTargets(Boolean discover);
+
+    /**
+     * Enables target discovery for the specified locations, when `setDiscoverTargets` was set to
+     * `true`.
+     * 
+     * @param locations List of remote locations.
+     */
+    @Experimental
+    void setRemoteLocations(List<RemoteLocation> locations);
 
     /**
      * Creates a new page.
@@ -159,4 +160,15 @@ public interface Target {
      */
     @Returns("targetId")
     String createTarget(String url);
+
+    /**
+     * Detaches session with given id.
+     */
+    void detachFromTarget();
+
+    /**
+     * Sends protocol message over session with given id.
+     * 
+     */
+    void sendMessageToTarget(String message);
 }

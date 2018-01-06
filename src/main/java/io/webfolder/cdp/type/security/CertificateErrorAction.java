@@ -21,7 +21,8 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * The action to take when a certificate error occurs
- * continue will continue processing the request and cancel will cancel the request
+ * continue will continue processing the
+ * request and cancel will cancel the request
  */
 public enum CertificateErrorAction {
     @SerializedName("continue")

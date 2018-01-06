@@ -52,14 +52,16 @@ public class FrameScheduledNavigation {
     }
 
     /**
-     * Delay (in seconds) until the navigation is scheduled to begin. The navigation is not guaranteed to start.
+     * Delay (in seconds) until the navigation is scheduled to begin. The navigation is not
+     * guaranteed to start.
      */
     public Double getDelay() {
         return delay;
     }
 
     /**
-     * Delay (in seconds) until the navigation is scheduled to begin. The navigation is not guaranteed to start.
+     * Delay (in seconds) until the navigation is scheduled to begin. The navigation is not
+     * guaranteed to start.
      */
     public void setDelay(Double delay) {
         this.delay = delay;

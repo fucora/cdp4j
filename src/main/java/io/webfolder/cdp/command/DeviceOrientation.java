@@ -24,6 +24,11 @@ import io.webfolder.cdp.annotation.Experimental;
 @Domain("DeviceOrientation")
 public interface DeviceOrientation {
     /**
+     * Clears the overridden Device Orientation.
+     */
+    void clearDeviceOrientationOverride();
+
+    /**
      * Overrides the Device Orientation.
      * 
      * @param alpha Mock alpha
@@ -31,9 +36,4 @@ public interface DeviceOrientation {
      * @param gamma Mock gamma
      */
     void setDeviceOrientationOverride(Double alpha, Double beta, Double gamma);
-
-    /**
-     * Clears the overridden Device Orientation.
-     */
-    void clearDeviceOrientationOverride();
 }

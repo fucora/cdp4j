@@ -19,12 +19,10 @@ package io.webfolder.cdp.event.network;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
-import io.webfolder.cdp.annotation.Experimental;
 
 /**
  * Fired when WebSocket frame error occurs
  */
-@Experimental
 @Domain("Network")
 @EventName("webSocketFrameError")
 public class WebSocketFrameError {

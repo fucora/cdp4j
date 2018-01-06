@@ -24,18 +24,25 @@ import io.webfolder.cdp.type.security.CertificateErrorAction;
 /**
  * Security
  */
-@Experimental
 @Domain("Security")
 public interface Security {
+    /**
+     * Disables tracking security state changes.
+     */
+    void disable();
+
     /**
      * Enables tracking security state changes.
      */
     void enable();
 
     /**
-     * Disables tracking security state changes.
+     * Enable/disable whether all certificate errors should be ignored.
+     * 
+     * @param ignore If true, all certificate errors will be ignored.
      */
-    void disable();
+    @Experimental
+    void setIgnoreCertificateErrors(Boolean ignore);
 
     /**
      * Handles a certificate error that fired a certificateError event.
@@ -46,7 +53,8 @@ public interface Security {
     void handleCertificateError(Integer eventId, CertificateErrorAction action);
 
     /**
-     * Enable/disable overriding certificate errors. If enabled, all certificate error events need to be handled by the DevTools client and should be answered with handleCertificateError commands.
+     * Enable/disable overriding certificate errors. If enabled, all certificate error events need to
+     * be handled by the DevTools client and should be answered with handleCertificateError commands.
      * 
      * @param override If true, certificate errors will be overridden.
      */

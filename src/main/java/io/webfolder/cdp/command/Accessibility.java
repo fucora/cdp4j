@@ -33,7 +33,8 @@ public interface Accessibility {
      * @param nodeId ID of node to get the partial accessibility tree for.
      * @param fetchRelatives Whether to fetch this nodes ancestors, siblings and children. Defaults to true.
      * 
-     * @return The <code>Accessibility.AXNode</code> for this DOM node, if it exists, plus its ancestors, siblings and children, if requested.
+     * @return The `Accessibility.AXNode` for this DOM node, if it exists, plus its ancestors, siblings and
+     * children, if requested.
      */
     @Experimental
     @Returns("nodes")
@@ -44,7 +45,8 @@ public interface Accessibility {
      * 
      * @param nodeId ID of node to get the partial accessibility tree for.
      * 
-     * @return The <code>Accessibility.AXNode</code> for this DOM node, if it exists, plus its ancestors, siblings and children, if requested.
+     * @return The `Accessibility.AXNode` for this DOM node, if it exists, plus its ancestors, siblings and
+     * children, if requested.
      */
     @Experimental
     @Returns("nodes")

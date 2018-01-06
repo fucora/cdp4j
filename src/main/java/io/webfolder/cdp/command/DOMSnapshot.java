@@ -29,7 +29,10 @@ import java.util.List;
 @Domain("DOMSnapshot")
 public interface DOMSnapshot {
     /**
-     * Returns a document snapshot, including the full DOM tree of the root node (including iframes, template contents, and imported documents) in a flattened array, as well as layout and white-listed computed style information for the nodes. Shadow DOM in the returned DOM tree is flattened. 
+     * Returns a document snapshot, including the full DOM tree of the root node (including iframes,
+     * template contents, and imported documents) in a flattened array, as well as layout and
+     * white-listed computed style information for the nodes. Shadow DOM in the returned DOM tree is
+     * flattened.
      * 
      * @param computedStyleWhitelist Whitelist of computed styles to return.
      * 

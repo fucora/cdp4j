@@ -17,12 +17,9 @@
  */
 package io.webfolder.cdp.type.dom;
 
-import io.webfolder.cdp.annotation.Experimental;
-
 /**
  * Backend node with a friendly name
  */
-@Experimental
 public class BackendNode {
     private Integer nodeType;
 
@@ -31,28 +28,28 @@ public class BackendNode {
     private Integer backendNodeId;
 
     /**
-     * <code>Node</code>'s nodeType.
+     * `Node`'s nodeType.
      */
     public Integer getNodeType() {
         return nodeType;
     }
 
     /**
-     * <code>Node</code>'s nodeType.
+     * `Node`'s nodeType.
      */
     public void setNodeType(Integer nodeType) {
         this.nodeType = nodeType;
     }
 
     /**
-     * <code>Node</code>'s nodeName.
+     * `Node`'s nodeName.
      */
     public String getNodeName() {
         return nodeName;
     }
 
     /**
-     * <code>Node</code>'s nodeName.
+     * `Node`'s nodeName.
      */
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;

@@ -24,11 +24,13 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.type.network.AuthChallenge;
+import io.webfolder.cdp.type.network.ErrorReason;
 import io.webfolder.cdp.type.network.Request;
 import io.webfolder.cdp.type.page.ResourceType;
 
 /**
- * Details of an intercepted HTTP request, which must be either allowed, blocked, modified or mocked
+ * Details of an intercepted HTTP request, which must be either allowed, blocked, modified or
+ * mocked
  */
 @Experimental
 @Domain("Network")
@@ -44,23 +46,29 @@ public class RequestIntercepted {
 
     private Boolean isNavigationRequest;
 
-    private Map<String, Object> redirectHeaders = new HashMap<>();
-
-    private Integer redirectStatusCode;
-
     private String redirectUrl;
 
     private AuthChallenge authChallenge;
 
+    private ErrorReason responseErrorReason;
+
+    private Integer responseStatusCode;
+
+    private Map<String, Object> responseHeaders = new HashMap<>();
+
     /**
-     * Each request the page makes will have a unique id, however if any redirects are encountered while processing that fetch, they will be reported with the same id as the original fetch. Likewise if HTTP authentication is needed then the same fetch id will be used.
+     * Each request the page makes will have a unique id, however if any redirects are encountered
+     * while processing that fetch, they will be reported with the same id as the original fetch.
+     * Likewise if HTTP authentication is needed then the same fetch id will be used.
      */
     public String getInterceptionId() {
         return interceptionId;
     }
 
     /**
-     * Each request the page makes will have a unique id, however if any redirects are encountered while processing that fetch, they will be reported with the same id as the original fetch. Likewise if HTTP authentication is needed then the same fetch id will be used.
+     * Each request the page makes will have a unique id, however if any redirects are encountered
+     * while processing that fetch, they will be reported with the same id as the original fetch.
+     * Likewise if HTTP authentication is needed then the same fetch id will be used.
      */
     public void setInterceptionId(String interceptionId) {
         this.interceptionId = interceptionId;
@@ -117,34 +125,6 @@ public class RequestIntercepted {
     }
 
     /**
-     * HTTP response headers, only sent if a redirect was intercepted.
-     */
-    public Map<String, Object> getRedirectHeaders() {
-        return redirectHeaders;
-    }
-
-    /**
-     * HTTP response headers, only sent if a redirect was intercepted.
-     */
-    public void setRedirectHeaders(Map<String, Object> redirectHeaders) {
-        this.redirectHeaders = redirectHeaders;
-    }
-
-    /**
-     * HTTP response code, only sent if a redirect was intercepted.
-     */
-    public Integer getRedirectStatusCode() {
-        return redirectStatusCode;
-    }
-
-    /**
-     * HTTP response code, only sent if a redirect was intercepted.
-     */
-    public void setRedirectStatusCode(Integer redirectStatusCode) {
-        this.redirectStatusCode = redirectStatusCode;
-    }
-
-    /**
      * Redirect location, only sent if a redirect was intercepted.
      */
     public String getRedirectUrl() {
@@ -159,16 +139,66 @@ public class RequestIntercepted {
     }
 
     /**
-     * Details of the Authorization Challenge encountered. If this is set then continueInterceptedRequest must contain an authChallengeResponse.
+     * Details of the Authorization Challenge encountered. If this is set then
+     * continueInterceptedRequest must contain an authChallengeResponse.
      */
     public AuthChallenge getAuthChallenge() {
         return authChallenge;
     }
 
     /**
-     * Details of the Authorization Challenge encountered. If this is set then continueInterceptedRequest must contain an authChallengeResponse.
+     * Details of the Authorization Challenge encountered. If this is set then
+     * continueInterceptedRequest must contain an authChallengeResponse.
      */
     public void setAuthChallenge(AuthChallenge authChallenge) {
         this.authChallenge = authChallenge;
+    }
+
+    /**
+     * Response error if intercepted at response stage or if redirect occurred while intercepting
+     * request.
+     */
+    public ErrorReason getResponseErrorReason() {
+        return responseErrorReason;
+    }
+
+    /**
+     * Response error if intercepted at response stage or if redirect occurred while intercepting
+     * request.
+     */
+    public void setResponseErrorReason(ErrorReason responseErrorReason) {
+        this.responseErrorReason = responseErrorReason;
+    }
+
+    /**
+     * Response code if intercepted at response stage or if redirect occurred while intercepting
+     * request or auth retry occurred.
+     */
+    public Integer getResponseStatusCode() {
+        return responseStatusCode;
+    }
+
+    /**
+     * Response code if intercepted at response stage or if redirect occurred while intercepting
+     * request or auth retry occurred.
+     */
+    public void setResponseStatusCode(Integer responseStatusCode) {
+        this.responseStatusCode = responseStatusCode;
+    }
+
+    /**
+     * Response headers if intercepted at the response stage or if redirect occurred while
+     * intercepting request or auth retry occurred.
+     */
+    public Map<String, Object> getResponseHeaders() {
+        return responseHeaders;
+    }
+
+    /**
+     * Response headers if intercepted at the response stage or if redirect occurred while
+     * intercepting request or auth retry occurred.
+     */
+    public void setResponseHeaders(Map<String, Object> responseHeaders) {
+        this.responseHeaders = responseHeaders;
     }
 }

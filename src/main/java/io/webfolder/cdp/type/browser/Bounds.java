@@ -17,9 +17,12 @@
  */
 package io.webfolder.cdp.type.browser;
 
+import io.webfolder.cdp.annotation.Experimental;
+
 /**
  * Browser window bounds information
  */
+@Experimental
 public class Bounds {
     private Integer left;
 

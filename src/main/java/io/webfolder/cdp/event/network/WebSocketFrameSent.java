@@ -19,13 +19,11 @@ package io.webfolder.cdp.event.network;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
-import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.type.network.WebSocketFrame;
 
 /**
  * Fired when WebSocket frame is sent
  */
-@Experimental
 @Domain("Network")
 @EventName("webSocketFrameSent")
 public class WebSocketFrameSent {

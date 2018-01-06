@@ -32,21 +32,75 @@ import java.util.List;
 @Domain("Overlay")
 public interface Overlay {
     /**
-     * Enables domain notifications.
-     */
-    void enable();
-
-    /**
      * Disables domain notifications.
      */
     void disable();
 
     /**
-     * Requests that backend shows paint rectangles
-     * 
-     * @param result True for showing paint rectangles
+     * Enables domain notifications.
      */
-    void setShowPaintRects(Boolean result);
+    void enable();
+
+    /**
+     * Hides any highlight.
+     */
+    void hideHighlight();
+
+    /**
+     * Highlights owner element of the frame with given id.
+     * 
+     * @param frameId Identifier of the frame to highlight.
+     * @param contentColor The content box highlight fill color (default: transparent).
+     * @param contentOutlineColor The content box highlight outline color (default: transparent).
+     */
+    void highlightFrame(String frameId, @Optional RGBA contentColor,
+            @Optional RGBA contentOutlineColor);
+
+    /**
+     * Highlights DOM node with given id or with the given JavaScript object wrapper. Either nodeId or
+     * objectId must be specified.
+     * 
+     * @param highlightConfig A descriptor for the highlight appearance.
+     * @param nodeId Identifier of the node to highlight.
+     * @param backendNodeId Identifier of the backend node to highlight.
+     * @param objectId JavaScript object id of the node to be highlighted.
+     */
+    void highlightNode(HighlightConfig highlightConfig, @Optional Integer nodeId,
+            @Optional Integer backendNodeId, @Optional String objectId);
+
+    /**
+     * Highlights given quad. Coordinates are absolute with respect to the main frame viewport.
+     * 
+     * @param quad Quad to highlight
+     * @param color The highlight fill color (default: transparent).
+     * @param outlineColor The highlight outline color (default: transparent).
+     */
+    void highlightQuad(List<Double> quad, @Optional RGBA color, @Optional RGBA outlineColor);
+
+    /**
+     * Highlights given rectangle. Coordinates are absolute with respect to the main frame viewport.
+     * 
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param width Rectangle width
+     * @param height Rectangle height
+     * @param color The highlight fill color (default: transparent).
+     * @param outlineColor The highlight outline color (default: transparent).
+     */
+    void highlightRect(Integer x, Integer y, Integer width, Integer height, @Optional RGBA color,
+            @Optional RGBA outlineColor);
+
+    /**
+     * Enters the 'inspect' mode. In this mode, elements that user is hovering over are highlighted.
+     * Backend then generates 'inspectNodeRequested' event upon element selection.
+     * 
+     * @param mode Set an inspection mode.
+     * @param highlightConfig A descriptor for the highlight appearance of hovered-over nodes. May be omitted if `enabled
+     * == false`.
+     */
+    void setInspectMode(InspectMode mode, @Optional HighlightConfig highlightConfig);
+
+    void setPausedInDebuggerMessage(@Optional String message);
 
     /**
      * Requests that backend shows debug borders on layers
@@ -63,6 +117,13 @@ public interface Overlay {
     void setShowFPSCounter(Boolean show);
 
     /**
+     * Requests that backend shows paint rectangles
+     * 
+     * @param result True for showing paint rectangles
+     */
+    void setShowPaintRects(Boolean result);
+
+    /**
      * Requests that backend shows scroll bottleneck rects
      * 
      * @param show True for showing scroll bottleneck rects
@@ -76,74 +137,29 @@ public interface Overlay {
      */
     void setShowViewportSizeOnResize(Boolean show);
 
-    void setPausedInDebuggerMessage(@Optional String message);
-
     void setSuspended(Boolean suspended);
-
-    /**
-     * Enters the 'inspect' mode. In this mode, elements that user is hovering over are highlighted. Backend then generates 'inspectNodeRequested' event upon element selection.
-     * 
-     * @param mode Set an inspection mode.
-     * @param highlightConfig A descriptor for the highlight appearance of hovered-over nodes. May be omitted if <code>enabled == false</code>.
-     */
-    void setInspectMode(InspectMode mode, @Optional HighlightConfig highlightConfig);
-
-    /**
-     * Highlights given rectangle. Coordinates are absolute with respect to the main frame viewport.
-     * 
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @param width Rectangle width
-     * @param height Rectangle height
-     * @param color The highlight fill color (default: transparent).
-     * @param outlineColor The highlight outline color (default: transparent).
-     */
-    void highlightRect(Integer x, Integer y, Integer width, Integer height, @Optional RGBA color,
-            @Optional RGBA outlineColor);
-
-    /**
-     * Highlights given quad. Coordinates are absolute with respect to the main frame viewport.
-     * 
-     * @param quad Quad to highlight
-     * @param color The highlight fill color (default: transparent).
-     * @param outlineColor The highlight outline color (default: transparent).
-     */
-    void highlightQuad(List<Double> quad, @Optional RGBA color, @Optional RGBA outlineColor);
-
-    /**
-     * Highlights DOM node with given id or with the given JavaScript object wrapper. Either nodeId or objectId must be specified.
-     * 
-     * @param highlightConfig A descriptor for the highlight appearance.
-     * @param nodeId Identifier of the node to highlight.
-     * @param backendNodeId Identifier of the backend node to highlight.
-     * @param objectId JavaScript object id of the node to be highlighted.
-     */
-    void highlightNode(HighlightConfig highlightConfig, @Optional Integer nodeId,
-            @Optional Integer backendNodeId, @Optional String objectId);
 
     /**
      * Highlights owner element of the frame with given id.
      * 
      * @param frameId Identifier of the frame to highlight.
-     * @param contentColor The content box highlight fill color (default: transparent).
-     * @param contentOutlineColor The content box highlight outline color (default: transparent).
      */
-    void highlightFrame(String frameId, @Optional RGBA contentColor,
-            @Optional RGBA contentOutlineColor);
+    void highlightFrame(String frameId);
 
     /**
-     * Hides any highlight.
-     */
-    void hideHighlight();
-
-    void setPausedInDebuggerMessage();
-
-    /**
-     * Enters the 'inspect' mode. In this mode, elements that user is hovering over are highlighted. Backend then generates 'inspectNodeRequested' event upon element selection.
+     * Highlights DOM node with given id or with the given JavaScript object wrapper. Either nodeId or
+     * objectId must be specified.
      * 
-     * @param mode Set an inspection mode.
+     * @param highlightConfig A descriptor for the highlight appearance.
      */
-    void setInspectMode(InspectMode mode);
+    void highlightNode(HighlightConfig highlightConfig);
+
+    /**
+     * Highlights given quad. Coordinates are absolute with respect to the main frame viewport.
+     * 
+     * @param quad Quad to highlight
+     */
+    void highlightQuad(List<Double> quad);
 
     /**
      * Highlights given rectangle. Coordinates are absolute with respect to the main frame viewport.
@@ -156,23 +172,12 @@ public interface Overlay {
     void highlightRect(Integer x, Integer y, Integer width, Integer height);
 
     /**
-     * Highlights given quad. Coordinates are absolute with respect to the main frame viewport.
+     * Enters the 'inspect' mode. In this mode, elements that user is hovering over are highlighted.
+     * Backend then generates 'inspectNodeRequested' event upon element selection.
      * 
-     * @param quad Quad to highlight
+     * @param mode Set an inspection mode.
      */
-    void highlightQuad(List<Double> quad);
+    void setInspectMode(InspectMode mode);
 
-    /**
-     * Highlights DOM node with given id or with the given JavaScript object wrapper. Either nodeId or objectId must be specified.
-     * 
-     * @param highlightConfig A descriptor for the highlight appearance.
-     */
-    void highlightNode(HighlightConfig highlightConfig);
-
-    /**
-     * Highlights owner element of the frame with given id.
-     * 
-     * @param frameId Identifier of the frame to highlight.
-     */
-    void highlightFrame(String frameId);
+    void setPausedInDebuggerMessage();
 }

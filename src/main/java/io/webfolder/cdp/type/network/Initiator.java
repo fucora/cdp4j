@@ -75,14 +75,16 @@ public class Initiator {
     }
 
     /**
-     * Initiator line number, set for Parser type or for Script type (when script is importing module) (0-based).
+     * Initiator line number, set for Parser type or for Script type (when script is importing
+     * module) (0-based).
      */
     public Double getLineNumber() {
         return lineNumber;
     }
 
     /**
-     * Initiator line number, set for Parser type or for Script type (when script is importing module) (0-based).
+     * Initiator line number, set for Parser type or for Script type (when script is importing
+     * module) (0-based).
      */
     public void setLineNumber(Double lineNumber) {
         this.lineNumber = lineNumber;

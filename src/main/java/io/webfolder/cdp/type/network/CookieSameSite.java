@@ -20,7 +20,8 @@ package io.webfolder.cdp.type.network;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Represents the cookie's 'SameSite' status: https://tools
+ * Represents the cookie's 'SameSite' status:
+ * https://tools
  * ietf
  * org/html/draft-west-first-party-cookies
  */

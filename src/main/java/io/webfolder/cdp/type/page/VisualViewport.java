@@ -17,12 +17,9 @@
  */
 package io.webfolder.cdp.type.page;
 
-import io.webfolder.cdp.annotation.Experimental;
-
 /**
  * Visual viewport position, dimensions, and scale
  */
-@Experimental
 public class VisualViewport {
     private Double offsetX;
 

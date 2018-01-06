@@ -22,7 +22,8 @@ import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.page.DialogType;
 
 /**
- * Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) is about to open
+ * Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) is about to
+ * open
  */
 @Domain("Page")
 @EventName("javascriptDialogOpening")

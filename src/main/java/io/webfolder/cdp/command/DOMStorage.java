@@ -29,22 +29,22 @@ import java.util.List;
 @Experimental
 @Domain("DOMStorage")
 public interface DOMStorage {
-    /**
-     * Enables storage tracking, storage events will now be delivered to the client.
-     */
-    void enable();
+    void clear(StorageId storageId);
 
     /**
      * Disables storage tracking, prevents storage events from being sent to the client.
      */
     void disable();
 
-    void clear(StorageId storageId);
+    /**
+     * Enables storage tracking, storage events will now be delivered to the client.
+     */
+    void enable();
 
     @Returns("entries")
     List<String> getDOMStorageItems(StorageId storageId);
 
-    void setDOMStorageItem(StorageId storageId, String key, String value);
-
     void removeDOMStorageItem(StorageId storageId, String key);
+
+    void setDOMStorageItem(StorageId storageId, String key, String value);
 }

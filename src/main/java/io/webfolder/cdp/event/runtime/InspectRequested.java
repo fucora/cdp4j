@@ -22,7 +22,8 @@ import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.runtime.RemoteObject;
 
 /**
- * Issued when object should be inspected (for example, as a result of inspect() command line API call)
+ * Issued when object should be inspected (for example, as a result of inspect() command line API
+ * call)
  */
 @Domain("Runtime")
 @EventName("inspectRequested")

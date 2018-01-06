@@ -17,14 +17,12 @@
  */
 package io.webfolder.cdp.type.css;
 
-import io.webfolder.cdp.annotation.Experimental;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Media query descriptor
  */
-@Experimental
 public class MediaQuery {
     private List<MediaQueryExpression> expressions = new ArrayList<>();
 

@@ -17,12 +17,9 @@
  */
 package io.webfolder.cdp.type.page;
 
-import io.webfolder.cdp.annotation.Experimental;
-
 /**
  * Layout viewport position and dimensions
  */
-@Experimental
 public class LayoutViewport {
     private Integer pageX;
 

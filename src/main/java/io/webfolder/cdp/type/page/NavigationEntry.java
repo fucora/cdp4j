@@ -17,12 +17,9 @@
  */
 package io.webfolder.cdp.type.page;
 
-import io.webfolder.cdp.annotation.Experimental;
-
 /**
  * Navigation history entry
  */
-@Experimental
 public class NavigationEntry {
     private Integer id;
 

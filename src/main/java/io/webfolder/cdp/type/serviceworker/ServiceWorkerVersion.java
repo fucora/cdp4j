@@ -92,14 +92,16 @@ public class ServiceWorkerVersion {
     }
 
     /**
-     * The time at which the response headers of the main script were received from the server.  For cached script it is the last time the cache entry was validated.
+     * The time at which the response headers of the main script were received from the server.
+     * For cached script it is the last time the cache entry was validated.
      */
     public Double getScriptResponseTime() {
         return scriptResponseTime;
     }
 
     /**
-     * The time at which the response headers of the main script were received from the server.  For cached script it is the last time the cache entry was validated.
+     * The time at which the response headers of the main script were received from the server.
+     * For cached script it is the last time the cache entry was validated.
      */
     public void setScriptResponseTime(Double scriptResponseTime) {
         this.scriptResponseTime = scriptResponseTime;

@@ -17,12 +17,9 @@
  */
 package io.webfolder.cdp.type.network;
 
-import io.webfolder.cdp.annotation.Experimental;
-
 /**
  * WebSocket frame data
  */
-@Experimental
 public class WebSocketFrame {
     private Double opcode;
 

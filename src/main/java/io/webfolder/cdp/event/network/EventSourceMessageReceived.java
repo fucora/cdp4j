@@ -19,12 +19,10 @@ package io.webfolder.cdp.event.network;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
-import io.webfolder.cdp.annotation.Experimental;
 
 /**
  * Fired when EventSource message is received
  */
-@Experimental
 @Domain("Network")
 @EventName("eventSourceMessageReceived")
 public class EventSourceMessageReceived {

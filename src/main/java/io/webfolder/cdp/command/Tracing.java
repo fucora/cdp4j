@@ -23,25 +23,13 @@ import io.webfolder.cdp.annotation.Optional;
 import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.constant.TransferMode;
 import io.webfolder.cdp.type.tracing.RequestMemoryDumpResult;
+import io.webfolder.cdp.type.tracing.StreamCompression;
 import io.webfolder.cdp.type.tracing.TraceConfig;
 import java.util.List;
 
 @Experimental
 @Domain("Tracing")
 public interface Tracing {
-    /**
-     * Start trace events collection.
-     * 
-     * @param categories Category/tag filter
-     * @param options Tracing options
-     * @param bufferUsageReportingInterval If set, the agent will issue bufferUsage events at this interval, specified in milliseconds
-     * @param transferMode Whether to report trace events as series of dataCollected events or to save trace to a stream (defaults to <code>ReportEvents</code>).
-     * @param traceConfig 
-     */
-    void start(@Optional String categories, @Optional String options,
-            @Optional Double bufferUsageReportingInterval, @Optional TransferMode transferMode,
-            @Optional TraceConfig traceConfig);
-
     /**
      * Stop trace events collection.
      */
@@ -56,6 +44,13 @@ public interface Tracing {
     List<String> getCategories();
 
     /**
+     * Record a clock sync marker in the trace.
+     * 
+     * @param syncId The ID of this clock sync marker
+     */
+    void recordClockSyncMarker(String syncId);
+
+    /**
      * Request a global memory dump.
      * 
      * @return RequestMemoryDumpResult
@@ -63,11 +58,19 @@ public interface Tracing {
     RequestMemoryDumpResult requestMemoryDump();
 
     /**
-     * Record a clock sync marker in the trace.
+     * Start trace events collection.
      * 
-     * @param syncId The ID of this clock sync marker
+     * @param categories Category/tag filter
+     * @param options Tracing options
+     * @param bufferUsageReportingInterval If set, the agent will issue bufferUsage events at this interval, specified in milliseconds
+     * @param transferMode Whether to report trace events as series of dataCollected events or to save trace to a
+     * stream (defaults to `ReportEvents`).
+     * @param streamCompression Compression format to use. This only applies when using `ReturnAsStream`
+     * transfer mode (defaults to `none`)
      */
-    void recordClockSyncMarker(String syncId);
+    void start(@Optional String categories, @Optional String options,
+            @Optional Double bufferUsageReportingInterval, @Optional TransferMode transferMode,
+            @Optional StreamCompression streamCompression, @Optional TraceConfig traceConfig);
 
     /**
      * Start trace events collection.

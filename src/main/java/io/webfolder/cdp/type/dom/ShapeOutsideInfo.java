@@ -17,14 +17,12 @@
  */
 package io.webfolder.cdp.type.dom;
 
-import io.webfolder.cdp.annotation.Experimental;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * CSS Shape Outside details
  */
-@Experimental
 public class ShapeOutsideInfo {
     private List<Double> bounds = new ArrayList<>();
 

@@ -18,20 +18,18 @@
 package io.webfolder.cdp.command;
 
 import io.webfolder.cdp.annotation.Domain;
-import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.type.log.ViolationSetting;
 import java.util.List;
 
 /**
  * Provides access to log entries
  */
-@Experimental
 @Domain("Log")
 public interface Log {
     /**
-     * Enables log domain, sends the entries collected so far to the client by means of the <tt>entryAdded</tt> notification.
+     * Clears the log.
      */
-    void enable();
+    void clear();
 
     /**
      * Disables log domain, prevents further log entries from being reported to the client.
@@ -39,9 +37,10 @@ public interface Log {
     void disable();
 
     /**
-     * Clears the log.
+     * Enables log domain, sends the entries collected so far to the client by means of the
+     * `entryAdded` notification.
      */
-    void clear();
+    void enable();
 
     /**
      * start violation reporting.

@@ -27,22 +27,12 @@ import io.webfolder.cdp.type.browser.GetWindowForTargetResult;
 /**
  * The Browser domain defines methods and events for browser managing
  */
-@Experimental
 @Domain("Browser")
 public interface Browser {
     /**
      * Close browser gracefully.
      */
     void close();
-
-    /**
-     * Get the browser window that contains the devtools target.
-     * 
-     * @param targetId Devtools agent host id.
-     * 
-     * @return GetWindowForTargetResult
-     */
-    GetWindowForTargetResult getWindowForTarget(String targetId);
 
     /**
      * Returns version information.
@@ -52,20 +42,34 @@ public interface Browser {
     GetVersionResult getVersion();
 
     /**
-     * Set position and/or size of the browser window.
-     * 
-     * @param windowId Browser window id.
-     * @param bounds New window bounds. The 'minimized', 'maximized' and 'fullscreen' states cannot be combined with 'left', 'top', 'width' or 'height'. Leaves unspecified fields unchanged.
-     */
-    void setWindowBounds(Integer windowId, Bounds bounds);
-
-    /**
      * Get position and size of the browser window.
      * 
      * @param windowId Browser window id.
      * 
-     * @return Bounds information of the window. When window state is 'minimized', the restored window position and size are returned.
+     * @return Bounds information of the window. When window state is 'minimized', the restored window
+     * position and size are returned.
      */
+    @Experimental
     @Returns("bounds")
     Bounds getWindowBounds(Integer windowId);
+
+    /**
+     * Get the browser window that contains the devtools target.
+     * 
+     * @param targetId Devtools agent host id.
+     * 
+     * @return GetWindowForTargetResult
+     */
+    @Experimental
+    GetWindowForTargetResult getWindowForTarget(String targetId);
+
+    /**
+     * Set position and/or size of the browser window.
+     * 
+     * @param windowId Browser window id.
+     * @param bounds New window bounds. The 'minimized', 'maximized' and 'fullscreen' states cannot be combined
+     * with 'left', 'top', 'width' or 'height'. Leaves unspecified fields unchanged.
+     */
+    @Experimental
+    void setWindowBounds(Integer windowId, Bounds bounds);
 }

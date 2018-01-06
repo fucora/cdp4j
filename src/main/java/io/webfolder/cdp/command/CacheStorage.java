@@ -29,27 +29,6 @@ import java.util.List;
 @Domain("CacheStorage")
 public interface CacheStorage {
     /**
-     * Requests cache names.
-     * 
-     * @param securityOrigin Security origin.
-     * 
-     * @return Caches for the security origin.
-     */
-    @Returns("caches")
-    List<Cache> requestCacheNames(String securityOrigin);
-
-    /**
-     * Requests data from cache.
-     * 
-     * @param cacheId ID of cache to get entries from.
-     * @param skipCount Number of records to skip.
-     * @param pageSize Number of records to fetch.
-     * 
-     * @return RequestEntriesResult
-     */
-    RequestEntriesResult requestEntries(String cacheId, Integer skipCount, Integer pageSize);
-
-    /**
      * Deletes a cache.
      * 
      * @param cacheId Id of cache for deletion.
@@ -65,6 +44,16 @@ public interface CacheStorage {
     void deleteEntry(String cacheId, String request);
 
     /**
+     * Requests cache names.
+     * 
+     * @param securityOrigin Security origin.
+     * 
+     * @return Caches for the security origin.
+     */
+    @Returns("caches")
+    List<Cache> requestCacheNames(String securityOrigin);
+
+    /**
      * Fetches cache entry.
      * 
      * @param cacheId Id of cache that contains the enty.
@@ -74,4 +63,15 @@ public interface CacheStorage {
      */
     @Returns("response")
     CachedResponse requestCachedResponse(String cacheId, String requestURL);
+
+    /**
+     * Requests data from cache.
+     * 
+     * @param cacheId ID of cache to get entries from.
+     * @param skipCount Number of records to skip.
+     * @param pageSize Number of records to fetch.
+     * 
+     * @return RequestEntriesResult
+     */
+    RequestEntriesResult requestEntries(String cacheId, Integer skipCount, Integer pageSize);
 }

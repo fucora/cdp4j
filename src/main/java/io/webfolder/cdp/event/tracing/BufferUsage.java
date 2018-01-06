@@ -30,14 +30,16 @@ public class BufferUsage {
     private Double value;
 
     /**
-     * A number in range [0..1] that indicates the used size of event buffer as a fraction of its total size.
+     * A number in range [0..1] that indicates the used size of event buffer as a fraction of its
+     * total size.
      */
     public Double getPercentFull() {
         return percentFull;
     }
 
     /**
-     * A number in range [0..1] that indicates the used size of event buffer as a fraction of its total size.
+     * A number in range [0..1] that indicates the used size of event buffer as a fraction of its
+     * total size.
      */
     public void setPercentFull(Double percentFull) {
         this.percentFull = percentFull;
@@ -58,14 +60,16 @@ public class BufferUsage {
     }
 
     /**
-     * A number in range [0..1] that indicates the used size of event buffer as a fraction of its total size.
+     * A number in range [0..1] that indicates the used size of event buffer as a fraction of its
+     * total size.
      */
     public Double getValue() {
         return value;
     }
 
     /**
-     * A number in range [0..1] that indicates the used size of event buffer as a fraction of its total size.
+     * A number in range [0..1] that indicates the used size of event buffer as a fraction of its
+     * total size.
      */
     public void setValue(Double value) {
         this.value = value;

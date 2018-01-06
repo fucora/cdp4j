@@ -17,12 +17,9 @@
  */
 package io.webfolder.cdp.type.css;
 
-import io.webfolder.cdp.annotation.Experimental;
-
 /**
  * Media query expression descriptor
  */
-@Experimental
 public class MediaQueryExpression {
     private Double value;
 

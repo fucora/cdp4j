@@ -19,13 +19,11 @@ package io.webfolder.cdp.event.network;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
-import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.type.network.WebSocketResponse;
 
 /**
  * Fired when WebSocket handshake response becomes available
  */
-@Experimental
 @Domain("Network")
 @EventName("webSocketHandshakeResponseReceived")
 public class WebSocketHandshakeResponseReceived {

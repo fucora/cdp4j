@@ -17,12 +17,9 @@
  */
 package io.webfolder.cdp.type.dom;
 
-import io.webfolder.cdp.annotation.Experimental;
-
 /**
  * Rectangle
  */
-@Experimental
 public class Rect {
     private Double x;
 

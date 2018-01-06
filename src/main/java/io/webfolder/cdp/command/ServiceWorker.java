@@ -23,27 +23,27 @@ import io.webfolder.cdp.annotation.Experimental;
 @Experimental
 @Domain("ServiceWorker")
 public interface ServiceWorker {
-    void enable();
+    void deliverPushMessage(String origin, String registrationId, String data);
 
     void disable();
 
-    void unregister(String scopeURL);
+    void dispatchSyncEvent(String origin, String registrationId, String tag, Boolean lastChance);
 
-    void updateRegistration(String scopeURL);
-
-    void startWorker(String scopeURL);
-
-    void skipWaiting(String scopeURL);
-
-    void stopWorker(String versionId);
-
-    void stopAllWorkers();
+    void enable();
 
     void inspectWorker(String versionId);
 
     void setForceUpdateOnPageLoad(Boolean forceUpdateOnPageLoad);
 
-    void deliverPushMessage(String origin, String registrationId, String data);
+    void skipWaiting(String scopeURL);
 
-    void dispatchSyncEvent(String origin, String registrationId, String tag, Boolean lastChance);
+    void startWorker(String scopeURL);
+
+    void stopAllWorkers();
+
+    void stopWorker(String versionId);
+
+    void unregister(String scopeURL);
+
+    void updateRegistration(String scopeURL);
 }

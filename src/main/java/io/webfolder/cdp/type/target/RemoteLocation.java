@@ -1,5 +1,8 @@
 package io.webfolder.cdp.type.target;
 
+import io.webfolder.cdp.annotation.Experimental;
+
+@Experimental
 public class RemoteLocation {
     private String host;
 

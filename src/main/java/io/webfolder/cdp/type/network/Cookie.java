@@ -17,12 +17,9 @@
  */
 package io.webfolder.cdp.type.network;
 
-import io.webfolder.cdp.annotation.Experimental;
-
 /**
  * Cookie object
  */
-@Experimental
 public class Cookie {
     private String name;
 

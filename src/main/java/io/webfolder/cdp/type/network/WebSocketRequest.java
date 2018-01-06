@@ -17,14 +17,12 @@
  */
 package io.webfolder.cdp.type.network;
 
-import io.webfolder.cdp.annotation.Experimental;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * WebSocket request data
  */
-@Experimental
 public class WebSocketRequest {
     private Map<String, Object> headers = new HashMap<>();
 

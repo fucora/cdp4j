@@ -26,7 +26,8 @@ import io.webfolder.cdp.type.dom.Node;
 
 /**
  * Fired when backend wants to provide client with the missing DOM structure
- * This happens upon most of the calls requesting node ids
+ * This happens upon
+ * most of the calls requesting node ids
  */
 @Domain("DOM")
 @EventName("setChildNodes")

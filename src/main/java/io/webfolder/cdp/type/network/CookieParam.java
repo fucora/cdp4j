@@ -17,12 +17,9 @@
  */
 package io.webfolder.cdp.type.network;
 
-import io.webfolder.cdp.annotation.Experimental;
-
 /**
  * Cookie parameter object
  */
-@Experimental
 public class CookieParam {
     private String name;
 
@@ -71,14 +68,16 @@ public class CookieParam {
     }
 
     /**
-     * The request-URI to associate with the setting of the cookie. This value can affect the default domain and path values of the created cookie.
+     * The request-URI to associate with the setting of the cookie. This value can affect the
+     * default domain and path values of the created cookie.
      */
     public String getUrl() {
         return url;
     }
 
     /**
-     * The request-URI to associate with the setting of the cookie. This value can affect the default domain and path values of the created cookie.
+     * The request-URI to associate with the setting of the cookie. This value can affect the
+     * default domain and path values of the created cookie.
      */
     public void setUrl(String url) {
         this.url = url;

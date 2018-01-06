@@ -32,6 +32,8 @@ public class LoadingFinished {
 
     private Double encodedDataLength;
 
+    private Boolean blockedCrossSiteDocument;
+
     /**
      * Request identifier.
      */
@@ -72,5 +74,19 @@ public class LoadingFinished {
      */
     public void setEncodedDataLength(Double encodedDataLength) {
         this.encodedDataLength = encodedDataLength;
+    }
+
+    /**
+     * Set when response was blocked due to being cross-site document response.
+     */
+    public Boolean isBlockedCrossSiteDocument() {
+        return blockedCrossSiteDocument;
+    }
+
+    /**
+     * Set when response was blocked due to being cross-site document response.
+     */
+    public void setBlockedCrossSiteDocument(Boolean blockedCrossSiteDocument) {
+        this.blockedCrossSiteDocument = blockedCrossSiteDocument;
     }
 }

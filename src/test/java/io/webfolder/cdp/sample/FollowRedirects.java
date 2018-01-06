@@ -52,14 +52,14 @@ public class FollowRedirects {
             session.addEventListener((e, d) -> {
                 if (NetworkRequestIntercepted.equals(e)) {
                     RequestIntercepted ri = (RequestIntercepted) d;
-                    boolean isRedirect = ri.getRedirectStatusCode() != null;
+                    boolean isRedirect = ri.getRedirectUrl() != null && ! ri.getRedirectUrl().isEmpty();
 
                     if (isRedirect) {
 
                         System.out.println("");
                         System.out.println("Redirect URL         : " + ri.getRedirectUrl());
-                        System.out.println("Redirect Status Code : " + ri.getRedirectStatusCode());
-                        System.out.println("Redirect Header      : " + ri.getRedirectHeaders());
+                        System.out.println("Redirect Status Code : " + ri.getResponseStatusCode());
+                        System.out.println("Redirect Header      : " + ri.getResponseHeaders());
                         System.out.println("");
 
                         if ( ! followRedirect ) {
@@ -73,6 +73,8 @@ public class FollowRedirects {
 
             session.navigate("https://httpbin.org/redirect-to?url=https://webfolder.io?cdp4j");
             session.waitDocumentReady();
+
+            System.out.println(session.evaluate("document.location.href"));
         }
     }
 }

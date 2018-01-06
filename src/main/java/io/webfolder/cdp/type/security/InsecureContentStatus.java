@@ -78,28 +78,32 @@ public class InsecureContentStatus {
     }
 
     /**
-     * True if the page was loaded over HTTPS without certificate errors, and ran content such as scripts that were loaded with certificate errors.
+     * True if the page was loaded over HTTPS without certificate errors, and ran content such as
+     * scripts that were loaded with certificate errors.
      */
     public Boolean isRanContentWithCertErrors() {
         return ranContentWithCertErrors;
     }
 
     /**
-     * True if the page was loaded over HTTPS without certificate errors, and ran content such as scripts that were loaded with certificate errors.
+     * True if the page was loaded over HTTPS without certificate errors, and ran content such as
+     * scripts that were loaded with certificate errors.
      */
     public void setRanContentWithCertErrors(Boolean ranContentWithCertErrors) {
         this.ranContentWithCertErrors = ranContentWithCertErrors;
     }
 
     /**
-     * True if the page was loaded over HTTPS without certificate errors, and displayed content such as images that were loaded with certificate errors.
+     * True if the page was loaded over HTTPS without certificate errors, and displayed content
+     * such as images that were loaded with certificate errors.
      */
     public Boolean isDisplayedContentWithCertErrors() {
         return displayedContentWithCertErrors;
     }
 
     /**
-     * True if the page was loaded over HTTPS without certificate errors, and displayed content such as images that were loaded with certificate errors.
+     * True if the page was loaded over HTTPS without certificate errors, and displayed content
+     * such as images that were loaded with certificate errors.
      */
     public void setDisplayedContentWithCertErrors(Boolean displayedContentWithCertErrors) {
         this.displayedContentWithCertErrors = displayedContentWithCertErrors;

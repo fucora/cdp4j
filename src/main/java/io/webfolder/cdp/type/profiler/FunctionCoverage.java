@@ -17,14 +17,12 @@
  */
 package io.webfolder.cdp.type.profiler;
 
-import io.webfolder.cdp.annotation.Experimental;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Coverage data for a JavaScript function
  */
-@Experimental
 public class FunctionCoverage {
     private String functionName;
 

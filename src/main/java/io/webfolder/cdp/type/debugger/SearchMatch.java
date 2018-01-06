@@ -17,12 +17,9 @@
  */
 package io.webfolder.cdp.type.debugger;
 
-import io.webfolder.cdp.annotation.Experimental;
-
 /**
  * Search match for resource
  */
-@Experimental
 public class SearchMatch {
     private Double lineNumber;
 

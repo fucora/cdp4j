@@ -95,14 +95,16 @@ public class ProfileNode {
     }
 
     /**
-     * The reason of being not optimized. The function may be deoptimized or marked as don't optimize.
+     * The reason of being not optimized. The function may be deoptimized or marked as don't
+     * optimize.
      */
     public String getDeoptReason() {
         return deoptReason;
     }
 
     /**
-     * The reason of being not optimized. The function may be deoptimized or marked as don't optimize.
+     * The reason of being not optimized. The function may be deoptimized or marked as don't
+     * optimize.
      */
     public void setDeoptReason(String deoptReason) {
         this.deoptReason = deoptReason;

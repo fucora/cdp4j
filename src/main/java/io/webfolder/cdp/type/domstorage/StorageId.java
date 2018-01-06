@@ -17,12 +17,9 @@
  */
 package io.webfolder.cdp.type.domstorage;
 
-import io.webfolder.cdp.annotation.Experimental;
-
 /**
  * DOM Storage identifier
  */
-@Experimental
 public class StorageId {
     private String securityOrigin;
 

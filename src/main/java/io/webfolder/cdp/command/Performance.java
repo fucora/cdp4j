@@ -18,23 +18,21 @@
 package io.webfolder.cdp.command;
 
 import io.webfolder.cdp.annotation.Domain;
-import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.performance.Metric;
 import java.util.List;
 
-@Experimental
 @Domain("Performance")
 public interface Performance {
-    /**
-     * Enable collecting and reporting metrics.
-     */
-    void enable();
-
     /**
      * Disable collecting and reporting metrics.
      */
     void disable();
+
+    /**
+     * Enable collecting and reporting metrics.
+     */
+    void enable();
 
     /**
      * Retrieve current values of run-time metrics.

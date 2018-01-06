@@ -17,12 +17,9 @@
  */
 package io.webfolder.cdp.type.database;
 
-import io.webfolder.cdp.annotation.Experimental;
-
 /**
  * Database object
  */
-@Experimental
 public class Database {
     private String id;
 

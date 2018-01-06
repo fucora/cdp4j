@@ -65,14 +65,14 @@ public class RequestWillBeSent {
     }
 
     /**
-     * Loader identifier. Empty string if the request is fetched form worker.
+     * Loader identifier. Empty string if the request is fetched from worker.
      */
     public String getLoaderId() {
         return loaderId;
     }
 
     /**
-     * Loader identifier. Empty string if the request is fetched form worker.
+     * Loader identifier. Empty string if the request is fetched from worker.
      */
     public void setLoaderId(String loaderId) {
         this.loaderId = loaderId;

@@ -29,15 +29,19 @@ public class RequestPattern {
 
     private ResourceType resourceType;
 
+    private InterceptionStage interceptionStage;
+
     /**
-     * Wildcards ('*' -> zero or more, '?' -> exactly one) are allowed. Escape character is backslash. Omitting is equivalent to "*".
+     * Wildcards ('*' -> zero or more, '?' -> exactly one) are allowed. Escape character is
+     * backslash. Omitting is equivalent to "*".
      */
     public String getUrlPattern() {
         return urlPattern;
     }
 
     /**
-     * Wildcards ('*' -> zero or more, '?' -> exactly one) are allowed. Escape character is backslash. Omitting is equivalent to "*".
+     * Wildcards ('*' -> zero or more, '?' -> exactly one) are allowed. Escape character is
+     * backslash. Omitting is equivalent to "*".
      */
     public void setUrlPattern(String urlPattern) {
         this.urlPattern = urlPattern;
@@ -55,5 +59,19 @@ public class RequestPattern {
      */
     public void setResourceType(ResourceType resourceType) {
         this.resourceType = resourceType;
+    }
+
+    /**
+     * Stage at wich to begin intercepting requests. Default is Request.
+     */
+    public InterceptionStage getInterceptionStage() {
+        return interceptionStage;
+    }
+
+    /**
+     * Stage at wich to begin intercepting requests. Default is Request.
+     */
+    public void setInterceptionStage(InterceptionStage interceptionStage) {
+        this.interceptionStage = interceptionStage;
     }
 }

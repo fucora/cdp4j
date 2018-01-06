@@ -29,16 +29,6 @@ import java.util.List;
 @Domain("LayerTree")
 public interface LayerTree {
     /**
-     * Enables compositing tree inspection.
-     */
-    void enable();
-
-    /**
-     * Disables compositing tree inspection.
-     */
-    void disable();
-
-    /**
      * Provides the reasons why the given layer was composited.
      * 
      * @param layerId The id of the layer for which we want to get the reasons it was composited.
@@ -49,14 +39,14 @@ public interface LayerTree {
     List<String> compositingReasons(String layerId);
 
     /**
-     * Returns the layer snapshot identifier.
-     * 
-     * @param layerId The id of the layer.
-     * 
-     * @return The id of the layer snapshot.
+     * Disables compositing tree inspection.
      */
-    @Returns("snapshotId")
-    String makeSnapshot(String layerId);
+    void disable();
+
+    /**
+     * Enables compositing tree inspection.
+     */
+    void enable();
 
     /**
      * Returns the snapshot identifier.
@@ -69,15 +59,25 @@ public interface LayerTree {
     String loadSnapshot(List<PictureTile> tiles);
 
     /**
+     * Returns the layer snapshot identifier.
+     * 
+     * @param layerId The id of the layer.
+     * 
+     * @return The id of the layer snapshot.
+     */
+    @Returns("snapshotId")
+    String makeSnapshot(String layerId);
+
+    @Returns("timings")
+    List<Double> profileSnapshot(String snapshotId, @Optional Integer minRepeatCount,
+            @Optional Double minDuration, @Optional Rect clipRect);
+
+    /**
      * Releases layer snapshot captured by the back-end.
      * 
      * @param snapshotId The id of the layer snapshot.
      */
     void releaseSnapshot(String snapshotId);
-
-    @Returns("timings")
-    List<Double> profileSnapshot(String snapshotId, @Optional Integer minRepeatCount,
-            @Optional Double minDuration, @Optional Rect clipRect);
 
     /**
      * Replays the layer snapshot and returns the resulting bitmap.

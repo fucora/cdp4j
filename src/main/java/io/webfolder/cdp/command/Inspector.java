@@ -24,12 +24,12 @@ import io.webfolder.cdp.annotation.Experimental;
 @Domain("Inspector")
 public interface Inspector {
     /**
-     * Enables inspector domain notifications.
-     */
-    void enable();
-
-    /**
      * Disables inspector domain notifications.
      */
     void disable();
+
+    /**
+     * Enables inspector domain notifications.
+     */
+    void enable();
 }
