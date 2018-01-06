@@ -66,6 +66,16 @@ Add the following to your POM's `<dependencies>` tag:
 </dependency>
 ```
 
+Using development (SNAPSHOT) version:
+
+```xml
+<dependency>
+    <groupId>io.webfolder</groupId>
+    <artifactId>cdp4j</artifactId>
+    <version>2.2.0-SNAPSHOT</version>
+</dependency>
+```
+
 Download
 --------
 [cdp4j-2.1.5.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.1.5/cdp4j-2.1.5.jar) - 783 KB
