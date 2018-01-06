@@ -5,7 +5,7 @@ import io.webfolder.cdp.annotation.EventName;
 
 /**
  * Notifies about a new protocol message received from the session (as reported in
- * `attachedToTarget` event)
+ * <code>attachedToTarget</code> event)
  */
 @Domain("Target")
 @EventName("receivedMessageFromTarget")

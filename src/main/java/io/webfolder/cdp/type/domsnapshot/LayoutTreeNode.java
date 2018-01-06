@@ -36,14 +36,14 @@ public class LayoutTreeNode {
     private Integer styleIndex;
 
     /**
-     * The index of the related DOM node in the `domNodes` array returned by `getSnapshot`.
+     * The index of the related DOM node in the <code>domNodes</code> array returned by <code>getSnapshot</code>.
      */
     public Integer getDomNodeIndex() {
         return domNodeIndex;
     }
 
     /**
-     * The index of the related DOM node in the `domNodes` array returned by `getSnapshot`.
+     * The index of the related DOM node in the <code>domNodes</code> array returned by <code>getSnapshot</code>.
      */
     public void setDomNodeIndex(Integer domNodeIndex) {
         this.domNodeIndex = domNodeIndex;
@@ -92,14 +92,14 @@ public class LayoutTreeNode {
     }
 
     /**
-     * Index into the `computedStyles` array returned by `getSnapshot`.
+     * Index into the <code>computedStyles</code> array returned by <code>getSnapshot</code>.
      */
     public Integer getStyleIndex() {
         return styleIndex;
     }
 
     /**
-     * Index into the `computedStyles` array returned by `getSnapshot`.
+     * Index into the <code>computedStyles</code> array returned by <code>getSnapshot</code>.
      */
     public void setStyleIndex(Integer styleIndex) {
         this.styleIndex = styleIndex;

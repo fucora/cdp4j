@@ -81,8 +81,8 @@ public interface Network {
      * fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted
      * event will be sent with the same InterceptionId.
      * 
-     * @param errorReason If set this causes the request to fail with the given reason. Passing `Aborted` for requests
-     * marked with `isNavigationRequest` also cancels the navigation. Must not be set in response
+     * @param errorReason If set this causes the request to fail with the given reason. Passing <code>Aborted</code> for requests
+     * marked with <code>isNavigationRequest</code> also cancels the navigation. Must not be set in response
      * to an authChallenge.
      * @param rawResponse If set the requests completes using with the provided base64 encoded raw response, including
      * HTTP status line and headers etc... Must not be set in response to an authChallenge.
@@ -141,7 +141,7 @@ public interface Network {
 
     /**
      * Returns all browser cookies. Depending on the backend support, will return detailed cookie
-     * information in the `cookies` field.
+     * information in the <code>cookies</code> field.
      * 
      * @return Array of cookie objects.
      */
@@ -159,7 +159,7 @@ public interface Network {
 
     /**
      * Returns all browser cookies for the current URL. Depending on the backend support, will return
-     * detailed cookie information in the `cookies` field.
+     * detailed cookie information in the <code>cookies</code> field.
      * 
      * @param urls The list of URLs for which applicable cookies will be fetched
      * 
@@ -229,7 +229,7 @@ public interface Network {
     void setBypassServiceWorker(Boolean bypass);
 
     /**
-     * Toggles ignoring cache for each request. If `true`, cache will not be used.
+     * Toggles ignoring cache for each request. If <code>true</code>, cache will not be used.
      * 
      * @param cacheDisabled Cache disabled state.
      */
@@ -330,7 +330,7 @@ public interface Network {
 
     /**
      * Returns all browser cookies for the current URL. Depending on the backend support, will return
-     * detailed cookie information in the `cookies` field.
+     * detailed cookie information in the <code>cookies</code> field.
      * 
      * @return Array of cookie objects.
      */

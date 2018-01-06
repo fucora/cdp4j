@@ -129,14 +129,14 @@ public class CallFrame {
     }
 
     /**
-     * `this` object for this call frame.
+     * <code>this</code> object for this call frame.
      */
     public RemoteObject getThat() {
         return that;
     }
 
     /**
-     * `this` object for this call frame.
+     * <code>this</code> object for this call frame.
      */
     public void setThat(RemoteObject that) {
         this.that = that;

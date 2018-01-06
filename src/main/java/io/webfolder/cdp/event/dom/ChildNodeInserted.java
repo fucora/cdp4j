@@ -22,7 +22,7 @@ import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.dom.Node;
 
 /**
- * Mirrors `DOMNodeInserted` event
+ * Mirrors <code>DOMNodeInserted</code> event
  */
 @Domain("DOM")
 @EventName("childNodeInserted")

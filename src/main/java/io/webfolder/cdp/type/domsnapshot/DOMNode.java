@@ -74,42 +74,42 @@ public class DOMNode {
     private Boolean isClickable;
 
     /**
-     * `Node`'s nodeType.
+     * <code>Node</code>'s nodeType.
      */
     public Integer getNodeType() {
         return nodeType;
     }
 
     /**
-     * `Node`'s nodeType.
+     * <code>Node</code>'s nodeType.
      */
     public void setNodeType(Integer nodeType) {
         this.nodeType = nodeType;
     }
 
     /**
-     * `Node`'s nodeName.
+     * <code>Node</code>'s nodeName.
      */
     public String getNodeName() {
         return nodeName;
     }
 
     /**
-     * `Node`'s nodeName.
+     * <code>Node</code>'s nodeName.
      */
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
 
     /**
-     * `Node`'s nodeValue.
+     * <code>Node</code>'s nodeValue.
      */
     public String getNodeValue() {
         return nodeValue;
     }
 
     /**
-     * `Node`'s nodeValue.
+     * <code>Node</code>'s nodeValue.
      */
     public void setNodeValue(String nodeValue) {
         this.nodeValue = nodeValue;
@@ -172,21 +172,21 @@ public class DOMNode {
     }
 
     /**
-     * `Node`'s id, corresponds to DOM.Node.backendNodeId.
+     * <code>Node</code>'s id, corresponds to DOM.Node.backendNodeId.
      */
     public Integer getBackendNodeId() {
         return backendNodeId;
     }
 
     /**
-     * `Node`'s id, corresponds to DOM.Node.backendNodeId.
+     * <code>Node</code>'s id, corresponds to DOM.Node.backendNodeId.
      */
     public void setBackendNodeId(Integer backendNodeId) {
         this.backendNodeId = backendNodeId;
     }
 
     /**
-     * The indexes of the node's child nodes in the `domNodes` array returned by `getSnapshot`, if
+     * The indexes of the node's child nodes in the <code>domNodes</code> array returned by <code>getSnapshot</code>, if
      * any.
      */
     public List<Integer> getChildNodeIndexes() {
@@ -194,7 +194,7 @@ public class DOMNode {
     }
 
     /**
-     * The indexes of the node's child nodes in the `domNodes` array returned by `getSnapshot`, if
+     * The indexes of the node's child nodes in the <code>domNodes</code> array returned by <code>getSnapshot</code>, if
      * any.
      */
     public void setChildNodeIndexes(List<Integer> childNodeIndexes) {
@@ -202,74 +202,74 @@ public class DOMNode {
     }
 
     /**
-     * Attributes of an `Element` node.
+     * Attributes of an <code>Element</code> node.
      */
     public List<NameValue> getAttributes() {
         return attributes;
     }
 
     /**
-     * Attributes of an `Element` node.
+     * Attributes of an <code>Element</code> node.
      */
     public void setAttributes(List<NameValue> attributes) {
         this.attributes = attributes;
     }
 
     /**
-     * Indexes of pseudo elements associated with this node in the `domNodes` array returned by
-     * `getSnapshot`, if any.
+     * Indexes of pseudo elements associated with this node in the <code>domNodes</code> array returned by
+     * <code>getSnapshot</code>, if any.
      */
     public List<Integer> getPseudoElementIndexes() {
         return pseudoElementIndexes;
     }
 
     /**
-     * Indexes of pseudo elements associated with this node in the `domNodes` array returned by
-     * `getSnapshot`, if any.
+     * Indexes of pseudo elements associated with this node in the <code>domNodes</code> array returned by
+     * <code>getSnapshot</code>, if any.
      */
     public void setPseudoElementIndexes(List<Integer> pseudoElementIndexes) {
         this.pseudoElementIndexes = pseudoElementIndexes;
     }
 
     /**
-     * The index of the node's related layout tree node in the `layoutTreeNodes` array returned by
-     * `getSnapshot`, if any.
+     * The index of the node's related layout tree node in the <code>layoutTreeNodes</code> array returned by
+     * <code>getSnapshot</code>, if any.
      */
     public Integer getLayoutNodeIndex() {
         return layoutNodeIndex;
     }
 
     /**
-     * The index of the node's related layout tree node in the `layoutTreeNodes` array returned by
-     * `getSnapshot`, if any.
+     * The index of the node's related layout tree node in the <code>layoutTreeNodes</code> array returned by
+     * <code>getSnapshot</code>, if any.
      */
     public void setLayoutNodeIndex(Integer layoutNodeIndex) {
         this.layoutNodeIndex = layoutNodeIndex;
     }
 
     /**
-     * Document URL that `Document` or `FrameOwner` node points to.
+     * Document URL that <code>Document</code> or <code>FrameOwner</code> node points to.
      */
     public String getDocumentURL() {
         return documentURL;
     }
 
     /**
-     * Document URL that `Document` or `FrameOwner` node points to.
+     * Document URL that <code>Document</code> or <code>FrameOwner</code> node points to.
      */
     public void setDocumentURL(String documentURL) {
         this.documentURL = documentURL;
     }
 
     /**
-     * Base URL that `Document` or `FrameOwner` node uses for URL completion.
+     * Base URL that <code>Document</code> or <code>FrameOwner</code> node uses for URL completion.
      */
     public String getBaseURL() {
         return baseURL;
     }
 
     /**
-     * Base URL that `Document` or `FrameOwner` node uses for URL completion.
+     * Base URL that <code>Document</code> or <code>FrameOwner</code> node uses for URL completion.
      */
     public void setBaseURL(String baseURL) {
         this.baseURL = baseURL;
@@ -304,28 +304,28 @@ public class DOMNode {
     }
 
     /**
-     * `DocumentType` node's publicId.
+     * <code>DocumentType</code> node's publicId.
      */
     public String getPublicId() {
         return publicId;
     }
 
     /**
-     * `DocumentType` node's publicId.
+     * <code>DocumentType</code> node's publicId.
      */
     public void setPublicId(String publicId) {
         this.publicId = publicId;
     }
 
     /**
-     * `DocumentType` node's systemId.
+     * <code>DocumentType</code> node's systemId.
      */
     public String getSystemId() {
         return systemId;
     }
 
     /**
-     * `DocumentType` node's systemId.
+     * <code>DocumentType</code> node's systemId.
      */
     public void setSystemId(String systemId) {
         this.systemId = systemId;
@@ -346,48 +346,48 @@ public class DOMNode {
     }
 
     /**
-     * The index of a frame owner element's content document in the `domNodes` array returned by
-     * `getSnapshot`, if any.
+     * The index of a frame owner element's content document in the <code>domNodes</code> array returned by
+     * <code>getSnapshot</code>, if any.
      */
     public Integer getContentDocumentIndex() {
         return contentDocumentIndex;
     }
 
     /**
-     * The index of a frame owner element's content document in the `domNodes` array returned by
-     * `getSnapshot`, if any.
+     * The index of a frame owner element's content document in the <code>domNodes</code> array returned by
+     * <code>getSnapshot</code>, if any.
      */
     public void setContentDocumentIndex(Integer contentDocumentIndex) {
         this.contentDocumentIndex = contentDocumentIndex;
     }
 
     /**
-     * Index of the imported document's node of a link element in the `domNodes` array returned by
-     * `getSnapshot`, if any.
+     * Index of the imported document's node of a link element in the <code>domNodes</code> array returned by
+     * <code>getSnapshot</code>, if any.
      */
     public Integer getImportedDocumentIndex() {
         return importedDocumentIndex;
     }
 
     /**
-     * Index of the imported document's node of a link element in the `domNodes` array returned by
-     * `getSnapshot`, if any.
+     * Index of the imported document's node of a link element in the <code>domNodes</code> array returned by
+     * <code>getSnapshot</code>, if any.
      */
     public void setImportedDocumentIndex(Integer importedDocumentIndex) {
         this.importedDocumentIndex = importedDocumentIndex;
     }
 
     /**
-     * Index of the content node of a template element in the `domNodes` array returned by
-     * `getSnapshot`.
+     * Index of the content node of a template element in the <code>domNodes</code> array returned by
+     * <code>getSnapshot</code>.
      */
     public Integer getTemplateContentIndex() {
         return templateContentIndex;
     }
 
     /**
-     * Index of the content node of a template element in the `domNodes` array returned by
-     * `getSnapshot`.
+     * Index of the content node of a template element in the <code>domNodes</code> array returned by
+     * <code>getSnapshot</code>.
      */
     public void setTemplateContentIndex(Integer templateContentIndex) {
         this.templateContentIndex = templateContentIndex;

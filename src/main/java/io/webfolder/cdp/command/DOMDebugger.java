@@ -48,7 +48,7 @@ public interface DOMDebugger {
             @Optional Boolean pierce);
 
     /**
-     * Removes DOM breakpoint that was set using `setDOMBreakpoint`.
+     * Removes DOM breakpoint that was set using <code>setDOMBreakpoint</code>.
      * 
      * @param nodeId Identifier of the node to remove breakpoint from.
      * @param type Type of the breakpoint to remove.

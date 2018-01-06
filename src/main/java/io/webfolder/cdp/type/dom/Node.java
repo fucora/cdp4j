@@ -82,8 +82,8 @@ public class Node {
     private Boolean isSVG;
 
     /**
-     * Node identifier that is passed into the rest of the DOM messages as the `nodeId`. Backend
-     * will only push node with given `id` once. It is aware of all requested nodes and will only
+     * Node identifier that is passed into the rest of the DOM messages as the <code>nodeId</code>. Backend
+     * will only push node with given <code>id</code> once. It is aware of all requested nodes and will only
      * fire DOM events for nodes known to the client.
      */
     public Integer getNodeId() {
@@ -91,8 +91,8 @@ public class Node {
     }
 
     /**
-     * Node identifier that is passed into the rest of the DOM messages as the `nodeId`. Backend
-     * will only push node with given `id` once. It is aware of all requested nodes and will only
+     * Node identifier that is passed into the rest of the DOM messages as the <code>nodeId</code>. Backend
+     * will only push node with given <code>id</code> once. It is aware of all requested nodes and will only
      * fire DOM events for nodes known to the client.
      */
     public void setNodeId(Integer nodeId) {
@@ -128,70 +128,70 @@ public class Node {
     }
 
     /**
-     * `Node`'s nodeType.
+     * <code>Node</code>'s nodeType.
      */
     public Integer getNodeType() {
         return nodeType;
     }
 
     /**
-     * `Node`'s nodeType.
+     * <code>Node</code>'s nodeType.
      */
     public void setNodeType(Integer nodeType) {
         this.nodeType = nodeType;
     }
 
     /**
-     * `Node`'s nodeName.
+     * <code>Node</code>'s nodeName.
      */
     public String getNodeName() {
         return nodeName;
     }
 
     /**
-     * `Node`'s nodeName.
+     * <code>Node</code>'s nodeName.
      */
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
     }
 
     /**
-     * `Node`'s localName.
+     * <code>Node</code>'s localName.
      */
     public String getLocalName() {
         return localName;
     }
 
     /**
-     * `Node`'s localName.
+     * <code>Node</code>'s localName.
      */
     public void setLocalName(String localName) {
         this.localName = localName;
     }
 
     /**
-     * `Node`'s nodeValue.
+     * <code>Node</code>'s nodeValue.
      */
     public String getNodeValue() {
         return nodeValue;
     }
 
     /**
-     * `Node`'s nodeValue.
+     * <code>Node</code>'s nodeValue.
      */
     public void setNodeValue(String nodeValue) {
         this.nodeValue = nodeValue;
     }
 
     /**
-     * Child count for `Container` nodes.
+     * Child count for <code>Container</code> nodes.
      */
     public Integer getChildNodeCount() {
         return childNodeCount;
     }
 
     /**
-     * Child count for `Container` nodes.
+     * Child count for <code>Container</code> nodes.
      */
     public void setChildNodeCount(Integer childNodeCount) {
         this.childNodeCount = childNodeCount;
@@ -212,126 +212,126 @@ public class Node {
     }
 
     /**
-     * Attributes of the `Element` node in the form of flat array `[name1, value1, name2, value2]`.
+     * Attributes of the <code>Element</code> node in the form of flat array `[name1, value1, name2, value2]`.
      */
     public List<String> getAttributes() {
         return attributes;
     }
 
     /**
-     * Attributes of the `Element` node in the form of flat array `[name1, value1, name2, value2]`.
+     * Attributes of the <code>Element</code> node in the form of flat array `[name1, value1, name2, value2]`.
      */
     public void setAttributes(List<String> attributes) {
         this.attributes = attributes;
     }
 
     /**
-     * Document URL that `Document` or `FrameOwner` node points to.
+     * Document URL that <code>Document</code> or <code>FrameOwner</code> node points to.
      */
     public String getDocumentURL() {
         return documentURL;
     }
 
     /**
-     * Document URL that `Document` or `FrameOwner` node points to.
+     * Document URL that <code>Document</code> or <code>FrameOwner</code> node points to.
      */
     public void setDocumentURL(String documentURL) {
         this.documentURL = documentURL;
     }
 
     /**
-     * Base URL that `Document` or `FrameOwner` node uses for URL completion.
+     * Base URL that <code>Document</code> or <code>FrameOwner</code> node uses for URL completion.
      */
     public String getBaseURL() {
         return baseURL;
     }
 
     /**
-     * Base URL that `Document` or `FrameOwner` node uses for URL completion.
+     * Base URL that <code>Document</code> or <code>FrameOwner</code> node uses for URL completion.
      */
     public void setBaseURL(String baseURL) {
         this.baseURL = baseURL;
     }
 
     /**
-     * `DocumentType`'s publicId.
+     * <code>DocumentType</code>'s publicId.
      */
     public String getPublicId() {
         return publicId;
     }
 
     /**
-     * `DocumentType`'s publicId.
+     * <code>DocumentType</code>'s publicId.
      */
     public void setPublicId(String publicId) {
         this.publicId = publicId;
     }
 
     /**
-     * `DocumentType`'s systemId.
+     * <code>DocumentType</code>'s systemId.
      */
     public String getSystemId() {
         return systemId;
     }
 
     /**
-     * `DocumentType`'s systemId.
+     * <code>DocumentType</code>'s systemId.
      */
     public void setSystemId(String systemId) {
         this.systemId = systemId;
     }
 
     /**
-     * `DocumentType`'s internalSubset.
+     * <code>DocumentType</code>'s internalSubset.
      */
     public String getInternalSubset() {
         return internalSubset;
     }
 
     /**
-     * `DocumentType`'s internalSubset.
+     * <code>DocumentType</code>'s internalSubset.
      */
     public void setInternalSubset(String internalSubset) {
         this.internalSubset = internalSubset;
     }
 
     /**
-     * `Document`'s XML version in case of XML documents.
+     * <code>Document</code>'s XML version in case of XML documents.
      */
     public String getXmlVersion() {
         return xmlVersion;
     }
 
     /**
-     * `Document`'s XML version in case of XML documents.
+     * <code>Document</code>'s XML version in case of XML documents.
      */
     public void setXmlVersion(String xmlVersion) {
         this.xmlVersion = xmlVersion;
     }
 
     /**
-     * `Attr`'s name.
+     * <code>Attr</code>'s name.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * `Attr`'s name.
+     * <code>Attr</code>'s name.
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * `Attr`'s value.
+     * <code>Attr</code>'s value.
      */
     public String getValue() {
         return value;
     }
 
     /**
-     * `Attr`'s value.
+     * <code>Attr</code>'s value.
      */
     public void setValue(String value) {
         this.value = value;

@@ -2,7 +2,7 @@ Contribution Guidelines
 ------------------------
 
 * You can contribute to cdp4j by opening a Pull Request.
-* In most cases, pull requests for bug fixes and new features should be based on the `main` branch.
+* In most cases, pull requests for bug fixes and new features should be based on the <code>main</code> branch.
 * It is important to write a good commit message explaining why the feature is needed.
 * Write a test case before fixing the bug or new feature (not mandatory).
 * Make sure the patch does not break backward compatibility.

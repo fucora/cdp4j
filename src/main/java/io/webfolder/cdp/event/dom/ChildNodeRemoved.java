@@ -21,7 +21,7 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 
 /**
- * Mirrors `DOMNodeRemoved` event
+ * Mirrors <code>DOMNodeRemoved</code> event
  */
 @Domain("DOM")
 @EventName("childNodeRemoved")

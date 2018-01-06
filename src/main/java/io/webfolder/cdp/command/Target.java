@@ -143,8 +143,8 @@ public interface Target {
     void setDiscoverTargets(Boolean discover);
 
     /**
-     * Enables target discovery for the specified locations, when `setDiscoverTargets` was set to
-     * `true`.
+     * Enables target discovery for the specified locations, when <code>setDiscoverTargets</code> was set to
+     * <code>true</code>.
      * 
      * @param locations List of remote locations.
      */

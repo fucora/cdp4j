@@ -5,7 +5,7 @@ import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
 
 /**
- * Issued when detached from target for any reason (including `detachFromTarget` command)
+ * Issued when detached from target for any reason (including <code>detachFromTarget</code> command)
  * Can be
  * issued multiple times per target if multiple sessions have been attached to it
  */

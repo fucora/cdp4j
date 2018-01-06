@@ -38,20 +38,20 @@ import java.util.List;
 /**
  * This domain exposes CSS read/write operations
  * All CSS objects (stylesheets, rules, and styles)
- * have an associated `id` used in subsequent operations on the related object
+ * have an associated <code>id</code> used in subsequent operations on the related object
  * Each object type has
- * a specific `id` structure, and those are not interchangeable between objects of different kinds
+ * a specific <code>id</code> structure, and those are not interchangeable between objects of different kinds
  * CSS objects can be loaded using the `get*ForNode()` calls (which accept a DOM node id)
  * A client
- * can also keep track of stylesheets via the `styleSheetAdded`/`styleSheetRemoved` events and
+ * can also keep track of stylesheets via the <code>styleSheetAdded</code>/<code>styleSheetRemoved</code> events and
  * subsequently load the required stylesheet contents using the `getStyleSheet[Text]()` methods
  */
 @Experimental
 @Domain("CSS")
 public interface CSS {
     /**
-     * Inserts a new rule with the given `ruleText` in a stylesheet with given `styleSheetId`, at the
-     * position specified by `location`.
+     * Inserts a new rule with the given <code>ruleText</code> in a stylesheet with given <code>styleSheetId</code>, at the
+     * position specified by <code>location</code>.
      * 
      * @param styleSheetId The css style sheet identifier where a new rule should be inserted.
      * @param ruleText The text of a new rule.
@@ -72,7 +72,7 @@ public interface CSS {
     List<String> collectClassNames(String styleSheetId);
 
     /**
-     * Creates a new special "via-inspector" stylesheet in the frame with given `frameId`.
+     * Creates a new special "via-inspector" stylesheet in the frame with given <code>frameId</code>.
      * 
      * @param frameId Identifier of the frame where "via-inspector" stylesheet should be created.
      * 
@@ -108,7 +108,7 @@ public interface CSS {
     GetBackgroundColorsResult getBackgroundColors(Integer nodeId);
 
     /**
-     * Returns the computed style for a DOM node identified by `nodeId`.
+     * Returns the computed style for a DOM node identified by <code>nodeId</code>.
      * 
      * 
      * @return Computed style for the specified DOM node.
@@ -118,7 +118,7 @@ public interface CSS {
 
     /**
      * Returns the styles defined inline (explicitly in the "style" attribute and implicitly, using DOM
-     * attributes) for a DOM node identified by `nodeId`.
+     * attributes) for a DOM node identified by <code>nodeId</code>.
      * 
      * 
      * @return GetInlineStylesForNodeResult
@@ -126,7 +126,7 @@ public interface CSS {
     GetInlineStylesForNodeResult getInlineStylesForNode(Integer nodeId);
 
     /**
-     * Returns requested styles for a DOM node identified by `nodeId`.
+     * Returns requested styles for a DOM node identified by <code>nodeId</code>.
      * 
      * 
      * @return GetMatchedStylesForNodeResult

@@ -71,11 +71,11 @@ public interface Debugger {
      * @param callFrameId Call frame identifier to evaluate on.
      * @param expression Expression to evaluate.
      * @param objectGroup String object group name to put result into (allows rapid releasing resulting object handles
-     * using `releaseObjectGroup`).
+     * using <code>releaseObjectGroup</code>).
      * @param includeCommandLineAPI Specifies whether command line API should be available to the evaluated expression, defaults
      * to false.
      * @param silent In silent mode exceptions thrown during evaluation are not reported and do not pause
-     * execution. Overrides `setPauseOnException` state.
+     * execution. Overrides <code>setPauseOnException</code> state.
      * @param returnByValue Whether the result is expected to be a JSON object that should be sent by value.
      * @param generatePreview Whether preview should be generated for the result.
      * @param throwOnSideEffect Whether to throw an exception if side effect cannot be ruled out during evaluation.
@@ -113,7 +113,7 @@ public interface Debugger {
     String getScriptSource(String scriptId);
 
     /**
-     * Returns stack trace with given `stackTraceId`.
+     * Returns stack trace with given <code>stackTraceId</code>.
      * 
      */
     @Experimental
@@ -174,7 +174,7 @@ public interface Debugger {
     /**
      * Enables or disables async call stacks tracking.
      * 
-     * @param maxDepth Maximum depth of async call stacks. Setting to `0` will effectively disable collecting async
+     * @param maxDepth Maximum depth of async call stacks. Setting to <code>0</code> will effectively disable collecting async
      * call stacks (default).
      */
     void setAsyncCallStackDepth(Integer maxDepth);
@@ -214,13 +214,13 @@ public interface Debugger {
     /**
      * Sets JavaScript breakpoint at given location specified either by URL or URL regex. Once this
      * command is issued, all existing parsed scripts will have breakpoints resolved and returned in
-     * `locations` property. Further matching script parsing will result in subsequent
-     * `breakpointResolved` events issued. This logical breakpoint will survive page reloads.
+     * <code>locations</code> property. Further matching script parsing will result in subsequent
+     * <code>breakpointResolved</code> events issued. This logical breakpoint will survive page reloads.
      * 
      * @param lineNumber Line number to set breakpoint at.
      * @param url URL of the resources to set breakpoint on.
-     * @param urlRegex Regex pattern for the URLs of the resources to set breakpoints on. Either `url` or
-     * `urlRegex` must be specified.
+     * @param urlRegex Regex pattern for the URLs of the resources to set breakpoints on. Either <code>url</code> or
+     * <code>urlRegex</code> must be specified.
      * @param scriptHash Script hash of the resources to set breakpoint on.
      * @param columnNumber Offset in the line to set breakpoint at.
      * @param condition Expression to use as a breakpoint condition. When specified, debugger will only stop on the
@@ -241,7 +241,7 @@ public interface Debugger {
 
     /**
      * Defines pause on exceptions state. Can be set to stop on all exceptions, uncaught exceptions or
-     * no exceptions. Initial pause on exceptions state is `none`.
+     * no exceptions. Initial pause on exceptions state is <code>none</code>.
      * 
      * @param state Pause on exceptions mode.
      */
@@ -357,8 +357,8 @@ public interface Debugger {
     /**
      * Sets JavaScript breakpoint at given location specified either by URL or URL regex. Once this
      * command is issued, all existing parsed scripts will have breakpoints resolved and returned in
-     * `locations` property. Further matching script parsing will result in subsequent
-     * `breakpointResolved` events issued. This logical breakpoint will survive page reloads.
+     * <code>locations</code> property. Further matching script parsing will result in subsequent
+     * <code>breakpointResolved</code> events issued. This logical breakpoint will survive page reloads.
      * 
      * @param lineNumber Line number to set breakpoint at.
      * 

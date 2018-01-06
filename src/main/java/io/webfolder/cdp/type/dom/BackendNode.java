@@ -28,28 +28,28 @@ public class BackendNode {
     private Integer backendNodeId;
 
     /**
-     * `Node`'s nodeType.
+     * <code>Node</code>'s nodeType.
      */
     public Integer getNodeType() {
         return nodeType;
     }
 
     /**
-     * `Node`'s nodeType.
+     * <code>Node</code>'s nodeType.
      */
     public void setNodeType(Integer nodeType) {
         this.nodeType = nodeType;
     }
 
     /**
-     * `Node`'s nodeName.
+     * <code>Node</code>'s nodeName.
      */
     public String getNodeName() {
         return nodeName;
     }
 
     /**
-     * `Node`'s nodeName.
+     * <code>Node</code>'s nodeName.
      */
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;

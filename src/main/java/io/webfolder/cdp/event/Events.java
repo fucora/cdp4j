@@ -182,32 +182,32 @@ public enum Events {
   CSSStyleSheetRemoved("CSS", "styleSheetRemoved", StyleSheetRemoved.class),
 
   /**
-   * Fired when `Element`'s attribute is modified
+   * Fired when <code>Element</code>'s attribute is modified
    */
   DOMAttributeModified("DOM", "attributeModified", AttributeModified.class),
 
   /**
-   * Fired when `Element`'s attribute is removed
+   * Fired when <code>Element</code>'s attribute is removed
    */
   DOMAttributeRemoved("DOM", "attributeRemoved", AttributeRemoved.class),
 
   /**
-   * Mirrors `DOMCharacterDataModified` event
+   * Mirrors <code>DOMCharacterDataModified</code> event
    */
   DOMCharacterDataModified("DOM", "characterDataModified", CharacterDataModified.class),
 
   /**
-   * Fired when `Container`'s child node count has changed
+   * Fired when <code>Container</code>'s child node count has changed
    */
   DOMChildNodeCountUpdated("DOM", "childNodeCountUpdated", ChildNodeCountUpdated.class),
 
   /**
-   * Mirrors `DOMNodeInserted` event
+   * Mirrors <code>DOMNodeInserted</code> event
    */
   DOMChildNodeInserted("DOM", "childNodeInserted", ChildNodeInserted.class),
 
   /**
-   * Mirrors `DOMNodeRemoved` event
+   * Mirrors <code>DOMNodeRemoved</code> event
    */
   DOMChildNodeRemoved("DOM", "childNodeRemoved", ChildNodeRemoved.class),
 
@@ -217,13 +217,13 @@ public enum Events {
   DOMDistributedNodesUpdated("DOM", "distributedNodesUpdated", DistributedNodesUpdated.class),
 
   /**
-   * Fired when `Document` has been totally updated
+   * Fired when <code>Document</code> has been totally updated
    * Node ids are no longer valid
    */
   DOMDocumentUpdated("DOM", "documentUpdated", DocumentUpdated.class),
 
   /**
-   * Fired when `Element`'s inline style is modified via a CSS property modification
+   * Fired when <code>Element</code>'s inline style is modified via a CSS property modification
    */
   DOMInlineStyleInvalidated("DOM", "inlineStyleInvalidated", InlineStyleInvalidated.class),
 
@@ -395,14 +395,14 @@ public enum Events {
 
   /**
    * Fired when the node should be inspected
-   * This happens after call to `setInspectMode` or when
+   * This happens after call to <code>setInspectMode</code> or when
    * user manually inspects an element
    */
   OverlayInspectNodeRequested("Overlay", "inspectNodeRequested", InspectNodeRequested.class),
 
   /**
    * Fired when the node should be highlighted
-   * This happens after call to `setInspectMode`
+   * This happens after call to <code>setInspectMode</code>
    */
   OverlayNodeHighlightRequested("Overlay", "nodeHighlightRequested", NodeHighlightRequested.class),
 
@@ -481,7 +481,7 @@ public enum Events {
   PageLoadEventFired("Page", "loadEventFired", LoadEventFired.class),
 
   /**
-   * Compressed image data requested by the `startScreencast`
+   * Compressed image data requested by the <code>startScreencast</code>
    */
   PageScreencastFrame("Page", "screencastFrame", ScreencastFrame.class),
 
@@ -545,12 +545,12 @@ public enum Events {
   StorageIndexedDBListUpdated("Storage", "indexedDBListUpdated", IndexedDBListUpdated.class),
 
   /**
-   * Issued when attached to target because of auto-attach or `attachToTarget` command
+   * Issued when attached to target because of auto-attach or <code>attachToTarget</code> command
    */
   TargetAttachedToTarget("Target", "attachedToTarget", AttachedToTarget.class),
 
   /**
-   * Issued when detached from target for any reason (including `detachFromTarget` command)
+   * Issued when detached from target for any reason (including <code>detachFromTarget</code> command)
    * Can be
    * issued multiple times per target if multiple sessions have been attached to it
    */
@@ -558,7 +558,7 @@ public enum Events {
 
   /**
    * Notifies about a new protocol message received from the session (as reported in
-   * `attachedToTarget` event)
+   * <code>attachedToTarget</code> event)
    */
   TargetReceivedMessageFromTarget("Target", "receivedMessageFromTarget", ReceivedMessageFromTarget.class),
 
@@ -575,7 +575,7 @@ public enum Events {
   /**
    * Issued when some information about a target has changed
    * This only happens between
-   * `targetCreated` and `targetDestroyed`
+   * <code>targetCreated</code> and <code>targetDestroyed</code>
    */
   TargetTargetInfoChanged("Target", "targetInfoChanged", TargetInfoChanged.class),
 

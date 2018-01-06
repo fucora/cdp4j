@@ -85,56 +85,56 @@ public class AXNode {
     }
 
     /**
-     * This `Node`'s role, whether explicit or implicit.
+     * This <code>Node</code>'s role, whether explicit or implicit.
      */
     public AXValue getRole() {
         return role;
     }
 
     /**
-     * This `Node`'s role, whether explicit or implicit.
+     * This <code>Node</code>'s role, whether explicit or implicit.
      */
     public void setRole(AXValue role) {
         this.role = role;
     }
 
     /**
-     * The accessible name for this `Node`.
+     * The accessible name for this <code>Node</code>.
      */
     public AXValue getName() {
         return name;
     }
 
     /**
-     * The accessible name for this `Node`.
+     * The accessible name for this <code>Node</code>.
      */
     public void setName(AXValue name) {
         this.name = name;
     }
 
     /**
-     * The accessible description for this `Node`.
+     * The accessible description for this <code>Node</code>.
      */
     public AXValue getDescription() {
         return description;
     }
 
     /**
-     * The accessible description for this `Node`.
+     * The accessible description for this <code>Node</code>.
      */
     public void setDescription(AXValue description) {
         this.description = description;
     }
 
     /**
-     * The value for this `Node`.
+     * The value for this <code>Node</code>.
      */
     public AXValue getValue() {
         return value;
     }
 
     /**
-     * The value for this `Node`.
+     * The value for this <code>Node</code>.
      */
     public void setValue(AXValue value) {
         this.value = value;

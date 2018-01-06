@@ -21,7 +21,7 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 
 /**
- * Mirrors `DOMCharacterDataModified` event
+ * Mirrors <code>DOMCharacterDataModified</code> event
  */
 @Domain("DOM")
 @EventName("characterDataModified")

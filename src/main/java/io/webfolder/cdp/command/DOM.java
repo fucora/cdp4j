@@ -30,8 +30,8 @@ import java.util.List;
 /**
  * This domain exposes DOM read/write operations
  * Each DOM Node is represented with its mirror object
- * that has an `id`
- * This `id` can be used to get additional information on the Node, resolve it into
+ * that has an <code>id</code>
+ * This <code>id</code> can be used to get additional information on the Node, resolve it into
  * the JavaScript object wrapper, etc
  * It is important that client receives DOM events only for the
  * nodes that are known to the client
@@ -39,7 +39,7 @@ import java.util.List;
  * and never sends the same node twice
  * It is client's responsibility to collect information about
  * the nodes that were sent to the client
- * <p>Note that `iframe` owner elements will return
+ * <p>Note that <code>iframe</code> owner elements will return
  * corresponding document elements as their child nodes
  * </p>
  */
@@ -63,7 +63,7 @@ public interface DOM {
      * @param nodeId Id of the node to copy.
      * @param targetNodeId Id of the element to drop the copy into.
      * @param insertBeforeNodeId Drop the copy before this node (if absent, the copy becomes the last child of
-     * `targetNodeId`).
+     * <code>targetNodeId</code>).
      * 
      * @return Id of the node clone.
      */
@@ -95,7 +95,7 @@ public interface DOM {
     void disable();
 
     /**
-     * Discards search results from the session with the given id. `getSearchResults` should no longer
+     * Discards search results from the session with the given id. <code>getSearchResults</code> should no longer
      * be called for that search.
      * 
      * @param searchId Unique search session identifier.
@@ -215,7 +215,7 @@ public interface DOM {
     Integer getRelayoutBoundary(Integer nodeId);
 
     /**
-     * Returns search results from given `fromIndex` to given `toIndex` from the search with the given
+     * Returns search results from given <code>fromIndex</code> to given <code>toIndex</code> from the search with the given
      * identifier.
      * 
      * @param searchId Unique search session identifier.
@@ -255,7 +255,7 @@ public interface DOM {
      * @param nodeId Id of the node to move.
      * @param targetNodeId Id of the element to drop the moved node into.
      * @param insertBeforeNodeId Drop node before this one (if absent, the moved node becomes the last child of
-     * `targetNodeId`).
+     * <code>targetNodeId</code>).
      * 
      * @return New id of the moved node.
      */
@@ -263,8 +263,8 @@ public interface DOM {
     Integer moveTo(Integer nodeId, Integer targetNodeId, @Optional Integer insertBeforeNodeId);
 
     /**
-     * Searches for a given string in the DOM tree. Use `getSearchResults` to access search results or
-     * `cancelSearch` to end this search session.
+     * Searches for a given string in the DOM tree. Use <code>getSearchResults</code> to access search results or
+     * <code>cancelSearch</code> to end this search session.
      * 
      * @param query Plain text or query selector or XPath search query.
      * @param includeUserAgentShadowDOM True to search in user agent shadow DOM.
@@ -298,7 +298,7 @@ public interface DOM {
     List<Integer> pushNodesByBackendIdsToFrontend(List<Integer> backendNodeIds);
 
     /**
-     * Executes `querySelector` on a given node.
+     * Executes <code>querySelector</code> on a given node.
      * 
      * @param nodeId Id of the node to query upon.
      * @param selector Selector string.
@@ -309,7 +309,7 @@ public interface DOM {
     Integer querySelector(Integer nodeId, String selector);
 
     /**
-     * Executes `querySelectorAll` on a given node.
+     * Executes <code>querySelectorAll</code> on a given node.
      * 
      * @param nodeId Id of the node to query upon.
      * @param selector Selector string.
@@ -342,7 +342,7 @@ public interface DOM {
 
     /**
      * Requests that children of the node with given id are returned to the caller in form of
-     * `setChildNodes` events where not only immediate children are retrieved, but all children down to
+     * <code>setChildNodes</code> events where not only immediate children are retrieved, but all children down to
      * the specified depth.
      * 
      * @param nodeId Id of the node to get children for.
@@ -356,7 +356,7 @@ public interface DOM {
     /**
      * Requests that the node is sent to the caller given the JavaScript node object reference. All
      * nodes that form the path from the node to the root are also sent to the client as a series of
-     * `setChildNodes` notifications.
+     * <code>setChildNodes</code> notifications.
      * 
      * @param objectId JavaScript object id to convert into node.
      * 
@@ -534,8 +534,8 @@ public interface DOM {
     Integer moveTo(Integer nodeId, Integer targetNodeId);
 
     /**
-     * Searches for a given string in the DOM tree. Use `getSearchResults` to access search results or
-     * `cancelSearch` to end this search session.
+     * Searches for a given string in the DOM tree. Use <code>getSearchResults</code> to access search results or
+     * <code>cancelSearch</code> to end this search session.
      * 
      * @param query Plain text or query selector or XPath search query.
      * 
@@ -546,7 +546,7 @@ public interface DOM {
 
     /**
      * Requests that children of the node with given id are returned to the caller in form of
-     * `setChildNodes` events where not only immediate children are retrieved, but all children down to
+     * <code>setChildNodes</code> events where not only immediate children are retrieved, but all children down to
      * the specified depth.
      * 
      * @param nodeId Id of the node to get children for.

@@ -44,56 +44,56 @@ public class EventListener {
     private Integer backendNodeId;
 
     /**
-     * `EventListener`'s type.
+     * <code>EventListener</code>'s type.
      */
     public String getType() {
         return type;
     }
 
     /**
-     * `EventListener`'s type.
+     * <code>EventListener</code>'s type.
      */
     public void setType(String type) {
         this.type = type;
     }
 
     /**
-     * `EventListener`'s useCapture.
+     * <code>EventListener</code>'s useCapture.
      */
     public Boolean isUseCapture() {
         return useCapture;
     }
 
     /**
-     * `EventListener`'s useCapture.
+     * <code>EventListener</code>'s useCapture.
      */
     public void setUseCapture(Boolean useCapture) {
         this.useCapture = useCapture;
     }
 
     /**
-     * `EventListener`'s passive flag.
+     * <code>EventListener</code>'s passive flag.
      */
     public Boolean isPassive() {
         return passive;
     }
 
     /**
-     * `EventListener`'s passive flag.
+     * <code>EventListener</code>'s passive flag.
      */
     public void setPassive(Boolean passive) {
         this.passive = passive;
     }
 
     /**
-     * `EventListener`'s once flag.
+     * <code>EventListener</code>'s once flag.
      */
     public Boolean isOnce() {
         return once;
     }
 
     /**
-     * `EventListener`'s once flag.
+     * <code>EventListener</code>'s once flag.
      */
     public void setOnce(Boolean once) {
         this.once = once;

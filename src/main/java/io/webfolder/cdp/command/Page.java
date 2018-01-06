@@ -139,7 +139,7 @@ public interface Page {
 
     /**
      * Returns all browser cookies. Depending on the backend support, will return detailed cookie
-     * information in the `cookies` field.
+     * information in the <code>cookies</code> field.
      * 
      * @return Array of cookie objects.
      */
@@ -243,7 +243,7 @@ public interface Page {
      * - totalPages - total pages in the document
      *
      * For example, <span class=title></span> would generate span containing the title.
-     * @param footerTemplate HTML template for the print footer. Should use the same format as the `headerTemplate`.
+     * @param footerTemplate HTML template for the print footer. Should use the same format as the <code>headerTemplate</code>.
      * 
      * @return Base64-encoded pdf data.
      */
@@ -395,7 +395,7 @@ public interface Page {
     void setTouchEmulationEnabled(Boolean enabled, @Optional Platform configuration);
 
     /**
-     * Starts sending each frame using the `screencastFrame` event.
+     * Starts sending each frame using the <code>screencastFrame</code> event.
      * 
      * @param format Image compression format.
      * @param quality Compression quality from range [0..100].
@@ -414,7 +414,7 @@ public interface Page {
     void stopLoading();
 
     /**
-     * Stops sending each frame in the `screencastFrame`.
+     * Stops sending each frame in the <code>screencastFrame</code>.
      */
     @Experimental
     void stopScreencast();
@@ -518,7 +518,7 @@ public interface Page {
     void setTouchEmulationEnabled(Boolean enabled);
 
     /**
-     * Starts sending each frame using the `screencastFrame` event.
+     * Starts sending each frame using the <code>screencastFrame</code> event.
      */
     @Experimental
     void startScreencast();

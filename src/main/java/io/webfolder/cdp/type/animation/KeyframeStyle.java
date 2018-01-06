@@ -40,14 +40,14 @@ public class KeyframeStyle {
     }
 
     /**
-     * `AnimationEffect`'s timing function.
+     * <code>AnimationEffect</code>'s timing function.
      */
     public String getEasing() {
         return easing;
     }
 
     /**
-     * `AnimationEffect`'s timing function.
+     * <code>AnimationEffect</code>'s timing function.
      */
     public void setEasing(String easing) {
         this.easing = easing;

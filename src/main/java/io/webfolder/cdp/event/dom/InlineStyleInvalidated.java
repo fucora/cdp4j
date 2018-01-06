@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Fired when `Element`'s inline style is modified via a CSS property modification
+ * Fired when <code>Element</code>'s inline style is modified via a CSS property modification
  */
 @Experimental
 @Domain("DOM")
