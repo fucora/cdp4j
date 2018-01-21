@@ -65,7 +65,7 @@ class WSAdapter extends WebSocketAdapter {
 
         @Override
         public void run() {
-            if (session != null) {
+            if ( session != null && session.isConnected() ) {
                 session.close();
                 session.terminate(
                         object.get("params")
@@ -130,7 +130,7 @@ class WSAdapter extends WebSocketAdapter {
                 if (method != null && method.isJsonPrimitive()) {
                     String eventName = method.getAsString();
                     if ("Inspector.detached".equals(eventName) && session != null) {
-                        if (session != null) {
+                        if ( session != null && session.isConnected() ) {
                             Thread thread = new Thread(new TerminateSession(session, object));
                             thread.setName("cdp4j-terminate");
                             thread.setDaemon(true);
