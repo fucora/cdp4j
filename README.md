@@ -72,7 +72,7 @@ Using development (SNAPSHOT) version:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>cdp4j</artifactId>
-    <version>2.2.0</version>
+    <version>2.2.1-SNAPSHOT</version>
 </dependency>
 ```
 
