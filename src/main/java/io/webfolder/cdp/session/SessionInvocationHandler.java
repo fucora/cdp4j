@@ -19,7 +19,6 @@ package io.webfolder.cdp.session;
 
 import static java.lang.String.format;
 import static java.util.Base64.getDecoder;
-import static java.util.Collections.emptyMap;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -80,9 +79,7 @@ class SessionInvocationHandler implements InvocationHandler {
 
         boolean hasArgs = args != null && args.length > 0;
 
-        Map<String, Object> params = hasArgs ?
-                                        new HashMap<>(args.length) :
-                                        emptyMap();
+        Map<String, Object> params = new HashMap<>(hasArgs ? args.length : 0);
 
         if (hasArgs) {
             int argIndex = 0;
