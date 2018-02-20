@@ -62,7 +62,7 @@ Add the following to your POM's `<dependencies>` tag:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>cdp4j</artifactId>
-    <version>2.2.1</version>
+    <version>2.2.2</version>
 </dependency>
 ```
 
@@ -72,15 +72,15 @@ Using development (SNAPSHOT) version:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>cdp4j</artifactId>
-    <version>2.2.2-SNAPSHOT</version>
+    <version>2.2.3-SNAPSHOT</version>
 </dependency>
 ```
 
 Download
 --------
-[cdp4j-2.2.1.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.2.1/cdp4j-2.2.1.jar) - 809 KB
+[cdp4j-2.2.2.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.2.2/cdp4j-2.2.2.jar) - 809 KB
 
-[cdp4j-2.2.1-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.2.1/cdp4j-2.2.1-sources.jar) - 511 KB
+[cdp4j-2.2.2-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.2.2/cdp4j-2.2.2-sources.jar) - 511 KB
 
 Supported Platforms
 -------------------
@@ -225,12 +225,6 @@ mvn install -Dchrome_binary=/Applications/Chromium.app/Contents/MacOS/Chromium
 # To run the existing tests try
 mvn test -Dchrome_binary=/usr/lic/chromium-dev/chromium-dev
 ```
-
-Reproducible Builds
--------------------
-
-The binaries released with each cdp4j version starting at 2.1.0 are reproducible,
-which means that you can easily reproduce a byte identical version from the source code for that release.
 
 How it is tested
 ----------------
