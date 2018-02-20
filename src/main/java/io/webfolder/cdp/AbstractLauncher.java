@@ -38,7 +38,10 @@ abstract class AbstractLauncher {
     protected List<String> getCommonParameters(String chromeExecutablePath, List<String> arguments) {
         List<String> list = new ArrayList<>();
         list.add(chromeExecutablePath);
-        list.add(format("--remote-debugging-port=%d", factory.getPort()));
+
+        if (factory.getPort() > 0) {
+            list.add(format("--remote-debugging-port=%d", factory.getPort()));
+        }
 
         // Disable built-in Google Translate service
         list.add("--disable-translate");
