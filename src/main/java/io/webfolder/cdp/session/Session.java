@@ -59,7 +59,7 @@ import io.webfolder.cdp.listener.EventListener;
 import io.webfolder.cdp.listener.TerminateEvent;
 import io.webfolder.cdp.listener.TerminateListener;
 import io.webfolder.cdp.logger.CdpLogger;
-import io.webfolder.cdp.logger.CdpLoggerFactory;
+import io.webfolder.cdp.logger.LoggerFactory;
 import io.webfolder.cdp.type.css.SourceRange;
 import io.webfolder.cdp.type.dom.Rect;
 import io.webfolder.cdp.type.log.LogEntry;
@@ -117,7 +117,7 @@ public class Session implements AutoCloseable,
             final Map<Integer, WSContext> contextList,
             final SessionFactory sessionFactory,
             final List<EventListener<?>> eventListeners,
-            final CdpLoggerFactory loggerFactory) {
+            final LoggerFactory loggerFactory) {
         this.sessionId = sessionId;
         this.invocationHandler = new SessionInvocationHandler(
                                                         gson,

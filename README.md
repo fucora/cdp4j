@@ -62,7 +62,7 @@ Add the following to your POM's `<dependencies>` tag:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>cdp4j</artifactId>
-    <version>2.2.2</version>
+    <version>2.2.3</version>
 </dependency>
 ```
 
@@ -72,15 +72,15 @@ Using development (SNAPSHOT) version:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>cdp4j</artifactId>
-    <version>2.2.3-SNAPSHOT</version>
+    <version>2.2.4-SNAPSHOT</version>
 </dependency>
 ```
 
 Download
 --------
-[cdp4j-2.2.2.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.2.2/cdp4j-2.2.2.jar) - 809 KB
+[cdp4j-2.2.3.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.2.3/cdp4j-2.2.3.jar) - 810 KB
 
-[cdp4j-2.2.2-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.2.2/cdp4j-2.2.2-sources.jar) - 511 KB
+[cdp4j-2.2.3-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/2.2.3/cdp4j-2.2.3-sources.jar) - 514 KB
 
 Supported Platforms
 -------------------

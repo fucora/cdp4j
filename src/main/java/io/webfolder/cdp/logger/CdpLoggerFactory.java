@@ -20,13 +20,9 @@ package io.webfolder.cdp.logger;
 import static io.webfolder.cdp.logger.CdpLoggerType.Console;
 import static io.webfolder.cdp.logger.CdpLoggerType.Slf4j;
 
-import java.util.logging.Logger;
-
-public class CdpLoggerFactory {
+public class CdpLoggerFactory implements LoggerFactory {
 
     private final CdpLoggerType loggerType;
-
-    private final Logger log = Logger.getLogger(CdpLoggerFactory.class.getName());
 
     private static CdpLogger NULL_LOGGER = new CdpLogger() {
 
@@ -54,6 +50,7 @@ public class CdpLoggerFactory {
         this.loggerType = loggerType;
     }
 
+    @Override
     public CdpLogger getLogger(String name) {
         try {
             switch (loggerType) {
@@ -62,7 +59,6 @@ public class CdpLoggerFactory {
                 default     : return NULL_LOGGER;
             }
         } catch (Throwable e) {
-            log.warning(e.getMessage());
             return NULL_LOGGER;
         }
     }

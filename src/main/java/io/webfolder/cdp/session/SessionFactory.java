@@ -32,8 +32,10 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
@@ -52,6 +54,7 @@ import io.webfolder.cdp.listener.EventListener;
 import io.webfolder.cdp.logger.CdpLogger;
 import io.webfolder.cdp.logger.CdpLoggerFactory;
 import io.webfolder.cdp.logger.CdpLoggerType;
+import io.webfolder.cdp.logger.LoggerFactory;
 
 public class SessionFactory implements AutoCloseable {
 
@@ -71,7 +74,7 @@ public class SessionFactory implements AutoCloseable {
 
     private final CdpLogger log;
 
-    private final CdpLoggerFactory loggerFactory;
+    private final LoggerFactory loggerFactory;
 
     private static final int DEFAULT_CONNECTION_TIMEOUT = 60 * 1000; // 60 seconds
 
@@ -155,7 +158,7 @@ public class SessionFactory implements AutoCloseable {
         this.port              = port;
         this.connectionTimeout = connectionTimeout;
         this.factory           = new WebSocketFactory();
-        this.loggerFactory     = new CdpLoggerFactory();
+        this.loggerFactory     = createLoggerFactory();
         this.threadPool        = threadPool;
         this.log               = loggerFactory.getLogger("cdp4j.factory");
         this.gson              = new GsonBuilder()
@@ -561,6 +564,16 @@ public class SessionFactory implements AutoCloseable {
 
     public String getBrowserVersion() {
         return browserVersion;
+    }
+
+    protected LoggerFactory createLoggerFactory() {
+        ServiceLoader<LoggerFactory> loader = ServiceLoader.<LoggerFactory>load(LoggerFactory.class);
+        Iterator<LoggerFactory> iter = loader.iterator();
+        if (iter.hasNext()) {
+            return iter.next();
+        } else {
+            return new CdpLoggerFactory();
+        }
     }
 
     @Override

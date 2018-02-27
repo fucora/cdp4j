@@ -55,6 +55,7 @@ import java.util.Set;
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.logger.CdpLogger;
 import io.webfolder.cdp.logger.CdpLoggerFactory;
+import io.webfolder.cdp.logger.LoggerFactory;
 
 public class ChromiumDownloader implements Downloader {
 
@@ -108,7 +109,11 @@ public class ChromiumDownloader implements Downloader {
     }
 
     public ChromiumDownloader() {
-        this.logger = new CdpLoggerFactory().getLogger("cdp4j.downloader");
+        this(new CdpLoggerFactory());
+    }
+
+    public ChromiumDownloader(LoggerFactory loggerFactory) {
+        this.logger = loggerFactory.getLogger("cdp4j.downloader");
     }
 
     @Override
