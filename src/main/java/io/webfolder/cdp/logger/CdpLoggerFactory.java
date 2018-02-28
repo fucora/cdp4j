@@ -56,6 +56,7 @@ public class CdpLoggerFactory implements LoggerFactory {
             switch (loggerType) {
                 case Slf4j  : return new CdpSlf4jLogger(name);
                 case Console: return new CdpConsoleLogger();
+                case Log4j  : return new CdpLog4jLogger(name);
                 default     : return NULL_LOGGER;
             }
         } catch (Throwable e) {
