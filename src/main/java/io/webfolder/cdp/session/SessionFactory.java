@@ -158,7 +158,7 @@ public class SessionFactory implements AutoCloseable {
         this.port              = port;
         this.connectionTimeout = connectionTimeout;
         this.factory           = new WebSocketFactory();
-        this.loggerFactory     = createLoggerFactory();
+        this.loggerFactory     = createLoggerFactory(loggerType);
         this.threadPool        = threadPool;
         this.log               = loggerFactory.getLogger("cdp4j.factory");
         this.gson              = new GsonBuilder()
@@ -566,13 +566,13 @@ public class SessionFactory implements AutoCloseable {
         return browserVersion;
     }
 
-    protected LoggerFactory createLoggerFactory() {
+    protected LoggerFactory createLoggerFactory(CdpLoggerType loggerType) {
         ServiceLoader<LoggerFactory> loader = ServiceLoader.<LoggerFactory>load(LoggerFactory.class);
         Iterator<LoggerFactory> iter = loader.iterator();
         if (iter.hasNext()) {
             return iter.next();
         } else {
-            return new CdpLoggerFactory();
+            return new CdpLoggerFactory(loggerType);
         }
     }
 
