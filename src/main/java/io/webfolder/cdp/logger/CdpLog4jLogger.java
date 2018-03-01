@@ -34,7 +34,7 @@ public class CdpLog4jLogger implements CdpLogger {
     public void warning(String message, Object... args) {
         if (logger.isEnabledFor(WARN)) {
             FormattingTuple tuple = arrayFormat(message, args);
-            logger.debug(tuple.getMessage());
+            logger.log(WARN, tuple.getMessage());
         }
     }
 
