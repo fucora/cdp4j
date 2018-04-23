@@ -17,7 +17,7 @@
  */
 package io.webfolder.cdp.session;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -34,11 +34,9 @@ class WSContext {
 
     private CommandException error;
 
-    private static final int WS_TIMEOUT = 10; // 10 seconds
-
-    void await() {
+   void await(int timeout) {
         try {
-            latch.await(WS_TIMEOUT, SECONDS);
+            latch.await(timeout, MILLISECONDS);
         } catch (InterruptedException e) {
             throw new CdpException(e);
         }
