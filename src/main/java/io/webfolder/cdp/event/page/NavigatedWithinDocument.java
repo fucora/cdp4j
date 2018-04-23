@@ -15,33 +15,50 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.webfolder.cdp.event.css;
+package io.webfolder.cdp.event.page;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
-import javafx.css.FontFace;
+import io.webfolder.cdp.annotation.Experimental;
 
 /**
- * Fires whenever a web font is updated
- * A non-empty font parameter indicates a successfully loaded
- * web font
+ * Fired when same-document navigation happens, e
+ * g
+ * due to history API usage or anchor navigation
  */
-@Domain("CSS")
-@EventName("fontsUpdated")
-public class FontsUpdated {
-    private FontFace font;
+@Experimental
+@Domain("Page")
+@EventName("navigatedWithinDocument")
+public class NavigatedWithinDocument {
+    private String frameId;
+
+    private String url;
 
     /**
-     * The web font that has loaded.
+     * Id of the frame.
      */
-    public FontFace getFont() {
-        return font;
+    public String getFrameId() {
+        return frameId;
     }
 
     /**
-     * The web font that has loaded.
+     * Id of the frame.
      */
-    public void setFont(FontFace font) {
-        this.font = font;
+    public void setFrameId(String frameId) {
+        this.frameId = frameId;
+    }
+
+    /**
+     * Frame's new url.
+     */
+    public String getUrl() {
+        return url;
+    }
+
+    /**
+     * Frame's new url.
+     */
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

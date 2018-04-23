@@ -90,7 +90,7 @@ public interface DOMDebugger {
      * Sets breakpoint on particular DOM event.
      * 
      * @param eventName DOM Event name to stop on (any DOM event will do).
-     * @param targetName EventTarget interface name to stop on. If equal to `"*"` or not provided, will stop on any
+     * @param targetName EventTarget interface name to stop on. If equal to <code>"*"</code> or not provided, will stop on any
      * EventTarget.
      */
     void setEventListenerBreakpoint(String eventName, @Experimental @Optional String targetName);

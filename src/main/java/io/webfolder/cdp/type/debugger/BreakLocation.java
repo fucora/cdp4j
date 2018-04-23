@@ -29,14 +29,14 @@ public class BreakLocation {
     private BreakLocationType type;
 
     /**
-     * Script identifier as reported in the `Debugger.scriptParsed`.
+     * Script identifier as reported in the <code>Debugger.scriptParsed</code>.
      */
     public String getScriptId() {
         return scriptId;
     }
 
     /**
-     * Script identifier as reported in the `Debugger.scriptParsed`.
+     * Script identifier as reported in the <code>Debugger.scriptParsed</code>.
      */
     public void setScriptId(String scriptId) {
         this.scriptId = scriptId;

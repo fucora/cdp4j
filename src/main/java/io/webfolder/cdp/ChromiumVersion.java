@@ -21,7 +21,8 @@ public enum ChromiumVersion {
 
     v64_0_3249_0(511134),
     v64_0_3276_0(518818),
-    v65_0_3312_0(526987);
+    v65_0_3312_0(526987),
+    v68_0_3399_0(551292);
 
     public final int revision;
 

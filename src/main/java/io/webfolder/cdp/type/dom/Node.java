@@ -212,14 +212,14 @@ public class Node {
     }
 
     /**
-     * Attributes of the <code>Element</code> node in the form of flat array `[name1, value1, name2, value2]`.
+     * Attributes of the <code>Element</code> node in the form of flat array <code>[name1, value1, name2, value2]</code>.
      */
     public List<String> getAttributes() {
         return attributes;
     }
 
     /**
-     * Attributes of the <code>Element</code> node in the form of flat array `[name1, value1, name2, value2]`.
+     * Attributes of the <code>Element</code> node in the form of flat array <code>[name1, value1, name2, value2]</code>.
      */
     public void setAttributes(List<String> attributes) {
         this.attributes = attributes;

@@ -64,9 +64,9 @@ public interface Tracing {
      * @param options Tracing options
      * @param bufferUsageReportingInterval If set, the agent will issue bufferUsage events at this interval, specified in milliseconds
      * @param transferMode Whether to report trace events as series of dataCollected events or to save trace to a
-     * stream (defaults to <code>ReportEvents</code>).
+     * stream (defaults to <code>ReportEvents<code>).
      * @param streamCompression Compression format to use. This only applies when using <code>ReturnAsStream</code>
-     * transfer mode (defaults to <code>none</code>)
+     * transfer mode (defaults to <code>none<code>)
      */
     void start(@Optional String categories, @Optional String options,
             @Optional Double bufferUsageReportingInterval, @Optional TransferMode transferMode,

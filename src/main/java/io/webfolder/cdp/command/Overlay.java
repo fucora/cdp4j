@@ -95,8 +95,7 @@ public interface Overlay {
      * Backend then generates 'inspectNodeRequested' event upon element selection.
      * 
      * @param mode Set an inspection mode.
-     * @param highlightConfig A descriptor for the highlight appearance of hovered-over nodes. May be omitted if `enabled
-     * == false`.
+     * @param highlightConfig A descriptor for the highlight appearance of hovered-over nodes. May be omitted if <code>enabled == false</code>.
      */
     void setInspectMode(InspectMode mode, @Optional HighlightConfig highlightConfig);
 

@@ -19,10 +19,13 @@ package io.webfolder.cdp.command;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
+import io.webfolder.cdp.annotation.Optional;
 import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.browser.Bounds;
 import io.webfolder.cdp.type.browser.GetVersionResult;
 import io.webfolder.cdp.type.browser.GetWindowForTargetResult;
+import io.webfolder.cdp.type.browser.Histogram;
+import java.util.List;
 
 /**
  * The Browser domain defines methods and events for browser managing
@@ -40,6 +43,40 @@ public interface Browser {
      * @return GetVersionResult
      */
     GetVersionResult getVersion();
+
+    /**
+     * Returns the command line switches for the browser process if, and only if
+     * --enable-automation is on the commandline.
+     * 
+     * @return Commandline parameters
+     */
+    @Experimental
+    @Returns("arguments")
+    List<String> getBrowserCommandLine();
+
+    /**
+     * Get Chrome histograms.
+     * 
+     * @param query Requested substring in name. Only histograms which have query as a
+     * substring in their name are extracted. An empty or absent query returns
+     * all histograms.
+     * 
+     * @return Histograms.
+     */
+    @Experimental
+    @Returns("histograms")
+    List<Histogram> getHistograms(@Optional String query);
+
+    /**
+     * Get a Chrome histogram by name.
+     * 
+     * @param name Requested histogram name.
+     * 
+     * @return Histogram.
+     */
+    @Experimental
+    @Returns("histogram")
+    Histogram getHistogram(String name);
 
     /**
      * Get position and size of the browser window.
@@ -72,4 +109,13 @@ public interface Browser {
      */
     @Experimental
     void setWindowBounds(Integer windowId, Bounds bounds);
+
+    /**
+     * Get Chrome histograms.
+     * 
+     * @return Histograms.
+     */
+    @Experimental
+    @Returns("histograms")
+    List<Histogram> getHistograms();
 }

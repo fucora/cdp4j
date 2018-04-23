@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -168,7 +169,7 @@ public class Crawler {
                     ResourceType type = rr.getType();
 
                     if (ResourceType.Document.equals(type)) {
-                        webResource.setResponseHeaders(rr.getResponse().getHeaders());
+                        webResource.setResponseHeaders(new ConcurrentHashMap<>(rr.getResponse().getHeaders()));
                         webResource.setStatus(rr.getResponse().getStatus().intValue());
                         webResource.setUrl(rr.getResponse().getUrl());
                         webResource.setRequestId(rr.getRequestId());

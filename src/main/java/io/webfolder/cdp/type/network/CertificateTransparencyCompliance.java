@@ -15,33 +15,31 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.webfolder.cdp.event.css;
+package io.webfolder.cdp.type.network;
 
-import io.webfolder.cdp.annotation.Domain;
-import io.webfolder.cdp.annotation.EventName;
-import javafx.css.FontFace;
+import com.google.gson.annotations.SerializedName;
 
 /**
- * Fires whenever a web font is updated
- * A non-empty font parameter indicates a successfully loaded
- * web font
+ * Whether the request complied with Certificate Transparency policy
  */
-@Domain("CSS")
-@EventName("fontsUpdated")
-public class FontsUpdated {
-    private FontFace font;
+public enum CertificateTransparencyCompliance {
+    @SerializedName("unknown")
+    Unknown("unknown"),
 
-    /**
-     * The web font that has loaded.
-     */
-    public FontFace getFont() {
-        return font;
+    @SerializedName("not-compliant")
+    NotCompliant("not-compliant"),
+
+    @SerializedName("compliant")
+    Compliant("compliant");
+
+    public final String value;
+
+    CertificateTransparencyCompliance(String value) {
+        this.value = value;
     }
 
-    /**
-     * The web font that has loaded.
-     */
-    public void setFont(FontFace font) {
-        this.font = font;
+    @Override
+    public String toString() {
+        return value;
     }
 }

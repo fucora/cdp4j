@@ -135,13 +135,15 @@ public interface Network {
      * 
      * @param maxTotalBufferSize Buffer size in bytes to use when preserving network payloads (XHRs, etc).
      * @param maxResourceBufferSize Per-resource buffer size in bytes to use when preserving network payloads (XHRs, etc).
+     * @param maxPostDataSize Longest post body size (in bytes) that would be included in requestWillBeSent notification
      */
     void enable(@Experimental @Optional Integer maxTotalBufferSize,
-            @Experimental @Optional Integer maxResourceBufferSize);
+            @Experimental @Optional Integer maxResourceBufferSize,
+            @Optional Integer maxPostDataSize);
 
     /**
      * Returns all browser cookies. Depending on the backend support, will return detailed cookie
-     * information in the <code>cookies</code> field.
+     * information in the <code>cookies<code> field.
      * 
      * @return Array of cookie objects.
      */
@@ -159,7 +161,7 @@ public interface Network {
 
     /**
      * Returns all browser cookies for the current URL. Depending on the backend support, will return
-     * detailed cookie information in the <code>cookies</code> field.
+     * detailed cookie information in the <code>cookies<code> field.
      * 
      * @param urls The list of URLs for which applicable cookies will be fetched
      * 
@@ -176,6 +178,16 @@ public interface Network {
      * @return GetResponseBodyResult
      */
     GetResponseBodyResult getResponseBody(String requestId);
+
+    /**
+     * Returns post data sent with the request. Returns an error when no data was sent with the request.
+     * 
+     * @param requestId Identifier of the network request to get content for.
+     * 
+     * @return Base64-encoded request body.
+     */
+    @Returns("postData")
+    byte[] getRequestPostData(String requestId);
 
     /**
      * Returns content served for the given currently intercepted request.

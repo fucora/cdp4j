@@ -119,16 +119,13 @@ public interface Target {
      */
     void sendMessageToTarget(String message, @Optional String sessionId, @Optional String targetId);
 
-    @Experimental
-    void setAttachToFrames(Boolean value);
-
     /**
      * Controls whether to automatically attach to new targets which are considered to be related to
      * this one. When turned on, attaches to all existing related targets as well. When turned off,
      * automatically detaches from all currently attached targets.
      * 
      * @param autoAttach Whether to auto-attach to related targets.
-     * @param waitForDebuggerOnStart Whether to pause new targets when attaching to them. Use `Runtime.runIfWaitingForDebugger`
+     * @param waitForDebuggerOnStart Whether to pause new targets when attaching to them. Use <code>Runtime.runIfWaitingForDebugger<code>
      * to run paused targets.
      */
     @Experimental
@@ -136,7 +133,7 @@ public interface Target {
 
     /**
      * Controls whether to discover available targets and notify via
-     * `targetCreated/targetInfoChanged/targetDestroyed` events.
+     * <code>targetCreated/targetInfoChanged/targetDestroyed</code> events.
      * 
      * @param discover Whether to discover available targets.
      */

@@ -32,7 +32,7 @@ public class RemoteObject {
 
     private Object value;
 
-    private UnserializableValue unserializableValue;
+    private String unserializableValue;
 
     private String description;
 
@@ -102,7 +102,7 @@ public class RemoteObject {
      * Primitive value which can not be JSON-stringified does not have <code>value</code>, but gets this
      * property.
      */
-    public UnserializableValue getUnserializableValue() {
+    public String getUnserializableValue() {
         return unserializableValue;
     }
 
@@ -110,7 +110,7 @@ public class RemoteObject {
      * Primitive value which can not be JSON-stringified does not have <code>value</code>, but gets this
      * property.
      */
-    public void setUnserializableValue(UnserializableValue unserializableValue) {
+    public void setUnserializableValue(String unserializableValue) {
         this.unserializableValue = unserializableValue;
     }
 

@@ -26,6 +26,7 @@ import io.webfolder.cdp.type.runtime.CallArgument;
 import io.webfolder.cdp.type.runtime.CallFunctionOnResult;
 import io.webfolder.cdp.type.runtime.CompileScriptResult;
 import io.webfolder.cdp.type.runtime.EvaluateResult;
+import io.webfolder.cdp.type.runtime.GetHeapUsageResult;
 import io.webfolder.cdp.type.runtime.GetPropertiesResult;
 import io.webfolder.cdp.type.runtime.RemoteObject;
 import io.webfolder.cdp.type.runtime.RunScriptResult;
@@ -120,14 +121,16 @@ public interface Runtime {
      * @param objectGroup Symbolic group name that can be used to release multiple objects.
      * @param includeCommandLineAPI Determines whether Command Line API should be available during the evaluation.
      * @param silent In silent mode exceptions thrown during evaluation are not reported and do not pause
-     * execution. Overrides <code>setPauseOnException</code> state.
+     * execution. Overrides <code>setPauseOnException<code> state.
      * @param contextId Specifies in which execution context to perform evaluation. If the parameter is omitted the
      * evaluation will be performed in the context of the inspected page.
      * @param returnByValue Whether the result is expected to be a JSON object that should be sent by value.
      * @param generatePreview Whether preview should be generated for the result.
      * @param userGesture Whether execution should be treated as initiated by user in the UI.
-     * @param awaitPromise Whether execution should <code>await</code> for resulting value and return once awaited promise is
+     * @param awaitPromise Whether execution should <code>await<code> for resulting value and return once awaited promise is
      * resolved.
+     * @param throwOnSideEffect Whether to throw an exception if side effect cannot be ruled out during evaluation.
+     * @param timeout Terminate execution after timing out (number of milliseconds).
      * 
      * @return EvaluateResult
      */
@@ -135,7 +138,26 @@ public interface Runtime {
             @Optional Boolean includeCommandLineAPI, @Optional Boolean silent,
             @Optional Integer contextId, @Optional Boolean returnByValue,
             @Experimental @Optional Boolean generatePreview, @Optional Boolean userGesture,
-            @Optional Boolean awaitPromise);
+            @Optional Boolean awaitPromise, @Experimental @Optional Boolean throwOnSideEffect,
+            @Experimental @Optional Double timeout);
+
+    /**
+     * Returns the isolate id.
+     * 
+     * @return The isolate id.
+     */
+    @Experimental
+    @Returns("id")
+    String getIsolateId();
+
+    /**
+     * Returns the JavaScript heap usage.
+     * It is the total usage of the corresponding isolate not scoped to a particular Runtime.
+     * 
+     * @return GetHeapUsageResult
+     */
+    @Experimental
+    GetHeapUsageResult getHeapUsage();
 
     /**
      * Returns properties of a given object. Object group of the result is inherited from the target
@@ -163,7 +185,7 @@ public interface Runtime {
     List<String> globalLexicalScopeNames(@Optional Integer executionContextId);
 
     @Returns("objects")
-    RemoteObject queryObjects(String prototypeObjectId);
+    RemoteObject queryObjects(String prototypeObjectId, @Optional String objectGroup);
 
     /**
      * Releases remote object with given id.
@@ -196,7 +218,7 @@ public interface Runtime {
      * @param includeCommandLineAPI Determines whether Command Line API should be available during the evaluation.
      * @param returnByValue Whether the result is expected to be a JSON object which should be sent by value.
      * @param generatePreview Whether preview should be generated for the result.
-     * @param awaitPromise Whether execution should <code>await</code> for resulting value and return once awaited promise is
+     * @param awaitPromise Whether execution should <code>await<code> for resulting value and return once awaited promise is
      * resolved.
      * 
      * @return RunScriptResult
@@ -208,6 +230,13 @@ public interface Runtime {
 
     @Experimental
     void setCustomObjectFormatterEnabled(Boolean enabled);
+
+    /**
+     * Terminate current or next JavaScript execution.
+     * Will cancel the termination when the outer-most script execution ends.
+     */
+    @Experimental
+    void terminateExecution();
 
     /**
      * Add handler to promise with given promise object id.
@@ -263,6 +292,9 @@ public interface Runtime {
      */
     @Returns("names")
     List<String> globalLexicalScopeNames();
+
+    @Returns("objects")
+    RemoteObject queryObjects(String prototypeObjectId);
 
     /**
      * Runs script with given id in a given context.

@@ -34,6 +34,8 @@ public class Request {
 
     private String postData;
 
+    private Boolean hasPostData;
+
     private MixedContentType mixedContentType;
 
     private ResourcePriority initialPriority;
@@ -96,6 +98,20 @@ public class Request {
      */
     public void setPostData(String postData) {
         this.postData = postData;
+    }
+
+    /**
+     * True when the request has POST data. Note that postData might still be omitted when this flag is true when the data is too long.
+     */
+    public Boolean isHasPostData() {
+        return hasPostData;
+    }
+
+    /**
+     * True when the request has POST data. Note that postData might still be omitted when this flag is true when the data is too long.
+     */
+    public void setHasPostData(Boolean hasPostData) {
+        this.hasPostData = hasPostData;
     }
 
     /**

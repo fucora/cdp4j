@@ -299,7 +299,8 @@ public interface Selector {
             final Boolean  includeCmdApi = xpath ? TRUE : FALSE;
             EvaluateResult result        = runtime.evaluate(expression, null, includeCmdApi,
                                                                 null, null, null,
-                                                                null, null, null);
+                                                                null, null, null,
+                                                                null, null);
             if (result == null) {
                 return null;
             }
@@ -311,7 +312,8 @@ public interface Selector {
                 getThis().installSizzle();
                 result = runtime.evaluate(expression, null, null,
                                                       null, null, null,
-                                                      null, null, null);
+                                                      null, null, null,
+                                                      null, null);
                 if ( result != null &&
                             result.getExceptionDetails() != null ) {
                     ex = result.getExceptionDetails();
@@ -379,7 +381,8 @@ public interface Selector {
             final Boolean  includeCmdApi = xpath ? TRUE : FALSE;
             EvaluateResult result        = runtime.evaluate(expression, null, includeCmdApi,
                                                             null, contextId, null,
-                                                            null, null, null);
+                                                            null, null, null,
+                                                            null, null);
             if (result == null) {
                 return null;
             }
@@ -391,7 +394,8 @@ public interface Selector {
                 getThis().installSizzle();
                 result = runtime.evaluate(expression, null, null,
                                                         null, null, null,
-                                                        null, null, null);
+                                                        null, null, null,
+                                                        null, null);
                 if ( result != null &&
                             result.getExceptionDetails() != null ) {
                     ex = result.getExceptionDetails();

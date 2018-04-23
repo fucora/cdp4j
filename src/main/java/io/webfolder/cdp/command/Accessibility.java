@@ -30,25 +30,26 @@ public interface Accessibility {
     /**
      * Fetches the accessibility node and partial accessibility tree for this DOM node, if it exists.
      * 
-     * @param nodeId ID of node to get the partial accessibility tree for.
+     * @param nodeId Identifier of the node to get the partial accessibility tree for.
+     * @param backendNodeId Identifier of the backend node to get the partial accessibility tree for.
+     * @param objectId JavaScript object id of the node wrapper to get the partial accessibility tree for.
      * @param fetchRelatives Whether to fetch this nodes ancestors, siblings and children. Defaults to true.
      * 
-     * @return The `Accessibility.AXNode` for this DOM node, if it exists, plus its ancestors, siblings and
+     * @return The <code>Accessibility.AXNode</code> for this DOM node, if it exists, plus its ancestors, siblings and
      * children, if requested.
      */
     @Experimental
     @Returns("nodes")
-    List<AXNode> getPartialAXTree(Integer nodeId, @Optional Boolean fetchRelatives);
+    List<AXNode> getPartialAXTree(@Optional Integer nodeId, @Optional Integer backendNodeId,
+            @Optional String objectId, @Optional Boolean fetchRelatives);
 
     /**
      * Fetches the accessibility node and partial accessibility tree for this DOM node, if it exists.
      * 
-     * @param nodeId ID of node to get the partial accessibility tree for.
-     * 
-     * @return The `Accessibility.AXNode` for this DOM node, if it exists, plus its ancestors, siblings and
+     * @return The <code>Accessibility.AXNode</code> for this DOM node, if it exists, plus its ancestors, siblings and
      * children, if requested.
      */
     @Experimental
     @Returns("nodes")
-    List<AXNode> getPartialAXTree(Integer nodeId);
+    List<AXNode> getPartialAXTree();
 }

@@ -18,6 +18,8 @@
 package io.webfolder.cdp.type.domsnapshot;
 
 import io.webfolder.cdp.type.dom.PseudoType;
+import io.webfolder.cdp.type.dom.ShadowRootType;
+import io.webfolder.cdp.type.domdebugger.EventListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +73,13 @@ public class DOMNode {
 
     private PseudoType pseudoType;
 
+    private ShadowRootType shadowRootType;
+
     private Boolean isClickable;
+
+    private List<EventListener> eventListeners = new ArrayList<>();
+
+    private String currentSourceURL;
 
     /**
      * <code>Node</code>'s nodeType.
@@ -408,6 +416,20 @@ public class DOMNode {
     }
 
     /**
+     * Shadow root type.
+     */
+    public ShadowRootType getShadowRootType() {
+        return shadowRootType;
+    }
+
+    /**
+     * Shadow root type.
+     */
+    public void setShadowRootType(ShadowRootType shadowRootType) {
+        this.shadowRootType = shadowRootType;
+    }
+
+    /**
      * Whether this DOM node responds to mouse clicks. This includes nodes that have had click
      * event listeners attached via JavaScript as well as anchor tags that naturally navigate when
      * clicked.
@@ -423,5 +445,33 @@ public class DOMNode {
      */
     public void setIsClickable(Boolean isClickable) {
         this.isClickable = isClickable;
+    }
+
+    /**
+     * Details of the node's event listeners, if any.
+     */
+    public List<EventListener> getEventListeners() {
+        return eventListeners;
+    }
+
+    /**
+     * Details of the node's event listeners, if any.
+     */
+    public void setEventListeners(List<EventListener> eventListeners) {
+        this.eventListeners = eventListeners;
+    }
+
+    /**
+     * The selected url for nodes with a srcset attribute.
+     */
+    public String getCurrentSourceURL() {
+        return currentSourceURL;
+    }
+
+    /**
+     * The selected url for nodes with a srcset attribute.
+     */
+    public void setCurrentSourceURL(String currentSourceURL) {
+        this.currentSourceURL = currentSourceURL;
     }
 }

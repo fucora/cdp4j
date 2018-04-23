@@ -34,6 +34,8 @@ public class JavascriptDialogOpening {
 
     private DialogType type;
 
+    private Boolean hasBrowserHandler;
+
     private String defaultPrompt;
 
     /**
@@ -76,6 +78,24 @@ public class JavascriptDialogOpening {
      */
     public void setType(DialogType type) {
         this.type = type;
+    }
+
+    /**
+     * True iff browser is capable showing or acting on the given dialog. When browser has no
+     * dialog handler for given target, calling alert while Page domain is engaged will stall
+     * the page execution. Execution can be resumed via calling Page.handleJavaScriptDialog.
+     */
+    public Boolean isHasBrowserHandler() {
+        return hasBrowserHandler;
+    }
+
+    /**
+     * True iff browser is capable showing or acting on the given dialog. When browser has no
+     * dialog handler for given target, calling alert while Page domain is engaged will stall
+     * the page execution. Execution can be resumed via calling Page.handleJavaScriptDialog.
+     */
+    public void setHasBrowserHandler(Boolean hasBrowserHandler) {
+        this.hasBrowserHandler = hasBrowserHandler;
     }
 
     /**

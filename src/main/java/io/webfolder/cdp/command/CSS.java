@@ -38,20 +38,20 @@ import java.util.List;
 /**
  * This domain exposes CSS read/write operations
  * All CSS objects (stylesheets, rules, and styles)
- * have an associated <code>id</code> used in subsequent operations on the related object
+ * have an associated <code>id<code> used in subsequent operations on the related object
  * Each object type has
- * a specific <code>id</code> structure, and those are not interchangeable between objects of different kinds
- * CSS objects can be loaded using the `get*ForNode()` calls (which accept a DOM node id)
+ * a specific <code>id<code> structure, and those are not interchangeable between objects of different kinds
+ * CSS objects can be loaded using the <code>get*ForNode()</code> calls (which accept a DOM node id)
  * A client
- * can also keep track of stylesheets via the <code>styleSheetAdded</code>/<code>styleSheetRemoved</code> events and
- * subsequently load the required stylesheet contents using the `getStyleSheet[Text]()` methods
+ * can also keep track of stylesheets via the <code>styleSheetAdded<code>/<code>styleSheetRemoved</code> events and
+ * subsequently load the required stylesheet contents using the <code>getStyleSheet[Text]()</code> methods
  */
 @Experimental
 @Domain("CSS")
 public interface CSS {
     /**
-     * Inserts a new rule with the given <code>ruleText</code> in a stylesheet with given <code>styleSheetId</code>, at the
-     * position specified by <code>location</code>.
+     * Inserts a new rule with the given <code>ruleText<code> in a stylesheet with given <code>styleSheetId<code>, at the
+     * position specified by <code>location<code>.
      * 
      * @param styleSheetId The css style sheet identifier where a new rule should be inserted.
      * @param ruleText The text of a new rule.
@@ -72,7 +72,7 @@ public interface CSS {
     List<String> collectClassNames(String styleSheetId);
 
     /**
-     * Creates a new special "via-inspector" stylesheet in the frame with given <code>frameId</code>.
+     * Creates a new special "via-inspector" stylesheet in the frame with given <code>frameId<code>.
      * 
      * @param frameId Identifier of the frame where "via-inspector" stylesheet should be created.
      * 
@@ -150,7 +150,7 @@ public interface CSS {
     List<PlatformFontUsage> getPlatformFontsForNode(Integer nodeId);
 
     /**
-     * Returns the current textual content and the URL for a stylesheet.
+     * Returns the current textual content for a stylesheet.
      * 
      * 
      * @return The stylesheet text.
@@ -217,7 +217,8 @@ public interface CSS {
     void startRuleUsageTracking();
 
     /**
-     * The list of rules with an indication of whether these were used
+     * Stop tracking rule usage and return the list of rules that were used since last call to
+     * <code>takeCoverageDelta</code> (or since start of coverage instrumentation)
      */
     @Returns("ruleUsage")
     List<RuleUsage> stopRuleUsageTracking();

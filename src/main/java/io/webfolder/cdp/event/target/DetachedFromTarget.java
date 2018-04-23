@@ -6,8 +6,7 @@ import io.webfolder.cdp.annotation.Experimental;
 
 /**
  * Issued when detached from target for any reason (including <code>detachFromTarget</code> command)
- * Can be
- * issued multiple times per target if multiple sessions have been attached to it
+ * Can be issued multiple times per target if multiple sessions have been attached to it
  */
 @Experimental
 @Domain("Target")

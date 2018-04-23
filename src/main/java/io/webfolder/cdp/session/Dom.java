@@ -870,7 +870,7 @@ public interface Dom {
      */
     default String getOuterHtml(String selector, Object... args) {
         Integer nodeId = getThis().getNodeId(null, selector, args);
-        return getThis().getCommand().getDOM().getOuterHTML(nodeId);
+        return getThis().getCommand().getDOM().getOuterHTML(nodeId, null, null);
     }
 
     Session getThis();

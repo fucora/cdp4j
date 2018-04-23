@@ -42,7 +42,10 @@ public enum PropertyPreviewType {
     Symbol("symbol"),
 
     @SerializedName("accessor")
-    Accessor("accessor");
+    Accessor("accessor"),
+
+    @SerializedName("bigint")
+    Bigint("bigint");
 
     public final String value;
 

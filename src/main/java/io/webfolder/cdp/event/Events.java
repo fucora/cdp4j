@@ -55,7 +55,6 @@ import io.webfolder.cdp.event.domstorage.DomStorageItemsCleared;
 import io.webfolder.cdp.event.emulation.VirtualTimeAdvanced;
 import io.webfolder.cdp.event.emulation.VirtualTimeBudgetExpired;
 import io.webfolder.cdp.event.emulation.VirtualTimePaused;
-import io.webfolder.cdp.event.headlessexperimental.MainFrameReadyForScreenshots;
 import io.webfolder.cdp.event.headlessexperimental.NeedsBeginFramesChanged;
 import io.webfolder.cdp.event.heapprofiler.AddHeapSnapshotChunk;
 import io.webfolder.cdp.event.heapprofiler.HeapStatsUpdate;
@@ -155,7 +154,9 @@ public enum Events {
   ApplicationCacheNetworkStateUpdated("ApplicationCache", "networkStateUpdated", NetworkStateUpdated.class),
 
   /**
-   * Fires whenever a web font gets loaded
+   * Fires whenever a web font is updated
+   * A non-empty font parameter indicates a successfully loaded
+   * web font
    */
   CSSFontsUpdated("CSS", "fontsUpdated", FontsUpdated.class),
 
@@ -217,13 +218,13 @@ public enum Events {
   DOMDistributedNodesUpdated("DOM", "distributedNodesUpdated", DistributedNodesUpdated.class),
 
   /**
-   * Fired when <code>Document</code> has been totally updated
+   * Fired when <code>Document<code> has been totally updated
    * Node ids are no longer valid
    */
   DOMDocumentUpdated("DOM", "documentUpdated", DocumentUpdated.class),
 
   /**
-   * Fired when <code>Element</code>'s inline style is modified via a CSS property modification
+   * Fired when <code>Element<code>'s inline style is modified via a CSS property modification
    */
   DOMInlineStyleInvalidated("DOM", "inlineStyleInvalidated", InlineStyleInvalidated.class),
 
@@ -278,14 +279,6 @@ public enum Events {
    * Notification sent after the virtual time has paused
    */
   EmulationVirtualTimePaused("Emulation", "virtualTimePaused", VirtualTimePaused.class),
-
-  /**
-   * Issued when the main frame has first submitted a frame to the browser
-   * May only be fired while a
-   * BeginFrame is in flight
-   * Before this event, screenshotting requests may fail
-   */
-  HeadlessExperimentalMainFrameReadyForScreenshots("HeadlessExperimental", "mainFrameReadyForScreenshots", MainFrameReadyForScreenshots.class),
 
   /**
    * Issued when the target starts or stops needing BeginFrames
@@ -481,12 +474,12 @@ public enum Events {
   PageLoadEventFired("Page", "loadEventFired", LoadEventFired.class),
 
   /**
-   * Compressed image data requested by the <code>startScreencast</code>
+   * Compressed image data requested by the <code>startScreencast<code>
    */
   PageScreencastFrame("Page", "screencastFrame", ScreencastFrame.class),
 
   /**
-   * Fired when the page with currently enabled screencast was shown or hidden `
+   * Fired when the page with currently enabled screencast was shown or hidden </code>
    */
   PageScreencastVisibilityChanged("Page", "screencastVisibilityChanged", ScreencastVisibilityChanged.class),
 
@@ -505,7 +498,7 @@ public enum Events {
   /**
    * There is a certificate error
    * If overriding certificate errors is enabled, then it should be
-   * handled with the handleCertificateError command
+   * handled with the <code>handleCertificateError</code> command
    * Note: this event does not fire if the
    * certificate error has been allowed internally
    * Only one client per target should override
@@ -700,13 +693,13 @@ public enum Events {
 
   public final Class<?> klass;
 
-  Events(String domain, java.lang.String name, Class<?> klass) {
+  Events(String domain, String name, Class<?> klass) {
     this.domain = domain;
     this.name = name;
     this.klass = klass;
   }
 
-  @java.lang.Override
+  @Override
   public java.lang.String toString() {
     return domain + "." + name;
   }

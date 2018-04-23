@@ -328,8 +328,21 @@
                     "parameters": [
                         {
                             "name": "nodeId",
-                            "description": "ID of node to get the partial accessibility tree for.",
+                            "description": "Identifier of the node to get the partial accessibility tree for.",
+                            "optional": true,
                             "$ref": "DOM.NodeId"
+                        },
+                        {
+                            "name": "backendNodeId",
+                            "description": "Identifier of the backend node to get the partial accessibility tree for.",
+                            "optional": true,
+                            "$ref": "DOM.BackendNodeId"
+                        },
+                        {
+                            "name": "objectId",
+                            "description": "JavaScript object id of the node wrapper to get the partial accessibility tree for.",
+                            "optional": true,
+                            "$ref": "Runtime.RemoteObjectId"
                         },
                         {
                             "name": "fetchRelatives",
@@ -989,6 +1002,60 @@
                             "$ref": "WindowState"
                         }
                     ]
+                },
+                {
+                    "id": "Bucket",
+                    "description": "Chrome histogram bucket.",
+                    "experimental": true,
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "low",
+                            "description": "Minimum value (inclusive).",
+                            "type": "integer"
+                        },
+                        {
+                            "name": "high",
+                            "description": "Maximum value (exclusive).",
+                            "type": "integer"
+                        },
+                        {
+                            "name": "count",
+                            "description": "Number of samples.",
+                            "type": "integer"
+                        }
+                    ]
+                },
+                {
+                    "id": "Histogram",
+                    "description": "Chrome histogram.",
+                    "experimental": true,
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "name",
+                            "description": "Name.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "sum",
+                            "description": "Sum of sample values.",
+                            "type": "integer"
+                        },
+                        {
+                            "name": "count",
+                            "description": "Total number of samples.",
+                            "type": "integer"
+                        },
+                        {
+                            "name": "buckets",
+                            "description": "Buckets.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "Bucket"
+                            }
+                        }
+                    ]
                 }
             ],
             "commands": [
@@ -1024,6 +1091,63 @@
                             "name": "jsVersion",
                             "description": "V8 version.",
                             "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "name": "getBrowserCommandLine",
+                    "description": "Returns the command line switches for the browser process if, and only if\n--enable-automation is on the commandline.",
+                    "experimental": true,
+                    "returns": [
+                        {
+                            "name": "arguments",
+                            "description": "Commandline parameters",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getHistograms",
+                    "description": "Get Chrome histograms.",
+                    "experimental": true,
+                    "parameters": [
+                        {
+                            "name": "query",
+                            "description": "Requested substring in name. Only histograms which have query as a\nsubstring in their name are extracted. An empty or absent query returns\nall histograms.",
+                            "optional": true,
+                            "type": "string"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "histograms",
+                            "description": "Histograms.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "Histogram"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getHistogram",
+                    "description": "Get a Chrome histogram by name.",
+                    "experimental": true,
+                    "parameters": [
+                        {
+                            "name": "name",
+                            "description": "Requested histogram name.",
+                            "type": "string"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "histogram",
+                            "description": "Histogram.",
+                            "$ref": "Histogram"
                         }
                     ]
                 },
@@ -1636,6 +1760,53 @@
                     ]
                 },
                 {
+                    "id": "FontFace",
+                    "description": "Properties of a web font: https://www.w3.org/TR/2008/REC-CSS2-20080411/fonts.html#font-descriptions",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "fontFamily",
+                            "description": "The font-family.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "fontStyle",
+                            "description": "The font-style.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "fontVariant",
+                            "description": "The font-variant.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "fontWeight",
+                            "description": "The font-weight.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "fontStretch",
+                            "description": "The font-stretch.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "unicodeRange",
+                            "description": "The unicode-range.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "src",
+                            "description": "The src.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "platformFontFamily",
+                            "description": "The resolved platform font family",
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
                     "id": "CSSKeyframesRule",
                     "description": "CSS keyframes rule representation.",
                     "type": "object",
@@ -1978,7 +2149,7 @@
                 },
                 {
                     "name": "getStyleSheetText",
-                    "description": "Returns the current textual content and the URL for a stylesheet.",
+                    "description": "Returns the current textual content for a stylesheet.",
                     "parameters": [
                         {
                             "name": "styleSheetId",
@@ -2138,7 +2309,7 @@
                 },
                 {
                     "name": "stopRuleUsageTracking",
-                    "description": "The list of rules with an indication of whether these were used",
+                    "description": "Stop tracking rule usage and return the list of rules that were used since last call to\n`takeCoverageDelta` (or since start of coverage instrumentation)",
                     "returns": [
                         {
                             "name": "ruleUsage",
@@ -2166,7 +2337,15 @@
             "events": [
                 {
                     "name": "fontsUpdated",
-                    "description": "Fires whenever a web font gets loaded."
+                    "description": "Fires whenever a web font is updated.  A non-empty font parameter indicates a successfully loaded\nweb font",
+                    "parameters": [
+                        {
+                            "name": "font",
+                            "description": "The web font that has loaded.",
+                            "optional": true,
+                            "$ref": "FontFace"
+                        }
+                    ]
                 },
                 {
                     "name": "mediaQueryResultChanged",
@@ -3590,6 +3769,23 @@
                     "name": "undo",
                     "description": "Undoes the last performed action.",
                     "experimental": true
+                },
+                {
+                    "name": "getFrameOwner",
+                    "description": "Returns iframe node that owns iframe with the given domain.",
+                    "experimental": true,
+                    "parameters": [
+                        {
+                            "name": "frameId",
+                            "$ref": "Page.FrameId"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "nodeId",
+                            "$ref": "NodeId"
+                        }
+                    ]
                 }
             ],
             "events": [
@@ -4063,6 +4259,7 @@
             "dependencies": [
                 "CSS",
                 "DOM",
+                "DOMDebugger",
                 "Page"
             ],
             "types": [
@@ -4215,10 +4412,31 @@
                             "$ref": "DOM.PseudoType"
                         },
                         {
+                            "name": "shadowRootType",
+                            "description": "Shadow root type.",
+                            "optional": true,
+                            "$ref": "DOM.ShadowRootType"
+                        },
+                        {
                             "name": "isClickable",
                             "description": "Whether this DOM node responds to mouse clicks. This includes nodes that have had click\nevent listeners attached via JavaScript as well as anchor tags that naturally navigate when\nclicked.",
                             "optional": true,
                             "type": "boolean"
+                        },
+                        {
+                            "name": "eventListeners",
+                            "description": "Details of the node's event listeners, if any.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "DOMDebugger.EventListener"
+                            }
+                        },
+                        {
+                            "name": "currentSourceURL",
+                            "description": "The selected url for nodes with a srcset attribute.",
+                            "optional": true,
+                            "type": "string"
                         }
                     ]
                 },
@@ -4234,12 +4452,12 @@
                         },
                         {
                             "name": "startCharacterIndex",
-                            "description": "The starting index in characters, for this post layout textbox substring.",
+                            "description": "The starting index in characters, for this post layout textbox substring. Characters that\nwould be represented as a surrogate pair in UTF-16 have length 2.",
                             "type": "integer"
                         },
                         {
                             "name": "numCharacters",
-                            "description": "The number of characters in this post layout textbox substring.",
+                            "description": "The number of characters in this post layout textbox substring. Characters that would be\nrepresented as a surrogate pair in UTF-16 have length 2.",
                             "type": "integer"
                         }
                     ]
@@ -4277,6 +4495,12 @@
                         {
                             "name": "styleIndex",
                             "description": "Index into the `computedStyles` array returned by `getSnapshot`.",
+                            "optional": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "paintOrder",
+                            "description": "Global paint order index, which is determined by the stacking order of the nodes. Nodes\nthat are painted together will have the same index. Only provided if includePaintOrder in\ngetSnapshot was true.",
                             "optional": true,
                             "type": "integer"
                         }
@@ -4327,6 +4551,24 @@
                             "items": {
                                 "type": "string"
                             }
+                        },
+                        {
+                            "name": "includeEventListeners",
+                            "description": "Whether or not to retrieve details of DOM listeners (default false).",
+                            "optional": true,
+                            "type": "boolean"
+                        },
+                        {
+                            "name": "includePaintOrder",
+                            "description": "Whether to determine and include the paint order index of LayoutTreeNodes (default false).",
+                            "optional": true,
+                            "type": "boolean"
+                        },
+                        {
+                            "name": "includeUserAgentShadowTree",
+                            "description": "Whether to include UA shadow tree in the snapshot (default false).",
+                            "optional": true,
+                            "type": "boolean"
                         }
                     ],
                     "returns": [
@@ -4982,6 +5224,12 @@
                             "description": "If set this specifies the maximum number of tasks that can be run before virtual is forced\nforwards to prevent deadlock.",
                             "optional": true,
                             "type": "integer"
+                        },
+                        {
+                            "name": "waitForNavigation",
+                            "description": "If set the virtual time policy change should be deferred until any frame starts navigating.\nNote any previous deferred policy change is superseded.",
+                            "optional": true,
+                            "type": "boolean"
                         }
                     ],
                     "returns": [
@@ -4989,6 +5237,11 @@
                             "name": "virtualTimeBase",
                             "description": "Absolute timestamp at which virtual time was first enabled (milliseconds since epoch).",
                             "$ref": "Runtime.Timestamp"
+                        },
+                        {
+                            "name": "virtualTimeTicksBase",
+                            "description": "Absolute timestamp at which virtual time was first enabled (up time in milliseconds).",
+                            "type": "number"
                         }
                     ]
                 },
@@ -5079,19 +5332,31 @@
             "commands": [
                 {
                     "name": "beginFrame",
-                    "description": "Sends a BeginFrame to the target and returns when the frame was completed. Optionally captures a\nscreenshot from the resulting frame. Requires that the target was created with enabled\nBeginFrameControl.",
+                    "description": "Sends a BeginFrame to the target and returns when the frame was completed. Optionally captures a\nscreenshot from the resulting frame. Requires that the target was created with enabled\nBeginFrameControl. Designed for use with --run-all-compositor-stages-before-draw, see also\nhttps://goo.gl/3zHXhB for more background.",
                     "parameters": [
                         {
                             "name": "frameTime",
-                            "description": "Timestamp of this BeginFrame (milliseconds since epoch). If not set, the current time will\nbe used.",
+                            "description": "Timestamp of this BeginFrame (milliseconds since epoch). If not set, the current time will\nbe used unless frameTicks is specified.",
                             "optional": true,
                             "$ref": "Runtime.Timestamp"
                         },
                         {
+                            "name": "frameTimeTicks",
+                            "description": "Timestamp of this BeginFrame in Renderer TimeTicks (milliseconds of uptime). If not set,\nthe current time will be used unless frameTime is specified.",
+                            "optional": true,
+                            "type": "number"
+                        },
+                        {
                             "name": "deadline",
-                            "description": "Deadline of this BeginFrame (milliseconds since epoch). If not set, the deadline will be\ncalculated from the frameTime and interval.",
+                            "description": "Deadline of this BeginFrame (milliseconds since epoch). If not set, the deadline will be\ncalculated from the frameTime and interval unless deadlineTicks is specified.",
                             "optional": true,
                             "$ref": "Runtime.Timestamp"
+                        },
+                        {
+                            "name": "deadlineTicks",
+                            "description": "Deadline of this BeginFrame in Renderer TimeTicks  (milliseconds of uptime). If not set,\nthe deadline will be calculated from the frameTime and interval unless deadline is specified.",
+                            "optional": true,
+                            "type": "number"
                         },
                         {
                             "name": "interval",
@@ -5100,8 +5365,14 @@
                             "type": "number"
                         },
                         {
+                            "name": "noDisplayUpdates",
+                            "description": "Whether updates should not be committed and drawn onto the display. False by default. If\ntrue, only side effects of the BeginFrame will be run, such as layout and animations, but\nany visual updates may not be visible on the display or in screenshots.",
+                            "optional": true,
+                            "type": "boolean"
+                        },
+                        {
                             "name": "screenshot",
-                            "description": "If set, a screenshot of the frame will be captured and returned in the response. Otherwise,\nno screenshot will be captured.",
+                            "description": "If set, a screenshot of the frame will be captured and returned in the response. Otherwise,\nno screenshot will be captured. Note that capturing a screenshot can fail, for example,\nduring renderer initialization. In such a case, no screenshot data will be returned.",
                             "optional": true,
                             "$ref": "ScreenshotParams"
                         }
@@ -5109,12 +5380,7 @@
                     "returns": [
                         {
                             "name": "hasDamage",
-                            "description": "Whether the BeginFrame resulted in damage and, thus, a new frame was committed to the\ndisplay.",
-                            "type": "boolean"
-                        },
-                        {
-                            "name": "mainFrameContentUpdated",
-                            "description": "Whether the main frame submitted a new display frame in response to this BeginFrame.",
+                            "description": "Whether the BeginFrame resulted in damage and, thus, a new frame was committed to the\ndisplay. Reported for diagnostic uses, may be removed in the future.",
                             "type": "boolean"
                         },
                         {
@@ -5122,6 +5388,18 @@
                             "description": "Base64-encoded image data of the screenshot, if one was requested and successfully taken.",
                             "optional": true,
                             "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "name": "enterDeterministicMode",
+                    "description": "Puts the browser into deterministic mode.  Only effective for subsequently created web contents.\nOnly supported in headless mode.  Once set there's no way of leaving deterministic mode.",
+                    "parameters": [
+                        {
+                            "name": "initialDate",
+                            "description": "Number of seconds since the Epoch",
+                            "optional": true,
+                            "type": "number"
                         }
                     ]
                 },
@@ -5135,10 +5413,6 @@
                 }
             ],
             "events": [
-                {
-                    "name": "mainFrameReadyForScreenshots",
-                    "description": "Issued when the main frame has first submitted a frame to the browser. May only be fired while a\nBeginFrame is in flight. Before this event, screenshotting requests may fail."
-                },
                 {
                     "name": "needsBeginFramesChanged",
                     "description": "Issued when the target starts or stops needing BeginFrames.",
@@ -5919,11 +6193,6 @@
                             "type": "integer"
                         },
                         {
-                            "name": "timestamp",
-                            "description": "Time at which the event occurred.",
-                            "$ref": "TimeSinceEpoch"
-                        },
-                        {
                             "name": "button",
                             "description": "Mouse button.",
                             "type": "string",
@@ -5933,6 +6202,12 @@
                                 "middle",
                                 "right"
                             ]
+                        },
+                        {
+                            "name": "timestamp",
+                            "description": "Time at which the event occurred (default: current time).",
+                            "optional": true,
+                            "$ref": "TimeSinceEpoch"
                         },
                         {
                             "name": "deltaX",
@@ -6147,6 +6422,10 @@
                 {
                     "name": "targetCrashed",
                     "description": "Fired when debugging target has crashed"
+                },
+                {
+                    "name": "targetReloadedAfterCrash",
+                    "description": "Fired when debugging target has reloaded after crash"
                 }
             ]
         },
@@ -6739,6 +7018,45 @@
                         "moderate",
                         "critical"
                     ]
+                },
+                {
+                    "id": "SamplingProfileNode",
+                    "description": "Heap profile sample.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "size",
+                            "description": "Size of the sampled allocation.",
+                            "type": "number"
+                        },
+                        {
+                            "name": "total",
+                            "description": "Total bytes attributed to this sample.",
+                            "type": "number"
+                        },
+                        {
+                            "name": "stack",
+                            "description": "Execution stack at the point of allocation.",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "SamplingProfile",
+                    "description": "Array of heap profile samples.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "samples",
+                            "type": "array",
+                            "items": {
+                                "$ref": "SamplingProfileNode"
+                            }
+                        }
+                    ]
                 }
             ],
             "commands": [
@@ -6781,6 +7099,58 @@
                             "name": "level",
                             "description": "Memory pressure level of the notification.",
                             "$ref": "PressureLevel"
+                        }
+                    ]
+                },
+                {
+                    "name": "startSampling",
+                    "description": "Start collecting native memory profile.",
+                    "parameters": [
+                        {
+                            "name": "samplingInterval",
+                            "description": "Average number of bytes between samples.",
+                            "optional": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "suppressRandomness",
+                            "description": "Do not randomize intervals between samples.",
+                            "optional": true,
+                            "type": "boolean"
+                        }
+                    ]
+                },
+                {
+                    "name": "stopSampling",
+                    "description": "Stop collecting native memory profile."
+                },
+                {
+                    "name": "getAllTimeSamplingProfile",
+                    "description": "Retrieve native memory allocations profile\ncollected since renderer process startup.",
+                    "returns": [
+                        {
+                            "name": "profile",
+                            "$ref": "SamplingProfile"
+                        }
+                    ]
+                },
+                {
+                    "name": "getBrowserSamplingProfile",
+                    "description": "Retrieve native memory allocations profile\ncollected since browser process startup.",
+                    "returns": [
+                        {
+                            "name": "profile",
+                            "$ref": "SamplingProfile"
+                        }
+                    ]
+                },
+                {
+                    "name": "getSamplingProfile",
+                    "description": "Retrieve native memory allocations profile collected since last\n`startSampling` call.",
+                    "returns": [
+                        {
+                            "name": "profile",
+                            "$ref": "SamplingProfile"
                         }
                     ]
                 }
@@ -6999,6 +7369,12 @@
                             "type": "string"
                         },
                         {
+                            "name": "hasPostData",
+                            "description": "True when the request has POST data. Note that postData might still be omitted when this flag is true when the data is too long.",
+                            "optional": true,
+                            "type": "boolean"
+                        },
+                        {
                             "name": "mixedContentType",
                             "description": "The mixed content type of the request.",
                             "optional": true,
@@ -7151,7 +7527,22 @@
                             "items": {
                                 "$ref": "SignedCertificateTimestamp"
                             }
+                        },
+                        {
+                            "name": "certificateTransparencyCompliance",
+                            "description": "Whether the request complied with Certificate Transparency policy",
+                            "$ref": "CertificateTransparencyCompliance"
                         }
+                    ]
+                },
+                {
+                    "id": "CertificateTransparencyCompliance",
+                    "description": "Whether the request complied with Certificate Transparency policy.",
+                    "type": "string",
+                    "enum": [
+                        "unknown",
+                        "not-compliant",
+                        "compliant"
                     ]
                 },
                 {
@@ -7814,6 +8205,12 @@
                             "experimental": true,
                             "optional": true,
                             "type": "integer"
+                        },
+                        {
+                            "name": "maxPostDataSize",
+                            "description": "Longest post body size (in bytes) that would be included in requestWillBeSent notification",
+                            "optional": true,
+                            "type": "integer"
                         }
                     ]
                 },
@@ -7897,6 +8294,24 @@
                             "name": "base64Encoded",
                             "description": "True, if content was sent as base64.",
                             "type": "boolean"
+                        }
+                    ]
+                },
+                {
+                    "name": "getRequestPostData",
+                    "description": "Returns post data sent with the request. Returns an error when no data was sent with the request.",
+                    "parameters": [
+                        {
+                            "name": "requestId",
+                            "description": "Identifier of the network request to get content for.",
+                            "$ref": "RequestId"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "postData",
+                            "description": "Base64-encoded request body.",
+                            "type": "string"
                         }
                     ]
                 },
@@ -8398,6 +8813,12 @@
                             "description": "Frame identifier.",
                             "optional": true,
                             "$ref": "Page.FrameId"
+                        },
+                        {
+                            "name": "hasUserGesture",
+                            "description": "Whether the request is initiated by a user gesture. Defaults to false.",
+                            "optional": true,
+                            "type": "boolean"
                         }
                     ]
                 },
@@ -9739,6 +10160,12 @@
                             "description": "Intended transition type.",
                             "optional": true,
                             "$ref": "TransitionType"
+                        },
+                        {
+                            "name": "frameId",
+                            "description": "Frame id to navigate, if not specified navigates the top frame.",
+                            "optional": true,
+                            "$ref": "FrameId"
                         }
                     ],
                     "returns": [
@@ -9850,7 +10277,7 @@
                         },
                         {
                             "name": "headerTemplate",
-                            "description": "HTML template for the print header. Should be valid HTML markup with following\nclasses used to inject printing values into them:\n- date - formatted print date\n- title - document title\n- url - document location\n- pageNumber - current page number\n- totalPages - total pages in the document\n\nFor example, <span class=title></span> would generate span containing the title.",
+                            "description": "HTML template for the print header. Should be valid HTML markup with following\nclasses used to inject printing values into them:\n- `date`: formatted print date\n- `title`: document title\n- `url`: document location\n- `pageNumber`: current page number\n- `totalPages`: total pages in the document\n\nFor example, `<span class=title></span>` would generate span containing the title.",
                             "optional": true,
                             "type": "string"
                         },
@@ -9859,6 +10286,12 @@
                             "description": "HTML template for the print footer. Should use the same format as the `headerTemplate`.",
                             "optional": true,
                             "type": "string"
+                        },
+                        {
+                            "name": "preferCSSPageSize",
+                            "description": "Whether or not to prefer page size as defined by css. Defaults to false,\nin which case the content will be scaled to fit the paper size.",
+                            "optional": true,
+                            "type": "boolean"
                         }
                     ],
                     "returns": [
@@ -9977,6 +10410,18 @@
                         {
                             "name": "enabled",
                             "description": "Whether to block ads.",
+                            "type": "boolean"
+                        }
+                    ]
+                },
+                {
+                    "name": "setBypassCSP",
+                    "description": "Enable page Content Security Policy by-passing.",
+                    "experimental": true,
+                    "parameters": [
+                        {
+                            "name": "enabled",
+                            "description": "Whether to bypass page CSP.",
                             "type": "boolean"
                         }
                     ]
@@ -10229,6 +10674,11 @@
                     "description": "Force the page stop all navigations and pending resource fetches."
                 },
                 {
+                    "name": "crash",
+                    "description": "Crashes renderer on the IO thread, generates minidumps.",
+                    "experimental": true
+                },
+                {
                     "name": "stopScreencast",
                     "description": "Stops sending each frame in the `screencastFrame`.",
                     "experimental": true
@@ -10408,6 +10858,11 @@
                             "$ref": "DialogType"
                         },
                         {
+                            "name": "hasBrowserHandler",
+                            "description": "True iff browser is capable showing or acting on the given dialog. When browser has no\ndialog handler for given target, calling alert while Page domain is engaged will stall\nthe page execution. Execution can be resumed via calling Page.handleJavaScriptDialog.",
+                            "type": "boolean"
+                        },
+                        {
                             "name": "defaultPrompt",
                             "description": "Default dialog prompt.",
                             "optional": true,
@@ -10445,6 +10900,23 @@
                         {
                             "name": "timestamp",
                             "$ref": "Network.MonotonicTime"
+                        }
+                    ]
+                },
+                {
+                    "name": "navigatedWithinDocument",
+                    "description": "Fired when same-document navigation happens, e.g. due to history API usage or anchor navigation.",
+                    "experimental": true,
+                    "parameters": [
+                        {
+                            "name": "frameId",
+                            "description": "Id of the frame.",
+                            "$ref": "FrameId"
+                        },
+                        {
+                            "name": "url",
+                            "description": "Frame's new url.",
+                            "type": "string"
                         }
                     ]
                 },
@@ -10743,7 +11215,7 @@
                 },
                 {
                     "name": "setOverrideCertificateErrors",
-                    "description": "Enable/disable overriding certificate errors. If enabled, all certificate error events need to\nbe handled by the DevTools client and should be answered with handleCertificateError commands.",
+                    "description": "Enable/disable overriding certificate errors. If enabled, all certificate error events need to\nbe handled by the DevTools client and should be answered with `handleCertificateError` commands.",
                     "deprecated": true,
                     "parameters": [
                         {
@@ -10757,7 +11229,7 @@
             "events": [
                 {
                     "name": "certificateError",
-                    "description": "There is a certificate error. If overriding certificate errors is enabled, then it should be\nhandled with the handleCertificateError command. Note: this event does not fire if the\ncertificate error has been allowed internally. Only one client per target should override\ncertificate errors at the same time.",
+                    "description": "There is a certificate error. If overriding certificate errors is enabled, then it should be\nhandled with the `handleCertificateError` command. Note: this event does not fire if the\ncertificate error has been allowed internally. Only one client per target should override\ncertificate errors at the same time.",
                     "deprecated": true,
                     "parameters": [
                         {
@@ -11636,17 +12108,6 @@
                             "deprecated": true,
                             "optional": true,
                             "$ref": "TargetID"
-                        }
-                    ]
-                },
-                {
-                    "name": "setAttachToFrames",
-                    "experimental": true,
-                    "parameters": [
-                        {
-                            "name": "value",
-                            "description": "Whether to attach to frames.",
-                            "type": "boolean"
                         }
                     ]
                 },

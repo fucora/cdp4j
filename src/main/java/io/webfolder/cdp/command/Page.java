@@ -204,11 +204,12 @@ public interface Page {
      * @param url URL to navigate the page to.
      * @param referrer Referrer URL.
      * @param transitionType Intended transition type.
+     * @param frameId Frame id to navigate, if not specified navigates the top frame.
      * 
      * @return NavigateResult
      */
     NavigateResult navigate(String url, @Optional String referrer,
-            @Optional TransitionType transitionType);
+            @Optional TransitionType transitionType, @Optional String frameId);
 
     /**
      * Navigates current page to the given history entry.
@@ -236,14 +237,16 @@ public interface Page {
      * Defaults to false.
      * @param headerTemplate HTML template for the print header. Should be valid HTML markup with following
      * classes used to inject printing values into them:
-     * - date - formatted print date
-     * - title - document title
-     * - url - document location
-     * - pageNumber - current page number
-     * - totalPages - total pages in the document
+     * - <code>date</code>: formatted print date
+     * - <code>title</code>: document title
+     * - <code>url</code>: document location
+     * - <code>pageNumber</code>: current page number
+     * - <code>totalPages</code>: total pages in the document
      *
-     * For example, <span class=title></span> would generate span containing the title.
-     * @param footerTemplate HTML template for the print footer. Should use the same format as the <code>headerTemplate</code>.
+     * For example, <code>&lt;span class=title&gy;&lt;/span&gt;</code> would generate span containing the title.
+     * @param footerTemplate HTML template for the print footer. Should use the same format as the <code>headerTemplate<code>.
+     * @param preferCSSPageSize Whether or not to prefer page size as defined by css. Defaults to false,
+     * in which case the content will be scaled to fit the paper size.
      * 
      * @return Base64-encoded pdf data.
      */
@@ -253,7 +256,7 @@ public interface Page {
             @Optional Double paperHeight, @Optional Double marginTop, @Optional Double marginBottom,
             @Optional Double marginLeft, @Optional Double marginRight, @Optional String pageRanges,
             @Optional Boolean ignoreInvalidPageRanges, @Optional String headerTemplate,
-            @Optional String footerTemplate);
+            @Optional String footerTemplate, @Optional Boolean preferCSSPageSize);
 
     /**
      * Reloads given page optionally ignoring the cache.
@@ -311,6 +314,14 @@ public interface Page {
      */
     @Experimental
     void setAdBlockingEnabled(Boolean enabled);
+
+    /**
+     * Enable page Content Security Policy by-passing.
+     * 
+     * @param enabled Whether to bypass page CSP.
+     */
+    @Experimental
+    void setBypassCSP(Boolean enabled);
 
     /**
      * Overrides the values of device screen dimensions (window.screen.width, window.screen.height,
@@ -395,7 +406,7 @@ public interface Page {
     void setTouchEmulationEnabled(Boolean enabled, @Optional Platform configuration);
 
     /**
-     * Starts sending each frame using the <code>screencastFrame</code> event.
+     * Starts sending each frame using the <code>screencastFrame<code> event.
      * 
      * @param format Image compression format.
      * @param quality Compression quality from range [0..100].
@@ -414,7 +425,13 @@ public interface Page {
     void stopLoading();
 
     /**
-     * Stops sending each frame in the <code>screencastFrame</code>.
+     * Crashes renderer on the IO thread, generates minidumps.
+     */
+    @Experimental
+    void crash();
+
+    /**
+     * Stops sending each frame in the <code>screencastFrame<code>.
      */
     @Experimental
     void stopScreencast();
@@ -518,7 +535,7 @@ public interface Page {
     void setTouchEmulationEnabled(Boolean enabled);
 
     /**
-     * Starts sending each frame using the <code>screencastFrame</code> event.
+     * Starts sending each frame using the <code>screencastFrame<code> event.
      */
     @Experimental
     void startScreencast();

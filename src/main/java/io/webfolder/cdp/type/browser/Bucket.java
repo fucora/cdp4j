@@ -15,37 +15,60 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.webfolder.cdp.type.runtime;
+package io.webfolder.cdp.type.browser;
 
 import io.webfolder.cdp.annotation.Experimental;
 
 /**
- * If <code>debuggerId<code> is set stack trace comes from another debugger and can be resolved there
- * This
- * allows to track cross-debugger calls
- * See <code>Runtime</code>
- * <code>StackTrace</code> and <code>Debugger</code>
- * <code>paused</code> for usages
+ * Chrome histogram bucket
  */
 @Experimental
-public class StackTraceId {
-    private String id;
+public class Bucket {
+    private Integer low;
 
-    private String debuggerId;
+    private Integer high;
 
-    public String getId() {
-        return id;
+    private Integer count;
+
+    /**
+     * Minimum value (inclusive).
+     */
+    public Integer getLow() {
+        return low;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    /**
+     * Minimum value (inclusive).
+     */
+    public void setLow(Integer low) {
+        this.low = low;
     }
 
-    public String getDebuggerId() {
-        return debuggerId;
+    /**
+     * Maximum value (exclusive).
+     */
+    public Integer getHigh() {
+        return high;
     }
 
-    public void setDebuggerId(String debuggerId) {
-        this.debuggerId = debuggerId;
+    /**
+     * Maximum value (exclusive).
+     */
+    public void setHigh(Integer high) {
+        this.high = high;
+    }
+
+    /**
+     * Number of samples.
+     */
+    public Integer getCount() {
+        return count;
+    }
+
+    /**
+     * Number of samples.
+     */
+    public void setCount(Integer count) {
+        this.count = count;
     }
 }

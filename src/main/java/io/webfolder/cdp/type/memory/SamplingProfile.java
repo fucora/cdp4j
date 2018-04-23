@@ -15,33 +15,22 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.webfolder.cdp.event.css;
+package io.webfolder.cdp.type.memory;
 
-import io.webfolder.cdp.annotation.Domain;
-import io.webfolder.cdp.annotation.EventName;
-import javafx.css.FontFace;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Fires whenever a web font is updated
- * A non-empty font parameter indicates a successfully loaded
- * web font
+ * Array of heap profile samples
  */
-@Domain("CSS")
-@EventName("fontsUpdated")
-public class FontsUpdated {
-    private FontFace font;
+public class SamplingProfile {
+    private List<SamplingProfileNode> samples = new ArrayList<>();
 
-    /**
-     * The web font that has loaded.
-     */
-    public FontFace getFont() {
-        return font;
+    public List<SamplingProfileNode> getSamples() {
+        return samples;
     }
 
-    /**
-     * The web font that has loaded.
-     */
-    public void setFont(FontFace font) {
-        this.font = font;
+    public void setSamples(List<SamplingProfileNode> samples) {
+        this.samples = samples;
     }
 }

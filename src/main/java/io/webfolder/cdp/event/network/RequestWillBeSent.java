@@ -50,6 +50,8 @@ public class RequestWillBeSent {
 
     private String frameId;
 
+    private Boolean hasUserGesture;
+
     /**
      * Request identifier.
      */
@@ -188,5 +190,19 @@ public class RequestWillBeSent {
      */
     public void setFrameId(String frameId) {
         this.frameId = frameId;
+    }
+
+    /**
+     * Whether the request is initiated by a user gesture. Defaults to false.
+     */
+    public Boolean isHasUserGesture() {
+        return hasUserGesture;
+    }
+
+    /**
+     * Whether the request is initiated by a user gesture. Defaults to false.
+     */
+    public void setHasUserGesture(Boolean hasUserGesture) {
+        this.hasUserGesture = hasUserGesture;
     }
 }

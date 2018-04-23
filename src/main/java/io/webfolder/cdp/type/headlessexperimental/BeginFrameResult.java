@@ -20,16 +20,10 @@ package io.webfolder.cdp.type.headlessexperimental;
 public class BeginFrameResult {
     private Boolean hasDamage;
 
-    private Boolean mainFrameContentUpdated;
-
     private String screenshotData;
 
     public Boolean getHasDamage() {
         return hasDamage;
-    }
-
-    public Boolean getMainFrameContentUpdated() {
-        return mainFrameContentUpdated;
     }
 
     public String getScreenshotData() {

@@ -19,13 +19,13 @@ package io.webfolder.cdp.type.runtime;
 
 /**
  * Represents function call argument
- * Either remote object id <code>objectId</code>, primitive <code>value</code>,
+ * Either remote object id <code>objectId<code>, primitive <code>value<code>,
  * unserializable primitive value or neither of (for undefined) them should be specified
  */
 public class CallArgument {
     private Object value;
 
-    private UnserializableValue unserializableValue;
+    private String unserializableValue;
 
     private String objectId;
 
@@ -46,14 +46,14 @@ public class CallArgument {
     /**
      * Primitive value which can not be JSON-stringified.
      */
-    public UnserializableValue getUnserializableValue() {
+    public String getUnserializableValue() {
         return unserializableValue;
     }
 
     /**
      * Primitive value which can not be JSON-stringified.
      */
-    public void setUnserializableValue(UnserializableValue unserializableValue) {
+    public void setUnserializableValue(String unserializableValue) {
         this.unserializableValue = unserializableValue;
     }
 

@@ -51,7 +51,7 @@ public interface JavaScript {
         Runtime runtime = getThis().getCommand().getRuntime();
         EvaluateResult result = runtime.evaluate(expression, null, null,
                                                     null, null, null,
-                                                    null, null, null);
+                                                    null, null, null, null, null);
         if (result == null) {
             return null;
         }

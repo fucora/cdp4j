@@ -24,6 +24,7 @@ import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.constant.Platform;
 import io.webfolder.cdp.type.dom.RGBA;
 import io.webfolder.cdp.type.emulation.ScreenOrientation;
+import io.webfolder.cdp.type.emulation.SetVirtualTimePolicyResult;
 import io.webfolder.cdp.type.emulation.VirtualTimePolicy;
 import io.webfolder.cdp.type.page.Viewport;
 
@@ -162,13 +163,15 @@ public interface Emulation {
      * virtualTimeBudgetExpired event is sent.
      * @param maxVirtualTimeTaskStarvationCount If set this specifies the maximum number of tasks that can be run before virtual is forced
      * forwards to prevent deadlock.
+     * @param waitForNavigation If set the virtual time policy change should be deferred until any frame starts navigating.
+     * Note any previous deferred policy change is superseded.
      * 
-     * @return Absolute timestamp at which virtual time was first enabled (milliseconds since epoch).
+     * @return SetVirtualTimePolicyResult
      */
     @Experimental
-    @Returns("virtualTimeBase")
-    Double setVirtualTimePolicy(VirtualTimePolicy policy, @Optional Double budget,
-            @Optional Integer maxVirtualTimeTaskStarvationCount);
+    SetVirtualTimePolicyResult setVirtualTimePolicy(VirtualTimePolicy policy,
+            @Optional Double budget, @Optional Integer maxVirtualTimeTaskStarvationCount,
+            @Optional Boolean waitForNavigation);
 
     /**
      * Resizes the frame/viewport of the page. Note that this does not affect the frame's container
@@ -222,9 +225,8 @@ public interface Emulation {
      * the current virtual time policy.  Note this supersedes any previous time budget.
      * 
      * 
-     * @return Absolute timestamp at which virtual time was first enabled (milliseconds since epoch).
+     * @return SetVirtualTimePolicyResult
      */
     @Experimental
-    @Returns("virtualTimeBase")
-    Double setVirtualTimePolicy(VirtualTimePolicy policy);
+    SetVirtualTimePolicyResult setVirtualTimePolicy(VirtualTimePolicy policy);
 }

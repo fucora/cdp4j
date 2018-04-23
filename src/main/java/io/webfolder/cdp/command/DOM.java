@@ -184,16 +184,6 @@ public interface DOM {
      * Returns node's HTML markup.
      * 
      * @param nodeId Identifier of the node.
-     * 
-     * @return Outer HTML markup.
-     */
-    @Returns("outerHTML")
-    String getOuterHTML(@Optional Integer nodeId);
-
-    /**
-     * Returns node's HTML markup.
-     * 
-     * @param nodeId Identifier of the node.
      * @param backendNodeId Identifier of the backend node.
      * @param objectId JavaScript object id of the node wrapper.
      * 
@@ -450,6 +440,14 @@ public interface DOM {
      */
     @Experimental
     void undo();
+
+    /**
+     * Returns iframe node that owns iframe with the given domain.
+     * 
+     */
+    @Experimental
+    @Returns("nodeId")
+    Integer getFrameOwner(String frameId);
 
     /**
      * Creates a deep copy of the specified node and places it into the target container before the

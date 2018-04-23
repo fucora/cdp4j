@@ -23,7 +23,7 @@ import io.webfolder.cdp.annotation.EventName;
 /**
  * There is a certificate error
  * If overriding certificate errors is enabled, then it should be
- * handled with the handleCertificateError command
+ * handled with the <code>handleCertificateError</code> command
  * Note: this event does not fire if the
  * certificate error has been allowed internally
  * Only one client per target should override

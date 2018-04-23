@@ -35,6 +35,8 @@ public class LayoutTreeNode {
 
     private Integer styleIndex;
 
+    private Integer paintOrder;
+
     /**
      * The index of the related DOM node in the <code>domNodes</code> array returned by <code>getSnapshot</code>.
      */
@@ -92,16 +94,34 @@ public class LayoutTreeNode {
     }
 
     /**
-     * Index into the <code>computedStyles</code> array returned by <code>getSnapshot</code>.
+     * Index into the <code>computedStyles<code> array returned by <code>getSnapshot<code>.
      */
     public Integer getStyleIndex() {
         return styleIndex;
     }
 
     /**
-     * Index into the <code>computedStyles</code> array returned by <code>getSnapshot</code>.
+     * Index into the <code>computedStyles<code> array returned by <code>getSnapshot</code>.
      */
     public void setStyleIndex(Integer styleIndex) {
         this.styleIndex = styleIndex;
+    }
+
+    /**
+     * Global paint order index, which is determined by the stacking order of the nodes. Nodes
+     * that are painted together will have the same index. Only provided if includePaintOrder in
+     * getSnapshot was true.
+     */
+    public Integer getPaintOrder() {
+        return paintOrder;
+    }
+
+    /**
+     * Global paint order index, which is determined by the stacking order of the nodes. Nodes
+     * that are painted together will have the same index. Only provided if includePaintOrder in
+     * getSnapshot was true.
+     */
+    public void setPaintOrder(Integer paintOrder) {
+        this.paintOrder = paintOrder;
     }
 }

@@ -39,7 +39,10 @@ public enum ObjectType {
     Boolean("boolean"),
 
     @SerializedName("symbol")
-    Symbol("symbol");
+    Symbol("symbol"),
+
+    @SerializedName("bigint")
+    Bigint("bigint");
 
     public final String value;
 
