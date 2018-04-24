@@ -218,13 +218,13 @@ public enum Events {
   DOMDistributedNodesUpdated("DOM", "distributedNodesUpdated", DistributedNodesUpdated.class),
 
   /**
-   * Fired when <code>Document<code> has been totally updated
+   * Fired when <code>Document</code> has been totally updated
    * Node ids are no longer valid
    */
   DOMDocumentUpdated("DOM", "documentUpdated", DocumentUpdated.class),
 
   /**
-   * Fired when <code>Element<code>'s inline style is modified via a CSS property modification
+   * Fired when <code>Element</code>'s inline style is modified via a CSS property modification
    */
   DOMInlineStyleInvalidated("DOM", "inlineStyleInvalidated", InlineStyleInvalidated.class),
 
@@ -479,7 +479,7 @@ public enum Events {
   PageScreencastFrame("Page", "screencastFrame", ScreencastFrame.class),
 
   /**
-   * Fired when the page with currently enabled screencast was shown or hidden </code>
+   * Fired when the page with currently enabled screencast was shown or hidden
    */
   PageScreencastVisibilityChanged("Page", "screencastVisibilityChanged", ScreencastVisibilityChanged.class),
 
@@ -700,7 +700,7 @@ public enum Events {
   }
 
   @Override
-  public java.lang.String toString() {
+  public String toString() {
     return domain + "." + name;
   }
 }

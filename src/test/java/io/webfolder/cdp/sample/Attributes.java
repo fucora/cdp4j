@@ -19,7 +19,6 @@ package io.webfolder.cdp.sample;
 
 import java.net.URL;
 
-import io.webfolder.cdp.ChromiumDownloader;
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
@@ -31,7 +30,7 @@ public class Attributes {
 
         Launcher launcher = new Launcher();
 
-        try (SessionFactory factory = launcher.launch(new ChromiumDownloader().download());
+        try (SessionFactory factory = launcher.launch();
                             Session session = factory.create()) {
             session.navigate(url.toString());
             session.waitDocumentReady();

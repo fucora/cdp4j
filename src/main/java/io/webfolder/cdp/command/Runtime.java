@@ -127,7 +127,7 @@ public interface Runtime {
      * @param returnByValue Whether the result is expected to be a JSON object that should be sent by value.
      * @param generatePreview Whether preview should be generated for the result.
      * @param userGesture Whether execution should be treated as initiated by user in the UI.
-     * @param awaitPromise Whether execution should <code>await<code> for resulting value and return once awaited promise is
+     * @param awaitPromise Whether execution should <code>await</code> for resulting value and return once awaited promise is
      * resolved.
      * @param throwOnSideEffect Whether to throw an exception if side effect cannot be ruled out during evaluation.
      * @param timeout Terminate execution after timing out (number of milliseconds).
@@ -218,7 +218,7 @@ public interface Runtime {
      * @param includeCommandLineAPI Determines whether Command Line API should be available during the evaluation.
      * @param returnByValue Whether the result is expected to be a JSON object which should be sent by value.
      * @param generatePreview Whether preview should be generated for the result.
-     * @param awaitPromise Whether execution should <code>await<code> for resulting value and return once awaited promise is
+     * @param awaitPromise Whether execution should <code>await</code> for resulting value and return once awaited promise is
      * resolved.
      * 
      * @return RunScriptResult

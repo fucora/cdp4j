@@ -143,7 +143,7 @@ public interface Network {
 
     /**
      * Returns all browser cookies. Depending on the backend support, will return detailed cookie
-     * information in the <code>cookies<code> field.
+     * information in the <code>cookies</code> field.
      * 
      * @return Array of cookie objects.
      */
@@ -161,7 +161,7 @@ public interface Network {
 
     /**
      * Returns all browser cookies for the current URL. Depending on the backend support, will return
-     * detailed cookie information in the <code>cookies<code> field.
+     * detailed cookie information in the <code>cookies</code> field.
      * 
      * @param urls The list of URLs for which applicable cookies will be fetched
      * 

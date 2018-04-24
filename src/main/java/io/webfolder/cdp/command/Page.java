@@ -431,7 +431,7 @@ public interface Page {
     void crash();
 
     /**
-     * Stops sending each frame in the <code>screencastFrame<code>.
+     * Stops sending each frame in the <code>screencastFrame</code>.
      */
     @Experimental
     void stopScreencast();
@@ -535,7 +535,7 @@ public interface Page {
     void setTouchEmulationEnabled(Boolean enabled);
 
     /**
-     * Starts sending each frame using the <code>screencastFrame<code> event.
+     * Starts sending each frame using the <code>screencastFrame</code> event.
      */
     @Experimental
     void startScreencast();
