@@ -106,7 +106,7 @@ class SessionInvocationHandler implements InvocationHandler {
             context = new WSContext();
             contextList.put(id, context);
             webSocket.sendText(json);
-            context.await();
+            context.await(session.getConnectionTimeout());
         } else {
             throw new CdpException("WebSocket connection is not alive");
         }
