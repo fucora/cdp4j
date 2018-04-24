@@ -19,7 +19,7 @@ package io.webfolder.cdp.event.css;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
-import javafx.css.FontFace;
+import io.webfolder.cdp.type.css.FontFace;
 
 /**
  * Fires whenever a web font is updated
