@@ -138,7 +138,7 @@ public class Session implements AutoCloseable,
         return sessionId;
     }
 
-    public int getConnectionTimeout(){
+    public int getConnectionTimeout() {
         return sesessionFactory.getConnectionTimeout();
     }
 

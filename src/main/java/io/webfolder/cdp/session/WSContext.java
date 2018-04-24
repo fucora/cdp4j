@@ -34,7 +34,7 @@ class WSContext {
 
     private CommandException error;
 
-    public void await(final int timeout) {
+    void await(final int timeout) {
         try {
             latch.await(timeout, MILLISECONDS);
         } catch (InterruptedException e) {
@@ -42,21 +42,21 @@ class WSContext {
         }
     }
 
-    public void setData(final JsonElement data) {
+    void setData(final JsonElement data) {
         this.data = data;
         latch.countDown();
     }
 
-    public JsonElement getData() {
+    JsonElement getData() {
         return data;
     }
 
-    public void setError(CommandException error) {
+    void setError(CommandException error) {
         this.error = error;
         latch.countDown();
     }
 
-    public CommandException getError() {
+    CommandException getError() {
         return error;
     }
 }

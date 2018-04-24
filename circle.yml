@@ -32,6 +32,7 @@ jobs:
       - run:
           name: Install Chrome
           command: |
+            sudo apt install libappindicator3-1
             sudo dpkg -i chrome-archive/google-chrome*.deb # Might show "errors", fixed by next line
             sudo apt-get install -f
 
