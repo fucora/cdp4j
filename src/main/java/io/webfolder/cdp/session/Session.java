@@ -107,6 +107,10 @@ public class Session implements AutoCloseable,
 
     private final ReentrantLock lock = new ReentrantLock(true);
 
+    private static final int DEFAULT_WS_READ_TIMEOUT = 10 * 1000; // 10 seconds
+
+    private volatile int webSocketReadTimeout = DEFAULT_WS_READ_TIMEOUT;
+
     private static final ThreadLocal<Boolean> ENABLE_ENTRY_EXIT_LOG = 
                                                     withInitial(() -> { return TRUE; });
 
@@ -138,11 +142,15 @@ public class Session implements AutoCloseable,
         return sessionId;
     }
 
-    public int getConnectionTimeout() {
-        return sesessionFactory.getConnectionTimeout();
-    }
+    public int getWebSocketReadTimeout() {
+		return webSocketReadTimeout;
+	}
 
-    /**
+	public void setWebSocketReadTimeout(int webSocketReadTimeout) {
+		this.webSocketReadTimeout = webSocketReadTimeout;
+	}
+
+	/**
      * Close the this browser window
      */
     @Override

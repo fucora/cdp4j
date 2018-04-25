@@ -175,10 +175,6 @@ public class SessionFactory implements AutoCloseable {
         return host;
     }
 
-    public int getConnectionTimeout() {
-    	return connectionTimeout;
-	}
-
     public Session create() {
         return create(null);
     }
