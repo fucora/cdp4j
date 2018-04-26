@@ -233,6 +233,21 @@ public interface Debugger {
             @Optional String condition);
 
     /**
+     * Sets JavaScript breakpoint before each call to the given function.
+     * If another function was created from the same source as a given one,
+     * calling it will also trigger the breakpoint.
+     * 
+     * @param objectId Function object id.
+     * @param condition Expression to use as a breakpoint condition. When specified, debugger will
+     * stop on the breakpoint if this expression evaluates to true.
+     * 
+     * @return Id of the created breakpoint for further reference.
+     */
+    @Experimental
+    @Returns("breakpointId")
+    String setBreakpointOnFunctionCall(String objectId, @Optional String condition);
+
+    /**
      * Activates / deactivates all breakpoints on the page.
      * 
      * @param active New value for breakpoints active state.
@@ -365,6 +380,19 @@ public interface Debugger {
      * @return SetBreakpointByUrlResult
      */
     SetBreakpointByUrlResult setBreakpointByUrl(Integer lineNumber);
+
+    /**
+     * Sets JavaScript breakpoint before each call to the given function.
+     * If another function was created from the same source as a given one,
+     * calling it will also trigger the breakpoint.
+     * 
+     * @param objectId Function object id.
+     * 
+     * @return Id of the created breakpoint for further reference.
+     */
+    @Experimental
+    @Returns("breakpointId")
+    String setBreakpointOnFunctionCall(String objectId);
 
     /**
      * Edits JavaScript source live.
