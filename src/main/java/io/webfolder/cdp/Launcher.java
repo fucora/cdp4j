@@ -176,6 +176,7 @@ public class Launcher extends AbstractLauncher {
 
             process.getOutputStream().close();
             process.getInputStream().close();
+            process.getErrorStream().close();
 
             if (!process.isAlive()) {
                 throw new CdpException("No process: the chrome process is not alive.");
