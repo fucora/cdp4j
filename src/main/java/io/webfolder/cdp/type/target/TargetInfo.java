@@ -13,6 +13,8 @@ public class TargetInfo {
 
     private String openerId;
 
+    private String browserContextId;
+
     public String getTargetId() {
         return targetId;
     }
@@ -72,4 +74,12 @@ public class TargetInfo {
     public void setOpenerId(String openerId) {
         this.openerId = openerId;
     }
+
+	public String getBrowserContextId() {
+		return browserContextId;
+	}
+
+	public void setBrowserContextId(String browserContextId) {
+		this.browserContextId = browserContextId;
+	}
 }

@@ -42,29 +42,45 @@ import io.webfolder.cdp.logger.CdpLogger;
 
 class SessionInvocationHandler implements InvocationHandler {
 
+    private final AtomicInteger counter = new AtomicInteger(0);
+
     private final Gson gson;
 
     private final WebSocket webSocket;
 
-    private final AtomicInteger counter = new AtomicInteger(0);
-
-    private final Map<Integer, WSContext> contextList;
+    private final Map<Integer, WSContext> contexts;
 
     private final CdpLogger log;
 
     private final Session session;
 
-    public SessionInvocationHandler(
+    private final boolean browserSession;
+
+	private final String sessionId;
+
+	private final String targetId;
+
+	private final int timeout;
+
+    SessionInvocationHandler(
                     final Gson gson,
                     final WebSocket webSocket,
-                    final Map<Integer, WSContext> contextList,
+                    final Map<Integer, WSContext> contexts,
                     final Session session,
-                    final CdpLogger log) {
-        this.gson        = gson;
-        this.webSocket   = webSocket;
-        this.contextList = contextList;
-        this.session     = session;
-        this.log         = log;
+                    final CdpLogger log,
+                    final boolean browserSession,
+                    final String sessionId,
+                    final String targetId,
+                    final int webSocketReadTimeout) {
+        this.gson           = gson;
+        this.webSocket      = webSocket;
+        this.contexts       = contexts;
+        this.session        = session;
+        this.log            = log;
+        this.browserSession = browserSession;
+        this.sessionId      = sessionId;
+        this.targetId       = targetId;
+        this.timeout        = webSocketReadTimeout;
     }
 
     @Override
@@ -104,11 +120,17 @@ class SessionInvocationHandler implements InvocationHandler {
 
         if (session.isConnected()) {
             context = new WSContext();
-            contextList.put(id, context);
-            webSocket.sendText(json);
-            context.await(session.getWebSocketReadTimeout());
+            contexts.put(id, context);
+            if (browserSession) {
+            	webSocket.sendText(json);
+            } else {
+            	session.getCommand()
+            			.getTarget()
+            			.sendMessageToTarget(json, sessionId, targetId);
+            }
+            context.await(timeout);
         } else {
-            throw new CdpException("WebSocket connection is not alive");
+            throw new CdpException("WebSocket connection is not alive. id: " + id);
         }
 
         if ( context.getError() != null ) {
@@ -185,11 +207,15 @@ class SessionInvocationHandler implements InvocationHandler {
     }
 
     void dispose() {
-        for (WSContext context : contextList.values()) {
+        for (WSContext context : contexts.values()) {
             try {
                 context.setData(null);
             } catch (Throwable t) {
             }
         }
+    }
+
+    WSContext getContext(int id) {
+    	return contexts.get(id);
     }
 }

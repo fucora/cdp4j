@@ -83,7 +83,7 @@ public class Session implements AutoCloseable,
 
     private final AtomicBoolean enableSizzle = new AtomicBoolean();
 
-    private final List<EventListener<?>> eventListeners;
+    private final List<EventListener> listeners;
 
     private final SessionInvocationHandler invocationHandler;
 
@@ -99,7 +99,11 @@ public class Session implements AutoCloseable,
 
     private final Gson gson;
 
-    private TerminateListener terminateListener;
+	private final String targetId;
+
+	private final boolean browserSession;
+
+    private volatile TerminateListener terminateListener;
 
     private String frameId;
 
@@ -107,9 +111,7 @@ public class Session implements AutoCloseable,
 
     private final ReentrantLock lock = new ReentrantLock(true);
 
-    private static final int DEFAULT_WS_READ_TIMEOUT = 10 * 1000; // 10 seconds
-
-    private volatile int webSocketReadTimeout = DEFAULT_WS_READ_TIMEOUT;
+    private String browserContextId;
 
     private static final ThreadLocal<Boolean> ENABLE_ENTRY_EXIT_LOG = 
                                                     withInitial(() -> { return TRUE; });
@@ -117,24 +119,35 @@ public class Session implements AutoCloseable,
     Session(
             final Gson gson,
             final String sessionId,
+            final String targetId,
+            final String browserContextId,
             final WebSocket webSocket,
             final Map<Integer, WSContext> contextList,
             final SessionFactory sessionFactory,
-            final List<EventListener<?>> eventListeners,
-            final LoggerFactory loggerFactory) {
+            final List<EventListener> eventListeners,
+            final LoggerFactory loggerFactory,
+            final boolean browserSession,
+            final Session session) {
         this.sessionId = sessionId;
+        this.browserContextId = browserContextId;
         this.invocationHandler = new SessionInvocationHandler(
                                                         gson,
                                                         webSocket,
                                                         contextList,
-                                                        this,
-                                                        loggerFactory.getLogger("cdp4j.ws.request"));
+                                                        session == null ? this : session,
+                                                        loggerFactory.getLogger("cdp4j.ws.request"),
+                                                        browserSession,
+                                                        sessionId,
+                                                        targetId,
+                                                        sessionFactory.getWebSocketReadTimeout());
+        this.targetId         = targetId; 
         this.sesessionFactory = sessionFactory;
-        this.eventListeners   = eventListeners;
+        this.listeners   = eventListeners;
         this.webSocket        = webSocket;
         this.log              = loggerFactory.getLogger("cdp4j.session");
         this.logFlow          = loggerFactory.getLogger("cdp4j.flow");
         this.gson             = gson;
+        this.browserSession   = browserSession;
         this.command          = new Command(this);
     }
 
@@ -142,26 +155,21 @@ public class Session implements AutoCloseable,
         return sessionId;
     }
 
-    public int getWebSocketReadTimeout() {
-		return webSocketReadTimeout;
-	}
-
-	public void setWebSocketReadTimeout(int webSocketReadTimeout) {
-		this.webSocketReadTimeout = webSocketReadTimeout;
-	}
-
 	/**
      * Close the this browser window
      */
     @Override
     public void close() {
         logEntry("close");
-        if (connected.get()) {
+        if (isConnected()) {
             try {
                 sesessionFactory.close(this);
             } finally {
+            	terminate("closed");
                 connected.set(false);
             }
+        } else {
+        	dispose();
         }
     }
 
@@ -180,16 +188,16 @@ public class Session implements AutoCloseable,
     /**
      * Use {@link Session#getListenerManager()}
      */
-    public void addEventListener(EventListener<?> eventListener) {
-        eventListeners.add(eventListener);
+    public void addEventListener(EventListener eventListener) {
+        listeners.add(eventListener);
     }
 
     /**
      * Use {@link Session#getListenerManager()}
      */
-    public void removeEventEventListener(EventListener<?> eventListener) {
+    public void removeEventEventListener(EventListener eventListener) {
         if (eventListener != null) {
-            eventListeners.remove(eventListener);
+            listeners.remove(eventListener);
         }
     }
 
@@ -223,7 +231,7 @@ public class Session implements AutoCloseable,
         AtomicBoolean  ready  = new AtomicBoolean(false);
         if (isConnected()) {
             command.getPage().enable();
-            EventListener<?> loadListener = (e, d) -> {
+            EventListener loadListener = (e, d) -> {
                 if (PageLifecycleEvent.equals(e) &&
                         "load".equalsIgnoreCase(((LifecycleEvent) d).getName())) {
                     latch.countDown();
@@ -491,11 +499,13 @@ public class Session implements AutoCloseable,
 
     void dispose() {
         proxies.clear();
-        eventListeners.clear();
+        listeners.clear();
         invocationHandler.dispose();
-        try {
-            webSocket.disconnect(NORMAL, null, 1000); // max wait time to close: 1 seconds
-        } catch (Throwable t) {
+        if (browserSession && webSocket.isOpen()) {
+        	try {
+        		webSocket.disconnect(NORMAL, null, 1000); // max wait time to close: 1 seconds
+        	} catch (Throwable t) {
+        	}
         }
     }
 
@@ -504,8 +514,9 @@ public class Session implements AutoCloseable,
     }
 
     void terminate(String message) {
-        if (terminateListener != null) {
+        if ( terminateListener != null ) {
             terminateListener.onTerminate(new TerminateEvent(message));
+            terminateListener = null;
         }
     }
 
@@ -593,6 +604,10 @@ public class Session implements AutoCloseable,
         ENABLE_ENTRY_EXIT_LOG.set(TRUE);
     }
 
+    WSContext getContext(int id) {
+    	return invocationHandler.getContext(id);
+    }
+
     boolean isPrimitive(Class<?> klass) {
         if (String.class.equals(klass)) {
             return true;
@@ -618,7 +633,15 @@ public class Session implements AutoCloseable,
         return false;
     }
 
-    @Override
+	public String getTargetId() {
+		return targetId;
+	}
+	
+    public String getBrowserContextId() {
+		return browserContextId;
+	}
+
+	@Override
     public String toString() {
         return "Session [sessionId=" + sessionId + "]";
     }

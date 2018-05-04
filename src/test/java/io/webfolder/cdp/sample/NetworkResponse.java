@@ -30,6 +30,7 @@ import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 import io.webfolder.cdp.type.network.GetResponseBodyResult;
 import io.webfolder.cdp.type.network.Response;
+import io.webfolder.cdp.type.page.ResourceType;
 
 public class NetworkResponse {
 
@@ -54,7 +55,7 @@ public class NetworkResponse {
                     System.out.println("URL       : " + response.getUrl());
                     System.out.println("Status    : HTTP " + response.getStatus().intValue() + " " + response.getStatusText());
                     System.out.println("Mime Type : " + response.getMimeType());
-                    if (finished.contains(rr.getRequestId())) {
+                    if (finished.contains(rr.getRequestId()) && ResourceType.Document.equals(rr.getType())) {
                         GetResponseBodyResult rb = session.getCommand().getNetwork().getResponseBody(rr.getRequestId());
                         if ( rb != null ) {
                             String body = rb.getBody();

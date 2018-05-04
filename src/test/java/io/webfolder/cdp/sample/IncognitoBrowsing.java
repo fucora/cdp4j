@@ -34,15 +34,14 @@ public class IncognitoBrowsing {
 
         try (SessionFactory factory = launcher.launch(asList("--headless", "--disable-gpu"))) {
 
-            String firstContext = factory.createBrowserContext();
+            String firstContext = null;
 
-            try (Session firstSession = factory.create(firstContext)) {
+            try (Session firstSession = factory.create()) {
+            	firstContext = firstSession.getBrowserContextId();
                 firstSession.navigate("https://httpbin.org/cookies/set?SESSION_ID=1");
                 firstSession.waitDocumentReady();
                 String session1Content = (String) firstSession.evaluate("window.document.body.textContent");
-                factory.disposeBrowserContext(firstContext);
-
-                System.out.println(session1Content);
+                System.err.println(session1Content);
             }
 
             // firstSession & anotherSession share same SESSSION_ID value
@@ -51,7 +50,7 @@ public class IncognitoBrowsing {
                 anotherSession.navigate("https://httpbin.org/cookies");
                 anotherSession.waitDocumentReady();
                 String anotherSessionContent = (String) anotherSession.evaluate("window.document.body.textContent");
-                System.out.println(anotherSessionContent);
+                System.err.println(anotherSessionContent);
             }
 
             String  secondContext = factory.createBrowserContext();
@@ -59,7 +58,7 @@ public class IncognitoBrowsing {
                 secondSession.navigate("https://httpbin.org/cookies");
                 secondSession.waitDocumentReady();
                 String session2Content = (String) secondSession.evaluate("window.document.body.textContent");
-                System.out.println(session2Content); 
+                System.err.println(session2Content); 
             }
 
             // Dispose first context

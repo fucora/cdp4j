@@ -17,19 +17,20 @@
  */
 package io.webfolder.cdp;
 
-import io.webfolder.cdp.exception.CdpException;
-import io.webfolder.cdp.session.SessionFactory;
-import io.webfolder.cdp.session.SessionInfo;
+import static java.lang.String.format;
+import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.String.format;
-import static java.lang.Thread.sleep;
-import static java.util.Collections.emptyList;
+import io.webfolder.cdp.exception.CdpException;
+import io.webfolder.cdp.session.SessionFactory;
 
 abstract class AbstractLauncher {
+
     protected final SessionFactory factory;
+
+    private volatile boolean launched;
 
     public AbstractLauncher(final SessionFactory factory) {
         this.factory = factory;
@@ -72,18 +73,11 @@ abstract class AbstractLauncher {
         return list;
     }
 
-    public boolean launched() {
-        List<SessionInfo> list = emptyList();
-        try {
-            int timeout = 1000; // milliseconds
-            list = factory.list(timeout);
-        } catch (Throwable t) {
-            // ignore
-        }
-        return !list.isEmpty() ? true : false;
-    }
-
     public abstract String findChrome();
+
+    public boolean launched() {
+    	return launched;
+    }
 
     public final SessionFactory launch() {
         return launch(findChrome(), emptyList());
@@ -93,35 +87,14 @@ abstract class AbstractLauncher {
         return launch(findChrome(), arguments);
     }
 
-    public final SessionFactory launch(String chromeExecutablePath, List<String> arguments){
-        if (launched()) {
-            return factory;
-        }
-
+    public final SessionFactory launch(String chromeExecutablePath, List<String> arguments) {
         if (chromeExecutablePath == null || chromeExecutablePath.trim().isEmpty()) {
             throw new CdpException("chrome not found");
         }
-
-        List<String> list = getCommonParameters(chromeExecutablePath, arguments);
-
-        internalLaunch(list, arguments);
-
-        if (!launched()) {
-            int counter = 0;
-            final int maxCount = 20;
-            while (!launched() && counter < maxCount) {
-                try {
-                    sleep(500);
-                    counter += 1;
-                } catch (InterruptedException e) {
-                    break;
-                }
-            }
-        }
-
-        if (!launched()) {
-            throw new CdpException("Unable to connect to the chrome remote debugging server [" +
-                    factory.getHost() + ":" + factory.getPort() + "]");
+        if ( ! launched ) {
+        	List<String> list = getCommonParameters(chromeExecutablePath, arguments);
+        	internalLaunch(list, arguments);
+        	launched = true;
         }
         return factory;
     }

@@ -17,11 +17,8 @@
  */
 package io.webfolder.cdp.sample;
 
-import static java.util.Arrays.asList;
-
-import java.util.List;
-
 import io.webfolder.cdp.Launcher;
+import io.webfolder.cdp.session.Option;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
@@ -29,8 +26,6 @@ public class BingTranslator {
 
     public static void main(String[] args) {
         Launcher launcher = new Launcher();
-
-        List<String> words = asList("hello", "world");
 
         try (SessionFactory factory = launcher.launch();
                             Session session = factory.create()) {
@@ -41,31 +36,35 @@ public class BingTranslator {
                 .enableDetailLog()
                 .enableNetworkLog();
 
+            Option en = session
+            			.getOptions("#t_sl")
+            			.stream()
+            			.filter(p -> "en".equals(p.getValue()))
+            			.findFirst()
+            			.get();
+            
+            Option et = session
+	        			.getOptions("#t_tl")
+	        			.stream()
+	        			.filter(p -> "et".equals(p.getValue()))
+	        			.findFirst()
+	        			.get();
+
             session
-                .click(".sourceText #LS_LangList") // click source language
+                .click("#t_sl") // click source language
                 .wait(500)
-                .click(".sourceText td[value='en']") // choose English
+                .setSelectedIndex("#t_sl", en.getIndex()) // choose English
                 .wait(500)
-                .click(".destinationText #LS_LangList") // click destination language
+                .click("#t_tl") // click destination language
                 .wait(500)
-                .click(".destinationText td[value='et']") // choose Estonian
+                .setSelectedIndex("#t_tl", et.getIndex()) // choose Estonian
                 .wait(500);
 
-            StringBuilder builder = new StringBuilder();
-            
-            for (String word : words) {
-                String text = session
-                                .focus(".sourceText .srcTextarea")
-                                .selectInputText(".sourceText .srcTextarea")
-                                .sendBackspace()
-                                .sendKeys(word)
-                                .wait(1000)
-                                .getText("#destText");
-                
-                builder.append(text).append(" ");
-            }
-            
-            System.out.println(builder.toString());
+            session.focus("#t_sv")
+            		.sendKeys("hello world")
+            		.wait(1000);
+
+            System.out.println(session.getValue("#t_tv"));
         }
     }
 }

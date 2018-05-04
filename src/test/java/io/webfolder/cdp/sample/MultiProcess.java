@@ -47,7 +47,7 @@ public class MultiProcess {
                     try (Session session = sf.create()) {
                         session.navigate("https://webfolder.io");
                         session.waitDocumentReady();
-                        System.out.println("Content Length: " + session.getContent().length());
+                        System.err.println("Content Length: " + session.getContent().length());
                     }
                 }
             }
@@ -64,7 +64,7 @@ public class MultiProcess {
                     try (Session session = sf.create()) {
                         session.navigate("https://webfolder.io");
                         session.waitDocumentReady();
-                        System.out.println("Content Length: " + session.getContent().length());
+                        System.err.println("Content Length: " + session.getContent().length());
                     }
                 }
             }

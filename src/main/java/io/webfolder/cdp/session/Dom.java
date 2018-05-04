@@ -641,7 +641,17 @@ public interface Dom {
     default String getValue(
                     final String selector,
                     final Object ...args) {
-        return getAttribute(selector, "value", args);
+        String objectId = getThis().getObjectId(selector, args);
+        if (objectId == null) {
+            throw new ElementNotFoundException(format(selector, args));
+        }
+        String value = (String) getThis().getPropertyByObjectId(objectId, "value");
+        getThis().releaseObject(objectId);
+        if (value == null) {
+        	return null;
+        }
+        getThis().logExit("getValue", format(selector, args), value);
+        return value;
     }
 
     /**
