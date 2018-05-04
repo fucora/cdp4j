@@ -48,6 +48,7 @@ import com.google.gson.GsonBuilder;
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketException;
 import com.neovisionaries.ws.client.WebSocketFactory;
+import com.neovisionaries.ws.client.ZeroMasker;
 
 import io.webfolder.cdp.command.Target;
 import io.webfolder.cdp.exception.CdpException;
@@ -253,6 +254,7 @@ public class SessionFactory implements AutoCloseable {
     		webSocket = null;
     		try {
     			webSocket = factory.createSocket(webSocketDebuggerUrl);
+    			webSocket.setPayloadMask(new ZeroMasker());
     		} catch (IOException e) {
     			throw new CdpException(e);
     		}

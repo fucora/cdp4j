@@ -76,6 +76,7 @@
        <excludes>
         <exclude>com/neovisionaries/ws/client/WebSocketOutputStream.class</exclude>
         <exclude>com/neovisionaries/ws/client/WebSocketInputStream.class</exclude>
+        <exclude>com/neovisionaries/ws/client/WebSocket.class</exclude>
        </excludes>
       </filter>
      </filters>

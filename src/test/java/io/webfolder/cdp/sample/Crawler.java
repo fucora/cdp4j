@@ -180,7 +180,7 @@ public class Crawler {
             session.navigate(url);
             session.waitDocumentReady(pageLoadTimeout);
 
-            for (String requestId : finishedResources) {
+            for (String requestId : new ArrayList<>(finishedResources)) {
                 GetResponseBodyResult rb = session.getCommand().getNetwork().getResponseBody(requestId);
                 if ( rb.getBase64Encoded() ) {
                     webResource.setContent(getDecoder().decode(rb.getBody()));
