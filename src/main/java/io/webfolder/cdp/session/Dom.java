@@ -648,7 +648,7 @@ public interface Dom {
         String value = (String) getThis().getPropertyByObjectId(objectId, "value");
         getThis().releaseObject(objectId);
         if (value == null) {
-        	return null;
+            return null;
         }
         getThis().logExit("getValue", format(selector, args), value);
         return value;

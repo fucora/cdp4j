@@ -49,7 +49,7 @@ public class CloseSessionOnRedirect {
                     if (isRedirect) {
                         terminateSession = true;
                         session.stop();
-                    	session.close();
+                        session.close();
 
                         System.out.println("");
                         System.out.println("Redirect URL         : " + rws.getRequest().getUrl());

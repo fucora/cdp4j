@@ -76,7 +76,7 @@ abstract class AbstractLauncher {
     public abstract String findChrome();
 
     public boolean launched() {
-    	return launched;
+        return launched;
     }
 
     public final SessionFactory launch() {
@@ -92,9 +92,9 @@ abstract class AbstractLauncher {
             throw new CdpException("chrome not found");
         }
         if ( ! launched ) {
-        	List<String> list = getCommonParameters(chromeExecutablePath, arguments);
-        	internalLaunch(list, arguments);
-        	launched = true;
+            List<String> list = getCommonParameters(chromeExecutablePath, arguments);
+            internalLaunch(list, arguments);
+            launched = true;
         }
         return factory;
     }

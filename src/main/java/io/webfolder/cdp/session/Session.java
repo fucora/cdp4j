@@ -99,9 +99,9 @@ public class Session implements AutoCloseable,
 
     private final Gson gson;
 
-	private final String targetId;
+    private final String targetId;
 
-	private final boolean browserSession;
+    private final boolean browserSession;
 
     private volatile TerminateListener terminateListener;
 
@@ -155,7 +155,7 @@ public class Session implements AutoCloseable,
         return sessionId;
     }
 
-	/**
+    /**
      * Close the this browser window
      */
     @Override
@@ -165,11 +165,11 @@ public class Session implements AutoCloseable,
             try {
                 sesessionFactory.close(this);
             } finally {
-            	terminate("closed");
+                terminate("closed");
                 connected.set(false);
             }
         } else {
-        	dispose();
+            dispose();
         }
     }
 
@@ -502,10 +502,10 @@ public class Session implements AutoCloseable,
         listeners.clear();
         invocationHandler.dispose();
         if (browserSession && webSocket.isOpen()) {
-        	try {
-        		webSocket.disconnect(NORMAL, null, 1000); // max wait time to close: 1 seconds
-        	} catch (Throwable t) {
-        	}
+            try {
+                webSocket.disconnect(NORMAL, null, 1000); // max wait time to close: 1 seconds
+            } catch (Throwable t) {
+            }
         }
     }
 
@@ -605,7 +605,7 @@ public class Session implements AutoCloseable,
     }
 
     WSContext getContext(int id) {
-    	return invocationHandler.getContext(id);
+        return invocationHandler.getContext(id);
     }
 
     boolean isPrimitive(Class<?> klass) {
@@ -633,15 +633,15 @@ public class Session implements AutoCloseable,
         return false;
     }
 
-	public String getTargetId() {
-		return targetId;
-	}
-	
+    public String getTargetId() {
+        return targetId;
+    }
+    
     public String getBrowserContextId() {
-		return browserContextId;
-	}
+        return browserContextId;
+    }
 
-	@Override
+    @Override
     public String toString() {
         return "Session [sessionId=" + sessionId + "]";
     }

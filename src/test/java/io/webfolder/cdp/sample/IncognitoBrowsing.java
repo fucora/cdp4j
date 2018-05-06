@@ -37,7 +37,7 @@ public class IncognitoBrowsing {
             String firstContext = null;
 
             try (Session firstSession = factory.create()) {
-            	firstContext = firstSession.getBrowserContextId();
+                firstContext = firstSession.getBrowserContextId();
                 firstSession.navigate("https://httpbin.org/cookies/set?SESSION_ID=1");
                 firstSession.waitDocumentReady();
                 String session1Content = (String) firstSession.evaluate("window.document.body.textContent");

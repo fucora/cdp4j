@@ -92,7 +92,7 @@ class WSAdapter extends WebSocketAdapter {
     public void onTextMessage(
                             final WebSocket websocket,
                             final String data) throws Exception {
-    	onMessage(data, true);
+        onMessage(data, true);
     }
 
     void onMessage(final String data, boolean async) throws Exception {
@@ -146,12 +146,12 @@ class WSAdapter extends WebSocketAdapter {
                     }
                 }
             }
-		};
-		if (async) {
-			executor.execute(runnable);
-		} else {
-			runnable.run();
-		}
+        };
+        if (async) {
+            executor.execute(runnable);
+        } else {
+            runnable.run();
+        }
     }
 
     Map<String, Events> listEvents() {

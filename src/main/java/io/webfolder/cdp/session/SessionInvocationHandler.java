@@ -56,11 +56,11 @@ class SessionInvocationHandler implements InvocationHandler {
 
     private final boolean browserSession;
 
-	private final String sessionId;
+    private final String sessionId;
 
-	private final String targetId;
+    private final String targetId;
 
-	private final int timeout;
+    private final int timeout;
 
     SessionInvocationHandler(
                     final Gson gson,
@@ -122,11 +122,11 @@ class SessionInvocationHandler implements InvocationHandler {
             context = new WSContext();
             contexts.put(id, context);
             if (browserSession) {
-            	webSocket.sendText(json);
+                webSocket.sendText(json);
             } else {
-            	session.getCommand()
-            			.getTarget()
-            			.sendMessageToTarget(json, sessionId, targetId);
+                session.getCommand()
+                        .getTarget()
+                        .sendMessageToTarget(json, sessionId, targetId);
             }
             context.await(timeout);
         } else {
@@ -216,6 +216,6 @@ class SessionInvocationHandler implements InvocationHandler {
     }
 
     WSContext getContext(int id) {
-    	return contexts.get(id);
+        return contexts.get(id);
     }
 }

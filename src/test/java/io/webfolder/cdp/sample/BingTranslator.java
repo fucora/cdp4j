@@ -37,18 +37,18 @@ public class BingTranslator {
                 .enableNetworkLog();
 
             Option en = session
-            			.getOptions("#t_sl")
-            			.stream()
-            			.filter(p -> "en".equals(p.getValue()))
-            			.findFirst()
-            			.get();
+                        .getOptions("#t_sl")
+                        .stream()
+                        .filter(p -> "en".equals(p.getValue()))
+                        .findFirst()
+                        .get();
             
             Option et = session
-	        			.getOptions("#t_tl")
-	        			.stream()
-	        			.filter(p -> "et".equals(p.getValue()))
-	        			.findFirst()
-	        			.get();
+                        .getOptions("#t_tl")
+                        .stream()
+                        .filter(p -> "et".equals(p.getValue()))
+                        .findFirst()
+                        .get();
 
             session
                 .click("#t_sl") // click source language
@@ -61,8 +61,8 @@ public class BingTranslator {
                 .wait(500);
 
             session.focus("#t_sv")
-            		.sendKeys("hello world")
-            		.wait(1000);
+                    .sendKeys("hello world")
+                    .wait(1000);
 
             System.out.println(session.getValue("#t_tv"));
         }

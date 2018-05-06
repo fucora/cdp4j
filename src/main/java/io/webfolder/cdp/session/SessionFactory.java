@@ -93,13 +93,13 @@ public class SessionFactory implements AutoCloseable {
 
     private final ExecutorService threadPool;
 
-	private volatile Session browserSession;
+    private volatile Session browserSession;
 
-	private volatile boolean closed;
+    private volatile boolean closed;
 
     private String browserVersion;
 
-	private WebSocket webSocket;
+    private WebSocket webSocket;
 
     private volatile int webSocketReadTimeout = DEFAULT_WS_READ_TIMEOUT;
 
@@ -172,7 +172,7 @@ public class SessionFactory implements AutoCloseable {
                                     .create();
         this.factory.setConnectionTimeout(this.connectionTimeout);
         if (ThreadPoolExecutor.class.isAssignableFrom(threadPool.getClass())) {
-        	((ThreadPoolExecutor) threadPool).setKeepAliveTime(DEFAULT_WS_READ_TIMEOUT, SECONDS);
+            ((ThreadPoolExecutor) threadPool).setKeepAliveTime(DEFAULT_WS_READ_TIMEOUT, SECONDS);
         }
     }
 
@@ -189,57 +189,57 @@ public class SessionFactory implements AutoCloseable {
     }
 
     public Session create(String browserContextId) {
-    	boolean initialized = browserSession == null ? false : true;
-    	Session ms = getBrowserSession();
-    	Target target = ms.getCommand().getTarget();
-    	TabInfo tab = null;
-    	if ( ! initialized && (tab = tabs.poll()) == null ) {
-    		for (int i = 0; i < 1000; i++) {
-    			try {
-					tab = tabs.poll(5, MILLISECONDS);
-					if ( tab != null ) {
-						break;
-					}
-				} catch (InterruptedException e) {
-					throw new CdpException(e);
-				}
-    		}
-    	} else if (tab == null) {
-			target.createTarget("about:blank",
-		    					DEFAULT_SCREEN_WIDTH,
-		    					DEFAULT_SCREEN_HEIGHT,
-		    					browserContextId, false);
-    		for (int i = 0; i < 1000; i++) {
-    			try {
-					tab = tabs.poll(5, MILLISECONDS);
-					if ( tab != null ) {
-						break;
-					}
-				} catch (InterruptedException e) {
-					throw new CdpException(e);
-				}
-    		}
-    	}
+        boolean initialized = browserSession == null ? false : true;
+        Session ms = getBrowserSession();
+        Target target = ms.getCommand().getTarget();
+        TabInfo tab = null;
+        if ( ! initialized && (tab = tabs.poll()) == null ) {
+            for (int i = 0; i < 1000; i++) {
+                try {
+                    tab = tabs.poll(5, MILLISECONDS);
+                    if ( tab != null ) {
+                        break;
+                    }
+                } catch (InterruptedException e) {
+                    throw new CdpException(e);
+                }
+            }
+        } else if (tab == null) {
+            target.createTarget("about:blank",
+                                DEFAULT_SCREEN_WIDTH,
+                                DEFAULT_SCREEN_HEIGHT,
+                                browserContextId, false);
+            for (int i = 0; i < 1000; i++) {
+                try {
+                    tab = tabs.poll(5, MILLISECONDS);
+                    if ( tab != null ) {
+                        break;
+                    }
+                } catch (InterruptedException e) {
+                    throw new CdpException(e);
+                }
+            }
+        }
 
-		if (tab == null) {
-			throw new CdpException("Unable to create target");
-		}
+        if (tab == null) {
+            throw new CdpException("Unable to create target");
+        }
 
         String sessionId = target.attachToTarget(tab.getTargetId());
         tab.setSessionId(sessionId);
 
         Map<Integer, WSContext> contexts = new ConcurrentHashMap<>();
-		List<EventListener> listeners = new CopyOnWriteArrayList<>();
+        List<EventListener> listeners = new CopyOnWriteArrayList<>();
 
-		Session session = new Session(gson, tab.getSessionId(),
-        								tab.getTargetId(), browserContextId,
-        								webSocket, contexts,
-        								this, listeners,
-        								loggerFactory, false,
-        								browserSession);
+        Session session = new Session(gson, tab.getSessionId(),
+                                        tab.getTargetId(), browserContextId,
+                                        webSocket, contexts,
+                                        this, listeners,
+                                        loggerFactory, false,
+                                        browserSession);
         WSAdapter wsAdapter = new WSAdapter(gson, contexts,
-	        									listeners, threadPool,
-	        									loggerFactory.getLogger("cdp4j.ws.response"));
+                                                listeners, threadPool,
+                                                loggerFactory.getLogger("cdp4j.ws.response"));
         wsAdapter.setSession(session);
         wsAdapters.put(sessionId, wsAdapter);
         sessions.put(sessionId, session);
@@ -248,68 +248,68 @@ public class SessionFactory implements AutoCloseable {
     }
 
     Session getBrowserSession() {
-    	if (browserSession == null) {
-    		Map<String, Object> version = getVersion();
-    		String webSocketDebuggerUrl = (String) version.get("webSocketDebuggerUrl");
-    		webSocket = null;
-    		try {
-    			webSocket = factory.createSocket(webSocketDebuggerUrl);
-    			webSocket.setPayloadMask(new ZeroMasker());
-    		} catch (IOException e) {
-    			throw new CdpException(e);
-    		}
-    		Map<Integer, WSContext> contexts = new ConcurrentHashMap<>();
-    		List<EventListener> listeners = new CopyOnWriteArrayList<>();
-    		WSAdapter adapter = new WSAdapter(gson, contexts,
-					    				listeners, threadPool,
-					    				loggerFactory.getLogger("cdp4j.ws.response"));
-    		webSocket.addListener(adapter);
-    		try {
-    			webSocket.connect();
-    		} catch (WebSocketException e) {
-    			throw new CdpException(e);
-    		}
-    		webSocket.setAutoFlush(true);
+        if (browserSession == null) {
+            Map<String, Object> version = getVersion();
+            String webSocketDebuggerUrl = (String) version.get("webSocketDebuggerUrl");
+            webSocket = null;
+            try {
+                webSocket = factory.createSocket(webSocketDebuggerUrl);
+                webSocket.setPayloadMask(new ZeroMasker());
+            } catch (IOException e) {
+                throw new CdpException(e);
+            }
+            Map<Integer, WSContext> contexts = new ConcurrentHashMap<>();
+            List<EventListener> listeners = new CopyOnWriteArrayList<>();
+            WSAdapter adapter = new WSAdapter(gson, contexts,
+                                        listeners, threadPool,
+                                        loggerFactory.getLogger("cdp4j.ws.response"));
+            webSocket.addListener(adapter);
+            try {
+                webSocket.connect();
+            } catch (WebSocketException e) {
+                throw new CdpException(e);
+            }
+            webSocket.setAutoFlush(true);
 
-    		browserSession = new Session(gson, webSocketDebuggerUrl,
-    									webSocketDebuggerUrl, null,
-					    				webSocket, contexts,
-					    				this, listeners,
-					    				loggerFactory, true,
-					    				null);
-    		adapter.setSession(browserSession);
-    		browserSession.addEventListener(new TargetListener(sessions, wsAdapters, tabs));
-    		Target target = browserSession.getCommand().getTarget();
+            browserSession = new Session(gson, webSocketDebuggerUrl,
+                                        webSocketDebuggerUrl, null,
+                                        webSocket, contexts,
+                                        this, listeners,
+                                        loggerFactory, true,
+                                        null);
+            adapter.setSession(browserSession);
+            browserSession.addEventListener(new TargetListener(sessions, wsAdapters, tabs));
+            Target target = browserSession.getCommand().getTarget();
             target.setDiscoverTargets(TRUE);
             browserSession.onTerminate(event -> close());
-    	}
-    	return browserSession;
+        }
+        return browserSession;
     }
 
     public void close(Session session) {
-    	if (browserSession.isConnected()) {
-    		browserSession
-	    		.getCommand()
-	    		.getTarget()
-	    		.closeTarget(session.getTargetId());
-    	}
-		session.dispose();
-		wsAdapters.remove(session.getId());
-		sessions.remove(session.getId());
+        if (browserSession.isConnected()) {
+            browserSession
+                .getCommand()
+                .getTarget()
+                .closeTarget(session.getTargetId());
+        }
+        session.dispose();
+        wsAdapters.remove(session.getId());
+        sessions.remove(session.getId());
     }
 
     @Override
     public void close() {
-    	if (closed) {
-    		return;
-    	}
-    	closed = true;
-    	browserSession.dispose();
+        if (closed) {
+            return;
+        }
+        closed = true;
+        browserSession.dispose();
         sessions.clear();
         wsAdapters.clear();
         contexts.clear();
         tabs.clear();
-    	threadPool.shutdownNow();
+        threadPool.shutdownNow();
         browserSession = null;
     }
 
@@ -323,20 +323,20 @@ public class SessionFactory implements AutoCloseable {
         }
         if ( session != null ) {
                 browserSession
-                		.getCommand()
-                		.getTarget()
-                		.activateTarget(session.getTargetId());
+                        .getCommand()
+                        .getTarget()
+                        .activateTarget(session.getTargetId());
         }
     }
 
     public boolean isHeadless() {
         return getBrowserSession()
-        			.getCommand()
-					.getBrowser()
-					.getVersion()
-					.getUserAgent()
-					.toLowerCase(ENGLISH)
-					.contains("headless");
+                    .getCommand()
+                    .getBrowser()
+                    .getVersion()
+                    .getUserAgent()
+                    .toLowerCase(ENGLISH)
+                    .contains("headless");
     }
 
     protected Map<String, Object> getVersion() {
@@ -368,21 +368,21 @@ public class SessionFactory implements AutoCloseable {
 
     public String createBrowserContext() {
         String browserContextId = getBrowserSession()
-					                .getCommand()
-					                .getTarget()
-					                .createBrowserContext();
+                                    .getCommand()
+                                    .getTarget()
+                                    .createBrowserContext();
         contexts.add(browserContextId);
         return browserContextId;
     }
 
     public void disposeBrowserContext(final String browserContextId) {
-    	if (contexts.contains(browserContextId)) {
-    		getBrowserSession()
-		    		.getCommand()
-		    		.getTarget()
-		    		.disposeBrowserContext(browserContextId);
-    		contexts.remove(browserContextId);
-    	}
+        if (contexts.contains(browserContextId)) {
+            getBrowserSession()
+                    .getCommand()
+                    .getTarget()
+                    .disposeBrowserContext(browserContextId);
+            contexts.remove(browserContextId);
+        }
     }
 
     public List<String> listBrowserContextIds() {
@@ -408,12 +408,12 @@ public class SessionFactory implements AutoCloseable {
     }
 
     public int getWebSocketReadTimeout() {
-		return webSocketReadTimeout;
-	}
+        return webSocketReadTimeout;
+    }
 
-	public void setWebSocketReadTimeout(int webSocketReadTimeout) {
-		this.webSocketReadTimeout = webSocketReadTimeout;
-	}
+    public void setWebSocketReadTimeout(int webSocketReadTimeout) {
+        this.webSocketReadTimeout = webSocketReadTimeout;
+    }
 
     @Override
     public String toString() {
