@@ -24,6 +24,7 @@ import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.constant.DownloadBehavior;
 import io.webfolder.cdp.type.constant.ImageFormat;
 import io.webfolder.cdp.type.constant.Platform;
+import io.webfolder.cdp.type.constant.TargetLifecycleState;
 import io.webfolder.cdp.type.debugger.SearchMatch;
 import io.webfolder.cdp.type.emulation.ScreenOrientation;
 import io.webfolder.cdp.type.network.Cookie;
@@ -243,8 +244,8 @@ public interface Page {
      * - <code>pageNumber</code>: current page number
      * - <code>totalPages</code>: total pages in the document
      *
-     * For example, <code>&lt;span class=title&gy;&lt;/span&gt;</code> would generate span containing the title.
-     * @param footerTemplate HTML template for the print footer. Should use the same format as the <code>headerTemplate<code>.
+     * For example, <code><span class=title></span></code> would generate span containing the title.
+     * @param footerTemplate HTML template for the print footer. Should use the same format as the <code>headerTemplate</code>.
      * @param preferCSSPageSize Whether or not to prefer page size as defined by css. Defaults to false,
      * in which case the content will be scaled to fit the paper size.
      * 
@@ -406,7 +407,7 @@ public interface Page {
     void setTouchEmulationEnabled(Boolean enabled, @Optional Platform configuration);
 
     /**
-     * Starts sending each frame using the <code>screencastFrame<code> event.
+     * Starts sending each frame using the <code>screencastFrame</code> event.
      * 
      * @param format Image compression format.
      * @param quality Compression quality from range [0..100].
@@ -429,6 +430,22 @@ public interface Page {
      */
     @Experimental
     void crash();
+
+    /**
+     * Tries to close page, running its beforeunload hooks, if any.
+     */
+    @Experimental
+    void close();
+
+    /**
+     * Tries to update the web lifecycle state of the page.
+     * It will transition the page to the given state according to:
+     * https://github.com/WICG/web-lifecycle/
+     * 
+     * @param state Target lifecycle state
+     */
+    @Experimental
+    void setWebLifecycleState(TargetLifecycleState state);
 
     /**
      * Stops sending each frame in the <code>screencastFrame</code>.

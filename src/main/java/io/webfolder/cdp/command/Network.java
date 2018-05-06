@@ -200,6 +200,17 @@ public interface Network {
     GetResponseBodyForInterceptionResult getResponseBodyForInterception(String interceptionId);
 
     /**
+     * Returns a handle to the stream representing the response body. Note that after this command,
+     * the intercepted request can't be continued as is -- you either need to cancel it or to provide
+     * the response body. The stream only supports sequential read, IO.read will fail if the position
+     * is specified.
+     * 
+     */
+    @Experimental
+    @Returns("stream")
+    String takeResponseBodyForInterceptionAsStream(String interceptionId);
+
+    /**
      * This method sends a new XMLHttpRequest which is identical to the original one. The following
      * parameters should be identical: method, url, async, request body, extra headers, withCredentials
      * attribute, user, password.

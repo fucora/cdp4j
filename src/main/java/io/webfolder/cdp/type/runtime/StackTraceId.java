@@ -20,12 +20,12 @@ package io.webfolder.cdp.type.runtime;
 import io.webfolder.cdp.annotation.Experimental;
 
 /**
- * If <code>debuggerId<code> is set stack trace comes from another debugger and can be resolved there
+ * If <code>debuggerId</code> is set stack trace comes from another debugger and can be resolved there
  * This
  * allows to track cross-debugger calls
- * See <code>Runtime</code>
- * <code>StackTrace</code> and <code>Debugger</code>
- * <code>paused</code> for usages
+ * See <code>Runtime
+ * StackTrace</code> and <code>Debugger
+ * paused</code> for usages
  */
 @Experimental
 public class StackTraceId {

@@ -15,32 +15,25 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.webfolder.cdp.event.page;
+package io.webfolder.cdp.type.constant;
 
-import io.webfolder.cdp.annotation.Domain;
-import io.webfolder.cdp.annotation.EventName;
-import io.webfolder.cdp.annotation.Experimental;
+import com.google.gson.annotations.SerializedName;
 
-/**
- * Fired when the page with currently enabled screencast was shown or hidden <code>
- */
-@Experimental
-@Domain("Page")
-@EventName("screencastVisibilityChanged")
-public class ScreencastVisibilityChanged {
-    private Boolean visible;
+public enum TargetLifecycleState {
+    @SerializedName("frozen")
+    Frozen("frozen"),
 
-    /**
-     * True if the page is visible.
-     */
-    public Boolean isVisible() {
-        return visible;
+    @SerializedName("active")
+    Active("active");
+
+    public final String value;
+
+    TargetLifecycleState(String value) {
+        this.value = value;
     }
 
-    /**
-     * True if the page is visible.
-     */
-    public void setVisible(Boolean visible) {
-        this.visible = visible;
+    @Override
+    public String toString() {
+        return value;
     }
 }

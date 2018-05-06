@@ -63,8 +63,8 @@ public enum AXPropertyName {
     @SerializedName("autocomplete")
     Autocomplete("autocomplete"),
 
-    @SerializedName("haspopup")
-    Haspopup("haspopup"),
+    @SerializedName("hasPopup")
+    HasPopup("hasPopup"),
 
     @SerializedName("level")
     Level("level"),

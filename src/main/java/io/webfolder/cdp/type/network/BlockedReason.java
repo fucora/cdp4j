@@ -38,6 +38,9 @@ public enum BlockedReason {
     @SerializedName("subresource-filter")
     SubresourceFilter("subresource-filter"),
 
+    @SerializedName("content-type")
+    ContentType("content-type"),
+
     @SerializedName("other")
     Other("other");
 

@@ -79,13 +79,15 @@ public interface Debugger {
      * @param returnByValue Whether the result is expected to be a JSON object that should be sent by value.
      * @param generatePreview Whether preview should be generated for the result.
      * @param throwOnSideEffect Whether to throw an exception if side effect cannot be ruled out during evaluation.
+     * @param timeout Terminate execution after timing out (number of milliseconds).
      * 
      * @return EvaluateOnCallFrameResult
      */
     EvaluateOnCallFrameResult evaluateOnCallFrame(String callFrameId, String expression,
             @Optional String objectGroup, @Optional Boolean includeCommandLineAPI,
             @Optional Boolean silent, @Optional Boolean returnByValue,
-            @Experimental @Optional Boolean generatePreview, @Optional Boolean throwOnSideEffect);
+            @Experimental @Optional Boolean generatePreview, @Optional Boolean throwOnSideEffect,
+            @Experimental @Optional Double timeout);
 
     /**
      * Returns possible locations for breakpoint. scriptId in start and end range locations should be

@@ -125,7 +125,7 @@ public interface Target {
      * automatically detaches from all currently attached targets.
      * 
      * @param autoAttach Whether to auto-attach to related targets.
-     * @param waitForDebuggerOnStart Whether to pause new targets when attaching to them. Use <code>Runtime.runIfWaitingForDebugger<code>
+     * @param waitForDebuggerOnStart Whether to pause new targets when attaching to them. Use <code>Runtime.runIfWaitingForDebugger</code>
      * to run paused targets.
      */
     @Experimental

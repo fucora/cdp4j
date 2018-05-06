@@ -165,13 +165,14 @@ public interface Emulation {
      * forwards to prevent deadlock.
      * @param waitForNavigation If set the virtual time policy change should be deferred until any frame starts navigating.
      * Note any previous deferred policy change is superseded.
+     * @param initialVirtualTime If set, base::Time::Now will be overriden to initially return this value.
      * 
      * @return SetVirtualTimePolicyResult
      */
     @Experimental
     SetVirtualTimePolicyResult setVirtualTimePolicy(VirtualTimePolicy policy,
             @Optional Double budget, @Optional Integer maxVirtualTimeTaskStarvationCount,
-            @Optional Boolean waitForNavigation);
+            @Optional Boolean waitForNavigation, @Optional Double initialVirtualTime);
 
     /**
      * Resizes the frame/viewport of the page. Note that this does not affect the frame's container

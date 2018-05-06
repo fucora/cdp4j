@@ -75,11 +75,11 @@ public class TargetInfo {
         this.openerId = openerId;
     }
 
-	public String getBrowserContextId() {
-		return browserContextId;
-	}
+    public String getBrowserContextId() {
+        return browserContextId;
+    }
 
-	public void setBrowserContextId(String browserContextId) {
-		this.browserContextId = browserContextId;
-	}
+    public void setBrowserContextId(String browserContextId) {
+        this.browserContextId = browserContextId;
+    }
 }

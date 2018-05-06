@@ -121,7 +121,7 @@ public interface Runtime {
      * @param objectGroup Symbolic group name that can be used to release multiple objects.
      * @param includeCommandLineAPI Determines whether Command Line API should be available during the evaluation.
      * @param silent In silent mode exceptions thrown during evaluation are not reported and do not pause
-     * execution. Overrides <code>setPauseOnException<code> state.
+     * execution. Overrides <code>setPauseOnException</code> state.
      * @param contextId Specifies in which execution context to perform evaluation. If the parameter is omitted the
      * evaluation will be performed in the context of the inspected page.
      * @param returnByValue Whether the result is expected to be a JSON object that should be sent by value.

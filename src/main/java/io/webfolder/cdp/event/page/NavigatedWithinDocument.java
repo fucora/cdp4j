@@ -22,8 +22,7 @@ import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
 
 /**
- * Fired when same-document navigation happens, e
- * g
+ * Fired when same-document navigation happens,
  * due to history API usage or anchor navigation
  */
 @Experimental

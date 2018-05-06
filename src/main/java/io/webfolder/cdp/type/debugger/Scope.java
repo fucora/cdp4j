@@ -49,7 +49,7 @@ public class Scope {
     }
 
     /**
-     * Object representing the scope. For <code>global<code> and <code>with</code> scopes it represents the actual
+     * Object representing the scope. For <code>global</code> and <code>with</code> scopes it represents the actual
      * object; for the rest of the scopes, it is artificial transient object enumerating scope
      * variables as its properties.
      */
@@ -58,7 +58,7 @@ public class Scope {
     }
 
     /**
-     * Object representing the scope. For <code>global<code> and <code>with</code> scopes it represents the actual
+     * Object representing the scope. For <code>global</code> and <code>with</code> scopes it represents the actual
      * object; for the rest of the scopes, it is artificial transient object enumerating scope
      * variables as its properties.
      */

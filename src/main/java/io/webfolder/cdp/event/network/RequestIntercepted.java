@@ -46,6 +46,8 @@ public class RequestIntercepted {
 
     private Boolean isNavigationRequest;
 
+    private Boolean isDownload;
+
     private String redirectUrl;
 
     private AuthChallenge authChallenge;
@@ -122,6 +124,22 @@ public class RequestIntercepted {
      */
     public void setIsNavigationRequest(Boolean isNavigationRequest) {
         this.isNavigationRequest = isNavigationRequest;
+    }
+
+    /**
+     * Set if the request is a navigation that will result in a download.
+     * Only present after response is received from the server (i.e. HeadersReceived stage).
+     */
+    public Boolean isIsDownload() {
+        return isDownload;
+    }
+
+    /**
+     * Set if the request is a navigation that will result in a download.
+     * Only present after response is received from the server (i.e. HeadersReceived stage).
+     */
+    public void setIsDownload(Boolean isDownload) {
+        this.isDownload = isDownload;
     }
 
     /**

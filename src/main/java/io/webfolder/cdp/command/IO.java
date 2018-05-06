@@ -39,7 +39,7 @@ public interface IO {
      * 
      * @param handle Handle of the stream to read.
      * @param offset Seek to the specified offset before reading (if not specificed, proceed with offset
-     * following the last read).
+     * following the last read). Some types of streams may only support sequential reads.
      * @param size Maximum number of bytes to read (left upon the agent discretion if not specified).
      * 
      * @return ReadResult
