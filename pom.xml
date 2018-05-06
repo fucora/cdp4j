@@ -129,6 +129,9 @@
       <exclude>appveyor.yml</exclude>
       <exclude>src/main/java/com/neovisionaries/ws/client/WebSocketInputStream.java</exclude>
       <exclude>src/main/java/com/neovisionaries/ws/client/WebSocketOutputStream.java</exclude>
+      <exclude>src/main/java/com/neovisionaries/ws/client/DefaultMasker.java</exclude>
+      <exclude>src/main/java/com/neovisionaries/ws/client/Masker.java</exclude>
+      <exclude>src/main/java/com/neovisionaries/ws/client/ZeroMasker.java</exclude>
      </excludes>
     </configuration>
    </plugin>
