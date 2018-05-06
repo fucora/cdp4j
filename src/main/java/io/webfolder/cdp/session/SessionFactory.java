@@ -103,6 +103,8 @@ public class SessionFactory implements AutoCloseable {
 
     private volatile int webSocketReadTimeout = DEFAULT_WS_READ_TIMEOUT;
 
+    private volatile int majorVersion;
+
     public SessionFactory() {
         this(DEFAULT_HOST,
                 DEFAULT_PORT,
@@ -288,14 +290,40 @@ public class SessionFactory implements AutoCloseable {
 
     public void close(Session session) {
         if (browserSession.isConnected()) {
-            browserSession
-                .getCommand()
-                .getTarget()
-                .closeTarget(session.getTargetId());
+            int version = getMajorVersion();
+            if (version >= 68) {
+                session
+                    .getCommand()
+                    .getPage()
+                    .close();
+            } else {
+                browserSession
+                    .getCommand()
+                    .getTarget()
+                    .closeTarget(session.getTargetId());
+            }
         }
         session.dispose();
         wsAdapters.remove(session.getId());
         sessions.remove(session.getId());
+    }
+
+    private int getMajorVersion() {
+        if (majorVersion == 0) {
+            String[] product = browserSession
+                                        .getCommand()
+                                        .getBrowser()
+                                        .getVersion()
+                                        .getProduct()
+                                        .split("/");
+            if (product.length == 2) {
+                String[] version = product[1].split("\\.");
+                if (version.length > 2) {
+                    majorVersion = Integer.parseInt(version[0]);
+                }
+            }
+        }
+        return majorVersion;
     }
 
     @Override
