@@ -94,13 +94,13 @@ public class SessionFactory implements AutoCloseable {
 
     private final ExecutorService threadPool;
 
+    private WebSocket webSocket;
+
     private volatile Session browserSession;
 
     private volatile boolean closed;
 
-    private String browserVersion;
-
-    private WebSocket webSocket;
+    private volatile Boolean headless;
 
     private volatile int webSocketReadTimeout = DEFAULT_WS_READ_TIMEOUT;
 
@@ -175,7 +175,7 @@ public class SessionFactory implements AutoCloseable {
                                     .create();
         this.factory.setConnectionTimeout(this.connectionTimeout);
         if (ThreadPoolExecutor.class.isAssignableFrom(threadPool.getClass())) {
-            ((ThreadPoolExecutor) threadPool).setKeepAliveTime(DEFAULT_WS_READ_TIMEOUT, SECONDS);
+            ((ThreadPoolExecutor) threadPool).setKeepAliveTime(5, SECONDS);
         }
     }
 
@@ -235,7 +235,7 @@ public class SessionFactory implements AutoCloseable {
         return connect(targetId, null);
     }
 
-    protected Session connect(String targetId, String browserContextId) {
+    Session connect(String targetId, String browserContextId) {
         Session bs = getBrowserSession();
 
         if (browserContextId == null) {
@@ -274,7 +274,7 @@ public class SessionFactory implements AutoCloseable {
         return session;
     }
 
-    Session getBrowserSession() {
+    private Session getBrowserSession() {
         if (browserSession == null) {
             Map<String, Object> version = getVersion();
             String webSocketDebuggerUrl = (String) version.get("webSocketDebuggerUrl");
@@ -313,7 +313,7 @@ public class SessionFactory implements AutoCloseable {
         return browserSession;
     }
 
-    public void close(Session session) {
+    void close(Session session) {
         if (browserSession.isConnected()) {
             int version = getMajorVersion();
             if (version >= 68) {
@@ -383,16 +383,19 @@ public class SessionFactory implements AutoCloseable {
     }
 
     public boolean isHeadless() {
-        return getBrowserSession()
-                    .getCommand()
-                    .getBrowser()
-                    .getVersion()
-                    .getUserAgent()
-                    .toLowerCase(ENGLISH)
-                    .contains("headless");
+        if (headless == null) {
+            headless = getBrowserSession()
+                            .getCommand()
+                            .getBrowser()
+                            .getVersion()
+                            .getUserAgent()
+                            .toLowerCase(ENGLISH)
+                            .contains("headless");
+        }
+        return headless.booleanValue();
     }
 
-    protected Map<String, Object> getVersion() {
+    private Map<String, Object> getVersion() {
         String sessions = format("http://%s:%d/json/version", host, port);
         URL    url      = null;
         Reader reader   = null;
@@ -444,10 +447,6 @@ public class SessionFactory implements AutoCloseable {
 
     ExecutorService getThreadPool() {
         return threadPool;
-    }
-
-    public String getBrowserVersion() {
-        return browserVersion;
     }
 
     protected LoggerFactory createLoggerFactory(CdpLoggerType loggerType) {
