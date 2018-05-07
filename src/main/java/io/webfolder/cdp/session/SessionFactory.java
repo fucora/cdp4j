@@ -56,6 +56,7 @@ import io.webfolder.cdp.listener.EventListener;
 import io.webfolder.cdp.logger.CdpLoggerFactory;
 import io.webfolder.cdp.logger.CdpLoggerType;
 import io.webfolder.cdp.logger.LoggerFactory;
+import io.webfolder.cdp.type.target.TargetInfo;
 
 public class SessionFactory implements AutoCloseable {
 
@@ -89,7 +90,7 @@ public class SessionFactory implements AutoCloseable {
 
     private final List<String> contexts = new CopyOnWriteArrayList<>();
 
-    private final BlockingQueue<TabInfo> tabs = new ArrayBlockingQueue<>(256, true);
+    private final BlockingQueue<TabInfo> tabs = new ArrayBlockingQueue<>(Short.MAX_VALUE, true);
 
     private final ExecutorService threadPool;
 
@@ -227,14 +228,38 @@ public class SessionFactory implements AutoCloseable {
             throw new CdpException("Unable to create target");
         }
 
-        String sessionId = target.attachToTarget(tab.getTargetId());
-        tab.setSessionId(sessionId);
+        return connect(tab.getTargetId(), tab.getBrowserContextId());
+    }
+
+    public Session connect(String targetId) {
+        return connect(targetId, null);
+    }
+
+    protected Session connect(String targetId, String browserContextId) {
+        Session bs = getBrowserSession();
+
+        if (browserContextId == null) {
+            TargetInfo found = null;
+            List<TargetInfo> targets = bs.getCommand().getTarget().getTargets();
+            for (TargetInfo next : targets) {
+                if (next.getTargetId().equals(targetId)) {
+                    found = next;
+                }
+            }
+            if (found == null) {
+                throw new CdpException("Target not found: " + targetId);
+            }
+            browserContextId = found.getBrowserContextId();
+        }
+
+        Target target = bs.getCommand().getTarget();
+        String sessionId = target.attachToTarget(targetId);
 
         Map<Integer, WSContext> contexts = new ConcurrentHashMap<>();
         List<EventListener> listeners = new CopyOnWriteArrayList<>();
 
-        Session session = new Session(gson, tab.getSessionId(),
-                                        tab.getTargetId(), browserContextId,
+        Session session = new Session(gson, sessionId,
+                                        targetId, browserContextId,
                                         webSocket, contexts,
                                         this, listeners,
                                         loggerFactory, false,
