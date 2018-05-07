@@ -53,7 +53,7 @@ public class CdpConsoleLogger implements CdpLogger {
     }
 
     @Override
-    public void warning(String message, Object... args) {
+    public void warn(String message, Object... args) {
         if (Info.equals(level)     ||
                 Warn.equals(level) ||
                 Debug.equals(level)) {

@@ -50,7 +50,7 @@ public class CdpSlf4jLogger implements CdpLogger {
     }
 
     @Override
-    public void warning(final String message, final Object ...args) {
+    public void warn(final String message, final Object ...args) {
         if (log.isWarnEnabled()) {
             log.warn(message, args);
         }

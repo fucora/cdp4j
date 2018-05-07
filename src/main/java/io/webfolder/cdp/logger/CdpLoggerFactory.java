@@ -36,7 +36,7 @@ public class CdpLoggerFactory implements LoggerFactory {
         public void error(String message, Object ...args) { }
 
         @Override
-        public void warning(String message, Object ...args) { }
+        public void warn(String message, Object ...args) { }
 
         @Override
         public void error(String message, Throwable t) { }
