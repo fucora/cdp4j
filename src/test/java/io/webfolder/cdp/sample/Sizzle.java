@@ -32,9 +32,14 @@ public class Sizzle {
 
         try (SessionFactory factory = launcher.launch();
                             Session session = factory.create()) {
+
+            // IMPORTANT:
+            // installSizzle() must be called before the session.navigate()
+            //
+            session.installSizzle();
+
             session.navigate(url.toString());
             session.enableConsoleLog();
-            session.installSizzle();
             session.waitDocumentReady();
             String text = session.getText("p:contains('hello')");
             System.out.println(text);

@@ -21,6 +21,7 @@ public class EvaluateOnNewDocument {
             // enable Page domain before using the addScriptToEvaluateOnNewDocument()
             page.enable();
 
+            // addScriptToEvaluateOnNewDocument() must be called before Session.navigate()
             page.addScriptToEvaluateOnNewDocument("window.dummyMessage = 'hello, world!'");
 
             session.enableConsoleLog();

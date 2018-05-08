@@ -149,13 +149,6 @@ public class TestAll {
             throw new CdpException(e);
         }
 
-        session.installSizzle();
-        assertTrue(session.useSizzle());
-
-        session.getProperty("p:contains('%s')", "innerHTML", "hello");
-        session.setProperty("//p", "innerHTML", "hi");
-        session.getProperty("p:contains('hi')", "innerHTML");
-
         session.setDisabled("[type=text]", true);
         session.isDisabled("[type=text]");
 
@@ -210,7 +203,7 @@ public class TestAll {
         List<String> actuals = appender.getLogEntries();
 
         List<String> failedExpecteds = new ArrayList<>();
-        List<String>   failedActuals = new ArrayList<>();
+        List<String> failedActuals   = new ArrayList<>();
 
         for (int i = 0; i < actuals.size(); i++) {
             String expected = i < expecteds.size() ? expecteds.get(i) : null;

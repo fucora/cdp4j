@@ -304,23 +304,6 @@ public interface Selector {
             if (result == null) {
                 return null;
             }
-            ExceptionDetails ex = result.getExceptionDetails();
-            if ( sizzle && ex != null &&
-                        ex.getException() != null &&
-                        "TypeError".equals(ex.getException().getClassName()) )  {
-                releaseObject(ex.getException().getObjectId());
-                getThis().installSizzle();
-                result = runtime.evaluate(expression, null, null,
-                                                      null, null, null,
-                                                      null, null, null,
-                                                      null, null);
-                if ( result != null &&
-                            result.getExceptionDetails() != null ) {
-                    ex = result.getExceptionDetails();
-                } else {
-                    ex = null;
-                }
-            }
             GetPropertiesResult properties = runtime.getProperties(result.getResult().getObjectId(), true, false, false);
             if ( properties != null ) {
                 for (PropertyDescriptor next : properties.getResult()) {
@@ -387,28 +370,13 @@ public interface Selector {
                 return null;
             }
             ExceptionDetails ex = result.getExceptionDetails();
-            if ( sizzle && ex != null &&
-                        ex.getException() != null &&
-                        "TypeError".equals(ex.getException().getClassName()) )  {
-                releaseObject(ex.getException().getObjectId());
-                getThis().installSizzle();
-                result = runtime.evaluate(expression, null, null,
-                                                        null, null, null,
-                                                        null, null, null,
-                                                        null, null);
-                if ( result != null &&
-                            result.getExceptionDetails() != null ) {
-                    ex = result.getExceptionDetails();
-                } else {
-                    ex = null;
+            if ( ex != null && ex.getException() != null ) {
+                if ( result.getResult() != null && result.getResult().getObjectId() != null ) {
+                    releaseObject(result.getResult().getObjectId());
                 }
-            }
-            if ( ex != null &&
-                        ex.getException() != null &&
-                        ex.getException().getObjectId() != null ) {
-                releaseObject(ex.getException().getObjectId());
-            }
-            if ( xpath && ex != null && ex.getException() != null ) {
+                if ( ex.getException().getObjectId() != null ) {
+                    releaseObject(ex.getException().getObjectId());
+                }
                 throw new CdpException(ex.getException().getDescription());
             }
             RemoteObject remoteObject = result.getResult();

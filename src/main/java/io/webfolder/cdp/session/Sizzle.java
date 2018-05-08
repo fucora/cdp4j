@@ -17,13 +17,9 @@
  */
 package io.webfolder.cdp.session;
 
-import static java.lang.Boolean.TRUE;
-
 import java.util.Scanner;
 
-import io.webfolder.cdp.command.DOM;
-import io.webfolder.cdp.type.dom.Node;
-import io.webfolder.cdp.type.runtime.RemoteObject;
+import io.webfolder.cdp.command.Page;
 
 public interface Sizzle {
 
@@ -31,7 +27,7 @@ public interface Sizzle {
      * @return <code>true</code> if sizzle is installed
      */
     public default boolean useSizzle() {
-        return getThis().getSizzle();
+        return getThis().getSizzleScriptId() != null;
     }
 
     /**
@@ -40,43 +36,37 @@ public interface Sizzle {
     public default void removeSizzle() {
         if (getThis().useSizzle()) {
             getThis().logEntry("removeSizzle");
-            getThis().setSizzle(false);
-            getThis().evaluate("window.cdp4j = undefined");
+            getThis()
+                .getCommand()
+                .getPage()
+                .removeScriptToEvaluateOnNewDocument(getThis().getSizzleScriptId());
+            getThis().setSizzleScriptId(null);
         }
     }
 
     /**
-     * Install sizzle CSS selector engine instead of browser's native selector engine.
+     * Install and use sizzle CSS selector engine instead of browser's native selector engine.
+     * 
+     * This method must be called before {@link Session#navigate(String)}
      * 
      * @return this
      */
     default Session installSizzle() {
-        getThis().setSizzle(true);
-        getThis().disableFlowLog();
-        final boolean install = TRUE.equals(getThis().evaluate("typeof window.cdp4j === 'undefined'"));
-        getThis().enableFlowLog();
-        if (install) {
+        if ( getThis().getSizzleScriptId() == null ) {
+            Page page = getThis().getCommand().getPage();
+            page.enable();
             String sizzle = null;
             try (Scanner scanner = new Scanner(getClass().getResourceAsStream("/cdp4j-sizzle-2.3.3.min.js"))) {
                 scanner.useDelimiter("\\A");
                 sizzle = scanner.hasNext() ? scanner.next() : "";
             }
-            String func  = "window.cdp4j = {}; " +
-                                        "window.cdp4j.query = function(selector) { " +
-                                        sizzle + " var result = Sizzle(selector); if (result.length > 0) { return result[0]; } else { return null; } };";
-                   func +=              "window.cdp4j.queryAll = function(selector) { " +
-                                        sizzle + " var result = Sizzle(selector); if (result.length > 0) { return result; } else { return null; } };";
-            getThis().disableFlowLog();
-            getThis().evaluate(func);
-            getThis().enableFlowLog();
-            DOM dom = getThis().getCommand().getDOM();
-            Node document = dom.getDocument();
-            if (document != null) {
-                RemoteObject remoteObject = dom.resolveNode(document.getNodeId(), null, null);
-                if ( remoteObject != null && remoteObject.getObjectId() != null ) {
-                    getThis().getCommand().getRuntime().releaseObject(remoteObject.getObjectId());
-                }
-            }
+            String source  = "window.cdp4j = {}; ";
+                   source += "window.cdp4j.queryAll = function(selector) { " +
+                           sizzle +
+                           " var result = Sizzle(selector); if (result.length > 0) { return result; } else { return null; } };" +
+                           "window.cdp4j.query = function(selector) { var result = window.cdp4j.queryAll(selector); if (result.length > 0) { return result[0] } else { return null; } };";
+            String scriptId = page.addScriptToEvaluateOnNewDocument(source);
+            getThis().setSizzleScriptId(scriptId);
         }
         return getThis();
     }

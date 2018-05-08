@@ -81,8 +81,6 @@ public class Session implements AutoCloseable,
 
     private AtomicBoolean connected = new AtomicBoolean(true);
 
-    private final AtomicBoolean enableSizzle = new AtomicBoolean();
-
     private final List<EventListener> listeners;
 
     private final SessionInvocationHandler invocationHandler;
@@ -104,6 +102,8 @@ public class Session implements AutoCloseable,
     private final boolean browserSession;
 
     private volatile TerminateListener terminateListener;
+
+    private volatile String sizzleScriptId;
 
     private String frameId;
 
@@ -572,12 +572,12 @@ public class Session implements AutoCloseable,
         });
     }
 
-    void setSizzle(final boolean enable) {
-        this.enableSizzle.set(enable);
+    void setSizzleScriptId(String scriptId) {
+        this.sizzleScriptId = scriptId;
     }
 
-    boolean getSizzle() {
-        return this.enableSizzle.get();
+    String getSizzleScriptId() {
+        return sizzleScriptId;
     }
 
     @SuppressWarnings("unchecked")

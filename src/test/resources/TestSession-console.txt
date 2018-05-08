@@ -24,9 +24,6 @@ getSelectedIndex("#single-select"): 1
 clearOptions("#single-select")
 getSelectedIndex("#single-select"): -1
 setSelectOptions("#multi-select", "[1]")
-getProperty("p:contains('hello')", "innerHTML"): hello, world!
-setProperty("//p", "innerHTML", "hi")
-getProperty("p:contains('hi')", "innerHTML"): hi
 setDisabled("[type=text]", "true")
 isDisabled("[type=text]"): true
 focus("[type=text]")

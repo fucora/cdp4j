@@ -33,7 +33,6 @@ public class Bing {
             session
                 .navigate("https://www.bing.com")
                 .waitDocumentReady()
-                .installSizzle()
                 .enableNetworkLog()
                 .click("input[type='search']")
                 .sendKeys("Microsoft")
