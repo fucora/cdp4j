@@ -27,8 +27,11 @@ import java.util.Map;
 
 import io.webfolder.cdp.command.DOM;
 import io.webfolder.cdp.command.Network;
+import io.webfolder.cdp.command.Page;
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.type.dom.Node;
+import io.webfolder.cdp.type.page.GetNavigationHistoryResult;
+import io.webfolder.cdp.type.page.NavigationEntry;
 import io.webfolder.cdp.type.runtime.RemoteObject;
 
 public interface Navigator {
@@ -51,7 +54,16 @@ public interface Navigator {
      */
     public default Session back() {
         getThis().logEntry("back");
-        getThis().evaluate("window.history.back()");
+        Page page = getThis().getCommand().getPage();
+        GetNavigationHistoryResult history = page.getNavigationHistory();
+        int index = history.getCurrentIndex() - 1;
+        if (index < 0 || index >= history.getEntries().size()) {
+            return getThis();
+        }
+        NavigationEntry entry = history.getEntries().get(index);
+        if ( entry != null ) {
+            page.navigateToHistoryEntry(entry.getId());
+        }
         return getThis();
     }
 
@@ -62,7 +74,16 @@ public interface Navigator {
      */
     public default Session forward() {
         getThis().logEntry("forward");
-        getThis().evaluate("window.history.forward()");
+        Page page = getThis().getCommand().getPage();
+        GetNavigationHistoryResult history = page.getNavigationHistory();
+        int index = history.getCurrentIndex() + 1;
+        if (index >= history.getEntries().size()) {
+            return getThis();
+        }
+        NavigationEntry entry = history.getEntries().get(index);
+        if ( entry != null ) {
+            page.navigateToHistoryEntry(entry.getId());
+        }
         return getThis();
     }
 
