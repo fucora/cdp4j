@@ -357,7 +357,9 @@ public class SessionFactory implements AutoCloseable {
             return;
         }
         closed = true;
-        browserSession.dispose();
+        if ( browserSession != null ) {
+            browserSession.dispose();
+        }
         sessions.clear();
         wsAdapters.clear();
         contexts.clear();
