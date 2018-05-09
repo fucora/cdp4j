@@ -20,7 +20,6 @@ package io.webfolder.cdp.session;
 import static io.webfolder.cdp.logger.CdpLoggerType.Slf4j;
 import static java.lang.Boolean.TRUE;
 import static java.lang.String.format;
-import static java.util.Collections.unmodifiableList;
 import static java.util.Locale.ENGLISH;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -441,10 +440,6 @@ public class SessionFactory implements AutoCloseable {
                     .disposeBrowserContext(browserContextId);
             contexts.remove(browserContextId);
         }
-    }
-
-    public List<String> listBrowserContextIds() {
-        return unmodifiableList(contexts);
     }
 
     ExecutorService getThreadPool() {

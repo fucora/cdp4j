@@ -41,6 +41,7 @@ import org.w3c.dom.NodeList;
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.event.network.LoadingFinished;
 import io.webfolder.cdp.event.network.ResponseReceived;
+import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 import io.webfolder.cdp.type.network.GetResponseBodyResult;
@@ -181,11 +182,15 @@ public class Crawler {
             session.waitDocumentReady(pageLoadTimeout);
 
             for (String requestId : new ArrayList<>(finishedResources)) {
-                GetResponseBodyResult rb = session.getCommand().getNetwork().getResponseBody(requestId);
-                if ( rb.getBase64Encoded() ) {
-                    webResource.setContent(getDecoder().decode(rb.getBody()));
-                } else {
-                    webResource.setDocument(rb.getBody());
+                try {
+                    GetResponseBodyResult rb = session.getCommand().getNetwork().getResponseBody(requestId);
+                    if ( rb.getBase64Encoded() ) {
+                        webResource.setContent(getDecoder().decode(rb.getBody()));
+                    } else {
+                        webResource.setDocument(rb.getBody());
+                    }
+                } catch (CdpException e) {
+                    // ignore
                 }
             }
 
