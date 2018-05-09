@@ -19,9 +19,11 @@ package io.webfolder.cdp;
 
 import static java.io.File.pathSeparator;
 import static java.lang.Integer.compare;
+import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.lang.String.valueOf;
 import static java.lang.System.getProperty;
+import static java.lang.Thread.sleep;
 import static java.nio.file.FileSystems.newFileSystem;
 import static java.nio.file.FileVisitResult.CONTINUE;
 import static java.nio.file.Files.copy;
@@ -51,6 +53,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.logger.CdpLogger;
@@ -160,10 +163,10 @@ public class ChromiumDownloader implements Downloader {
             if ( conn.getResponseCode() != 200 ) {
                 throw new CdpException(conn.getResponseCode() + " - " + conn.getResponseMessage());
             }
-            String contentLength = conn.getHeaderField("x-goog-stored-content-length");
+            long contentLength = conn.getHeaderFieldLong("x-goog-stored-content-length", 0);
             String fileName = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf(".")) + "-r" + version.revision + ".zip";
             Path archive = get(getProperty("java.io.tmpdir")).resolve(fileName);
-            if ( exists(archive) && ! contentLength.equals(valueOf(size(archive))) ) {
+            if ( exists(archive) && contentLength != size(archive) ) {
                 delete(archive);
             }
             if ( ! exists(archive) ) {
@@ -175,9 +178,41 @@ public class ChromiumDownloader implements Downloader {
                 conn = (HttpURLConnection) u.openConnection();
                 conn.setConnectTimeout(TIMEOUT);
                 conn.setReadTimeout(TIMEOUT);
+                Thread thread = null;
+                AtomicBoolean halt = new AtomicBoolean(false);
+                Runnable progress = () -> {
+                    try {
+                        long fileSize = size(archive);
+                        logger.info("Downloading Chromium {}: {}%",
+                                    version.toString(), round((fileSize * 100L) / contentLength));
+                    } catch (IOException e) {
+                        // ignore
+                    }
+                };
                 try (InputStream is = conn.getInputStream()) {
                     logger.info("Download location: " + archive.toString());
+                    thread = new Thread(() -> {
+                        while (true) {
+                            try {
+                                if (halt.get()) {
+                                    break;
+                                }
+                                progress.run();
+                                sleep(1000);
+                            } catch (Throwable e) {
+                                // ignore
+                            }
+                        }
+                    });
+                    thread.setName("cdp4j");
+                    thread.setDaemon(true);
+                    thread.start();
                     copy(conn.getInputStream(), archive);
+                } finally {
+                    if ( thread != null ) {
+                        progress.run();
+                        halt.set(true);
+                    }
                 }
             }
             logger.info("Extracting to: " + destinationRoot.toString());
