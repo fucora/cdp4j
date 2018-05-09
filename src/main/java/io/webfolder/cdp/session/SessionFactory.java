@@ -389,7 +389,7 @@ public class SessionFactory implements AutoCloseable {
                             .getCommand()
                             .getBrowser()
                             .getVersion()
-                            .getUserAgent()
+                            .getProduct()
                             .toLowerCase(ENGLISH)
                             .contains("headless");
         }
