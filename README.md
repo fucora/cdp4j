@@ -54,7 +54,7 @@ This library is suitable for use in production systems.
 
 Community
 ---------
-Join our gitter chat at https://gitter.im/WebFolderIO/cdp4j-community
+Join our gitter chat at: https://gitter.im/WebFolderIO/cdp4j-community
 
 Integration with Maven
 ----------------------
