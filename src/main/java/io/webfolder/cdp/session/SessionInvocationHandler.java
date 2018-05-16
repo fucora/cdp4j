@@ -27,6 +27,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.gson.Gson;
@@ -49,6 +50,8 @@ class SessionInvocationHandler implements InvocationHandler {
     private final WebSocket webSocket;
 
     private final Map<Integer, WSContext> contexts;
+
+    private final List<String> enabledDomains = new CopyOnWriteArrayList<>();
 
     private final CdpLogger log;
 
@@ -93,7 +96,21 @@ class SessionInvocationHandler implements InvocationHandler {
         final String  domain = klass.getAnnotation(Domain.class).value();
         final String command = method.getName();
 
-        boolean hasArgs = args != null && args.length > 0;
+        final boolean hasArgs = args != null && args.length > 0;
+        final boolean voidMethod = void.class.equals(method.getReturnType());
+
+        boolean enable = "enable".intern() == command && voidMethod;
+
+        // it's unnecessary to call enable command more than once.
+        if (enable && enabledDomains.contains(domain)) {
+            return null;
+        }
+
+        boolean disable = "disable".intern() == command && voidMethod;
+
+        if (disable) {
+            enabledDomains.remove(domain);
+        }
 
         Map<String, Object> params = new HashMap<>(hasArgs ? args.length : 0);
 
@@ -137,9 +154,13 @@ class SessionInvocationHandler implements InvocationHandler {
             throw context.getError();
         }
 
+        if (enable) {
+            enabledDomains.add(domain);
+        }
+
         Class<?> retType = method.getReturnType();
 
-        if (retType.equals(void.class) || retType.equals(Void.class)) {
+        if (voidMethod || retType.equals(Void.class)) {
             return null;
         }
 
@@ -167,7 +188,7 @@ class SessionInvocationHandler implements InvocationHandler {
 
         Object ret = null;
         Type genericReturnType = method.getGenericReturnType();
-        
+
         if (returns != null) {
 
             JsonElement jsonElement = resultObject.get(returns);
@@ -207,6 +228,7 @@ class SessionInvocationHandler implements InvocationHandler {
     }
 
     void dispose() {
+        enabledDomains.clear();
         for (WSContext context : contexts.values()) {
             try {
                 context.setData(null);
