@@ -47,6 +47,8 @@ import java.util.function.Predicate;
 import com.google.gson.Gson;
 import com.neovisionaries.ws.client.WebSocket;
 
+import io.webfolder.cdp.annotation.Experimental;
+import io.webfolder.cdp.annotation.Optional;
 import io.webfolder.cdp.command.Emulation;
 import io.webfolder.cdp.command.Page;
 import io.webfolder.cdp.event.log.EntryAdded;
@@ -60,12 +62,14 @@ import io.webfolder.cdp.listener.TerminateEvent;
 import io.webfolder.cdp.listener.TerminateListener;
 import io.webfolder.cdp.logger.CdpLogger;
 import io.webfolder.cdp.logger.LoggerFactory;
+import io.webfolder.cdp.type.constant.ImageFormat;
 import io.webfolder.cdp.type.css.SourceRange;
 import io.webfolder.cdp.type.dom.Rect;
 import io.webfolder.cdp.type.log.LogEntry;
 import io.webfolder.cdp.type.network.Response;
 import io.webfolder.cdp.type.page.GetLayoutMetricsResult;
 import io.webfolder.cdp.type.page.NavigateResult;
+import io.webfolder.cdp.type.page.Viewport;
 import io.webfolder.cdp.type.runtime.RemoteObject;
 
 public class Session implements AutoCloseable,
@@ -404,6 +408,11 @@ public class Session implements AutoCloseable,
     }
 
     public byte[] captureScreenshot() {
+        return captureScreenshot(Png, null, null, true);
+    }
+
+    public byte[] captureScreenshot(@Optional ImageFormat format, @Optional Integer quality,
+                                    @Optional Viewport clip, @Experimental @Optional Boolean fromSurface) {
         SourceRange location = new SourceRange();
         location.setEndColumn(0);
         location.setEndLine(0);
@@ -414,7 +423,7 @@ public class Session implements AutoCloseable,
         Rect cs = metrics.getContentSize();
         Emulation emulation = getThis().getCommand().getEmulation();
         emulation.setDeviceMetricsOverride(cs.getWidth().intValue(), cs.getHeight().intValue(), 1D, false);
-        byte[] data = page.captureScreenshot(Png, null, null, true);        
+        byte[] data = page.captureScreenshot(format, quality, clip, fromSurface);
         emulation.clearDeviceMetricsOverride();
         emulation.resetPageScaleFactor();
         return data;
