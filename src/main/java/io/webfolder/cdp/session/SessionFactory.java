@@ -283,7 +283,7 @@ public class SessionFactory implements AutoCloseable {
         return session;
     }
 
-    Session getBrowserSession() {
+    private Session getBrowserSession() {
         if (browserSession == null) {
             Map<String, Object> version = getVersion();
             String webSocketDebuggerUrl = (String) version.get("webSocketDebuggerUrl");
