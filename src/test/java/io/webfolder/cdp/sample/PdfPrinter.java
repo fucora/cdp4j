@@ -120,10 +120,8 @@ public class PdfPrinter implements AutoCloseable {
         manager.init();
 
         List<String> urls = asList(
-                                    "http://www.oracle.com",
                                     "http://www.google.com",
-                                    "http://www.bing.com",
-                                    "http://www.microsoft.com");
+                                    "http://www.bing.com");
 
         CountDownLatch latch = new CountDownLatch(urls.size());
 
@@ -133,10 +131,17 @@ public class PdfPrinter implements AutoCloseable {
                 @Override
                 public void accept(Session s) {
                     s.navigate(next);
-                    s.waitDocumentReady();
-                    byte[] content = s.getCommand().getPage().printToPDF();
-                    System.out.println("PDF size: " + content.length + "( " + next + " )");
-                    latch.countDown();
+                    try {
+                        s.waitDocumentReady();
+                        byte[] content = s.getCommand().getPage().printToPDF();
+                        if ( content != null ) {
+                            System.out.println("PDF size: " + content.length + " (" + next + ")");
+                        }
+                    } catch (Throwable e) {
+                        //
+                    } finally {
+                        latch.countDown();
+                    }
                 }
             });
         }
