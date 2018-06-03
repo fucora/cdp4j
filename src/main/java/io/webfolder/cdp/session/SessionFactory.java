@@ -194,8 +194,8 @@ public class SessionFactory implements AutoCloseable {
 
     public Session create(String browserContextId) {
         boolean initialized = browserSession == null ? false : true;
-        Session ms = getBrowserSession();
-        Target target = ms.getCommand().getTarget();
+        Session browserSession = getBrowserSession();
+        Target target = browserSession.getCommand().getTarget();
         TabInfo tab = null;
         if ( ! initialized && (tab = tabs.poll()) == null ) {
             for (int i = 0; i < 1000; i++) {
@@ -283,7 +283,7 @@ public class SessionFactory implements AutoCloseable {
         return session;
     }
 
-    private Session getBrowserSession() {
+    private synchronized Session getBrowserSession() {
         if (browserSession == null) {
             Map<String, Object> version = getVersion();
             String webSocketDebuggerUrl = (String) version.get("webSocketDebuggerUrl");
