@@ -462,7 +462,7 @@ public class Session implements AutoCloseable,
                 }
                 condition.await(timeout, MILLISECONDS);
             } catch (InterruptedException e) {
-                if (connected.get()) {
+                if (webSocket.isOpen() && connected.get()) {
                     throw new CdpException(e);
                 }
             } finally {
