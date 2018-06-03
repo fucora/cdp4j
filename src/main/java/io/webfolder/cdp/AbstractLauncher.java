@@ -123,29 +123,6 @@ abstract class AbstractLauncher {
         return factory;
     }
 
-    public boolean ping() {
-        String sessions = format("http://%s:%d/json/version",
-                                        factory.getHost(),
-                                        factory.getPort());
-        try {
-            URL url = new URL(sessions);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            final int timeout = 500;
-            conn.setConnectTimeout(timeout);
-            conn.setReadTimeout(timeout);
-            try (Reader reader = new InputStreamReader(conn.getInputStream())) {
-                while ( reader.read() != -1 ) {
-                    // no op
-                }
-            }
-            return conn.getResponseCode() == 200;
-        } catch (ConnectException e) {
-            return false;
-        } catch (IOException e) {
-            return false;
-        }
-    }
-    
     protected abstract void internalLaunch(List<String> list, List<String> params);
 
     public abstract void kill();

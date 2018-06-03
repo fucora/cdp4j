@@ -283,7 +283,7 @@ public class SessionFactory implements AutoCloseable {
         return session;
     }
 
-    private Session getBrowserSession() {
+    Session getBrowserSession() {
         if (browserSession == null) {
             Map<String, Object> version = getVersion();
             String webSocketDebuggerUrl = (String) version.get("webSocketDebuggerUrl");
@@ -430,6 +430,29 @@ public class SessionFactory implements AutoCloseable {
                     // ignore
                 }
             }
+        }
+    }
+
+    public boolean ping() {
+        String sessions = format("http://%s:%d/json/version",
+                                        host,
+                                        port);
+        try {
+            URL url = new URL(sessions);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            final int timeout = 500;
+            conn.setConnectTimeout(timeout);
+            conn.setReadTimeout(timeout);
+            try (Reader reader = new InputStreamReader(conn.getInputStream())) {
+                while ( reader.read() != -1 ) {
+                    // no op
+                }
+            }
+            return conn.getResponseCode() == 200;
+        } catch (ConnectException e) {
+            return false;
+        } catch (IOException e) {
+            return false;
         }
     }
 
