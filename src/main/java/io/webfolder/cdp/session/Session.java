@@ -117,6 +117,8 @@ public class Session implements AutoCloseable,
 
     private String browserContextId;
 
+    private volatile Integer executionContextId;
+
     private static final ThreadLocal<Boolean> ENABLE_ENTRY_EXIT_LOG = 
                                                     withInitial(() -> { return TRUE; });
 
@@ -648,6 +650,14 @@ public class Session implements AutoCloseable,
     
     public String getBrowserContextId() {
         return browserContextId;
+    }
+
+    public Integer getExecutionContextId() {
+        return executionContextId;
+    }
+
+    void setExecutionContextId(int executionContextId) {
+        this.executionContextId = executionContextId;
     }
 
     @Override

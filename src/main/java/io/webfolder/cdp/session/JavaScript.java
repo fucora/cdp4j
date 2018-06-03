@@ -102,18 +102,6 @@ public interface JavaScript {
      */
     @SuppressWarnings("unchecked")
     default <T> T callFunction(String name, Class<T> returnType, Object ...arguments) {
-        EvaluateResult windowResult = getThis().getCommand().getRuntime().evaluate("window");
-
-        if (windowResult == null) {
-            return null;
-        }
-
-        if ( windowResult.getExceptionDetails() != null &&
-                            windowResult.getExceptionDetails().getException() != null ) {
-            getThis().releaseObject(windowResult.getExceptionDetails().getException().getObjectId());
-            throw new CdpException(windowResult.getExceptionDetails().getException().getDescription());
-        }
-
         CallArgument objArgument = new CallArgument();
         objArgument.setValue(name);
 
@@ -121,13 +109,11 @@ public interface JavaScript {
                 .getCommand()
                 .getRuntime()
                 .callFunctionOn("function(functionName) { return functionName.split('.').reduce((o, i) => o[i], this); }",
-                                                        windowResult.getResult().getObjectId(),
+                                                        null,
                                                         asList(objArgument),
                                                         FALSE, FALSE,
                                                         FALSE, FALSE,
-                                                        FALSE, null, null);
-
-        getThis().releaseObject(windowResult.getResult().getObjectId());
+                                                        FALSE, getThis().getExecutionContextId(), null);
 
         if ( funcObj.getExceptionDetails() != null &&
                 funcObj.getExceptionDetails().getException() != null ) {

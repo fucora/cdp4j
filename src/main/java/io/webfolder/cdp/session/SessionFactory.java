@@ -17,6 +17,7 @@
  */
 package io.webfolder.cdp.session;
 
+import static io.webfolder.cdp.event.Events.RuntimeExecutionContextCreated;
 import static io.webfolder.cdp.logger.CdpLoggerType.Slf4j;
 import static java.lang.Boolean.TRUE;
 import static java.lang.String.format;
@@ -50,6 +51,7 @@ import com.neovisionaries.ws.client.WebSocketFactory;
 import com.neovisionaries.ws.client.ZeroMasker;
 
 import io.webfolder.cdp.command.Target;
+import io.webfolder.cdp.event.runtime.ExecutionContextCreated;
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.listener.EventListener;
 import io.webfolder.cdp.logger.CdpLoggerFactory;
@@ -269,6 +271,14 @@ public class SessionFactory implements AutoCloseable {
         wsAdapter.setSession(session);
         wsAdapters.put(sessionId, wsAdapter);
         sessions.put(sessionId, session);
+
+        session.getCommand().getRuntime().enable();
+        session.addEventListener((event, value) -> {
+            if (RuntimeExecutionContextCreated.equals(event)) {
+                ExecutionContextCreated ecc = (ExecutionContextCreated) value;
+                session.setExecutionContextId(ecc.getContext().getId());
+            }
+        });
 
         return session;
     }
