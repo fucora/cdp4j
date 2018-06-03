@@ -462,7 +462,9 @@ public class Session implements AutoCloseable,
                 }
                 condition.await(timeout, MILLISECONDS);
             } catch (InterruptedException e) {
-                throw new CdpException(e);
+                if (connected.get()) {
+                    throw new CdpException(e);
+                }
             } finally {
                 if (lock.isLocked()) {
                     lock.unlock();
