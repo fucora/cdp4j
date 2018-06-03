@@ -20,11 +20,18 @@ package io.webfolder.cdp;
 import static java.lang.String.format;
 import static java.util.Collections.emptyList;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.ConnectException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.session.SessionFactory;
+import static java.lang.Thread.sleep;
 
 abstract class AbstractLauncher {
 
@@ -96,9 +103,49 @@ abstract class AbstractLauncher {
             internalLaunch(list, arguments);
             launched = true;
         }
+
+        int     retryCount = 0;
+        boolean connected  = ping();
+
+        while ( ! ( connected = ping() ) && retryCount < 50 ) {
+            try {
+                sleep(100);
+            } catch (InterruptedException e) {
+                // ignore
+            }
+            retryCount += 1;
+        }
+
+        if ( ! connected ) {
+            throw new CdpException("Unable to connect to the browser");
+        }
+
         return factory;
     }
 
+    public boolean ping() {
+        String sessions = format("http://%s:%d/json/version",
+                                        factory.getHost(),
+                                        factory.getPort());
+        try {
+            URL url = new URL(sessions);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            final int timeout = 500;
+            conn.setConnectTimeout(timeout);
+            conn.setReadTimeout(timeout);
+            try (Reader reader = new InputStreamReader(conn.getInputStream())) {
+                while ( reader.read() != -1 ) {
+                    // no op
+                }
+            }
+            return conn.getResponseCode() == 200;
+        } catch (ConnectException e) {
+            return false;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+    
     protected abstract void internalLaunch(List<String> list, List<String> params);
 
     public abstract void kill();
