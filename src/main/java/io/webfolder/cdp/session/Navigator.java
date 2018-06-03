@@ -228,8 +228,17 @@ public interface Navigator {
             getThis().releaseObject(remoteObject.getObjectId());
             return "complete".equals(readyState);
         } catch (CdpException e) {
-            return getThis().isConnected() &&
-                        TRUE.equals(getThis().evaluate("window.document.readyState === 'complete'"));
+            if (getThis().isConnected()) {
+                boolean ready = false;
+                try {
+                    ready = TRUE.equals(getThis().evaluate("window.document.readyState === 'complete'"));
+                } catch (Throwable t) {
+                    // ignore
+                }
+                return ready;
+            } else {
+                return false;
+            }
         } finally {
             getThis().enableFlowLog();
         }
