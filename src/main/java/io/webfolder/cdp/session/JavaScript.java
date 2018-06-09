@@ -49,8 +49,9 @@ public interface JavaScript {
      */
     default Object evaluate(String expression) {
         Runtime runtime = getThis().getCommand().getRuntime();
+        Integer contextId = getThis().getExecutionContextId();
         EvaluateResult result = runtime.evaluate(expression, null, null,
-                                                    null, null, null,
+                                                    null, contextId, null,
                                                     null, null, null, null, null);
         if (result == null) {
             return null;

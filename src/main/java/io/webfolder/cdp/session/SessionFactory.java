@@ -18,12 +18,14 @@
 package io.webfolder.cdp.session;
 
 import static io.webfolder.cdp.event.Events.RuntimeExecutionContextCreated;
+import static io.webfolder.cdp.event.Events.RuntimeExecutionContextDestroyed;
+import static io.webfolder.cdp.event.Events.RuntimeExecutionContextsCleared;
 import static io.webfolder.cdp.logger.CdpLoggerType.Slf4j;
 import static java.lang.Boolean.TRUE;
 import static java.lang.String.format;
+import static java.lang.Thread.sleep;
 import static java.util.Locale.ENGLISH;
 import static java.util.concurrent.Executors.newCachedThreadPool;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 import java.io.IOException;
@@ -36,8 +38,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
@@ -52,6 +52,7 @@ import com.neovisionaries.ws.client.ZeroMasker;
 
 import io.webfolder.cdp.command.Target;
 import io.webfolder.cdp.event.runtime.ExecutionContextCreated;
+import io.webfolder.cdp.event.runtime.ExecutionContextDestroyed;
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.listener.EventListener;
 import io.webfolder.cdp.logger.CdpLoggerFactory;
@@ -91,7 +92,7 @@ public class SessionFactory implements AutoCloseable {
 
     private final List<String> contexts = new CopyOnWriteArrayList<>();
 
-    private final BlockingQueue<TabInfo> tabs = new ArrayBlockingQueue<>(Short.MAX_VALUE, true);
+    private final List<TabInfo> tabs = new CopyOnWriteArrayList<>();
 
     private final ExecutorService threadPool;
 
@@ -194,39 +195,49 @@ public class SessionFactory implements AutoCloseable {
 
     public Session create(String browserContextId) {
         boolean initialized = browserSession == null ? false : true;
+
         Session browserSession = getBrowserSession();
         Target target = browserSession.getCommand().getTarget();
+
         TabInfo tab = null;
-        if ( ! initialized && (tab = tabs.poll()) == null ) {
-            for (int i = 0; i < 1000; i++) {
+
+        if ( ! initialized ) {
+            for (int i = 0; i < 500 && tabs.isEmpty(); i++) {
                 try {
-                    tab = tabs.poll(5, MILLISECONDS);
-                    if ( tab != null ) {
-                        break;
-                    }
+                    sleep(10);
                 } catch (InterruptedException e) {
                     throw new CdpException(e);
                 }
             }
-        } else if (tab == null) {
-            target.createTarget("about:blank",
-                                DEFAULT_SCREEN_WIDTH,
-                                DEFAULT_SCREEN_HEIGHT,
-                                browserContextId, false);
-            for (int i = 0; i < 1000; i++) {
-                try {
-                    tab = tabs.poll(5, MILLISECONDS);
-                    if ( tab != null ) {
-                        break;
-                    }
-                } catch (InterruptedException e) {
-                    throw new CdpException(e);
-                }
+            if ( ! tabs.isEmpty() ) {
+                tab = tabs.remove(0);
             }
         }
 
         if (tab == null) {
-            throw new CdpException("Unable to create target");
+            String targetId = target.createTarget("about:blank",
+                                                    DEFAULT_SCREEN_WIDTH,
+                                                    DEFAULT_SCREEN_HEIGHT,
+                                                    browserContextId, false);            
+            boolean found = false;
+            for (int i = 0; i < 500 && ! found; i++) {
+                for (TabInfo info : tabs) {
+                    if (info.getTargetId().equals(targetId)) {
+                        found = true;
+                        tabs.remove(info);
+                        break;
+                    }
+                }
+                if ( ! found ) {
+                    try {
+                        sleep(10);
+                    } catch (InterruptedException e) {
+                        throw new CdpException(e);
+                    }
+                }
+            }
+
+            tab = new TabInfo(targetId, browserContextId);
         }
 
         return connect(tab.getTargetId(), tab.getBrowserContextId());
@@ -273,13 +284,26 @@ public class SessionFactory implements AutoCloseable {
         sessions.put(sessionId, session);
 
         session.getCommand().getRuntime().enable();
+
         session.addEventListener((event, value) -> {
             if (RuntimeExecutionContextCreated.equals(event)) {
                 ExecutionContextCreated ecc = (ExecutionContextCreated) value;
-                session.setExecutionContextId(ecc.getContext().getId());
+                if (targetId.equals(ecc.getContext().getAuxData().get("frameId"))) {
+                    session.setExecutionContextId(ecc.getContext().getId());
+                }
+            } else if (RuntimeExecutionContextDestroyed.equals(event)) {
+                ExecutionContextDestroyed ecd = (ExecutionContextDestroyed) value;
+                if ( ecd.getExecutionContextId() != null &&
+                        ecd.getExecutionContextId().equals(session.getExecutionContextId()) ) {
+                    session.setExecutionContextId(null);
+                }
+            } else if (RuntimeExecutionContextsCleared.equals(event)) {
+                session.setExecutionContextId(null);
             }
         });
 
+        session.getCommand().getInspector().enable();
+ 
         return session;
     }
 

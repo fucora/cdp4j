@@ -17,6 +17,8 @@
  */
 package io.webfolder.cdp.type.runtime;
 
+import java.util.Map;
+
 /**
  * Description of an isolated world
  */
@@ -27,7 +29,7 @@ public class ExecutionContextDescription {
 
     private String name;
 
-    private Object auxData;
+    private Map<String, Object> auxData;
 
     /**
      * Unique id of the execution context. It can be used to specify in which execution context
@@ -76,14 +78,14 @@ public class ExecutionContextDescription {
     /**
      * Embedder-specific auxiliary data.
      */
-    public Object getAuxData() {
+    public Map<String, Object> getAuxData() {
         return auxData;
     }
 
     /**
      * Embedder-specific auxiliary data.
      */
-    public void setAuxData(Object auxData) {
+    public void setAuxData(Map<String, Object> auxData) {
         this.auxData = auxData;
     }
 }

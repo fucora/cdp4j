@@ -17,11 +17,11 @@
  */
 package io.webfolder.cdp.session;
 
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 
 import io.webfolder.cdp.event.Events;
+import io.webfolder.cdp.event.target.DetachedFromTarget;
 import io.webfolder.cdp.event.target.ReceivedMessageFromTarget;
 import io.webfolder.cdp.event.target.TargetCreated;
 import io.webfolder.cdp.event.target.TargetDestroyed;
@@ -35,12 +35,12 @@ class TargetListener implements EventListener {
 
     private Map<String, WSAdapter> wsAdapters;
 
-    private Queue<TabInfo> tabs;
+    private List<TabInfo> tabs;
 
     TargetListener(
         Map<String, Session> sessions,
         Map<String, WSAdapter> wsAdapters,
-        Queue<TabInfo> tabs) {
+        List<TabInfo> tabs) {
         this.sessions = sessions;
         this.wsAdapters = wsAdapters;
         this.tabs = tabs;
@@ -81,18 +81,26 @@ class TargetListener implements EventListener {
                 TargetDestroyed destroyed = (TargetDestroyed) value;
                 for (Session next : sessions.values()) {
                     if (destroyed.getTargetId().equals(next.getTargetId())) {
-                        next.dispose();
-                        wsAdapters.remove(next.getId());
-                        sessions.remove(next.getId());
-                        next.terminate("Target.targetDestroyed");
+                        if ( sessions.remove(next.getId()) != null ) {
+                            wsAdapters.remove(next.getId());
+                            next.dispose();
+                            next.terminate("Target.targetDestroyed");
+                        }
                     }
                 }
-                Iterator<TabInfo> iter = tabs.iterator();
-                while (iter.hasNext()) {
-                    TabInfo next = iter.next();
+                for (TabInfo next : tabs) {
                     if (destroyed.getTargetId().equals(next.getTargetId())) {
                         tabs.remove(next);
                     }
+                }
+            break;
+            case TargetDetachedFromTarget:
+                DetachedFromTarget detached = (DetachedFromTarget) value;
+                Session removed = null;
+                if ( ( removed = sessions.remove(detached.getSessionId()) ) != null ) {
+                    wsAdapters.remove(removed.getId());
+                    removed.dispose();
+                    removed.terminate("Target.detachedFromTarget");
                 }
             break;
             default:

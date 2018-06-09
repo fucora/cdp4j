@@ -22,6 +22,7 @@ import static io.webfolder.cdp.event.Events.LogEntryAdded;
 import static io.webfolder.cdp.event.Events.NetworkResponseReceived;
 import static io.webfolder.cdp.event.Events.PageLifecycleEvent;
 import static io.webfolder.cdp.event.Events.RuntimeConsoleAPICalled;
+import static io.webfolder.cdp.event.Events.RuntimeExecutionContextCreated;
 import static io.webfolder.cdp.type.constant.ImageFormat.Png;
 import static io.webfolder.cdp.type.page.ResourceType.Document;
 import static io.webfolder.cdp.type.page.ResourceType.XHR;
@@ -55,6 +56,7 @@ import io.webfolder.cdp.event.log.EntryAdded;
 import io.webfolder.cdp.event.network.ResponseReceived;
 import io.webfolder.cdp.event.page.LifecycleEvent;
 import io.webfolder.cdp.event.runtime.ConsoleAPICalled;
+import io.webfolder.cdp.event.runtime.ExecutionContextCreated;
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.exception.LoadTimeoutException;
 import io.webfolder.cdp.listener.EventListener;
@@ -318,9 +320,76 @@ public class Session implements AutoCloseable,
 
     public Session navigate(final String url) {
         logEntry("navigate", url);
-        command.getInspector().enable();
         NavigateResult navigate = command.getPage().navigate(url);
         this.frameId = navigate.getFrameId();
+        return this;
+    }
+
+    public Session navigateAndWait(final String url, WaitUntil condition) {
+        return navigateAndWait(url, condition, 10_000);
+    }
+
+    public Session navigateAndWait(final String url, WaitUntil condition, int timeout) {
+        logEntry("navigateAndWait", format("url=%s, waitUntil=%s, timeout=%d", url, condition.name(), timeout));
+
+        command.getPage().enable();
+        command.getPage().setLifecycleEventsEnabled(true);
+
+        NavigateResult navigate = command.getPage().navigate(url);
+        this.frameId = navigate.getFrameId();
+
+        long start = System.currentTimeMillis();
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        command.getPage().enable();
+        EventListener loadListener = (e, d) -> {
+            if (PageLifecycleEvent.equals(e)) {
+                LifecycleEvent le = (LifecycleEvent) d;
+                if (condition.value.equals(le.getName())) {
+                    latch.countDown();
+                }
+            }
+        };
+
+        addEventListener(loadListener);
+
+        try {
+            latch.await(timeout, MILLISECONDS);
+        } catch (InterruptedException e) {
+            throw new LoadTimeoutException(e);
+        } finally {
+            removeEventEventListener(loadListener);
+        }
+
+        Integer executionContextId = getThis().getExecutionContextId();
+        if (executionContextId == null) {
+            CountDownLatch executionContextLatch = new CountDownLatch(1);
+            EventListener executionContextListener = (e, d) -> {
+                if (RuntimeExecutionContextCreated.equals(e)) {
+                    ExecutionContextCreated ecc = (ExecutionContextCreated) d;
+                    if (targetId.equals(ecc.getContext().getAuxData().get("frameId"))) {
+                        setExecutionContextId(ecc.getContext().getId());
+                        executionContextLatch.countDown();
+                    }
+                }
+            };
+            addEventListener(executionContextListener);
+            try {
+                long elapsedLoadTime = System.currentTimeMillis() - start;
+                executionContextLatch.await((timeout - (elapsedLoadTime + 1000)), MILLISECONDS);
+            } catch (InterruptedException e) {
+                throw new CdpException(e);
+            } finally {
+                removeEventEventListener(executionContextListener);
+            }
+        }
+
+        long elapsedTotal = System.currentTimeMillis() - start;
+        if ( elapsedTotal > timeout) {
+            throw new LoadTimeoutException("Page not loaded within " + timeout + " ms: " + elapsedTotal);
+        }
+        
         return this;
     }
 
@@ -518,6 +587,7 @@ public class Session implements AutoCloseable,
             try {
                 webSocket.disconnect(NORMAL, null, 1000); // max wait time to close: 1 seconds
             } catch (Throwable t) {
+                // ignore
             }
         }
     }
@@ -658,7 +728,7 @@ public class Session implements AutoCloseable,
         return executionContextId;
     }
 
-    void setExecutionContextId(int executionContextId) {
+    void setExecutionContextId(Integer executionContextId) {
         this.executionContextId = executionContextId;
     }
 
