@@ -51,6 +51,7 @@ import com.neovisionaries.ws.client.WebSocket;
 
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
+import io.webfolder.cdp.command.CSS;
 import io.webfolder.cdp.command.Emulation;
 import io.webfolder.cdp.command.Page;
 import io.webfolder.cdp.event.log.EntryAdded;
@@ -470,24 +471,45 @@ public class Session implements AutoCloseable,
      * Capture page screenshot.
      */
     public byte[] captureScreenshot() {
-        return captureScreenshot(Png, null, null, true);
+        return captureScreenshot(false, Png, null, null, true);
     }
 
     /**
      * Capture page screenshot.
      * 
+     * @param hideScrollbar hides the scollbar
+     */
+    public byte[] captureScreenshot(boolean hideScrollbar) {
+        return captureScreenshot(hideScrollbar, Png, null, null, true);
+    }
+
+    /**
+     * Capture page screenshot.
+     * 
+     * @param hideScrollbar hides the scollbar
      * @param format Image compression format (defaults to png).
      * @param quality Compression quality from range [0..100] (jpeg only).
      * @param clip Capture the screenshot of a given region only.
      * @param fromSurface Capture the screenshot from the surface, rather than the view. Defaults to true.
      */
-    public byte[] captureScreenshot(@Optional ImageFormat format, @Optional Integer quality,
-                                    @Optional Viewport clip, @Experimental @Optional Boolean fromSurface) {
+    public byte[] captureScreenshot(boolean hideScrollbar,
+                                    @Optional ImageFormat format,
+                                    @Optional Integer quality,
+                                    @Optional Viewport clip,
+                                    @Experimental @Optional Boolean fromSurface) {
         SourceRange location = new SourceRange();
         location.setEndColumn(0);
         location.setEndLine(0);
         location.setStartColumn(0);
         location.setStartLine(0);
+        String styleSheetId = null;
+        if (hideScrollbar) {
+            getThis().getCommand().getDOM().enable();
+            CSS css = getThis().getCommand().getCSS();
+            css.enable();
+            styleSheetId = css.createStyleSheet(frameId);
+            css.addRule(styleSheetId, "::-webkit-scrollbar { display: none !important; }", location);
+        }
         Page page = getThis().getCommand().getPage();
         GetLayoutMetricsResult metrics = page.getLayoutMetrics();
         Rect cs = metrics.getContentSize();
@@ -496,9 +518,13 @@ public class Session implements AutoCloseable,
         byte[] data = page.captureScreenshot(format, quality, clip, fromSurface);
         emulation.clearDeviceMetricsOverride();
         emulation.resetPageScaleFactor();
+        if (hideScrollbar) {
+            CSS css = getThis().getCommand().getCSS();
+            css.setStyleSheetText(styleSheetId, "");
+        }
         return data;
     }
-
+    
     /**
      * Causes the current thread to wait until waiting time elapses.
      * 
