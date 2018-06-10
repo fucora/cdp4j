@@ -335,7 +335,7 @@ public class Session implements AutoCloseable,
                             DomReady.equals(condition) ? Load : condition;
 
         logEntry("navigateAndWait",
-                            format("url=%s, waitUntil=%s, timeout=%d", url, condition.name(), timeout));
+                            format("[url=%s, waitUntil=%s, timeout=%d]", url, condition.name(), timeout));
 
         NavigateResult navigate = command.getPage().navigate(url);
         this.frameId = navigate.getFrameId();
