@@ -211,18 +211,6 @@ public interface JavaScript {
      */
     @SuppressWarnings("unchecked")
     public default <T> T getVariable(String name, Class<T> returnType) {
-        EvaluateResult windowResult = getThis().getCommand().getRuntime().evaluate("window");
-
-        if (windowResult == null) {
-            return null;
-        }
-
-        if ( windowResult.getExceptionDetails() != null &&
-                            windowResult.getExceptionDetails().getException() != null ) {
-            getThis().releaseObject(windowResult.getExceptionDetails().getException().getObjectId());
-            throw new CdpException(windowResult.getExceptionDetails().getException().getDescription());
-        }
-
         CallArgument objArgument = new CallArgument();
         objArgument.setValue(name);
 
@@ -232,13 +220,11 @@ public interface JavaScript {
                 .callFunctionOn(
                         "function(functionName) { const result = functionName.split('.').reduce((o, i) => o[i], this); " +
                                 "return typeof result === 'undefined' ? undefined : JSON.stringify({ result : result }); }",
-                                                        windowResult.getResult().getObjectId(),
+                                                        null,
                                                         asList(objArgument),
                                                         FALSE, FALSE,
                                                         FALSE, FALSE,
-                                                        FALSE, null, null);
-
-        getThis().releaseObject(windowResult.getResult().getObjectId());
+                                                        FALSE, getThis().getExecutionContextId(), null);
 
         if ( obj.getExceptionDetails() != null &&
                 obj.getExceptionDetails().getException() != null ) {

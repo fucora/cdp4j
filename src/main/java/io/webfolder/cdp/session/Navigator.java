@@ -28,8 +28,6 @@ import java.util.Map;
 import io.webfolder.cdp.command.DOM;
 import io.webfolder.cdp.command.Network;
 import io.webfolder.cdp.command.Page;
-import io.webfolder.cdp.exception.CdpException;
-import io.webfolder.cdp.type.dom.Node;
 import io.webfolder.cdp.type.page.GetNavigationHistoryResult;
 import io.webfolder.cdp.type.page.NavigationEntry;
 import io.webfolder.cdp.type.runtime.RemoteObject;
@@ -209,38 +207,15 @@ public interface Navigator {
      * @return <code>true</code> if Document.readyState property is <strong>complete</strong>
      */
     default boolean isDomReady() {
-        try {
-            getThis().disableFlowLog();
-            DOM dom = getThis().getCommand().getDOM();
-            if (dom == null) {
+        if (getThis().getExecutionContextId() == null) {
+            return false;
+        } else {
+            try {
+                String state = getThis().getVariable("document.readyState", String.class);
+                return "complete".equals(state);
+            } catch (Throwable t) {
                 return false;
             }
-            Node document = dom.getDocument();
-            if (document == null) {
-                return false;
-            }
-            Integer nodeId = document.getNodeId();
-            RemoteObject remoteObject = dom.resolveNode(nodeId, null, null);
-            if (remoteObject == null) {
-                return false;
-            }
-            String readyState = (String) getThis().getPropertyByObjectId(remoteObject.getObjectId(), "readyState");
-            getThis().releaseObject(remoteObject.getObjectId());
-            return "complete".equals(readyState);
-        } catch (CdpException e) {
-            if (getThis().isConnected()) {
-                boolean ready = false;
-                try {
-                    ready = TRUE.equals(getThis().evaluate("window.document.readyState === 'complete'"));
-                } catch (Throwable t) {
-                    // ignore
-                }
-                return ready;
-            } else {
-                return false;
-            }
-        } finally {
-            getThis().enableFlowLog();
         }
     }
 

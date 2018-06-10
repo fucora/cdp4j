@@ -4,7 +4,8 @@ public enum WaitUntil {
     Load("load"),
     DomContentLoad("DOMContentLoaded"),
     NetworkIdle("networkIdle"),
-    NetworkAlmostIdle("networkAlmostIdle");
+    NetworkAlmostIdle("networkAlmostIdle"),
+    DomReady("DomReady");
 
     public String value;
 
