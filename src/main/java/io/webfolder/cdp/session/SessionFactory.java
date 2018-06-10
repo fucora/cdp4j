@@ -19,7 +19,6 @@ package io.webfolder.cdp.session;
 
 import static io.webfolder.cdp.event.Events.RuntimeExecutionContextCreated;
 import static io.webfolder.cdp.event.Events.RuntimeExecutionContextDestroyed;
-import static io.webfolder.cdp.event.Events.RuntimeExecutionContextsCleared;
 import static io.webfolder.cdp.logger.CdpLoggerType.Slf4j;
 import static java.lang.Boolean.TRUE;
 import static java.lang.String.format;
@@ -297,8 +296,6 @@ public class SessionFactory implements AutoCloseable {
                         ecd.getExecutionContextId().equals(session.getExecutionContextId()) ) {
                     session.setExecutionContextId(null);
                 }
-            } else if (RuntimeExecutionContextsCleared.equals(event)) {
-                session.setExecutionContextId(null);
             }
         });
 

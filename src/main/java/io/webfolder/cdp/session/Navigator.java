@@ -207,15 +207,12 @@ public interface Navigator {
      * @return <code>true</code> if Document.readyState property is <strong>complete</strong>
      */
     default boolean isDomReady() {
-        if (getThis().getExecutionContextId() == null) {
+        try {
+            getThis().disableFlowLog();
+            return "true".equals(valueOf(getThis().evaluate("document.readyState == 'complete'")));
+        } catch (Throwable t) {
+            getThis().enableFlowLog();
             return false;
-        } else {
-            try {
-                String state = getThis().getVariable("document.readyState", String.class);
-                return "complete".equals(state);
-            } catch (Throwable t) {
-                return false;
-            }
         }
     }
 
