@@ -235,7 +235,6 @@ public class Session implements AutoCloseable,
         AtomicBoolean  loaded = new AtomicBoolean(false);
         AtomicBoolean  ready  = new AtomicBoolean(false);
         if (isConnected()) {
-            command.getPage().enable();
             EventListener loadListener = (e, d) -> {
                 if (PageLifecycleEvent.equals(e) &&
                         "load".equalsIgnoreCase(((LifecycleEvent) d).getName())) {
@@ -338,15 +337,10 @@ public class Session implements AutoCloseable,
         logEntry("navigateAndWait",
                             format("url=%s, waitUntil=%s, timeout=%d", url, condition.name(), timeout));
 
-        command.getPage().enable();
-        command.getPage().setLifecycleEventsEnabled(true);
-
         NavigateResult navigate = command.getPage().navigate(url);
         this.frameId = navigate.getFrameId();
 
         CountDownLatch latch = new CountDownLatch(1);
-
-        command.getPage().enable();
 
         EventListener loadListener = (e, d) -> {
             if (PageLifecycleEvent.equals(e)) {

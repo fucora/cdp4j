@@ -299,7 +299,11 @@ public class SessionFactory implements AutoCloseable {
             }
         });
 
-        session.getCommand().getInspector().enable();
+        Command command = session.getCommand();
+
+        command.getInspector().enable();
+        command.getPage().enable();
+        command.getPage().setLifecycleEventsEnabled(true);
  
         return session;
     }
