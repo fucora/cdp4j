@@ -64,11 +64,11 @@ public interface Mouse {
      */
     default Session click(final String selector, final Object... args) {
         getThis().logEntry("click", format(selector, args));
-        DOM dom = getThis().getCommand().getDOM();
         Integer nodeId = getThis().getNodeId(format(selector, args));
         if (nodeId == null || Constant.EMPTY_NODE_ID.equals(nodeId)) {
             throw new ElementNotFoundException(format(selector, args));
         }
+        DOM dom = getThis().getCommand().getDOM();
         BoxModel boxModel = dom.getBoxModel(nodeId, null, null);
         if (boxModel == null) {
             return getThis();

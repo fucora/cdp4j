@@ -289,16 +289,15 @@ public interface Selector {
                     final String selector,
                     final Object ...args) {
         final DOM     dom       = getThis().getCommand().getDOM();
-        final boolean sizzle    = getThis().useSizzle();
         final boolean xpath     = selector.charAt(0) == '/';
         List<String>  objectIds = new ArrayList<>();
-        if (sizzle || xpath) {
+        if (xpath) {
             final Runtime  runtime       = getThis().getCommand().getRuntime();
-            final String   func          = xpath ? "$x(\"%s\")" : "window.cdp4j.queryAll(\"%s\")";
+            final String   func          = "$x(\"%s\")";
             final String   expression    = format(func, format(selector.replace("\"", "\\\""), args));
-            final Boolean  includeCmdApi = xpath ? TRUE : FALSE;
+            final Boolean  includeCmdApi = TRUE;
             EvaluateResult result        = runtime.evaluate(expression, null, includeCmdApi,
-                                                                null, null, null,
+                                                                null, getThis().getExecutionContextId(), null,
                                                                 null, null, null,
                                                                 null, null);
             if (result == null) {
@@ -355,15 +354,15 @@ public interface Selector {
                 final String selector,
                 final Object ...args) {
         final DOM     dom    = getThis().getCommand().getDOM();
-        final boolean sizzle = getThis().useSizzle();
         final boolean xpath  = selector.charAt(0) == '/';
-        if (sizzle || xpath) {
+        if (xpath) {
             final Runtime  runtime       = getThis().getCommand().getRuntime();
             final String   func          = xpath ? "$x(\"%s\")[0]" : "window.cdp4j.query(\"%s\")";
             final String   expression    = format(func, format(selector.replace("\"", "\\\""), args));
             final Boolean  includeCmdApi = xpath ? TRUE : FALSE;
-            EvaluateResult result        = runtime.evaluate(expression, null, includeCmdApi,
-                                                            null, contextId, null,
+            EvaluateResult result        = runtime.evaluate(expression, null,
+                                                            includeCmdApi, null,
+                                                            contextId == null ? getThis().getExecutionContextId() : contextId, null,
                                                             null, null, null,
                                                             null, null);
             if (result == null) {
@@ -420,11 +419,10 @@ public interface Selector {
         if (selector == null || selector.trim().isEmpty()) {
             return EMPTY_NODE_ID;
         }
-        boolean sizzle = getThis().useSizzle();
         Integer nodeId = EMPTY_NODE_ID;
         DOM dom = getThis().getCommand().getDOM();
         final boolean xpath = selector.charAt(0) == '/';
-        if (sizzle || xpath) {
+        if (xpath) {
             String objectId = getThis().getObjectId(context, format(selector, args));
             if (objectId != null) {
                 nodeId = dom.requestNode(objectId);

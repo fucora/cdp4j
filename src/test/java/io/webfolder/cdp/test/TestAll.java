@@ -92,27 +92,10 @@ public class TestAll {
     }
 
     @Test
-    public void t01_test() {
-        try (Session session = factory.create()) {
-            URL url = TestAll.class.getResource("/session-test.html");
-            session.installSizzle();
-            session.navigate(url.toString());
-            session.waitDocumentReady();
-    
-            assertTrue(session.useSizzle());
-    
-            String innerHtml = (String) session.getProperty("p:contains('%s')", "innerHTML", "hello");
-            assertEquals("hello, world!", innerHtml);
-            session.setProperty("//p", "innerHTML", "hi");
-    
-            innerHtml = (String) session.getProperty("p:contains('hi')", "innerHTML");
-            assertEquals("hi", innerHtml);
-    }
-    }
-    
-    @Test
     @SuppressWarnings("unchecked")
-    public void t02_test() {
+    public void t01_test() {
+        session.waitDocumentReady();
+
         session.activate();
         session.getTitle();
 

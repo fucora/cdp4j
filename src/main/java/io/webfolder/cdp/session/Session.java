@@ -80,7 +80,6 @@ public class Session implements AutoCloseable,
                                 Mouse        ,
                                 Navigator    ,
                                 JavaScript   ,
-                                Sizzle       ,
                                 Dom          {
 
     private final Map<Class<?>, Object> proxies = new ConcurrentHashMap<>();
@@ -108,8 +107,6 @@ public class Session implements AutoCloseable,
     private final boolean browserSession;
 
     private volatile TerminateListener terminateListener;
-
-    private volatile String sizzleScriptId;
 
     private String frameId;
 
@@ -661,14 +658,6 @@ public class Session implements AutoCloseable,
             hasArgs ? "\"" : "",
             retValue
         });
-    }
-
-    void setSizzleScriptId(String scriptId) {
-        this.sizzleScriptId = scriptId;
-    }
-
-    String getSizzleScriptId() {
-        return sizzleScriptId;
     }
 
     @SuppressWarnings("unchecked")

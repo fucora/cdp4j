@@ -1,8 +1,4 @@
 invoked(navigate)
-invoked(navigate)
-getProperty("p:contains('hello')", "innerHTML"): hello, world!
-setProperty("//p", "innerHTML", "hi")
-getProperty("p:contains('hi')", "innerHTML"): hi
 activate()
 getTitle(): Session Test
 getAttribute("[type=text]", "value"): foo
