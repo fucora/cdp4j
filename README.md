@@ -15,7 +15,6 @@ Features
 * Evaluate JavaScript
 * Invoke JavaScript function
 * Supports native CSS selector engine
-* Supports [Sizzle](http://sizzlejs.com/) selector engine
 * Supports XPath queries
 * Incognito Browsing (private tab)
 * Full page screen capture
@@ -67,7 +66,7 @@ Add the following to your POM's `<dependencies>` tag:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>cdp4j</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
 </dependency>
 ```
 
@@ -77,15 +76,15 @@ Using development (SNAPSHOT) version:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>cdp4j</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>3.0.2-SNAPSHOT</version>
 </dependency>
 ```
 
 Download
 --------
-[cdp4j-3.0.0.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/3.0.0/cdp4j-3.0.0.jar) - 824 KB
+[cdp4j-3.0.1.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/3.0.1/cdp4j-3.0.1.jar) - 818 KB
 
-[cdp4j-3.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/3.0.0/cdp4j-3.0.0-sources.jar) - 538 KB
+[cdp4j-3.0.1-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/3.0.1/cdp4j-3.0.1-sources.jar) - 531 KB
 
 Supported Platforms
 -------------------
@@ -131,12 +130,6 @@ Design Principles
 * Support only Chrome/Chromium based browsers.
 * Supports full capabilities of the Chrome DevTools Protocol.
 * Keep the API simple.
-
-CSS Selector Engine
--------------------
-cdp4j use W3C selector engine which is default selector engine of Chrome/Chromium. Alternatively [Sizzle](http://http://sizzlejs.com) selector engine might be used.
-Sizzle is the css selector engine of JQuery and it supports extra selectors like _:has(div)_, _:text_, _contains(text)_ etc.
-Check the [Sizzle.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Sizzle.java) for using sizzle with cdp4j.
 
 
 Usage Examples
@@ -204,10 +197,10 @@ Samples
 | [Attributes.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Attributes.java) | [Bing.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Bing.java) | [BingTranslator.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/BingTranslator.java) | [CheckBox.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/CheckBox.java) |
 | [ExecuteJavascript.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/ExecuteJavascript.java) | [GoogleTranslate.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/GoogleTranslate.java) | [HelloWorld.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/HelloWorld.java) | [IncognitoBrowsing.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/IncognitoBrowsing.java) |
 | [Logging.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Logging.java) | [MultiSelect.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/MultiSelect.java) | [NetworkResponse.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/NetworkResponse.java) | [Screenshot.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Screenshot.java) |
-| [Select.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Select.java) | [SendKeys.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/SendKeys.java) | [SharedSession.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/SharedSession.java) | [Sizzle.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Sizzle.java) |
+| [Select.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Select.java) | [SendKeys.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/SendKeys.java) | [SharedSession.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/SharedSession.java) | [EvaluateOnNewDocument.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/EvaluateOnNewDocument.java) |
 | [UserAgent.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/UserAgent.java) | [WaitUntil.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/WaitUntil.java) | [XPathSelector.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/XPathSelector.java) | [CodeCoverage.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/CodeCoverage.java) |
 | [PrintToPDF.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/PrintToPDF.java) | [BasicAuthentication.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/BasicAuthentication.java) | [DownloadFile.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/DownloadFile.java) | [Crawler.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Crawler.java) |
-| [MultiProcess.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/MultiProcess.java) | [FollowRedirects.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/FollowRedirects.java) | [CloseSessionOnRedirect.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/CloseSessionOnRedirect.java) | [EvaluateOnNewDocument.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/EvaluateOnNewDocument.java) |
+| [MultiProcess.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/MultiProcess.java) | [FollowRedirects.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/FollowRedirects.java) | [CloseSessionOnRedirect.java](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/CloseSessionOnRedirect.java) |  |
 
 Building cdp4j
 --------------
