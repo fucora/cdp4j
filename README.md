@@ -90,6 +90,10 @@ Supported Platforms
 -------------------
 cdp4j has been tested under Windows 10 and Ubuntu, but should work on any platform where a Java & Chrome/Chromium available.
 
+Release Notes
+-------------
+[CHANGELOG.md](https://github.com/webfolderio/cdp4j/blob/master/CHANGELOG.md)
+
 Headless Mode
 -------------
 cdp4j can be run in "headless" mode using with [Headless Chrome](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md).
