@@ -46,19 +46,7 @@ public class Launcher extends AbstractLauncher {
 
     private static final boolean OSX = OS.startsWith("mac");
 
-    private ProcessManager processManager = new NullProcessManager();
-
-    private static class NullProcessManager extends ProcessManager {
-
-        @Override
-        void setProcess(CdpProcess process) {
-        }
-
-        @Override
-        public boolean kill() {
-            return false;
-        }
-    }
+    private ProcessManager processManager = new AdaptiveProcessManager();
 
     public Launcher() {
         this(new SessionFactory());
