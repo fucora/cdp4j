@@ -144,14 +144,16 @@ public class ChromiumDownloader implements Downloader {
             return executable;
         }
 
-        String url = null;
+        String url;
 
         if (WINDOWS) {
             url = format("%s/Win_x64/%d/chrome-win32.zip", DOWNLOAD_HOST, version.revision);
-        } else if ("linux".contains(OS)) {
+        } else if (OS.contains("linux")) {
             url = format("%s/Linux_x64/%d/chrome-linux.zip", DOWNLOAD_HOST, version.revision);
-        } else if ("mac".contains(OS)) {
+        } else if (OS.contains("mac")) {
             url = format("%s/Mac/%d/chrome-mac.zip", DOWNLOAD_HOST, version.revision);
+        }else {
+            throw new CdpException("Unknown OS found - " + OS);
         }
 
         try {
