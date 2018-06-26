@@ -152,7 +152,7 @@ public class ChromiumDownloader implements Downloader {
             url = format("%s/Linux_x64/%d/chrome-linux.zip", DOWNLOAD_HOST, version.revision);
         } else if (OS.contains("mac")) {
             url = format("%s/Mac/%d/chrome-mac.zip", DOWNLOAD_HOST, version.revision);
-        }else {
+        } else {
             throw new CdpException("Unknown OS found - " + OS);
         }
 
