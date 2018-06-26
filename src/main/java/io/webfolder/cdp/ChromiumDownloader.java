@@ -52,6 +52,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Iterator;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -64,13 +65,17 @@ public class ChromiumDownloader implements Downloader {
 
     public static final ChromiumVersion LATEST_VERSION = getLatestVersion();
 
-    private static final boolean        WINDOWS        = ";".equals(pathSeparator);
+    private static final String OS                     = getProperty("os.name").toLowerCase(ENGLISH);
 
-    private static final String         OS             = getProperty("os.name").toLowerCase(ENGLISH);
+    private static final boolean WINDOWS               = ";".equals(pathSeparator);
 
-    private static final String         DOWNLOAD_HOST  = "https://storage.googleapis.com/chromium-browser-snapshots";
+    private static final boolean MAC                   = OS.contains("mac");
 
-    private static final int            TIMEOUT        = 10 * 1000; // 10 seconds
+    private static final boolean LINUX                 = OS.contains("linux");
+
+    private static final String DOWNLOAD_HOST          = "https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/";
+
+    private static final int TIMEOUT                   = 10 * 1000; // 10 seconds
 
     private final CdpLogger logger;
 
@@ -125,19 +130,41 @@ public class ChromiumDownloader implements Downloader {
     }
 
     public static ChromiumVersion getLatestVersion() {
-        ChromiumVersion[] values = ChromiumVersion.values();
-        sort(values, 0, values.length, (o1, o2) -> compare(o2.revision, o1.revision));
-        return values[0];
+        String url;
+
+        if ( WINDOWS ) {
+            url = format("%s/Win_x64%2FLAST_CHANGE?alt=media", DOWNLOAD_HOST);
+        } else if ( LINUX ) {
+            url = format("%s/Linux_x64%2FLAST_CHANGE?alt=media", DOWNLOAD_HOST);
+        } else if ( MAC ) {
+            url = format("%s/Mac%2FLAST_CHANGE?alt=media", DOWNLOAD_HOST);
+        } else {
+            throw new CdpException("Unknown OS found - " + OS);
+        }
+
+        try {
+            URL u = new URL(url);
+            InputStream is = u.openStream();
+            Scanner s = new Scanner(is).useDelimiter("\\A");
+            String result = s.hasNext() ? s.next() : "";
+            is.close();
+
+            return new ChromiumVersion(Integer.parseInt(result));
+        } catch (IOException e) {
+            throw new CdpException(e);
+        }
     }
 
     public Path download(ChromiumVersion version) {
         Path destinationRoot = get(getProperty("user.home"))
-                                .resolve(".cdp4j")
-                                .resolve("chromium-" + valueOf(version.toString().replace('_', '.')));
+                .resolve(".cdp4j")
+                .resolve("chromium-" + valueOf(version.revision));
 
         Path executable = destinationRoot.resolve("chrome.exe");
-        if ( ! WINDOWS ) {
+        if ( LINUX ) {
             executable = destinationRoot.resolve("chrome");
+        } else if ( MAC ) {
+            executable = destinationRoot.resolve("Chromium.app/Contents/MacOS/chrome");
         }
 
         if (exists(executable) && isExecutable(executable)) {
@@ -146,11 +173,11 @@ public class ChromiumDownloader implements Downloader {
 
         String url;
 
-        if (WINDOWS) {
+        if ( WINDOWS ) {
             url = format("%s/Win_x64/%d/chrome-win32.zip", DOWNLOAD_HOST, version.revision);
-        } else if (OS.contains("linux")) {
+        } else if ( LINUX ) {
             url = format("%s/Linux_x64/%d/chrome-linux.zip", DOWNLOAD_HOST, version.revision);
-        } else if (OS.contains("mac")) {
+        } else if ( MAC ) {
             url = format("%s/Mac/%d/chrome-mac.zip", DOWNLOAD_HOST, version.revision);
         } else {
             throw new CdpException("Unknown OS found - " + OS);
@@ -232,11 +259,11 @@ public class ChromiumDownloader implements Downloader {
                 Set<PosixFilePermission> permissions = getPosixFilePermissions(executable);
                 if ( ! permissions.contains(OWNER_EXECUTE)) {
                     permissions.add(OWNER_EXECUTE);
-                    setPosixFilePermissions(destinationRoot.resolve("chrome"), permissions);
+                    setPosixFilePermissions(executable, permissions);
                 }
                 if ( ! permissions.contains(GROUP_EXECUTE) ) {
                     permissions.add(GROUP_EXECUTE);
-                    setPosixFilePermissions(destinationRoot.resolve("chrome"), permissions);
+                    setPosixFilePermissions(executable, permissions);
                 }
             }
         } catch (IOException e) {
