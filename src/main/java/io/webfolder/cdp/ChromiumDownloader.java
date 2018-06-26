@@ -18,7 +18,6 @@
 package io.webfolder.cdp;
 
 import static java.io.File.pathSeparator;
-import static java.lang.Integer.compare;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.lang.String.valueOf;
@@ -38,7 +37,6 @@ import static java.nio.file.Files.walkFileTree;
 import static java.nio.file.Paths.get;
 import static java.nio.file.attribute.PosixFilePermission.GROUP_EXECUTE;
 import static java.nio.file.attribute.PosixFilePermission.OWNER_EXECUTE;
-import static java.util.Arrays.sort;
 import static java.util.Locale.ENGLISH;
 
 import java.io.IOException;
@@ -63,8 +61,6 @@ import io.webfolder.cdp.logger.LoggerFactory;
 
 public class ChromiumDownloader implements Downloader {
 
-    public static final ChromiumVersion LATEST_VERSION = getLatestVersion();
-
     private static final String OS                     = getProperty("os.name").toLowerCase(ENGLISH);
 
     private static final boolean WINDOWS               = ";".equals(pathSeparator);
@@ -73,7 +69,7 @@ public class ChromiumDownloader implements Downloader {
 
     private static final boolean LINUX                 = OS.contains("linux");
 
-    private static final String DOWNLOAD_HOST          = "https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/";
+    private static final String DOWNLOAD_HOST          = "https://storage.googleapis.com/chromium-browser-snapshots";
 
     private static final int TIMEOUT                   = 10 * 1000; // 10 seconds
 
@@ -126,20 +122,20 @@ public class ChromiumDownloader implements Downloader {
 
     @Override
     public Path download() {
-        return download(LATEST_VERSION);
+        return download(getLatestVersion());
     }
 
-    public static ChromiumVersion getLatestVersion() {
-        String url;
+    private static ChromiumVersion getLatestVersion() {
+        String url = DOWNLOAD_HOST;
 
         if ( WINDOWS ) {
-            url = format("%s/Win_x64%2FLAST_CHANGE?alt=media", DOWNLOAD_HOST);
+            url += "/Win_x64/LAST_CHANGE";
         } else if ( LINUX ) {
-            url = format("%s/Linux_x64%2FLAST_CHANGE?alt=media", DOWNLOAD_HOST);
+            url += "/Linux_x64/LAST_CHANGE";
         } else if ( MAC ) {
-            url = format("%s/Mac%2FLAST_CHANGE?alt=media", DOWNLOAD_HOST);
+            url += "/Mac/LAST_CHANGE";
         } else {
-            throw new CdpException("Unknown OS found - " + OS);
+            throw new CdpException("Unsupported OS found - " + OS);
         }
 
         try {
@@ -164,7 +160,7 @@ public class ChromiumDownloader implements Downloader {
         if ( LINUX ) {
             executable = destinationRoot.resolve("chrome");
         } else if ( MAC ) {
-            executable = destinationRoot.resolve("Chromium.app/Contents/MacOS/chrome");
+            executable = destinationRoot.resolve("Chromium.app/Contents/MacOS/Chromium");
         }
 
         if (exists(executable) && isExecutable(executable)) {
@@ -180,7 +176,7 @@ public class ChromiumDownloader implements Downloader {
         } else if ( MAC ) {
             url = format("%s/Mac/%d/chrome-mac.zip", DOWNLOAD_HOST, version.revision);
         } else {
-            throw new CdpException("Unknown OS found - " + OS);
+            throw new CdpException("Unsupported OS found - " + OS);
         }
 
         try {
@@ -213,7 +209,7 @@ public class ChromiumDownloader implements Downloader {
                     try {
                         long fileSize = size(archive);
                         logger.info("Downloading Chromium {}: {}%",
-                                    version.toString(), round((fileSize * 100L) / contentLength));
+                                version.toString(), round((fileSize * 100L) / contentLength));
                     } catch (IOException e) {
                         // ignore
                     }
