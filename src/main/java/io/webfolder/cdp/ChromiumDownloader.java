@@ -57,6 +57,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.logger.CdpLogger;
 import io.webfolder.cdp.logger.CdpLoggerFactory;
+import io.webfolder.cdp.logger.CdpLoggerType;
 import io.webfolder.cdp.logger.LoggerFactory;
 
 public class ChromiumDownloader implements Downloader {
@@ -140,11 +141,21 @@ public class ChromiumDownloader implements Downloader {
 
         try {
             URL u = new URL(url);
-            InputStream is = u.openStream();
-            Scanner s = new Scanner(is).useDelimiter("\\A");
-            String result = s.hasNext() ? s.next() : "";
-            is.close();
 
+            HttpURLConnection conn = (HttpURLConnection) u.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(TIMEOUT);
+            conn.setReadTimeout(TIMEOUT);
+
+            if ( conn.getResponseCode() != 200 ) {
+                throw new CdpException(conn.getResponseCode() + " - " + conn.getResponseMessage());
+            }
+
+            String result = null;
+            try (Scanner s = new Scanner(conn.getInputStream())) {
+                s.useDelimiter("\\A");
+                result = s.hasNext() ? s.next() : "";
+            }
             return new ChromiumVersion(Integer.parseInt(result));
         } catch (IOException e) {
             throw new CdpException(e);
@@ -195,7 +206,7 @@ public class ChromiumDownloader implements Downloader {
                 delete(archive);
             }
             if ( ! exists(archive) ) {
-                logger.info("Downloading Chromium " + version.toString().replace('_', '.') + ": " + u.toString());
+                logger.info("Downloading Chromium [revision=" + version.revision + "] 0%");
                 u = new URL(url);
                 if ( conn.getResponseCode() != 200 ) {
                     throw new CdpException(conn.getResponseCode() + " - " + conn.getResponseMessage());
@@ -208,8 +219,8 @@ public class ChromiumDownloader implements Downloader {
                 Runnable progress = () -> {
                     try {
                         long fileSize = size(archive);
-                        logger.info("Downloading Chromium {}: {}%",
-                                version.toString(), round((fileSize * 100L) / contentLength));
+                        logger.info("Downloading Chromium [revision={}] {}%",
+                                version.revision, round((fileSize * 100L) / contentLength));
                     } catch (IOException e) {
                         // ignore
                     }
@@ -266,5 +277,10 @@ public class ChromiumDownloader implements Downloader {
             throw new CdpException(e);
         }
         return executable;
+    }
+
+    public static void main(String[] args) {
+        Path download = new ChromiumDownloader(new CdpLoggerFactory(CdpLoggerType.Console)).download();
+        System.out.println(download);
     }
 }
