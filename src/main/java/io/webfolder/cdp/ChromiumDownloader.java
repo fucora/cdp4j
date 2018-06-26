@@ -18,7 +18,6 @@
 package io.webfolder.cdp;
 
 import static java.io.File.pathSeparator;
-import static java.lang.Integer.compare;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.lang.String.valueOf;
@@ -38,7 +37,6 @@ import static java.nio.file.Files.walkFileTree;
 import static java.nio.file.Paths.get;
 import static java.nio.file.attribute.PosixFilePermission.GROUP_EXECUTE;
 import static java.nio.file.attribute.PosixFilePermission.OWNER_EXECUTE;
-import static java.util.Arrays.sort;
 import static java.util.Locale.ENGLISH;
 
 import java.io.IOException;
@@ -52,6 +50,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Iterator;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -62,15 +61,17 @@ import io.webfolder.cdp.logger.LoggerFactory;
 
 public class ChromiumDownloader implements Downloader {
 
-    public static final ChromiumVersion LATEST_VERSION = getLatestVersion();
+    private static final String OS                     = getProperty("os.name").toLowerCase(ENGLISH);
 
-    private static final boolean        WINDOWS        = ";".equals(pathSeparator);
+    private static final boolean WINDOWS               = ";".equals(pathSeparator);
 
-    private static final String         OS             = getProperty("os.name").toLowerCase(ENGLISH);
+    private static final boolean MAC                   = OS.contains("mac");
 
-    private static final String         DOWNLOAD_HOST  = "https://storage.googleapis.com/chromium-browser-snapshots";
+    private static final boolean LINUX                 = OS.contains("linux");
 
-    private static final int            TIMEOUT        = 10 * 1000; // 10 seconds
+    private static final String DOWNLOAD_HOST          = "https://storage.googleapis.com/chromium-browser-snapshots";
+
+    private static final int TIMEOUT                   = 10 * 1000; // 10 seconds
 
     private final CdpLogger logger;
 
@@ -121,37 +122,61 @@ public class ChromiumDownloader implements Downloader {
 
     @Override
     public Path download() {
-        return download(LATEST_VERSION);
+        return download(getLatestVersion());
     }
 
-    public static ChromiumVersion getLatestVersion() {
-        ChromiumVersion[] values = ChromiumVersion.values();
-        sort(values, 0, values.length, (o1, o2) -> compare(o2.revision, o1.revision));
-        return values[0];
+    private static ChromiumVersion getLatestVersion() {
+        String url = DOWNLOAD_HOST;
+
+        if ( WINDOWS ) {
+            url += "/Win_x64/LAST_CHANGE";
+        } else if ( LINUX ) {
+            url += "/Linux_x64/LAST_CHANGE";
+        } else if ( MAC ) {
+            url += "/Mac/LAST_CHANGE";
+        } else {
+            throw new CdpException("Unsupported OS found - " + OS);
+        }
+
+        try {
+            URL u = new URL(url);
+            InputStream is = u.openStream();
+            Scanner s = new Scanner(is).useDelimiter("\\A");
+            String result = s.hasNext() ? s.next() : "";
+            is.close();
+
+            return new ChromiumVersion(Integer.parseInt(result));
+        } catch (IOException e) {
+            throw new CdpException(e);
+        }
     }
 
     public Path download(ChromiumVersion version) {
         Path destinationRoot = get(getProperty("user.home"))
-                                .resolve(".cdp4j")
-                                .resolve("chromium-" + valueOf(version.toString().replace('_', '.')));
+                .resolve(".cdp4j")
+                .resolve("chromium-" + valueOf(version.revision));
 
         Path executable = destinationRoot.resolve("chrome.exe");
-        if ( ! WINDOWS ) {
+        if ( LINUX ) {
             executable = destinationRoot.resolve("chrome");
+        } else if ( MAC ) {
+            executable = destinationRoot.resolve("Chromium.app/Contents/MacOS/Chromium");
         }
 
         if (exists(executable) && isExecutable(executable)) {
             return executable;
         }
 
-        String url = null;
+        String url;
 
-        if (WINDOWS) {
+        if ( WINDOWS ) {
             url = format("%s/Win_x64/%d/chrome-win32.zip", DOWNLOAD_HOST, version.revision);
-        } else if ("linux".contains(OS)) {
+        } else if ( LINUX ) {
             url = format("%s/Linux_x64/%d/chrome-linux.zip", DOWNLOAD_HOST, version.revision);
-        } else if ("mac".contains(OS)) {
+        } else if ( MAC ) {
             url = format("%s/Mac/%d/chrome-mac.zip", DOWNLOAD_HOST, version.revision);
+        } else {
+            throw new CdpException("Unsupported OS found - " + OS);
         }
 
         try {
@@ -184,7 +209,7 @@ public class ChromiumDownloader implements Downloader {
                     try {
                         long fileSize = size(archive);
                         logger.info("Downloading Chromium {}: {}%",
-                                    version.toString(), round((fileSize * 100L) / contentLength));
+                                version.toString(), round((fileSize * 100L) / contentLength));
                     } catch (IOException e) {
                         // ignore
                     }
@@ -230,11 +255,11 @@ public class ChromiumDownloader implements Downloader {
                 Set<PosixFilePermission> permissions = getPosixFilePermissions(executable);
                 if ( ! permissions.contains(OWNER_EXECUTE)) {
                     permissions.add(OWNER_EXECUTE);
-                    setPosixFilePermissions(destinationRoot.resolve("chrome"), permissions);
+                    setPosixFilePermissions(executable, permissions);
                 }
                 if ( ! permissions.contains(GROUP_EXECUTE) ) {
                     permissions.add(GROUP_EXECUTE);
-                    setPosixFilePermissions(destinationRoot.resolve("chrome"), permissions);
+                    setPosixFilePermissions(executable, permissions);
                 }
             }
         } catch (IOException e) {
