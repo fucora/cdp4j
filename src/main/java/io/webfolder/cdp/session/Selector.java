@@ -356,18 +356,40 @@ public interface Selector {
         final DOM     dom    = getThis().getCommand().getDOM();
         final boolean xpath  = selector.charAt(0) == '/';
         if (xpath) {
-            final Runtime  runtime       = getThis().getCommand().getRuntime();
-            final String   func          = xpath ? "$x(\"%s\")[0]" : "window.cdp4j.query(\"%s\")";
-            final String   expression    = format(func, format(selector.replace("\"", "\\\""), args));
-            final Boolean  includeCmdApi = xpath ? TRUE : FALSE;
-            EvaluateResult result        = runtime.evaluate(expression, null,
-                                                            includeCmdApi, null,
-                                                            contextId == null ? getThis().getExecutionContextId() : contextId, null,
-                                                            null, null, null,
-                                                            null, null);
+            RemoteObject docObjectId = null;
+            if (contextId == null) {
+                Node document = dom.getDocument();
+                docObjectId = dom.resolveNode(document.getNodeId(), null, null);
+            }
+
+            List<CallArgument> arguments = new ArrayList<>(2);
+
+            CallArgument argDoc = new CallArgument();
+            argDoc.setObjectId(docObjectId.getObjectId());
+            arguments.add(argDoc);
+
+            CallArgument argExpression = new CallArgument();
+            argExpression.setValue(format(selector, args));
+            arguments.add(argExpression);
+
+            Runtime  runtime = getThis().getCommand().getRuntime();
+            String func = "function(doc, expression) { return doc.evaluate(expression, doc, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue; }";
+
+            CallFunctionOnResult result = runtime.callFunctionOn(func, docObjectId != null ? docObjectId.getObjectId() : null,
+                                                                arguments, FALSE,
+                                                                FALSE, FALSE,
+                                                                FALSE, FALSE,
+                                                                contextId,
+                                                                null);
+
+            if ( docObjectId != null ) {
+                releaseObject(docObjectId.getObjectId());
+            }
+
             if (result == null) {
                 return null;
             }
+
             ExceptionDetails ex = result.getExceptionDetails();
             if ( ex != null && ex.getException() != null ) {
                 if ( result.getResult() != null && result.getResult().getObjectId() != null ) {
@@ -424,13 +446,13 @@ public interface Selector {
         final boolean xpath = selector.charAt(0) == '/';
         if (xpath) {
             String objectId = getThis().getObjectId(context, format(selector, args));
-            if (objectId != null) {
+            if ( objectId != null ) {
                 nodeId = dom.requestNode(objectId);
                 getThis().releaseObject(objectId);
             }
         } else {
             Node document = dom.getDocument();
-            if (document != null) {
+            if ( document != null ) {
                 Integer documentNodeId = document.getNodeId();
                 if (documentNodeId != null) {
                     try {
