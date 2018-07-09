@@ -19,9 +19,18 @@ package io.webfolder.cdp;
 
 public class ChromiumVersion {
 
-    public final int revision;
+    private final int revision;
 
-    ChromiumVersion(int revision) {
+    public ChromiumVersion(int revision) {
         this.revision = revision;
     }
+
+	public int getRevision() {
+		return revision;
+	}
+
+	@Override
+	public String toString() {
+		return "ChromiumVersion [revision=" + revision + "]";
+	}
 }

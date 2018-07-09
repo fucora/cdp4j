@@ -18,6 +18,8 @@
 package io.webfolder.cdp;
 
 import static java.io.File.pathSeparator;
+import static java.lang.Integer.compare;
+import static java.lang.Integer.parseInt;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.lang.String.valueOf;
@@ -30,7 +32,9 @@ import static java.nio.file.Files.createDirectories;
 import static java.nio.file.Files.delete;
 import static java.nio.file.Files.exists;
 import static java.nio.file.Files.getPosixFilePermissions;
+import static java.nio.file.Files.isDirectory;
 import static java.nio.file.Files.isExecutable;
+import static java.nio.file.Files.list;
 import static java.nio.file.Files.setPosixFilePermissions;
 import static java.nio.file.Files.size;
 import static java.nio.file.Files.walkFileTree;
@@ -50,29 +54,30 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.logger.CdpLogger;
 import io.webfolder.cdp.logger.CdpLoggerFactory;
-import io.webfolder.cdp.logger.CdpLoggerType;
 import io.webfolder.cdp.logger.LoggerFactory;
 
 public class ChromiumDownloader implements Downloader {
 
-    private static final String OS                     = getProperty("os.name").toLowerCase(ENGLISH);
+    private static final String OS            = getProperty("os.name").toLowerCase(ENGLISH);
 
-    private static final boolean WINDOWS               = ";".equals(pathSeparator);
+    private static final boolean WINDOWS      = ";".equals(pathSeparator);
 
-    private static final boolean MAC                   = OS.contains("mac");
+    private static final boolean MAC          = OS.contains("mac");
 
-    private static final boolean LINUX                 = OS.contains("linux");
+    private static final boolean LINUX        = OS.contains("linux");
 
-    private static final String DOWNLOAD_HOST          = "https://storage.googleapis.com/chromium-browser-snapshots";
+    private static final String DOWNLOAD_HOST = "https://storage.googleapis.com/chromium-browser-snapshots";
 
-    private static final int TIMEOUT                   = 10 * 1000; // 10 seconds
+    private static final int TIMEOUT          = 10 * 1000; // 10 seconds
 
     private final CdpLogger logger;
 
@@ -126,7 +131,7 @@ public class ChromiumDownloader implements Downloader {
         return download(getLatestVersion());
     }
 
-    private static ChromiumVersion getLatestVersion() {
+    public static ChromiumVersion getLatestVersion() {
         String url = DOWNLOAD_HOST;
 
         if ( WINDOWS ) {
@@ -165,7 +170,7 @@ public class ChromiumDownloader implements Downloader {
     public Path download(ChromiumVersion version) {
         Path destinationRoot = get(getProperty("user.home"))
                 .resolve(".cdp4j")
-                .resolve("chromium-" + valueOf(version.revision));
+                .resolve("chromium-" + valueOf(version.getRevision()));
 
         Path executable = destinationRoot.resolve("chrome.exe");
         if ( LINUX ) {
@@ -181,11 +186,11 @@ public class ChromiumDownloader implements Downloader {
         String url;
 
         if ( WINDOWS ) {
-            url = format("%s/Win_x64/%d/chrome-win32.zip", DOWNLOAD_HOST, version.revision);
+            url = format("%s/Win_x64/%d/chrome-win32.zip", DOWNLOAD_HOST, version.getRevision());
         } else if ( LINUX ) {
-            url = format("%s/Linux_x64/%d/chrome-linux.zip", DOWNLOAD_HOST, version.revision);
+            url = format("%s/Linux_x64/%d/chrome-linux.zip", DOWNLOAD_HOST, version.getRevision());
         } else if ( MAC ) {
-            url = format("%s/Mac/%d/chrome-mac.zip", DOWNLOAD_HOST, version.revision);
+            url = format("%s/Mac/%d/chrome-mac.zip", DOWNLOAD_HOST, version.getRevision());
         } else {
             throw new CdpException("Unsupported OS found - " + OS);
         }
@@ -200,13 +205,13 @@ public class ChromiumDownloader implements Downloader {
                 throw new CdpException(conn.getResponseCode() + " - " + conn.getResponseMessage());
             }
             long contentLength = conn.getHeaderFieldLong("x-goog-stored-content-length", 0);
-            String fileName = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf(".")) + "-r" + version.revision + ".zip";
+            String fileName = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf(".")) + "-r" + version.getRevision() + ".zip";
             Path archive = get(getProperty("java.io.tmpdir")).resolve(fileName);
             if ( exists(archive) && contentLength != size(archive) ) {
                 delete(archive);
             }
             if ( ! exists(archive) ) {
-                logger.info("Downloading Chromium [revision=" + version.revision + "] 0%");
+                logger.info("Downloading Chromium [revision=" + version.getRevision() + "] 0%");
                 u = new URL(url);
                 if ( conn.getResponseCode() != 200 ) {
                     throw new CdpException(conn.getResponseCode() + " - " + conn.getResponseMessage());
@@ -220,7 +225,7 @@ public class ChromiumDownloader implements Downloader {
                     try {
                         long fileSize = size(archive);
                         logger.info("Downloading Chromium [revision={}] {}%",
-                                version.revision, round((fileSize * 100L) / contentLength));
+                                version.getRevision(), round((fileSize * 100L) / contentLength));
                     } catch (IOException e) {
                         // ignore
                     }
@@ -279,8 +284,18 @@ public class ChromiumDownloader implements Downloader {
         return executable;
     }
 
-    public static void main(String[] args) {
-        Path download = new ChromiumDownloader(new CdpLoggerFactory(CdpLoggerType.Console)).download();
-        System.out.println(download);
+    public static List<ChromiumVersion> getInstalledVersions() {
+        try {
+        	List<ChromiumVersion> list = list(get(getProperty("user.home"))
+											.resolve(".cdp4j"))
+											.filter(p -> isDirectory(p))
+											.filter(p -> p.getFileName().toString().startsWith("chromium-"))
+											.map(p -> new ChromiumVersion(parseInt(p.getFileName().toString().split("-")[1])))
+										.collect(Collectors.toList());
+        	list.sort((o1, o2) -> compare(o2.getRevision(), o1.getRevision()));
+        	return list;
+		} catch (IOException e) {
+			throw new CdpException(e);
+		}
     }
 }
