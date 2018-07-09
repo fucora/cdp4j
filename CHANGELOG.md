@@ -1,6 +1,11 @@
 cdp4j Release Notes
 -------------------------------------------------------------------------------
 
+### 3.0.2 - July 9, 2018
+
+* Fixed ElementNotFoundException for xpath expressions
+* Fixed the wrong OS detection code and added human-readable error in case OS cannot be detected (ProcessManager)
+
 ### 3.0.1 - June 16, 2018
 
 * Removed sizzle support
