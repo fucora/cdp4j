@@ -25,12 +25,12 @@ public class ChromiumVersion {
         this.revision = revision;
     }
 
-	public int getRevision() {
-		return revision;
-	}
+    public int getRevision() {
+        return revision;
+    }
 
-	@Override
-	public String toString() {
-		return "ChromiumVersion [revision=" + revision + "]";
-	}
+    @Override
+    public String toString() {
+        return "ChromiumVersion [revision=" + revision + "]";
+    }
 }

@@ -286,16 +286,16 @@ public class ChromiumDownloader implements Downloader {
 
     public static List<ChromiumVersion> getInstalledVersions() {
         try {
-        	List<ChromiumVersion> list = list(get(getProperty("user.home"))
-											.resolve(".cdp4j"))
-											.filter(p -> isDirectory(p))
-											.filter(p -> p.getFileName().toString().startsWith("chromium-"))
-											.map(p -> new ChromiumVersion(parseInt(p.getFileName().toString().split("-")[1])))
-										.collect(Collectors.toList());
-        	list.sort((o1, o2) -> compare(o2.getRevision(), o1.getRevision()));
-        	return list;
-		} catch (IOException e) {
-			throw new CdpException(e);
-		}
+            List<ChromiumVersion> list = list(get(getProperty("user.home"))
+                                            .resolve(".cdp4j"))
+                                            .filter(p -> isDirectory(p))
+                                            .filter(p -> p.getFileName().toString().startsWith("chromium-"))
+                                            .map(p -> new ChromiumVersion(parseInt(p.getFileName().toString().split("-")[1])))
+                                        .collect(Collectors.toList());
+            list.sort((o1, o2) -> compare(o2.getRevision(), o1.getRevision()));
+            return list;
+        } catch (IOException e) {
+            throw new CdpException(e);
+        }
     }
 }
