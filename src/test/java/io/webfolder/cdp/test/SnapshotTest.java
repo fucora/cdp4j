@@ -20,11 +20,14 @@ package io.webfolder.cdp.test;
 import static java.nio.file.Paths.get;
 import static org.junit.Assert.assertEquals;
 
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
 
+import io.webfolder.cdp.ChromiumDownloader;
+import io.webfolder.cdp.ChromiumVersion;
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.command.DOMSnapshot;
 import io.webfolder.cdp.session.Session;
@@ -35,11 +38,21 @@ public class SnapshotTest {
 
     @Test
     public void test() {
+        ChromiumDownloader downloader = new ChromiumDownloader();
+
+        List<ChromiumVersion> installedVersions = ChromiumDownloader.getInstalledVersions();
+        Path chromiumPath = null;
+        if ( ! installedVersions.isEmpty() ) {
+            chromiumPath = ChromiumDownloader.getExecutablePath(installedVersions.get(0));
+        } else {
+            chromiumPath = downloader.download();
+        }
+
         String path = get("src/test/resources/snapshot.html").toAbsolutePath().toUri().toString();
 
         Launcher launcher = new Launcher();
 
-        try (SessionFactory factory = launcher.launch(); Session session = factory.create()) {
+        try (SessionFactory factory = launcher.launch(chromiumPath); Session session = factory.create()) {
             session.navigate(path);
             DOMSnapshot snapshot = session.getCommand().getDOMSnapshot();
             snapshot.enable();
