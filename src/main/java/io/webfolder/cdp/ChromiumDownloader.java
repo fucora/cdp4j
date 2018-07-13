@@ -49,6 +49,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.FileSystem;
 import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -187,6 +188,15 @@ public class ChromiumDownloader implements Downloader {
 
     public Path download(ChromiumVersion version) {
         final Path destinationRoot = getDestinationRoot(version);
+
+        if ( ! Files.exists(destinationRoot) ) {
+            try {
+                Files.createDirectories(destinationRoot);
+            } catch (IOException e) {
+                throw new CdpException(e);
+            }
+        }
+
         final Path executable = getExecutablePath(version);
 
         String url;
