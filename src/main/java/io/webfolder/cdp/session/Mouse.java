@@ -20,6 +20,7 @@ package io.webfolder.cdp.session;
 import static io.webfolder.cdp.type.constant.MouseButtonType.Left;
 import static io.webfolder.cdp.type.constant.MouseEventType.MousePressed;
 import static io.webfolder.cdp.type.constant.MouseEventType.MouseReleased;
+import static io.webfolder.cdp.type.constant.MouseEventType.MouseMoved;
 import static java.lang.Math.floor;
 import static java.lang.String.format;
 
@@ -85,6 +86,21 @@ public interface Mouse {
         Input input = getThis().getCommand().getInput();
         input.dispatchMouseEvent(MousePressed, left, top, null, null, Left, clickCount, null, null);
         input.dispatchMouseEvent(MouseReleased, left, top, null, null, Left, clickCount, null, null);
+        return getThis();
+    }
+
+    /**
+     * Dispatches a mousemove event.
+     * 
+     * @param x X coordinate of the event relative to the main frame's viewport in CSS pixels.
+     * @param y Y coordinate of the event relative to the main frame's viewport in CSS pixels. 0 refers to
+     * the top of the viewport and Y increases as it proceeds towards the bottom of the viewport.
+     * 
+     * @return this
+     */
+    default Session move(double x, double y) {
+        Input input = getThis().getCommand().getInput();
+    	input.dispatchMouseEvent(MouseMoved, x, y);
         return getThis();
     }
 
