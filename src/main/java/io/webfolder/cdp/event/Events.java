@@ -17,8 +17,6 @@
  */
 package io.webfolder.cdp.event;
 
-import io.webfolder.cdp.event.page.NavigatedWithinDocument;
-import io.webfolder.cdp.event.inspector.TargetReloadedAfterCrash;
 import io.webfolder.cdp.event.animation.AnimationCanceled;
 import io.webfolder.cdp.event.animation.AnimationCreated;
 import io.webfolder.cdp.event.animation.AnimationStarted;
@@ -65,6 +63,7 @@ import io.webfolder.cdp.event.heapprofiler.ReportHeapSnapshotProgress;
 import io.webfolder.cdp.event.heapprofiler.ResetProfiles;
 import io.webfolder.cdp.event.inspector.Detached;
 import io.webfolder.cdp.event.inspector.TargetCrashed;
+import io.webfolder.cdp.event.inspector.TargetReloadedAfterCrash;
 import io.webfolder.cdp.event.layertree.LayerPainted;
 import io.webfolder.cdp.event.layertree.LayerTreeDidChange;
 import io.webfolder.cdp.event.log.EntryAdded;
@@ -77,6 +76,7 @@ import io.webfolder.cdp.event.network.RequestServedFromCache;
 import io.webfolder.cdp.event.network.RequestWillBeSent;
 import io.webfolder.cdp.event.network.ResourceChangedPriority;
 import io.webfolder.cdp.event.network.ResponseReceived;
+import io.webfolder.cdp.event.network.SignedExchangeReceived;
 import io.webfolder.cdp.event.network.WebSocketClosed;
 import io.webfolder.cdp.event.network.WebSocketCreated;
 import io.webfolder.cdp.event.network.WebSocketFrameError;
@@ -102,12 +102,14 @@ import io.webfolder.cdp.event.page.JavascriptDialogClosed;
 import io.webfolder.cdp.event.page.JavascriptDialogOpening;
 import io.webfolder.cdp.event.page.LifecycleEvent;
 import io.webfolder.cdp.event.page.LoadEventFired;
+import io.webfolder.cdp.event.page.NavigatedWithinDocument;
 import io.webfolder.cdp.event.page.ScreencastFrame;
 import io.webfolder.cdp.event.page.ScreencastVisibilityChanged;
 import io.webfolder.cdp.event.page.WindowOpen;
 import io.webfolder.cdp.event.performance.Metrics;
 import io.webfolder.cdp.event.profiler.ConsoleProfileFinished;
 import io.webfolder.cdp.event.profiler.ConsoleProfileStarted;
+import io.webfolder.cdp.event.runtime.BindingCalled;
 import io.webfolder.cdp.event.runtime.ConsoleAPICalled;
 import io.webfolder.cdp.event.runtime.ExceptionRevoked;
 import io.webfolder.cdp.event.runtime.ExceptionThrown;
@@ -355,6 +357,11 @@ public enum Events {
     NetworkResourceChangedPriority("Network", "resourceChangedPriority", ResourceChangedPriority.class),
 
     /**
+     * Fired when a signed exchange was received over the network
+     */
+    NetworkSignedExchangeReceived("Network", "signedExchangeReceived", SignedExchangeReceived.class),
+
+    /**
      * Fired when HTTP response is available
      */
     NetworkResponseReceived("Network", "responseReceived", ResponseReceived.class),
@@ -496,7 +503,7 @@ public enum Events {
     PageScreencastFrame("Page", "screencastFrame", ScreencastFrame.class),
 
     /**
-     * Fired when the page with currently enabled screencast was shown or hidden <code>
+     * Fired when the page with currently enabled screencast was shown or hidden<code>
      */
     PageScreencastVisibilityChanged("Page", "screencastVisibilityChanged", ScreencastVisibilityChanged.class),
 
@@ -582,8 +589,13 @@ public enum Events {
     TargetTargetDestroyed("Target", "targetDestroyed", TargetDestroyed.class),
 
     /**
+     * Issued when a target has crashed
+     */
+    TargetTargetCrashed("Target", "targetCrashed", TargetCrashed.class),
+
+    /**
      * Issued when some information about a target has changed This only happens
-     * between <code>targetCreated</code> and <code>targetDestroyed</code>
+     * between <code>targetCreated</code>and<code>targetDestroyed</code>
      */
     TargetTargetInfoChanged("Target", "targetInfoChanged", TargetInfoChanged.class),
 
@@ -666,6 +678,11 @@ public enum Events {
      * Sent when new profile recording is started using console profile() call
      */
     ProfilerConsoleProfileStarted("Profiler", "consoleProfileStarted", ConsoleProfileStarted.class),
+
+    /**
+     * Notification is issued every time when binding is called
+     */
+    RuntimeBindingCalled("Runtime", "bindingCalled", BindingCalled.class),
 
     /**
      * Issued when console API was called

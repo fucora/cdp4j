@@ -17,6 +17,9 @@
  */
 package io.webfolder.cdp.type.serviceworker;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * ServiceWorker version
  */
@@ -35,7 +38,7 @@ public class ServiceWorkerVersion {
 
     private Double scriptResponseTime;
 
-    private String targetId;
+    private List<String> controlledClients = new ArrayList<>();
 
     public String getVersionId() {
         return versionId;
@@ -107,11 +110,11 @@ public class ServiceWorkerVersion {
         this.scriptResponseTime = scriptResponseTime;
     }
 
-    public String getTargetId() {
-        return targetId;
+    public List<String> getControlledClients() {
+        return controlledClients;
     }
 
-    public void setTargetId(String targetId) {
-        this.targetId = targetId;
+    public void setControlledClients(List<String> controlledClients) {
+        this.controlledClients = controlledClients;
     }
 }

@@ -15,29 +15,35 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.webfolder.cdp.type.constant;
+package io.webfolder.cdp.type.network;
 
 import com.google.gson.annotations.SerializedName;
 
-public enum InitiatorType {
-    @SerializedName("parser")
-    Parser("parser"),
+/**
+ * Field type for a signed exchange related error
+ */
+public enum SignedExchangeErrorField {
+    @SerializedName("signatureSig")
+    SignatureSig("signatureSig"),
 
-    @SerializedName("script")
-    Script("script"),
+    @SerializedName("signatureIntegrity")
+    SignatureIntegrity("signatureIntegrity"),
 
-    @SerializedName("preload")
-    Preload("preload"),
+    @SerializedName("signatureCertUrl")
+    SignatureCertUrl("signatureCertUrl"),
 
-    @SerializedName("SignedExchange")
-    SignedExchange("SignedExchange"),
+    @SerializedName("signatureCertSha256")
+    SignatureCertSha256("signatureCertSha256"),
 
-    @SerializedName("other")
-    Other("other");
+    @SerializedName("signatureValidityUrl")
+    SignatureValidityUrl("signatureValidityUrl"),
+
+    @SerializedName("signatureTimestamps")
+    SignatureTimestamps("signatureTimestamps");
 
     public final String value;
 
-    InitiatorType(String value) {
+    SignedExchangeErrorField(String value) {
         this.value = value;
     }
 

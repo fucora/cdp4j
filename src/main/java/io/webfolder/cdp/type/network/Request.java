@@ -28,6 +28,8 @@ import java.util.Map;
 public class Request {
     private String url;
 
+    private String urlFragment;
+
     private String method;
 
     private Map<String, Object> headers = new HashMap<>();
@@ -45,17 +47,31 @@ public class Request {
     private Boolean isLinkPreload;
 
     /**
-     * Request URL.
+     * Request URL (without fragment).
      */
     public String getUrl() {
         return url;
     }
 
     /**
-     * Request URL.
+     * Request URL (without fragment).
      */
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    /**
+     * Fragment of the requested URL starting with hash, if present.
+     */
+    public String getUrlFragment() {
+        return urlFragment;
+    }
+
+    /**
+     * Fragment of the requested URL starting with hash, if present.
+     */
+    public void setUrlFragment(String urlFragment) {
+        this.urlFragment = urlFragment;
     }
 
     /**

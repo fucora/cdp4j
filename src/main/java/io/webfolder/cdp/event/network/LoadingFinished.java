@@ -32,7 +32,7 @@ public class LoadingFinished {
 
     private Double encodedDataLength;
 
-    private Boolean blockedCrossSiteDocument;
+    private Boolean shouldReportCorbBlocking;
 
     /**
      * Request identifier.
@@ -77,16 +77,18 @@ public class LoadingFinished {
     }
 
     /**
-     * Set when response was blocked due to being cross-site document response.
+     * Set when 1) response was blocked by Cross-Origin Read Blocking and also
+     * 2) this needs to be reported to the DevTools console.
      */
-    public Boolean isBlockedCrossSiteDocument() {
-        return blockedCrossSiteDocument;
+    public Boolean isShouldReportCorbBlocking() {
+        return shouldReportCorbBlocking;
     }
 
     /**
-     * Set when response was blocked due to being cross-site document response.
+     * Set when 1) response was blocked by Cross-Origin Read Blocking and also
+     * 2) this needs to be reported to the DevTools console.
      */
-    public void setBlockedCrossSiteDocument(Boolean blockedCrossSiteDocument) {
-        this.blockedCrossSiteDocument = blockedCrossSiteDocument;
+    public void setShouldReportCorbBlocking(Boolean shouldReportCorbBlocking) {
+        this.shouldReportCorbBlocking = shouldReportCorbBlocking;
     }
 }

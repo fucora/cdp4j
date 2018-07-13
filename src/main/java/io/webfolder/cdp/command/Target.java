@@ -39,11 +39,12 @@ public interface Target {
     /**
      * Attaches to the target with given id.
      * 
+     * @param flatten Enables "flat" access to the session via specifying sessionId attribute in the commands.
      * 
      * @return Id assigned to the session.
      */
     @Returns("sessionId")
-    String attachToTarget(String targetId);
+    String attachToTarget(String targetId, @Experimental @Optional Boolean flatten);
 
     /**
      * Closes the target. If the target is a page that gets closed too.
@@ -51,6 +52,21 @@ public interface Target {
      */
     @Returns("success")
     Boolean closeTarget(String targetId);
+
+    /**
+     * Inject object to the target's main frame that provides a communication
+     * channel with browser target.
+     *
+     * Injected object will be available as <code>window[bindingName]</code>.
+     *
+     * The object has the follwing API:
+     * - <code>binding.send(json)</code> - a method to send messages over the remote debugging protocol
+     * - <code>binding.onmessage = json => handleMessage(json)</code> - a callback that will be called for the protocol notifications and command responses.
+     * 
+     * @param bindingName Binding name, 'cdp' if not specified.
+     */
+    @Experimental
+    void exposeDevToolsProtocol(String targetId, @Optional String bindingName);
 
     /**
      * Creates a new empty BrowserContext. Similar to an incognito profile but you can have more than
@@ -63,12 +79,21 @@ public interface Target {
     String createBrowserContext();
 
     /**
+     * Returns all browser contexts created with <code>Target.createBrowserContext</code> method.
+     * 
+     * @return An array of browser context ids.
+     */
+    @Experimental
+    @Returns("browserContextIds")
+    List<String> getBrowserContexts();
+
+    /**
      * Creates a new page.
      * 
      * @param url The initial URL the page will be navigated to.
      * @param width Frame width in DIP (headless chrome only).
      * @param height Frame height in DIP (headless chrome only).
-     * @param browserContextId The browser context to create the page in (headless chrome only).
+     * @param browserContextId The browser context to create the page in.
      * @param enableBeginFrameControl Whether BeginFrames for this target will be controlled via DevTools (headless chrome only,
      * not supported on MacOS yet, false by default).
      * 
@@ -88,12 +113,12 @@ public interface Target {
     void detachFromTarget(@Optional String sessionId, @Optional String targetId);
 
     /**
-     * Deletes a BrowserContext, will fail of any open page uses it.
+     * Deletes a BrowserContext. All the belonging pages will be closed without calling their
+     * beforeunload hooks.
      * 
      */
     @Experimental
-    @Returns("success")
-    Boolean disposeBrowserContext(String browserContextId);
+    void disposeBrowserContext(String browserContextId);
 
     /**
      * Returns information about a target.
@@ -101,7 +126,7 @@ public interface Target {
      */
     @Experimental
     @Returns("targetInfo")
-    TargetInfo getTargetInfo(String targetId);
+    TargetInfo getTargetInfo(@Optional String targetId);
 
     /**
      * Retrieves a list of available targets.
@@ -149,6 +174,29 @@ public interface Target {
     void setRemoteLocations(List<RemoteLocation> locations);
 
     /**
+     * Attaches to the target with given id.
+     * 
+     * 
+     * @return Id assigned to the session.
+     */
+    @Returns("sessionId")
+    String attachToTarget(String targetId);
+
+    /**
+     * Inject object to the target's main frame that provides a communication
+     * channel with browser target.
+     *
+     * Injected object will be available as <code>window[bindingName]</code>.
+     *
+     * The object has the follwing API:
+     * - <code>binding.send(json)</code> - a method to send messages over the remote debugging protocol
+     * - <code>binding.onmessage = json => handleMessage(json)</code> - a callback that will be called for the protocol notifications and command responses.
+     * 
+     */
+    @Experimental
+    void exposeDevToolsProtocol(String targetId);
+
+    /**
      * Creates a new page.
      * 
      * @param url The initial URL the page will be navigated to.
@@ -162,6 +210,13 @@ public interface Target {
      * Detaches session with given id.
      */
     void detachFromTarget();
+
+    /**
+     * Returns information about a target.
+     */
+    @Experimental
+    @Returns("targetInfo")
+    TargetInfo getTargetInfo();
 
     /**
      * Sends protocol message over session with given id.

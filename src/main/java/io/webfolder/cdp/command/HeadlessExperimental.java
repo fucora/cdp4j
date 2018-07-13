@@ -35,14 +35,8 @@ public interface HeadlessExperimental {
      * BeginFrameControl. Designed for use with --run-all-compositor-stages-before-draw, see also
      * https://goo.gl/3zHXhB for more background.
      * 
-     * @param frameTime Timestamp of this BeginFrame (milliseconds since epoch). If not set, the current time will
-     * be used unless frameTicks is specified.
      * @param frameTimeTicks Timestamp of this BeginFrame in Renderer TimeTicks (milliseconds of uptime). If not set,
-     * the current time will be used unless frameTime is specified.
-     * @param deadline Deadline of this BeginFrame (milliseconds since epoch). If not set, the deadline will be
-     * calculated from the frameTime and interval unless deadlineTicks is specified.
-     * @param deadlineTicks Deadline of this BeginFrame in Renderer TimeTicks  (milliseconds of uptime). If not set,
-     * the deadline will be calculated from the frameTime and interval unless deadline is specified.
+     * the current time will be used.
      * @param interval The interval between BeginFrames that is reported to the compositor, in milliseconds.
      * Defaults to a 60 frames/second interval, i.e. about 16.666 milliseconds.
      * @param noDisplayUpdates Whether updates should not be committed and drawn onto the display. False by default. If
@@ -54,17 +48,8 @@ public interface HeadlessExperimental {
      * 
      * @return BeginFrameResult
      */
-    BeginFrameResult beginFrame(@Optional Double frameTime, @Optional Double frameTimeTicks,
-            @Optional Double deadline, @Optional Double deadlineTicks, @Optional Double interval,
+    BeginFrameResult beginFrame(@Optional Double frameTimeTicks, @Optional Double interval,
             @Optional Boolean noDisplayUpdates, @Optional ScreenshotParams screenshot);
-
-    /**
-     * Puts the browser into deterministic mode.  Only effective for subsequently created web contents.
-     * Only supported in headless mode.  Once set there's no way of leaving deterministic mode.
-     * 
-     * @param initialDate Number of seconds since the Epoch
-     */
-    void enterDeterministicMode(@Optional Double initialDate);
 
     /**
      * Disables headless events for the target.
@@ -85,10 +70,4 @@ public interface HeadlessExperimental {
      * @return BeginFrameResult
      */
     BeginFrameResult beginFrame();
-
-    /**
-     * Puts the browser into deterministic mode.  Only effective for subsequently created web contents.
-     * Only supported in headless mode.  Once set there's no way of leaving deterministic mode.
-     */
-    void enterDeterministicMode();
 }

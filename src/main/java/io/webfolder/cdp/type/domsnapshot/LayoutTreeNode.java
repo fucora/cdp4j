@@ -94,14 +94,14 @@ public class LayoutTreeNode {
     }
 
     /**
-     * Index into the <code>computedStyles</code> array returned by <code>getSnapshot</code>.
+     * Index into the <code>computedStyles</code>array returned by<code>getSnapshot</code>.
      */
     public Integer getStyleIndex() {
         return styleIndex;
     }
 
     /**
-     * Index into the <code>computedStyles</code> array returned by <code>getSnapshot</code>.
+     * Index into the <code>computedStyles</code>array returned by<code>getSnapshot</code>.
      */
     public void setStyleIndex(Integer styleIndex) {
         this.styleIndex = styleIndex;

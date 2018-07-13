@@ -228,8 +228,19 @@ public interface Runtime {
             @Optional Boolean includeCommandLineAPI, @Optional Boolean returnByValue,
             @Optional Boolean generatePreview, @Optional Boolean awaitPromise);
 
+    /**
+     * Enables or disables async call stacks tracking.
+     * 
+     * @param maxDepth Maximum depth of async call stacks. Setting to <code>0</code> will effectively disable collecting async
+     * call stacks (default).
+     */
+    void setAsyncCallStackDepth(Integer maxDepth);
+
     @Experimental
     void setCustomObjectFormatterEnabled(Boolean enabled);
+
+    @Experimental
+    void setMaxCallStackSizeToCapture(Integer size);
 
     /**
      * Terminate current or next JavaScript execution.
@@ -237,6 +248,28 @@ public interface Runtime {
      */
     @Experimental
     void terminateExecution();
+
+    /**
+     * If executionContextId is empty, adds binding with the given name on the
+     * global objects of all inspected contexts, including those created later,
+     * bindings survive reloads.
+     * If executionContextId is specified, adds binding only on global object of
+     * given execution context.
+     * Binding function takes exactly one argument, this argument should be string,
+     * in case of any other input, function throws an exception.
+     * Each binding function call produces Runtime.bindingCalled notification.
+     * 
+     */
+    @Experimental
+    void addBinding(String name, @Optional Integer executionContextId);
+
+    /**
+     * This method does not remove binding function from global object but
+     * unsubscribes current runtime agent from Runtime.bindingCalled notifications.
+     * 
+     */
+    @Experimental
+    void removeBinding(String name);
 
     /**
      * Add handler to promise with given promise object id.
@@ -304,4 +337,18 @@ public interface Runtime {
      * @return RunScriptResult
      */
     RunScriptResult runScript(String scriptId);
+
+    /**
+     * If executionContextId is empty, adds binding with the given name on the
+     * global objects of all inspected contexts, including those created later,
+     * bindings survive reloads.
+     * If executionContextId is specified, adds binding only on global object of
+     * given execution context.
+     * Binding function takes exactly one argument, this argument should be string,
+     * in case of any other input, function throws an exception.
+     * Each binding function call produces Runtime.bindingCalled notification.
+     * 
+     */
+    @Experimental
+    void addBinding(String name);
 }

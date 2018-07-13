@@ -67,10 +67,6 @@ public class DOMNode {
 
     private Integer contentDocumentIndex;
 
-    private Integer importedDocumentIndex;
-
-    private Integer templateContentIndex;
-
     private PseudoType pseudoType;
 
     private ShadowRootType shadowRootType;
@@ -80,6 +76,8 @@ public class DOMNode {
     private List<EventListener> eventListeners = new ArrayList<>();
 
     private String currentSourceURL;
+
+    private String originURL;
 
     /**
      * <code>Node</code>'s nodeType.
@@ -194,7 +192,7 @@ public class DOMNode {
     }
 
     /**
-     * The indexes of the node's child nodes in the <code>domNodes</code> array returned by <code>getSnapshot</code>, if
+     * The indexes of the node's child nodes in the <code>domNodes</code>array returned by<code>getSnapshot</code>, if
      * any.
      */
     public List<Integer> getChildNodeIndexes() {
@@ -202,7 +200,7 @@ public class DOMNode {
     }
 
     /**
-     * The indexes of the node's child nodes in the <code>domNodes</code> array returned by <code>getSnapshot</code>, if
+     * The indexes of the node's child nodes in the <code>domNodes</code>array returned by<code>getSnapshot</code>, if
      * any.
      */
     public void setChildNodeIndexes(List<Integer> childNodeIndexes) {
@@ -256,28 +254,28 @@ public class DOMNode {
     }
 
     /**
-     * Document URL that <code>Document</code> or <code>FrameOwner</code> node points to.
+     * Document URL that <code>Document</code>or<code>FrameOwner</code> node points to.
      */
     public String getDocumentURL() {
         return documentURL;
     }
 
     /**
-     * Document URL that <code>Document</code> or <code>FrameOwner</code> node points to.
+     * Document URL that <code>Document</code>or<code>FrameOwner</code> node points to.
      */
     public void setDocumentURL(String documentURL) {
         this.documentURL = documentURL;
     }
 
     /**
-     * Base URL that <code>Document</code> or <code>FrameOwner</code> node uses for URL completion.
+     * Base URL that <code>Document</code>or<code>FrameOwner</code> node uses for URL completion.
      */
     public String getBaseURL() {
         return baseURL;
     }
 
     /**
-     * Base URL that <code>Document</code> or <code>FrameOwner</code> node uses for URL completion.
+     * Base URL that <code>Document</code>or<code>FrameOwner</code> node uses for URL completion.
      */
     public void setBaseURL(String baseURL) {
         this.baseURL = baseURL;
@@ -370,38 +368,6 @@ public class DOMNode {
     }
 
     /**
-     * Index of the imported document's node of a link element in the <code>domNodes</code> array returned by
-     * <code>getSnapshot</code>, if any.
-     */
-    public Integer getImportedDocumentIndex() {
-        return importedDocumentIndex;
-    }
-
-    /**
-     * Index of the imported document's node of a link element in the <code>domNodes</code> array returned by
-     * <code>getSnapshot</code>, if any.
-     */
-    public void setImportedDocumentIndex(Integer importedDocumentIndex) {
-        this.importedDocumentIndex = importedDocumentIndex;
-    }
-
-    /**
-     * Index of the content node of a template element in the <code>domNodes</code> array returned by
-     * <code>getSnapshot</code>.
-     */
-    public Integer getTemplateContentIndex() {
-        return templateContentIndex;
-    }
-
-    /**
-     * Index of the content node of a template element in the <code>domNodes</code> array returned by
-     * <code>getSnapshot</code>.
-     */
-    public void setTemplateContentIndex(Integer templateContentIndex) {
-        this.templateContentIndex = templateContentIndex;
-    }
-
-    /**
      * Type of a pseudo element node.
      */
     public PseudoType getPseudoType() {
@@ -473,5 +439,19 @@ public class DOMNode {
      */
     public void setCurrentSourceURL(String currentSourceURL) {
         this.currentSourceURL = currentSourceURL;
+    }
+
+    /**
+     * The url of the script (if any) that generates this node.
+     */
+    public String getOriginURL() {
+        return originURL;
+    }
+
+    /**
+     * The url of the script (if any) that generates this node.
+     */
+    public void setOriginURL(String originURL) {
+        this.originURL = originURL;
     }
 }

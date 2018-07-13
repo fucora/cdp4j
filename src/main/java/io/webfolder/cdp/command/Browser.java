@@ -60,23 +60,25 @@ public interface Browser {
      * @param query Requested substring in name. Only histograms which have query as a
      * substring in their name are extracted. An empty or absent query returns
      * all histograms.
+     * @param delta If true, retrieve delta since last call.
      * 
      * @return Histograms.
      */
     @Experimental
     @Returns("histograms")
-    List<Histogram> getHistograms(@Optional String query);
+    List<Histogram> getHistograms(@Optional String query, @Optional Boolean delta);
 
     /**
      * Get a Chrome histogram by name.
      * 
      * @param name Requested histogram name.
+     * @param delta If true, retrieve delta since last call.
      * 
      * @return Histogram.
      */
     @Experimental
     @Returns("histogram")
-    Histogram getHistogram(String name);
+    Histogram getHistogram(String name, @Optional Boolean delta);
 
     /**
      * Get position and size of the browser window.
@@ -118,4 +120,15 @@ public interface Browser {
     @Experimental
     @Returns("histograms")
     List<Histogram> getHistograms();
+
+    /**
+     * Get a Chrome histogram by name.
+     * 
+     * @param name Requested histogram name.
+     * 
+     * @return Histogram.
+     */
+    @Experimental
+    @Returns("histogram")
+    Histogram getHistogram(String name);
 }

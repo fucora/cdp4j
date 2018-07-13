@@ -15,34 +15,19 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.webfolder.cdp.type.constant;
+package io.webfolder.cdp.type.domsnapshot;
 
-import com.google.gson.annotations.SerializedName;
+import java.util.ArrayList;
+import java.util.List;
 
-public enum InitiatorType {
-    @SerializedName("parser")
-    Parser("parser"),
+public class RareBooleanData {
+    private List<Integer> index = new ArrayList<>();
 
-    @SerializedName("script")
-    Script("script"),
-
-    @SerializedName("preload")
-    Preload("preload"),
-
-    @SerializedName("SignedExchange")
-    SignedExchange("SignedExchange"),
-
-    @SerializedName("other")
-    Other("other");
-
-    public final String value;
-
-    InitiatorType(String value) {
-        this.value = value;
+    public List<Integer> getIndex() {
+        return index;
     }
 
-    @Override
-    public String toString() {
-        return value;
+    public void setIndex(List<Integer> index) {
+        this.index = index;
     }
 }

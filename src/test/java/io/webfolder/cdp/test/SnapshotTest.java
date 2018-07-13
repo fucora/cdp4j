@@ -20,34 +20,34 @@ package io.webfolder.cdp.test;
 import static java.nio.file.Paths.get;
 import static org.junit.Assert.assertEquals;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
 
 import io.webfolder.cdp.Launcher;
+import io.webfolder.cdp.command.DOMSnapshot;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
+import io.webfolder.cdp.type.domsnapshot.CaptureSnapshotResult;
 
-public class MoseMoveTest {
+public class SnapshotTest {
 
-	@Test
-	@SuppressWarnings({ "unchecked" })
-	public void testMouseMove() throws Exception {
-		String path = get("src/test/resources/mouse-move.html").toAbsolutePath().toUri().toString();
+    @Test
+    public void test() {
+        String path = get("src/test/resources/snapshot.html").toAbsolutePath().toUri().toString();
 
-		Launcher launcher = new Launcher();
+        Launcher launcher = new Launcher();
 
-		try (SessionFactory factory = launcher.launch(); Session session = factory.create()) {
-			session.enableConsoleLog();
-			session.navigate(path);
-			session.move(20, 20);
-			session.move(21, 21);
-			session.move(22, 22);
-			session.move(23, 23);
-			List<Double> positionsX = session.getVariable("positionsX", List.class);
-			List<Double> positionsY = session.getVariable("positionsY", List.class);
-			assertEquals(4, positionsX.size());
-            assertEquals(4, positionsY.size());
-		}
-	}
+        try (SessionFactory factory = launcher.launch(); Session session = factory.create()) {
+            session.navigate(path);
+            DOMSnapshot snapshot = session.getCommand().getDOMSnapshot();
+            snapshot.enable();
+            CaptureSnapshotResult result = snapshot.captureSnapshot(Collections.emptyList());
+            assertEquals(1, result.getDocuments().size());
+            List<List<Double>> textBoxBounds = result.getDocuments().get(0).getTextBoxes().getBounds();
+            assertEquals(1, textBoxBounds.size());
+            assertEquals(4, textBoxBounds.get(0).size());
+        }
+    }
 }

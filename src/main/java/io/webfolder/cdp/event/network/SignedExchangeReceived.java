@@ -15,49 +15,49 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.webfolder.cdp.event.page;
+package io.webfolder.cdp.event.network;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
+import io.webfolder.cdp.type.network.SignedExchangeInfo;
 
 /**
- * Fired when same-document navigation happens, eg
- * due to history API usage or anchor navigation
+ * Fired when a signed exchange was received over the network
  */
 @Experimental
-@Domain("Page")
-@EventName("navigatedWithinDocument")
-public class NavigatedWithinDocument {
-    private String frameId;
+@Domain("Network")
+@EventName("signedExchangeReceived")
+public class SignedExchangeReceived {
+    private String requestId;
 
-    private String url;
+    private SignedExchangeInfo info;
 
     /**
-     * Id of the frame.
+     * Request identifier.
      */
-    public String getFrameId() {
-        return frameId;
+    public String getRequestId() {
+        return requestId;
     }
 
     /**
-     * Id of the frame.
+     * Request identifier.
      */
-    public void setFrameId(String frameId) {
-        this.frameId = frameId;
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
     }
 
     /**
-     * Frame's new url.
+     * Information about the signed exchange response.
      */
-    public String getUrl() {
-        return url;
+    public SignedExchangeInfo getInfo() {
+        return info;
     }
 
     /**
-     * Frame's new url.
+     * Information about the signed exchange response.
      */
-    public void setUrl(String url) {
-        this.url = url;
+    public void setInfo(SignedExchangeInfo info) {
+        this.info = info;
     }
 }

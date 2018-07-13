@@ -57,7 +57,13 @@ public enum ErrorReason {
     InternetDisconnected("InternetDisconnected"),
 
     @SerializedName("AddressUnreachable")
-    AddressUnreachable("AddressUnreachable");
+    AddressUnreachable("AddressUnreachable"),
+
+    @SerializedName("BlockedByClient")
+    BlockedByClient("BlockedByClient"),
+
+    @SerializedName("BlockedByResponse")
+    BlockedByResponse("BlockedByResponse");
 
     public final String value;
 

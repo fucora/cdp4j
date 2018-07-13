@@ -28,6 +28,8 @@ import io.webfolder.cdp.type.constant.TargetLifecycleState;
 import io.webfolder.cdp.type.debugger.SearchMatch;
 import io.webfolder.cdp.type.emulation.ScreenOrientation;
 import io.webfolder.cdp.type.network.Cookie;
+import io.webfolder.cdp.type.page.FontFamilies;
+import io.webfolder.cdp.type.page.FontSizes;
 import io.webfolder.cdp.type.page.FrameResourceTree;
 import io.webfolder.cdp.type.page.FrameTree;
 import io.webfolder.cdp.type.page.GetAppManifestResult;
@@ -359,6 +361,22 @@ public interface Page {
      */
     @Experimental
     void setDeviceOrientationOverride(Double alpha, Double beta, Double gamma);
+
+    /**
+     * Set generic font families.
+     * 
+     * @param fontFamilies Specifies font families to set. If a font family is not specified, it won't be changed.
+     */
+    @Experimental
+    void setFontFamilies(FontFamilies fontFamilies);
+
+    /**
+     * Set default font sizes.
+     * 
+     * @param fontSizes Specifies font sizes to set. If a font size is not specified, it won't be changed.
+     */
+    @Experimental
+    void setFontSizes(FontSizes fontSizes);
 
     /**
      * Sets given markup as the document's HTML.

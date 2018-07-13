@@ -15,49 +15,52 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.webfolder.cdp.event.page;
+package io.webfolder.cdp.event.runtime;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
 
 /**
- * Fired when same-document navigation happens, eg
- * due to history API usage or anchor navigation
+ * Notification is issued every time when binding is called
  */
 @Experimental
-@Domain("Page")
-@EventName("navigatedWithinDocument")
-public class NavigatedWithinDocument {
-    private String frameId;
+@Domain("Runtime")
+@EventName("bindingCalled")
+public class BindingCalled {
+    private String name;
 
-    private String url;
+    private String payload;
 
-    /**
-     * Id of the frame.
-     */
-    public String getFrameId() {
-        return frameId;
+    private Integer executionContextId;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPayload() {
+        return payload;
+    }
+
+    public void setPayload(String payload) {
+        this.payload = payload;
     }
 
     /**
-     * Id of the frame.
+     * Identifier of the context where the call was made.
      */
-    public void setFrameId(String frameId) {
-        this.frameId = frameId;
+    public Integer getExecutionContextId() {
+        return executionContextId;
     }
 
     /**
-     * Frame's new url.
+     * Identifier of the context where the call was made.
      */
-    public String getUrl() {
-        return url;
-    }
-
-    /**
-     * Frame's new url.
-     */
-    public void setUrl(String url) {
-        this.url = url;
+    public void setExecutionContextId(Integer executionContextId) {
+        this.executionContextId = executionContextId;
     }
 }

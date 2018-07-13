@@ -59,6 +59,15 @@ public enum ResourceType {
     @SerializedName("Manifest")
     Manifest("Manifest"),
 
+    @SerializedName("SignedExchange")
+    SignedExchange("SignedExchange"),
+
+    @SerializedName("Ping")
+    Ping("Ping"),
+
+    @SerializedName("CSPViolationReport")
+    CSPViolationReport("CSPViolationReport"),
+
     @SerializedName("Other")
     Other("Other");
 

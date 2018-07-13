@@ -142,6 +142,21 @@ public interface DOM {
             @Optional String objectId);
 
     /**
+     * Returns quads that describe node position on the page. This method
+     * might return multiple quads for inline nodes.
+     * 
+     * @param nodeId Identifier of the node.
+     * @param backendNodeId Identifier of the backend node.
+     * @param objectId JavaScript object id of the node wrapper.
+     * 
+     * @return Quads that describe node layout relative to viewport.
+     */
+    @Experimental
+    @Returns("quads")
+    List<Double> getContentQuads(@Optional Integer nodeId, @Optional Integer backendNodeId,
+            @Optional String objectId);
+
+    /**
      * Returns the root DOM node (and optionally the subtree) to the caller.
      * 
      * @param depth The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
@@ -205,7 +220,7 @@ public interface DOM {
     Integer getRelayoutBoundary(Integer nodeId);
 
     /**
-     * Returns search results from given <code>fromIndex</code> to given <code>toIndex</code> from the search with the given
+     * Returns search results from given <code>fromIndex</code>to given<code>toIndex</code> from the search with the given
      * identifier.
      * 
      * @param searchId Unique search session identifier.
@@ -483,6 +498,16 @@ public interface DOM {
      */
     @Returns("model")
     BoxModel getBoxModel();
+
+    /**
+     * Returns quads that describe node position on the page. This method
+     * might return multiple quads for inline nodes.
+     * 
+     * @return Quads that describe node layout relative to viewport.
+     */
+    @Experimental
+    @Returns("quads")
+    List<Double> getContentQuads();
 
     /**
      * Returns the root DOM node (and optionally the subtree) to the caller.

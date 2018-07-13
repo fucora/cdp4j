@@ -15,34 +15,32 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.webfolder.cdp.type.constant;
+package io.webfolder.cdp.type.domsnapshot;
 
-import com.google.gson.annotations.SerializedName;
+import java.util.ArrayList;
+import java.util.List;
 
-public enum InitiatorType {
-    @SerializedName("parser")
-    Parser("parser"),
+/**
+ * Data that is only present on rare nodes
+ */
+public class RareStringData {
+    private List<Integer> index = new ArrayList<>();
 
-    @SerializedName("script")
-    Script("script"),
+    private List<Integer> value = new ArrayList<>();
 
-    @SerializedName("preload")
-    Preload("preload"),
-
-    @SerializedName("SignedExchange")
-    SignedExchange("SignedExchange"),
-
-    @SerializedName("other")
-    Other("other");
-
-    public final String value;
-
-    InitiatorType(String value) {
-        this.value = value;
+    public List<Integer> getIndex() {
+        return index;
     }
 
-    @Override
-    public String toString() {
+    public void setIndex(List<Integer> index) {
+        this.index = index;
+    }
+
+    public List<Integer> getValue() {
         return value;
+    }
+
+    public void setValue(List<Integer> value) {
+        this.value = value;
     }
 }

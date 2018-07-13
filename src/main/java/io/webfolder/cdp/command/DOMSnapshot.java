@@ -20,6 +20,7 @@ package io.webfolder.cdp.command;
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
+import io.webfolder.cdp.type.domsnapshot.CaptureSnapshotResult;
 import io.webfolder.cdp.type.domsnapshot.GetSnapshotResult;
 import java.util.List;
 
@@ -29,6 +30,16 @@ import java.util.List;
 @Experimental
 @Domain("DOMSnapshot")
 public interface DOMSnapshot {
+    /**
+     * Disables DOM snapshot agent for the given page.
+     */
+    void disable();
+
+    /**
+     * Enables DOM snapshot agent for the given page.
+     */
+    void enable();
+
     /**
      * Returns a document snapshot, including the full DOM tree of the root node (including iframes,
      * template contents, and imported documents) in a flattened array, as well as layout and
@@ -45,6 +56,18 @@ public interface DOMSnapshot {
     GetSnapshotResult getSnapshot(List<String> computedStyleWhitelist,
             @Optional Boolean includeEventListeners, @Optional Boolean includePaintOrder,
             @Optional Boolean includeUserAgentShadowTree);
+
+    /**
+     * Returns a document snapshot, including the full DOM tree of the root node (including iframes,
+     * template contents, and imported documents) in a flattened array, as well as layout and
+     * white-listed computed style information for the nodes. Shadow DOM in the returned DOM tree is
+     * flattened.
+     * 
+     * @param computedStyles Whitelist of computed styles to return.
+     * 
+     * @return CaptureSnapshotResult
+     */
+    CaptureSnapshotResult captureSnapshot(List<String> computedStyles);
 
     /**
      * Returns a document snapshot, including the full DOM tree of the root node (including iframes,

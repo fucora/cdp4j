@@ -315,8 +315,11 @@ public interface Network {
      * Allows overriding user agent with the given string.
      * 
      * @param userAgent User agent to use.
+     * @param acceptLanguage Browser langugage to emulate.
+     * @param platform The platform navigator.platform should return.
      */
-    void setUserAgentOverride(String userAgent);
+    void setUserAgentOverride(String userAgent, @Optional String acceptLanguage,
+            @Optional String platform);
 
     /**
      * Response to Network.requestIntercepted which either modifies the request to continue with any
@@ -382,4 +385,11 @@ public interface Network {
      */
     @Returns("success")
     Boolean setCookie(String name, String value);
+
+    /**
+     * Allows overriding user agent with the given string.
+     * 
+     * @param userAgent User agent to use.
+     */
+    void setUserAgentOverride(String userAgent);
 }

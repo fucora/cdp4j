@@ -25,6 +25,7 @@ import io.webfolder.cdp.command.CSS;
 import io.webfolder.cdp.command.CacheStorage;
 import io.webfolder.cdp.command.DOM;
 import io.webfolder.cdp.command.DOMDebugger;
+import io.webfolder.cdp.command.DOMSnapshot;
 import io.webfolder.cdp.command.DOMStorage;
 import io.webfolder.cdp.command.Database;
 import io.webfolder.cdp.command.DeviceOrientation;
@@ -190,6 +191,10 @@ public class Command {
 
     public Tracing getTracing() {
         return getProxy(Tracing.class);
+    }
+
+    public DOMSnapshot getDOMSnapshot() {
+        return getProxy(DOMSnapshot.class);
     }
 
     @SuppressWarnings("unchecked")

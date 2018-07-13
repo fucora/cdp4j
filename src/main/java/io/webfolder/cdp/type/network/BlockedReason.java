@@ -23,6 +23,9 @@ import com.google.gson.annotations.SerializedName;
  * The reason why request was blocked
  */
 public enum BlockedReason {
+    @SerializedName("other")
+    Other("other"),
+
     @SerializedName("csp")
     Csp("csp"),
 
@@ -41,8 +44,8 @@ public enum BlockedReason {
     @SerializedName("content-type")
     ContentType("content-type"),
 
-    @SerializedName("other")
-    Other("other");
+    @SerializedName("collapsed-by-client")
+    CollapsedByClient("collapsed-by-client");
 
     public final String value;
 

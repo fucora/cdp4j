@@ -24,7 +24,6 @@ import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.constant.Platform;
 import io.webfolder.cdp.type.dom.RGBA;
 import io.webfolder.cdp.type.emulation.ScreenOrientation;
-import io.webfolder.cdp.type.emulation.SetVirtualTimePolicyResult;
 import io.webfolder.cdp.type.emulation.VirtualTimePolicy;
 import io.webfolder.cdp.type.page.Viewport;
 
@@ -104,6 +103,12 @@ public interface Emulation {
             @Experimental @Optional Viewport viewport);
 
     @Experimental
+    void setScrollbarsHidden(Boolean hidden);
+
+    @Experimental
+    void setDocumentCookieDisabled(Boolean disabled);
+
+    @Experimental
     void setEmitTouchEventsForMouse(Boolean enabled, @Optional Platform configuration);
 
     /**
@@ -167,11 +172,12 @@ public interface Emulation {
      * Note any previous deferred policy change is superseded.
      * @param initialVirtualTime If set, base::Time::Now will be overriden to initially return this value.
      * 
-     * @return SetVirtualTimePolicyResult
+     * @return Absolute timestamp at which virtual time was first enabled (up time in milliseconds).
      */
     @Experimental
-    SetVirtualTimePolicyResult setVirtualTimePolicy(VirtualTimePolicy policy,
-            @Optional Double budget, @Optional Integer maxVirtualTimeTaskStarvationCount,
+    @Returns("virtualTimeTicksBase")
+    Double setVirtualTimePolicy(VirtualTimePolicy policy, @Optional Double budget,
+            @Optional Integer maxVirtualTimeTaskStarvationCount,
             @Optional Boolean waitForNavigation, @Optional Double initialVirtualTime);
 
     /**
@@ -184,6 +190,16 @@ public interface Emulation {
      */
     @Experimental
     void setVisibleSize(Integer width, Integer height);
+
+    /**
+     * Allows overriding user agent with the given string.
+     * 
+     * @param userAgent User agent to use.
+     * @param acceptLanguage Browser langugage to emulate.
+     * @param platform The platform navigator.platform should return.
+     */
+    void setUserAgentOverride(String userAgent, @Optional String acceptLanguage,
+            @Optional String platform);
 
     /**
      * Sets or clears an override of the default background color of the frame. This override is used
@@ -226,8 +242,16 @@ public interface Emulation {
      * the current virtual time policy.  Note this supersedes any previous time budget.
      * 
      * 
-     * @return SetVirtualTimePolicyResult
+     * @return Absolute timestamp at which virtual time was first enabled (up time in milliseconds).
      */
     @Experimental
-    SetVirtualTimePolicyResult setVirtualTimePolicy(VirtualTimePolicy policy);
+    @Returns("virtualTimeTicksBase")
+    Double setVirtualTimePolicy(VirtualTimePolicy policy);
+
+    /**
+     * Allows overriding user agent with the given string.
+     * 
+     * @param userAgent User agent to use.
+     */
+    void setUserAgentOverride(String userAgent);
 }

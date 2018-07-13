@@ -15,34 +15,44 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.webfolder.cdp.type.constant;
+package io.webfolder.cdp.type.page;
 
-import com.google.gson.annotations.SerializedName;
+import io.webfolder.cdp.annotation.Experimental;
 
-public enum InitiatorType {
-    @SerializedName("parser")
-    Parser("parser"),
+/**
+ * Default font sizes
+ */
+@Experimental
+public class FontSizes {
+    private Integer standard;
 
-    @SerializedName("script")
-    Script("script"),
+    private Integer fixed;
 
-    @SerializedName("preload")
-    Preload("preload"),
-
-    @SerializedName("SignedExchange")
-    SignedExchange("SignedExchange"),
-
-    @SerializedName("other")
-    Other("other");
-
-    public final String value;
-
-    InitiatorType(String value) {
-        this.value = value;
+    /**
+     * Default standard font size.
+     */
+    public Integer getStandard() {
+        return standard;
     }
 
-    @Override
-    public String toString() {
-        return value;
+    /**
+     * Default standard font size.
+     */
+    public void setStandard(Integer standard) {
+        this.standard = standard;
+    }
+
+    /**
+     * Default fixed font size.
+     */
+    public Integer getFixed() {
+        return fixed;
+    }
+
+    /**
+     * Default fixed font size.
+     */
+    public void setFixed(Integer fixed) {
+        this.fixed = fixed;
     }
 }
