@@ -2,6 +2,7 @@ package io.webfolder.cdp.test;
 
 import static java.nio.file.Paths.get;
 
+import java.net.MalformedURLException;
 import java.util.List;
 
 import org.junit.Test;
@@ -15,8 +16,8 @@ public class MoseMoveTest {
 
 	@SuppressWarnings({ "unchecked" })
 	@Test
-	public void testMouseMove() {
-		String path = get("src/test/resources/mouse-move.html").toAbsolutePath().toString();
+	public void testMouseMove() throws MalformedURLException {
+		String path = get("src/test/resources/mouse-move.html").toAbsolutePath().toUri().toString();
 
 		Launcher launcher = new Launcher();
 
