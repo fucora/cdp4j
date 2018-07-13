@@ -54,6 +54,7 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
@@ -188,15 +189,6 @@ public class ChromiumDownloader implements Downloader {
 
     public Path download(ChromiumVersion version) {
         final Path destinationRoot = getDestinationRoot(version);
-
-        if ( ! Files.exists(destinationRoot) ) {
-            try {
-                Files.createDirectories(destinationRoot);
-            } catch (IOException e) {
-                throw new CdpException(e);
-            }
-        }
-
         final Path executable = getExecutablePath(version);
 
         String url;
@@ -306,9 +298,12 @@ public class ChromiumDownloader implements Downloader {
     }
 
     public static List<ChromiumVersion> getInstalledVersions() {
+        Path chromiumRootPath = get(getProperty("user.home")).resolve(".cdp4j");
+        if ( ! Files.exists(chromiumRootPath) ) {
+            return Collections.emptyList();
+        }
         try {
-            List<ChromiumVersion> list = list(get(getProperty("user.home"))
-                                            .resolve(".cdp4j"))
+            List<ChromiumVersion> list = list(chromiumRootPath)
                                             .filter(p -> isDirectory(p))
                                             .filter(p -> p.getFileName().toString().startsWith("chromium-"))
                                             .map(p -> new ChromiumVersion(parseInt(p.getFileName().toString().split("-")[1])))
