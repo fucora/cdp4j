@@ -17,6 +17,8 @@
  */
 package io.webfolder.cdp.test;
 
+import static io.webfolder.cdp.ChromiumDownloader.getExecutable;
+import static io.webfolder.cdp.ChromiumDownloader.getLatestInstalledVersion;
 import static java.nio.file.Paths.get;
 import static org.junit.Assert.assertEquals;
 
@@ -40,20 +42,15 @@ public class SnapshotTest {
     public void test() {
         ChromiumDownloader downloader = new ChromiumDownloader();
 
-        List<ChromiumVersion> installedVersions = ChromiumDownloader.getInstalledVersions();
-        Path chromiumPath = null;
-        if ( ! installedVersions.isEmpty() ) {
-            chromiumPath = ChromiumDownloader.getExecutablePath(installedVersions.get(0));
-        } else {
-            chromiumPath = downloader.download();
-        }
+        ChromiumVersion latest = getLatestInstalledVersion();
+        Path path = latest != null ? getExecutable(latest) : downloader.download();
 
-        String path = get("src/test/resources/snapshot.html").toAbsolutePath().toUri().toString();
+        String url = get("src/test/resources/snapshot.html").toAbsolutePath().toUri().toString();
 
         Launcher launcher = new Launcher();
 
-        try (SessionFactory factory = launcher.launch(chromiumPath); Session session = factory.create()) {
-            session.navigate(path);
+        try (SessionFactory factory = launcher.launch(path); Session session = factory.create()) {
+            session.navigate(url);
             DOMSnapshot snapshot = session.getCommand().getDOMSnapshot();
             snapshot.enable();
             CaptureSnapshotResult result = snapshot.captureSnapshot(Collections.emptyList());

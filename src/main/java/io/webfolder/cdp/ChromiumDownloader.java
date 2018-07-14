@@ -169,15 +169,15 @@ public class ChromiumDownloader implements Downloader {
         }
     }
 
-    public static Path getDestinationRoot(ChromiumVersion version) {
+    public static Path getChromiumPath(ChromiumVersion version) {
         Path destinationRoot = get(getProperty("user.home"))
                                 .resolve(".cdp4j")
                                 .resolve("chromium-" + valueOf(version.getRevision()));
         return destinationRoot;
     }
 
-    public static Path getExecutablePath(ChromiumVersion version) {
-        Path destinationRoot = getDestinationRoot(version);
+    public static Path getExecutable(ChromiumVersion version) {
+        Path destinationRoot = getChromiumPath(version);
         Path executable = destinationRoot.resolve("chrome.exe");
         if ( LINUX ) {
             executable = destinationRoot.resolve("chrome");
@@ -188,8 +188,8 @@ public class ChromiumDownloader implements Downloader {
     }
 
     public Path download(ChromiumVersion version) {
-        final Path destinationRoot = getDestinationRoot(version);
-        final Path executable = getExecutablePath(version);
+        final Path destinationRoot = getChromiumPath(version);
+        final Path executable = getExecutable(version);
 
         String url;
         if ( WINDOWS ) {
@@ -274,7 +274,11 @@ public class ChromiumDownloader implements Downloader {
                     }
                 }
             }
-            
+
+            if (exists(executable) && isExecutable(executable)) {
+                throw new CdpException("Chromium executable not found: " + executable.toString());
+            }
+
             if ( ! WINDOWS ) {
                 Set<PosixFilePermission> permissions = getPosixFilePermissions(executable);
                 if ( ! permissions.contains(OWNER_EXECUTE)) {
@@ -285,11 +289,6 @@ public class ChromiumDownloader implements Downloader {
                     permissions.add(GROUP_EXECUTE);
                     setPosixFilePermissions(executable, permissions);
                 }
-            }
-
-            if (exists(executable) && isExecutable(executable)) {
-                logger.error("Chromium executable not found: [{}]", executable.toString());
-                return executable;
             }
         } catch (IOException e) {
             throw new CdpException(e);
@@ -313,5 +312,10 @@ public class ChromiumDownloader implements Downloader {
         } catch (IOException e) {
             throw new CdpException(e);
         }
+    }
+
+    public static ChromiumVersion getLatestInstalledVersion() {
+        List<ChromiumVersion> versions = getInstalledVersions();
+        return ! versions.isEmpty() ? versions.get(0) : null;
     }
 }
