@@ -274,7 +274,7 @@ public class SessionFactory implements AutoCloseable {
                                         webSocket, contexts,
                                         this, listeners,
                                         loggerFactory, false,
-                                        browserSession);
+                                        browserSession, getMajorVersion());
         WSAdapter wsAdapter = new WSAdapter(gson, contexts,
                                                 listeners, threadPool,
                                                 loggerFactory.getLogger("cdp4j.ws.response"));
@@ -337,7 +337,7 @@ public class SessionFactory implements AutoCloseable {
                                         webSocket, contexts,
                                         this, listeners,
                                         loggerFactory, true,
-                                        null);
+                                        null, 0);
             adapter.setSession(browserSession);
             browserSession.addEventListener(new TargetListener(sessions, wsAdapters, tabs));
             Target target = browserSession.getCommand().getTarget();

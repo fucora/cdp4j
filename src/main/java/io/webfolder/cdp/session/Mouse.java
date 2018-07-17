@@ -18,18 +18,13 @@
 package io.webfolder.cdp.session;
 
 import static io.webfolder.cdp.type.constant.MouseButtonType.Left;
+import static io.webfolder.cdp.type.constant.MouseEventType.MouseMoved;
 import static io.webfolder.cdp.type.constant.MouseEventType.MousePressed;
 import static io.webfolder.cdp.type.constant.MouseEventType.MouseReleased;
-import static io.webfolder.cdp.type.constant.MouseEventType.MouseMoved;
-import static java.lang.Math.floor;
 import static java.lang.String.format;
 
-import java.util.List;
-
-import io.webfolder.cdp.command.DOM;
 import io.webfolder.cdp.command.Input;
-import io.webfolder.cdp.exception.ElementNotFoundException;
-import io.webfolder.cdp.type.dom.BoxModel;
+import io.webfolder.cdp.type.util.Point;
 
 /**
  * Interface representing basic mouse operations.
@@ -65,27 +60,12 @@ public interface Mouse {
      */
     default Session click(final String selector, final Object... args) {
         getThis().logEntry("click", format(selector, args));
-        Integer nodeId = getThis().getNodeId(format(selector, args));
-        if (nodeId == null || Constant.EMPTY_NODE_ID.equals(nodeId)) {
-            throw new ElementNotFoundException(format(selector, args));
-        }
-        DOM dom = getThis().getCommand().getDOM();
-        BoxModel boxModel = dom.getBoxModel(nodeId, null, null);
-        if (boxModel == null) {
-            return getThis();
-        }
-        List<Double> content = boxModel.getContent();
-        if (content == null           ||
-                    content.isEmpty() ||
-                    content.size() < 2) {
-            return getThis();
-        }
-        double left = floor(content.get(0));
-        double top  = floor(content.get(1));
+        getThis().scrollIntoViewIfNeeded(selector, args);
+        Point point = getThis().getClickablePoint(selector, args);
         int clickCount = 1;
         Input input = getThis().getCommand().getInput();
-        input.dispatchMouseEvent(MousePressed, left, top, null, null, Left, clickCount, null, null);
-        input.dispatchMouseEvent(MouseReleased, left, top, null, null, Left, clickCount, null, null);
+        input.dispatchMouseEvent(MousePressed, point.x, point.y, null, null, Left, clickCount, null, null);
+        input.dispatchMouseEvent(MouseReleased, point.x, point.y, null, null, Left, clickCount, null, null);
         return getThis();
     }
 
@@ -100,7 +80,7 @@ public interface Mouse {
      */
     default Session move(double x, double y) {
         Input input = getThis().getCommand().getInput();
-    	input.dispatchMouseEvent(MouseMoved, x, y);
+        input.dispatchMouseEvent(MouseMoved, x, y);
         return getThis();
     }
 

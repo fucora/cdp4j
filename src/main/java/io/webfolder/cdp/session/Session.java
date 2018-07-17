@@ -119,6 +119,8 @@ public class Session implements AutoCloseable,
 
     private volatile Integer executionContextId;
 
+    private final int majorVersion;
+
     private static final ThreadLocal<Boolean> ENABLE_ENTRY_EXIT_LOG = 
                                                     withInitial(() -> { return TRUE; });
 
@@ -133,7 +135,8 @@ public class Session implements AutoCloseable,
             final List<EventListener> eventListeners,
             final LoggerFactory loggerFactory,
             final boolean browserSession,
-            final Session session) {
+            final Session session,
+            final int majorVersion) {
         this.sessionId = sessionId;
         this.browserContextId = browserContextId;
         this.invocationHandler = new SessionInvocationHandler(
@@ -154,6 +157,7 @@ public class Session implements AutoCloseable,
         this.logFlow          = loggerFactory.getLogger("cdp4j.flow");
         this.gson             = gson;
         this.browserSession   = browserSession;
+        this.majorVersion     = majorVersion;
         this.command          = new Command(this);
     }
 
@@ -731,6 +735,10 @@ public class Session implements AutoCloseable,
             return true;
         }
         return false;
+    }
+
+    public int getMajorVersion() {
+        return majorVersion;
     }
 
     public String getTargetId() {
