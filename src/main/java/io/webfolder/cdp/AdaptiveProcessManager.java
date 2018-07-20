@@ -33,6 +33,8 @@ public class AdaptiveProcessManager extends ProcessManager {
 
     private static final boolean LINUX   = "linux".contains(OS);
 
+    private static final boolean MAC     = OS.contains("mac");
+
     private static final boolean JAVA_8  = getProperty("java.version").startsWith("1.8.");
 
     public AdaptiveProcessManager() {
@@ -42,6 +44,8 @@ public class AdaptiveProcessManager extends ProcessManager {
             processManager = new WindowsProcessManager();
         } else if (LINUX) {
             processManager = new LinuxProcessManager();
+        } else if (MAC) {
+            processManager = new MacOsProcessManager();            
         } else {
             throw new CdpException(OS + " is not supported by AdaptiveProcessManager");
         }
