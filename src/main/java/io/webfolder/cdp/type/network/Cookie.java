@@ -17,10 +17,13 @@
  */
 package io.webfolder.cdp.type.network;
 
+import java.io.Serializable;
+
 /**
  * Cookie object
  */
-public class Cookie {
+public class Cookie implements Serializable {
+
     private String name;
 
     private String value;
