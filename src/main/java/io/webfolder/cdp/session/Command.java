@@ -28,6 +28,7 @@ import io.webfolder.cdp.command.DOMDebugger;
 import io.webfolder.cdp.command.DOMSnapshot;
 import io.webfolder.cdp.command.DOMStorage;
 import io.webfolder.cdp.command.Database;
+import io.webfolder.cdp.command.Debugger;
 import io.webfolder.cdp.command.DeviceOrientation;
 import io.webfolder.cdp.command.Emulation;
 import io.webfolder.cdp.command.HeapProfiler;
@@ -87,6 +88,10 @@ public class Command {
 
     public Database getDatabase() {
         return getProxy(Database.class);
+    }
+    
+    public Debugger getDebugger() {
+        return getProxy(Debugger.class);
     }
 
     public DeviceOrientation getDeviceOrientation() {
