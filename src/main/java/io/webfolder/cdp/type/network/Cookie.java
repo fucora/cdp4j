@@ -24,6 +24,8 @@ import java.io.Serializable;
  */
 public class Cookie implements Serializable {
 
+    private static final long serialVersionUID = 3780035664493989002L;
+
     private String name;
 
     private String value;

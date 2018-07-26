@@ -1,6 +1,13 @@
 cdp4j Release Notes
 -------------------------------------------------------------------------------
 
+### 3.0.3 - July 26, 2018
+
+* Added MacOsProcessManager
+* Roll devtools protocol to r574367
+* Added Dom.getClickablePoint() and Dom.scrollIntoViewIfNeeded() method
+* Fixed Mouse.click() does not trigger click event if the element is not visible.
+
 ### 3.0.2 - July 9, 2018
 
 * Fixed ElementNotFoundException for xpath expressions
