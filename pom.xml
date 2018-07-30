@@ -104,6 +104,10 @@
        <pattern>com.neovisionaries.ws.client</pattern>
        <shadedPattern>io.webfolder.cdp.internal.ws</shadedPattern>
       </relocation>
+      <relocation>
+       <pattern>org.jvnet.winp</pattern>
+       <shadedPattern>io.webfolder.cdp.internal.winp</shadedPattern>
+      </relocation>
      </relocations>
     </configuration>
    </plugin>
@@ -168,26 +172,6 @@
     </executions>
    </plugin>
    <plugin>
-    <groupId>org.jacoco</groupId>
-    <artifactId>jacoco-maven-plugin</artifactId>
-    <version>0.7.9</version>
-    <executions>
-     <execution>
-      <id>jacoco-initialize</id>
-      <goals>
-       <goal>prepare-agent</goal>
-      </goals>
-     </execution>
-     <execution>
-      <id>jacoco-report</id>
-      <phase>test</phase>
-      <goals>
-       <goal>report</goal>
-      </goals>
-     </execution>
-    </executions>
-   </plugin>
-   <plugin>
     <groupId>org.sonatype.plugins</groupId>
     <artifactId>nexus-staging-maven-plugin</artifactId>
     <version>1.6.7</version>
@@ -198,18 +182,6 @@
      <autoReleaseAfterClose>true</autoReleaseAfterClose>
     </configuration>
    </plugin>
-   <!-- plugin>
-    <groupId>io.github.zlika</groupId>
-    <artifactId>reproducible-build-maven-plugin</artifactId>
-    <version>0.3</version>
-    <executions>
-     <execution>
-      <goals>
-       <goal>strip-jar</goal>
-      </goals>
-     </execution>
-    </executions>
-   </plugin -->
    <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-gpg-plugin</artifactId>
@@ -241,7 +213,6 @@
    <groupId>org.jvnet.winp</groupId>
    <artifactId>winp</artifactId>
    <version>1.26</version>
-   <scope>provided</scope>
   </dependency>
   <dependency>
    <groupId>com.squareup</groupId>

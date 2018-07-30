@@ -1,6 +1,11 @@
 cdp4j Release Notes
 -------------------------------------------------------------------------------
 
+### 3.0.4 - July 31, 2018
+
+* Added Added a new Constructor to Launcher class
+* Fixed ClassNotFoundException (org.jvnet.winp.WinProcess)
+
 ### 3.0.3 - July 26, 2018
 
 * Added MacOsProcessManager
