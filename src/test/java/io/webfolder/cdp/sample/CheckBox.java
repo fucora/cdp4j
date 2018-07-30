@@ -38,10 +38,10 @@ public class CheckBox {
             System.out.println("Checked: " + session.isChecked("input[name='red']"));
             session.setChecked("input[name='red']", true);
             System.out.println("Checked: " + session.isChecked("input[name='red']"));
-            session.wait(2000);
+            session.wait(1000);
             session.setChecked("input[name='red']", false);
             System.out.println("Checked: " + session.isChecked("input[name='red']"));
-            session.wait(2000);
+            session.wait(1000);
         }
     }
 }

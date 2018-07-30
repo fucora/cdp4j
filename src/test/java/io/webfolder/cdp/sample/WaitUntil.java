@@ -26,7 +26,7 @@ import io.webfolder.cdp.session.SessionFactory;
 public class WaitUntil {
 
     public static void main(String[] args) {
-        URL url = WaitUntil.class.getResource("/dom-change-sample.html");
+        URL url = WaitUntil.class.getResource("/wait-until.html");
 
         Launcher launcher = new Launcher();
 

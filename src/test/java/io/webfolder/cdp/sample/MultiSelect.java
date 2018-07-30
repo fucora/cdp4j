@@ -62,7 +62,7 @@ public class MultiSelect {
             System.out.println("Selected Option count: " +
             session.getOptions("select").stream().filter(o -> o.isSelected()).count());
 
-            session.wait(2000);
+            session.wait(1000);
         }
     }
 }
