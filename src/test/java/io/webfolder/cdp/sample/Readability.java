@@ -10,7 +10,7 @@ import io.webfolder.cdp.logger.CdpLoggerType;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
-// Remove noise and ads and extract the content
+// Remove noise and ads before extracting the content
 // @see https://github.com/mozilla/readability
 public class Readability {
 
