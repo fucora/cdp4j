@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import io.webfolder.cdp.exception.CdpException;
+import io.webfolder.cdp.logger.CdpLoggerType;
 import io.webfolder.cdp.session.SessionFactory;
 
 public class Launcher extends AbstractLauncher {
@@ -47,6 +48,10 @@ public class Launcher extends AbstractLauncher {
     private static final boolean OSX = OS.startsWith("mac");
 
     private ProcessManager processManager = new AdaptiveProcessManager();
+
+    public Launcher(CdpLoggerType loggerType) {
+        this(new SessionFactory(loggerType));
+    }
 
     public Launcher() {
         this(new SessionFactory());
