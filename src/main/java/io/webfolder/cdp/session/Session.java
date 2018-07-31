@@ -60,6 +60,7 @@ import io.webfolder.cdp.event.page.LifecycleEvent;
 import io.webfolder.cdp.event.runtime.ConsoleAPICalled;
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.exception.LoadTimeoutException;
+import io.webfolder.cdp.exception.DestinationUnreachableException;
 import io.webfolder.cdp.listener.EventListener;
 import io.webfolder.cdp.listener.TerminateEvent;
 import io.webfolder.cdp.listener.TerminateListener;
@@ -324,6 +325,8 @@ public class Session implements AutoCloseable,
         NavigateResult navigate = command.getPage().navigate(url);
         if ( navigate != null ) {
         	this.frameId = navigate.getFrameId();
+        } else {
+        	throw new DestinationUnreachableException(url);
         }
         return this;
     }
@@ -345,6 +348,10 @@ public class Session implements AutoCloseable,
                             format("[url=%s, waitUntil=%s, timeout=%d]", url, condition.name(), timeout));
 
         NavigateResult navigate = command.getPage().navigate(url);
+        if (navigate == null) {
+        	throw new DestinationUnreachableException(url);
+        }
+
         this.frameId = navigate.getFrameId();
 
         CountDownLatch latch = new CountDownLatch(1);
