@@ -322,7 +322,9 @@ public class Session implements AutoCloseable,
     public Session navigate(final String url) {
         logEntry("navigate", url);
         NavigateResult navigate = command.getPage().navigate(url);
-        this.frameId = navigate.getFrameId();
+        if ( navigate != null ) {
+        	this.frameId = navigate.getFrameId();
+        }
         return this;
     }
 
