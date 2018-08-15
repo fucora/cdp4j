@@ -1,3 +1,10 @@
+**IMPORTANT!**
+==============
+
+I'm sorry to say that I can no longer provide the cdp4j at no charge. The WebFolder OÜ open source effort has been cross-financed by our consulting services and product revenues in the past. But as a one-man-company I cannot justify the time and quite high costs for maintenance, for shaping quality APIs, writing docs, providing example sources, and a huge bulk of work to keep the cdp4j up-to-date.
+
+**We will still improve and support the cdp4j but for only Commercial License customers.**
+
 cdp4j - Chrome DevTools Protocol for Java
 =================================================
 
@@ -66,7 +73,7 @@ Add the following to your POM's `<dependencies>` tag:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>cdp4j</artifactId>
-    <version>3.0.6-SNAPSHOT</version>
+    <version>3.0.5</version>
 </dependency>
 ```
 
@@ -76,7 +83,7 @@ Using development (SNAPSHOT) version:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>cdp4j</artifactId>
-    <version>3.0.5-SNAPSHOT</version>
+    <version>3.0.6-SNAPSHOT</version>
 </dependency>
 ```
 
