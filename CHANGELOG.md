@@ -1,7 +1,10 @@
 cdp4j Release Notes
 -------------------------------------------------------------------------------
+### 3.0.6 - August 15, 2018
 
-### 3.0.5 - August 31, 2018
+* Added @JsFunction annotation
+
+### 3.0.5 - July 31, 2018
 
 * Fixed NullPointerException
 
