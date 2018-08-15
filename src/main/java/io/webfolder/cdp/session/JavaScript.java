@@ -127,7 +127,7 @@ public interface JavaScript {
             throw new CdpException(format("Function [%s] is not defined", name));
         }
 
-        StringJoiner argNames = new StringJoiner(",");
+        StringJoiner argNames = new StringJoiner(", ");
 
         List<CallArgument> argsFunc = new ArrayList<>(arguments.length);
 
@@ -140,10 +140,10 @@ public interface JavaScript {
                     if (getThis().isPrimitive(argument.getClass())) {
                         ca.setValue(argument);
                     } else {
-                        ca.setValue(getThis().getGson().toJson(argument));
+                        ca.setUnserializableValue(getThis().getGson().toJson(argument));
                     }
                 }
-                argNames.add("arg" + (i + 1));
+                argNames.add("arg" + i++);
             }
         }
 
@@ -173,13 +173,7 @@ public interface JavaScript {
             String json = valueOf(func.getResult().getValue());
             JsonObject object = getThis().getGson().fromJson(json, JsonObject.class);
             JsonElement result = object.get("result");
-            if (getThis().isPrimitive(returnType)) {
-                value = getThis().getGson().fromJson(result, returnType);
-            } else {
-                if (result.isJsonPrimitive()) {
-                    value = getThis().getGson().fromJson(result.getAsString(), returnType);
-                }
-            }
+            value = getThis().getGson().fromJson(result, returnType);
         } else if (ObjectType.Undefined.equals(func.getResult().getType())) {
             value = void.class;
         }
@@ -190,7 +184,7 @@ public interface JavaScript {
         }
 
         getThis().logExit("callFunction",
-                        name + (arguments == null || arguments.length == 0 ? "" : "\", " + joiner.toString()),
+                        name + (arguments == null || arguments.length == 0 ? "" : "\", \"" + joiner.toString()),
                         valueOf(value).replace("\n", "").replace("\r", ""));
 
         return ! void.class.equals(value) ? (T) value : null;

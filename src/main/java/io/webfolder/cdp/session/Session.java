@@ -34,11 +34,16 @@ import static java.lang.String.format;
 import static java.lang.String.valueOf;
 import static java.lang.ThreadLocal.withInitial;
 import static java.lang.reflect.Proxy.newProxyInstance;
+import static java.util.Arrays.asList;
 import static java.util.Locale.ENGLISH;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -49,6 +54,7 @@ import java.util.function.Predicate;
 import com.google.gson.Gson;
 import com.neovisionaries.ws.client.WebSocket;
 
+import io.webfolder.cdp.JsFunction;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
 import io.webfolder.cdp.command.CSS;
@@ -59,8 +65,8 @@ import io.webfolder.cdp.event.network.ResponseReceived;
 import io.webfolder.cdp.event.page.LifecycleEvent;
 import io.webfolder.cdp.event.runtime.ConsoleAPICalled;
 import io.webfolder.cdp.exception.CdpException;
-import io.webfolder.cdp.exception.LoadTimeoutException;
 import io.webfolder.cdp.exception.DestinationUnreachableException;
+import io.webfolder.cdp.exception.LoadTimeoutException;
 import io.webfolder.cdp.listener.EventListener;
 import io.webfolder.cdp.listener.TerminateEvent;
 import io.webfolder.cdp.listener.TerminateListener;
@@ -122,6 +128,8 @@ public class Session implements AutoCloseable,
 
     private final int majorVersion;
 
+    private final Map<Class<?>, Object> jsFunctions;
+
     private static final ThreadLocal<Boolean> ENABLE_ENTRY_EXIT_LOG = 
                                                     withInitial(() -> { return TRUE; });
 
@@ -159,6 +167,7 @@ public class Session implements AutoCloseable,
         this.gson             = gson;
         this.browserSession   = browserSession;
         this.majorVersion     = majorVersion;
+        this.jsFunctions      = new ConcurrentHashMap<>();
         this.command          = new Command(this);
     }
 
@@ -620,6 +629,7 @@ public class Session implements AutoCloseable,
     void dispose() {
         proxies.clear();
         listeners.clear();
+        jsFunctions.clear();
         invocationHandler.dispose();
         if (browserSession && webSocket.isOpen()) {
             try {
@@ -719,6 +729,78 @@ public class Session implements AutoCloseable,
 
     WSContext getContext(int id) {
         return invocationHandler.getContext(id);
+    }
+
+    @SuppressWarnings("unchecked")
+	public <T> T registerJsFunction(Class<T> klass) {
+    	if ( ! klass.isInterface() ) {
+    		throw new CdpException("Class must be interface: " + klass.getName());
+    	}
+    	if (asList(klass.getMethods())
+	    				.stream()
+	    				.filter(p -> p.isAnnotationPresent(JsFunction.class))
+	    				.count() == 0) {
+    		throw new CdpException("Interface must be contain at least one @JsFunction");
+    	}
+    	if (jsFunctions.containsKey(klass)) {
+    		throw new CdpException("Duplicate Registration is not allowed: " + klass);
+    	}
+    	if (jsFunctions.keySet()
+    					.stream()
+    					.filter(p -> p.getSimpleName()
+						.equals(klass.getSimpleName())).count() > 0) {
+			throw new CdpException("Duplicate class name is not allowed: " + klass.getSimpleName());    		
+    	}
+		Method[] methods = klass.getMethods();
+		StringBuilder builder = new StringBuilder();
+		builder.append(format("document.%s = document.%s || {};", klass.getSimpleName(), klass.getSimpleName()));
+		for (Method next : methods) {
+			JsFunction function = next.getAnnotation(JsFunction.class);
+			if (function == null) {
+				continue;
+			}
+			StringBuilder jsMethod = new StringBuilder();
+			jsMethod.append("document.");
+			jsMethod.append(klass.getSimpleName());
+			jsMethod.append(".");
+			jsMethod.append(next.getName());
+			jsMethod.append(" = function(");
+			int count = next.getParameterCount();
+			StringJoiner joiner = new StringJoiner(", ");
+			for (int i = 0; i < count; i++) {
+				Parameter parameter = next.getParameters()[i];
+				joiner.add(parameter.getName());
+			}
+			jsMethod.append(joiner.toString());
+			jsMethod.append(") { ");
+			jsMethod.append(function.value());
+			jsMethod.append(" };");
+			builder.append(jsMethod.toString());
+		}
+		Page page = getCommand().getPage();
+		page.enable();
+		page.addScriptToEvaluateOnNewDocument(builder.toString());
+		Object instance = newProxyInstance(getClass().getClassLoader(),
+											new Class<?>[] { klass },
+											(InvocationHandler) (proxy, method, args) -> {
+			String className = method.getDeclaringClass().getSimpleName();
+			String methodName = method.getName();
+			Class<?> returnType = method.getReturnType();
+			if ((void.class.equals(returnType) || Void.class.equals(returnType)) && (args == null || args.length == 0)) {
+				callFunction("document." + className + "." + methodName);
+				return null;
+			} else {
+				Object result = callFunction("document." + className + "." + methodName, returnType, args);
+				return result;
+			}
+		});
+		jsFunctions.put(klass, instance);
+		return (T) instance;
+    }
+
+    @SuppressWarnings("unchecked")
+	public <T> T getJsFunction(Class<T> klass) {
+    	return (T) jsFunctions.get(klass);
     }
 
     boolean isPrimitive(Class<?> klass) {
