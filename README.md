@@ -47,7 +47,7 @@ Licensing
 
 cdp4j is licensed as [cdp4j Commercial License](https://github.com/webfolderio/cdp4j/blob/master/LICENSE).
 
-Buying a license is __mandatory__ as soon as you develop commercial activities distributing the
+__cdp4j IS NOT A FREE SOFTWARE.__ Buying a license is __mandatory__ as soon as you develop commercial activities distributing the
 cdp4j software inside your product or deploying it on a network.
 
 Stability
