@@ -1,16 +1,19 @@
 **IMPORTANT!**
 ==============
 
-I'm sorry to say that I can no longer provide the cdp4j at no charge. The WebFolder OÜ open source effort has been cross-financed by our consulting services and product revenues in the past. But as a one-man-company I cannot justify the time and quite high costs for maintenance, for shaping quality APIs, writing docs, providing example sources, and a huge bulk of work to keep the cdp4j up-to-date.
+I'm sorry to say that I can no longer provide the cdp4j at no charge.
+The WebFolder OÜ open source effort has been cross-financed by our consulting services and product revenues in the past.
+But as a one-man-company I cannot justify the time and quite high costs for maintenance, for shaping quality APIs,
+writing docs, providing example sources, and a huge bulk of work to keep the cdp4j up-to-date.
 
 **We will still improve and support the cdp4j but for only Commercial License customers.**
 
 cdp4j - Chrome DevTools Protocol for Java
 =================================================
 
-[![License](https://img.shields.io/badge/license-AGPL-blue.svg)](https://github.com/webfolderio/cdp4j/blob/master/LICENSE)
-[![circleci](https://img.shields.io/circleci/project/github/webfolderio/cdp4j.svg?label=linux)](https://circleci.com/gh/webfolderio/cdp4j) [![AppVeyor](https://img.shields.io/appveyor/ci/WebFolder/cdp4j.svg?label=windows)](https://ci.appveyor.com/project/WebFolder/cdp4j) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/66358e2e3fc1495aaad32e3bf7dc99bd)](https://www.codacy.com/app/WebFolder/cdp4j?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=webfolderio/cdp4j&amp;utm_campaign=Badge_Grade)
-[![CLA assistant](https://cla-assistant.io/readme/badge/webfolderio/cdp4j)](https://cla-assistant.io/webfolderio/cdp4j)
+[![circleci](https://img.shields.io/circleci/project/github/webfolderio/cdp4j.svg?label=linux)](https://circleci.com/gh/webfolderio/cdp4j)
+[![AppVeyor](https://img.shields.io/appveyor/ci/WebFolder/cdp4j.svg?label=windows)](https://ci.appveyor.com/project/WebFolder/cdp4j)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/66358e2e3fc1495aaad32e3bf7dc99bd)](https://www.codacy.com/app/WebFolder/cdp4j?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=webfolderio/cdp4j&amp;utm_campaign=Badge_Grade)
 
 cdp4j is a web-automation library for Java. It can be used for automating the use of web pages and for testing web pages.
 It use Google Chrome DevTools Protocol to automate Chrome/Chromium based browsers.
@@ -46,12 +49,10 @@ Both the JRE and the JDK are suitable for use with this library.
 Licensing
 ---------
 
-cdp4j is licensed as [AGPL](https://github.com/webfolderio/cdp4j/blob/master/LICENSE) software.
-
-__Open Source != Free Software__. The source may be viewable on GitHub but that doesn't mean anyone can use it for any purpose.
+cdp4j is licensed as [cdp4j Commercial License](https://github.com/webfolderio/cdp4j/blob/master/LICENSE).
 
 Buying a license is __mandatory__ as soon as you develop commercial activities distributing the
-cdp4j software inside your product or deploying it on a network without disclosing the source code of your own applications under the AGPL license.
+cdp4j software inside your product or deploying it on a network.
 
 Stability
 ---------
@@ -233,10 +234,6 @@ mvn test -Dchrome_binary=/usr/lic/chromium-dev/chromium-dev
 How it is tested
 ----------------
 cdp4j is regularly built and tested on [circleci](https://circleci.com/gh/webfolderio/cdp4j) and [AppVeyor](https://ci.appveyor.com/project/WebFolder/cdp4j).
-
-Contribute to cdp4j Project
----------------------------
-Please follow cdp4j Contributor's [Guide](https://github.com/webfolderio/cdp4j/blob/master/CONTRIBUTING.md).
 
 Getting Help
 --------------------------------------------------------------------------------------------
