@@ -11,10 +11,6 @@ writing docs, providing example sources, and a huge bulk of work to keep the cdp
 cdp4j - Chrome DevTools Protocol for Java
 =================================================
 
-[![circleci](https://img.shields.io/circleci/project/github/webfolderio/cdp4j.svg?label=linux)](https://circleci.com/gh/webfolderio/cdp4j)
-[![AppVeyor](https://img.shields.io/appveyor/ci/WebFolder/cdp4j.svg?label=windows)](https://ci.appveyor.com/project/WebFolder/cdp4j)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/66358e2e3fc1495aaad32e3bf7dc99bd)](https://www.codacy.com/app/WebFolder/cdp4j?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=webfolderio/cdp4j&amp;utm_campaign=Badge_Grade)
-
 cdp4j is a web-automation library for Java. It can be used for automating the use of web pages and for testing web pages.
 It use Google Chrome DevTools Protocol to automate Chrome/Chromium based browsers.
 
@@ -233,7 +229,7 @@ mvn test -Dchrome_binary=/usr/lic/chromium-dev/chromium-dev
 
 How it is tested
 ----------------
-cdp4j is regularly built and tested on [circleci](https://circleci.com/gh/webfolderio/cdp4j) and [AppVeyor](https://ci.appveyor.com/project/WebFolder/cdp4j).
+cdp4j is regularly built and tested on Windows 10 and Ubuntu.
 
 Getting Help
 --------------------------------------------------------------------------------------------
