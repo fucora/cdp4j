@@ -127,7 +127,7 @@ JavaDoc
 
 Logging
 -------
-Simple logger for Java (SLF4J) is supported.
+Simple logger for Java (SLF4J) and log4j 1.x is supported.
 
 Design Principles
 -----------------
