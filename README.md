@@ -11,7 +11,6 @@ cdp4j - Chrome DevTools Protocol for Java
 [![License](https://img.shields.io/badge/license-AGPL-blue.svg)](https://github.com/webfolderio/cdp4j/blob/master/LICENSE)
 [![circleci](https://img.shields.io/circleci/project/github/webfolderio/cdp4j.svg?label=linux)](https://circleci.com/gh/webfolderio/cdp4j) [![AppVeyor](https://img.shields.io/appveyor/ci/WebFolder/cdp4j.svg?label=windows)](https://ci.appveyor.com/project/WebFolder/cdp4j) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/66358e2e3fc1495aaad32e3bf7dc99bd)](https://www.codacy.com/app/WebFolder/cdp4j?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=webfolderio/cdp4j&amp;utm_campaign=Badge_Grade)
 [![CLA assistant](https://cla-assistant.io/readme/badge/webfolderio/cdp4j)](https://cla-assistant.io/webfolderio/cdp4j)
-[![Gitter](https://img.shields.io/gitter/room/WebFolderIO/cdp4j-community.svg)](https://gitter.im/WebFolderIO/cdp4j-community)
 
 cdp4j is a web-automation library for Java. It can be used for automating the use of web pages and for testing web pages.
 It use Google Chrome DevTools Protocol to automate Chrome/Chromium based browsers.
@@ -57,10 +56,6 @@ cdp4j software inside your product or deploying it on a network without disclosi
 Stability
 ---------
 This library is suitable for use in production systems.
-
-Community
----------
-Join our gitter chat at: https://gitter.im/WebFolderIO/cdp4j-community
 
 Integration with Maven
 ----------------------
