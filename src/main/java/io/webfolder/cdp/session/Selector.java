@@ -27,6 +27,7 @@ import static java.lang.Integer.parseInt;
 import static java.lang.String.format;
 import static java.lang.String.valueOf;
 import static java.util.Collections.emptyList;
+import static java.util.Locale.ENGLISH;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +88,20 @@ public interface Selector {
      *         selector
      */
     default boolean matches(final Integer contextId, final String selector, final Object... args) {
-        Integer nodeId = getThis().getNodeId(contextId, selector, args);
+        Integer nodeId = null;
+        try {
+            nodeId = getThis().getNodeId(contextId, selector, args);
+        } catch (CdpException e) {
+            boolean notFound = e.getMessage() != null &&
+                               e.getMessage()
+                                .toLowerCase(ENGLISH)
+                                .contains("could not find node with given id");
+            if (notFound) {
+                return false;
+            } else {
+                throw e;
+            }
+        }
         if (nodeId == null || EMPTY_NODE_ID.equals(nodeId)) {
             return false;
         }
