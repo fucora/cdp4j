@@ -26,8 +26,6 @@ import static java.lang.String.format;
 import static java.lang.String.valueOf;
 import static java.lang.System.getProperty;
 import static java.lang.Thread.sleep;
-import static java.nio.file.FileSystems.newFileSystem;
-import static java.nio.file.FileVisitResult.CONTINUE;
 import static java.nio.file.Files.copy;
 import static java.nio.file.Files.createDirectories;
 import static java.nio.file.Files.delete;
@@ -38,30 +36,42 @@ import static java.nio.file.Files.isExecutable;
 import static java.nio.file.Files.list;
 import static java.nio.file.Files.setPosixFilePermissions;
 import static java.nio.file.Files.size;
-import static java.nio.file.Files.walkFileTree;
 import static java.nio.file.Paths.get;
 import static java.nio.file.attribute.PosixFilePermission.GROUP_EXECUTE;
+import static java.nio.file.attribute.PosixFilePermission.GROUP_READ;
+import static java.nio.file.attribute.PosixFilePermission.GROUP_WRITE;
+import static java.nio.file.attribute.PosixFilePermission.OTHERS_EXECUTE;
+import static java.nio.file.attribute.PosixFilePermission.OTHERS_READ;
+import static java.nio.file.attribute.PosixFilePermission.OTHERS_WRITE;
 import static java.nio.file.attribute.PosixFilePermission.OWNER_EXECUTE;
+import static java.nio.file.attribute.PosixFilePermission.OWNER_READ;
+import static java.nio.file.attribute.PosixFilePermission.OWNER_WRITE;
 import static java.util.Locale.ENGLISH;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.FileSystem;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.EnumSet;
+import java.util.Enumeration;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
+
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipFile;
+import org.apache.commons.compress.utils.IOUtils;
 
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.logger.CdpLogger;
@@ -82,44 +92,18 @@ public class ChromiumDownloader implements Downloader {
 
     private static final int TIMEOUT          = 10 * 1000; // 10 seconds
 
+    private static final PosixFilePermission[] DECODE_MAP = {
+            OTHERS_EXECUTE,
+            OTHERS_WRITE,
+            OTHERS_READ,
+            GROUP_EXECUTE,
+            GROUP_WRITE,
+            GROUP_READ,
+            OWNER_EXECUTE,
+            OWNER_WRITE, OWNER_READ
+    };
+
     private final CdpLogger logger;
-
-    private static class ZipVisitor extends SimpleFileVisitor<Path> {
-
-        private final Path sourceRoot;
-
-        private final Path destinationRoot;
-
-        public ZipVisitor(Path sourceRoot, Path destinationRoot) {
-            this.sourceRoot = sourceRoot;
-            this.destinationRoot = destinationRoot;
-        }
-
-        @Override
-        public FileVisitResult preVisitDirectory(Path sourceDirectory, BasicFileAttributes attrs) throws IOException {
-            if (sourceRoot.equals(sourceDirectory)) {
-                return CONTINUE;
-            }
-            if (sourceDirectory.getNameCount() == 1) {
-                return CONTINUE;
-            }
-            String sourcePath = sourceDirectory.subpath(1, sourceDirectory.getNameCount()).toString();
-            Path destinationDirectory = destinationRoot.resolve(sourcePath);
-            createDirectories(destinationDirectory);
-            return CONTINUE;
-        }
-
-        @Override
-        public FileVisitResult visitFile(Path sourceFile, BasicFileAttributes attrs) throws IOException {
-            String sourcePath = sourceFile.subpath(1, sourceFile.getNameCount()).toString();
-            Path destinationFile = destinationRoot.resolve(sourcePath);
-            if (exists(destinationFile)) {
-                delete(destinationFile);
-            }
-            copy(sourceFile, destinationFile);
-            return CONTINUE;
-        }
-    }
 
     public ChromiumDownloader() {
         this(new CdpLoggerFactory());
@@ -267,16 +251,10 @@ public class ChromiumDownloader implements Downloader {
             logger.info("Extracting to: " + destinationRoot.toString());
             if (exists(archive)) {
                 createDirectories(destinationRoot);
-                try (FileSystem fileSystem = newFileSystem(archive, null)) {
-                    Iterator<Path> iter = fileSystem.getRootDirectories().iterator();
-                    if (iter.hasNext()) {
-                        Path sourceRoot = iter.next();
-                        walkFileTree(sourceRoot, new ZipVisitor(sourceRoot, destinationRoot));
-                    }
-                }
+                unpack(archive.toFile(), destinationRoot.toFile());
             }
 
-            if (exists(executable) && isExecutable(executable)) {
+            if ( ! exists(executable) || ! isExecutable(executable) ) {
                 throw new CdpException("Chromium executable not found: " + executable.toString());
             }
 
@@ -318,5 +296,62 @@ public class ChromiumDownloader implements Downloader {
     public static ChromiumVersion getLatestInstalledVersion() {
         List<ChromiumVersion> versions = getInstalledVersions();
         return ! versions.isEmpty() ? versions.get(0) : null;
+    }
+
+    private static void unpack(File archive, File destionation) throws IOException {
+        try (ZipFile zip = new ZipFile(archive)) {
+            Map<File, String> symLinks = new LinkedHashMap<>();
+            Enumeration<ZipArchiveEntry> iterator = zip.getEntries();
+            // Top directory name we are going to ignore
+            String parentDirectory = iterator.nextElement().getName();
+            // Iterate files & folders
+            while (iterator.hasMoreElements()) {
+                ZipArchiveEntry entry = iterator.nextElement();
+                String name = entry.getName().substring(parentDirectory.length());
+                File outputFile = new File(destionation, name);
+                if ( name.startsWith("interactive_ui_tests") ) {
+                    continue;
+                }
+                if (entry.isUnixSymlink()) {
+                    symLinks.put(outputFile, zip.getUnixSymlink(entry));
+                } else if ( ! entry.isDirectory() ) {
+                    if ( ! outputFile.getParentFile().isDirectory() ) {
+                        outputFile.getParentFile().mkdirs();
+                    }
+                    try (FileOutputStream outStream = new FileOutputStream(outputFile)) {
+                        IOUtils.copy(zip.getInputStream(entry), outStream);
+                    }
+                }
+                // Set permission
+                if ( ! entry.isUnixSymlink() && outputFile.exists() )
+                    try {
+                        Files.setPosixFilePermissions(outputFile.toPath(), modeToPosixPermissions(entry.getUnixMode()));
+                    } catch (Exception e) {
+                        // ignore
+                    }
+            }
+            for (Map.Entry<File, String> entry : symLinks.entrySet()) {
+                try {
+                    Path source = Paths.get(entry.getKey().getAbsolutePath());
+                    Path target = source.getParent().resolve(entry.getValue());
+                    if ( !source.toFile().exists() )
+                        Files.createSymbolicLink(source, target);
+                } catch (Exception e) {
+                    // ignore
+                }
+            }
+        }
+    }
+
+    private static Set<PosixFilePermission> modeToPosixPermissions(final int mode) {
+        int mask = 1;
+        Set<PosixFilePermission> perms = EnumSet.noneOf(PosixFilePermission.class);
+        for (PosixFilePermission flag : DECODE_MAP) {
+            if ( (mask & mode) != 0 ) {
+                perms.add(flag);
+            }
+            mask = mask << 1;
+        }
+        return perms;
     }
 }
