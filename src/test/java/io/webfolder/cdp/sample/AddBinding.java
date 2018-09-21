@@ -34,7 +34,7 @@ public class AddBinding {
         Launcher launcher = new Launcher();
 
         try (SessionFactory factory = launcher.launch();
-        						Session session = factory.create()) {
+                                Session session = factory.create()) {
             session.enableConsoleLog();
 
             Page page = session.getCommand().getPage();
@@ -45,15 +45,15 @@ public class AddBinding {
             page.addScriptToEvaluateOnNewDocument("sendMessage = send");
             session.getCommand().getRuntime().addBinding("send");
 
-        	session.navigateAndWait("about:blank", DomContentLoad);
+            session.navigateAndWait("about:blank", DomContentLoad);
 
             session.addEventListener((event, value) -> {
-				if (RuntimeBindingCalled.equals(event)) {
-					BindingCalled binding = (BindingCalled) value;
-					System.out.println(format("name: [%s] payload: [%s]",
-											binding.getName(), binding.getPayload()));
-				}
-			});
+                if (RuntimeBindingCalled.equals(event)) {
+                    BindingCalled binding = (BindingCalled) value;
+                    System.out.println(format("name: [%s] payload: [%s]",
+                                            binding.getName(), binding.getPayload()));
+                }
+            });
 
             session.evaluate("sendMessage(JSON.stringify({ 'foo' : 'bar' }));");
             session.evaluate("sendMessage(JSON.stringify({ 'hello' : 'world' }));");
