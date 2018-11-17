@@ -16,56 +16,65 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.type.page;
+package io.webfolder.cdp.type.network;
 
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Transition type
+ * Resource type as it was perceived by the rendering engine
  */
-public enum TransitionType {
-    @SerializedName("link")
-    Link("link"),
+public enum ResourceType {
+    @SerializedName("Document")
+    Document("Document"),
 
-    @SerializedName("typed")
-    Typed("typed"),
+    @SerializedName("Stylesheet")
+    Stylesheet("Stylesheet"),
 
-    @SerializedName("address_bar")
-    AddressBar("address_bar"),
+    @SerializedName("Image")
+    Image("Image"),
 
-    @SerializedName("auto_bookmark")
-    AutoBookmark("auto_bookmark"),
+    @SerializedName("Media")
+    Media("Media"),
 
-    @SerializedName("auto_subframe")
-    AutoSubframe("auto_subframe"),
+    @SerializedName("Font")
+    Font("Font"),
 
-    @SerializedName("manual_subframe")
-    ManualSubframe("manual_subframe"),
+    @SerializedName("Script")
+    Script("Script"),
 
-    @SerializedName("generated")
-    Generated("generated"),
+    @SerializedName("TextTrack")
+    TextTrack("TextTrack"),
 
-    @SerializedName("auto_toplevel")
-    AutoToplevel("auto_toplevel"),
+    @SerializedName("XHR")
+    XHR("XHR"),
 
-    @SerializedName("form_submit")
-    FormSubmit("form_submit"),
+    @SerializedName("Fetch")
+    Fetch("Fetch"),
 
-    @SerializedName("reload")
-    Reload("reload"),
+    @SerializedName("EventSource")
+    EventSource("EventSource"),
 
-    @SerializedName("keyword")
-    Keyword("keyword"),
+    @SerializedName("WebSocket")
+    WebSocket("WebSocket"),
 
-    @SerializedName("keyword_generated")
-    KeywordGenerated("keyword_generated"),
+    @SerializedName("Manifest")
+    Manifest("Manifest"),
 
-    @SerializedName("other")
-    Other("other");
+    @SerializedName("SignedExchange")
+    SignedExchange("SignedExchange"),
+
+    @SerializedName("Ping")
+    Ping("Ping"),
+
+    @SerializedName("CSPViolationReport")
+    CSPViolationReport("CSPViolationReport"),
+
+    @SerializedName("Other")
+    Other("Other");
 
     public final String value;
 
-    TransitionType(String value) {
+    ResourceType(String value) {
         this.value = value;
     }
 

@@ -16,32 +16,31 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.type.heapprofiler;
+package io.webfolder.cdp.command;
 
-import java.util.ArrayList;
-import java.util.List;
+import io.webfolder.cdp.annotation.Domain;
+import io.webfolder.cdp.annotation.Experimental;
+import io.webfolder.cdp.annotation.Optional;
 
 /**
- * Sampling profile
+ * Testing domain is a dumping ground for the capabilities requires for browser or app testing that do not fit other
+ * domains
  */
-public class SamplingHeapProfile {
-    private SamplingHeapProfileNode head;
+@Experimental
+@Domain("Testing")
+public interface Testing {
+    /**
+     * Generates a report for testing.
+     * 
+     * @param message Message to be displayed in the report.
+     * @param group Specifies the endpoint group to deliver the report to.
+     */
+    void generateTestReport(String message, @Optional String group);
 
-    private List<SamplingHeapProfileSample> samples = new ArrayList<>();
-
-    public SamplingHeapProfileNode getHead() {
-        return head;
-    }
-
-    public void setHead(SamplingHeapProfileNode head) {
-        this.head = head;
-    }
-
-    public List<SamplingHeapProfileSample> getSamples() {
-        return samples;
-    }
-
-    public void setSamples(List<SamplingHeapProfileSample> samples) {
-        this.samples = samples;
-    }
+    /**
+     * Generates a report for testing.
+     * 
+     * @param message Message to be displayed in the report.
+     */
+    void generateTestReport(String message);
 }

@@ -46,7 +46,7 @@ import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 import io.webfolder.cdp.type.network.GetResponseBodyResult;
-import io.webfolder.cdp.type.page.ResourceType;
+import io.webfolder.cdp.type.network.ResourceType;
 
 public class Crawler {
 

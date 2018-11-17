@@ -31,6 +31,8 @@ public class SamplingHeapProfileNode {
 
     private Double selfSize;
 
+    private Integer id;
+
     private List<SamplingHeapProfileNode> children = new ArrayList<>();
 
     /**
@@ -59,6 +61,20 @@ public class SamplingHeapProfileNode {
      */
     public void setSelfSize(Double selfSize) {
         this.selfSize = selfSize;
+    }
+
+    /**
+     * Node id. Ids are unique across all profiles collected between startSampling and stopSampling.
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * Node id. Ids are unique across all profiles collected between startSampling and stopSampling.
+     */
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     /**

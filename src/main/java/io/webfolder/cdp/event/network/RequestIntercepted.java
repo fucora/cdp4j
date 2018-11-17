@@ -27,7 +27,7 @@ import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.type.network.AuthChallenge;
 import io.webfolder.cdp.type.network.ErrorReason;
 import io.webfolder.cdp.type.network.Request;
-import io.webfolder.cdp.type.page.ResourceType;
+import io.webfolder.cdp.type.network.ResourceType;
 
 /**
  * Details of an intercepted HTTP request, which must be either allowed, blocked, modified or

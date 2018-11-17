@@ -37,6 +37,8 @@ public class SecurityStateExplanation {
 
     private List<String> certificate = new ArrayList<>();
 
+    private List<String> recommendations = new ArrayList<>();
+
     /**
      * Security state representing the severity of the factor being explained.
      */
@@ -119,5 +121,19 @@ public class SecurityStateExplanation {
      */
     public void setCertificate(List<String> certificate) {
         this.certificate = certificate;
+    }
+
+    /**
+     * Recommendations to fix any issues.
+     */
+    public List<String> getRecommendations() {
+        return recommendations;
+    }
+
+    /**
+     * Recommendations to fix any issues.
+     */
+    public void setRecommendations(List<String> recommendations) {
+        this.recommendations = recommendations;
     }
 }

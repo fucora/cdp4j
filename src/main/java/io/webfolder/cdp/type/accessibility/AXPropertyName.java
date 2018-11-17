@@ -34,6 +34,15 @@ public enum AXPropertyName {
     @SerializedName("disabled")
     Disabled("disabled"),
 
+    @SerializedName("editable")
+    Editable("editable"),
+
+    @SerializedName("focusable")
+    Focusable("focusable"),
+
+    @SerializedName("focused")
+    Focused("focused"),
+
     @SerializedName("hidden")
     Hidden("hidden"),
 
@@ -45,6 +54,9 @@ public enum AXPropertyName {
 
     @SerializedName("keyshortcuts")
     Keyshortcuts("keyshortcuts"),
+
+    @SerializedName("settable")
+    Settable("settable"),
 
     @SerializedName("roledescription")
     Roledescription("roledescription"),

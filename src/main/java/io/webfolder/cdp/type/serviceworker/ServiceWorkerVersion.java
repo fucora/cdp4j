@@ -41,6 +41,8 @@ public class ServiceWorkerVersion {
 
     private List<String> controlledClients = new ArrayList<>();
 
+    private String targetId;
+
     public String getVersionId() {
         return versionId;
     }
@@ -117,5 +119,13 @@ public class ServiceWorkerVersion {
 
     public void setControlledClients(List<String> controlledClients) {
         this.controlledClients = controlledClients;
+    }
+
+    public String getTargetId() {
+        return targetId;
+    }
+
+    public void setTargetId(String targetId) {
+        this.targetId = targetId;
     }
 }

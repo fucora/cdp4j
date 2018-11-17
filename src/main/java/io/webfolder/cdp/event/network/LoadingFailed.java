@@ -21,7 +21,7 @@ package io.webfolder.cdp.event.network;
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.network.BlockedReason;
-import io.webfolder.cdp.type.page.ResourceType;
+import io.webfolder.cdp.type.network.ResourceType;
 
 /**
  * Fired when HTTP request has failed to load

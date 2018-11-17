@@ -16,32 +16,25 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.type.heapprofiler;
+package io.webfolder.cdp.type.constant;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gson.annotations.SerializedName;
 
-/**
- * Sampling profile
- */
-public class SamplingHeapProfile {
-    private SamplingHeapProfileNode head;
+public enum TimeDomain {
+    @SerializedName("timeTicks")
+    TimeTicks("timeTicks"),
 
-    private List<SamplingHeapProfileSample> samples = new ArrayList<>();
+    @SerializedName("threadTicks")
+    ThreadTicks("threadTicks");
 
-    public SamplingHeapProfileNode getHead() {
-        return head;
+    public final String value;
+
+    TimeDomain(String value) {
+        this.value = value;
     }
 
-    public void setHead(SamplingHeapProfileNode head) {
-        this.head = head;
-    }
-
-    public List<SamplingHeapProfileSample> getSamples() {
-        return samples;
-    }
-
-    public void setSamples(List<SamplingHeapProfileSample> samples) {
-        this.samples = samples;
+    @Override
+    public String toString() {
+        return value;
     }
 }

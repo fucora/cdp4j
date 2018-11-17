@@ -33,7 +33,7 @@ import io.webfolder.cdp.session.SessionFactory;
 import io.webfolder.cdp.type.constant.AuthResponse;
 import io.webfolder.cdp.type.network.AuthChallengeResponse;
 import io.webfolder.cdp.type.network.RequestPattern;
-import io.webfolder.cdp.type.page.ResourceType;
+import io.webfolder.cdp.type.network.ResourceType;
 
 public class BasicAuthentication {
 

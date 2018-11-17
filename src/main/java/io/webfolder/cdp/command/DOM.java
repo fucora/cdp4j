@@ -18,16 +18,17 @@
  */
 package io.webfolder.cdp.command;
 
-import java.util.List;
-
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
 import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.dom.BoxModel;
+import io.webfolder.cdp.type.dom.GetFrameOwnerResult;
+import io.webfolder.cdp.type.dom.GetNodeForLocationResult;
 import io.webfolder.cdp.type.dom.Node;
 import io.webfolder.cdp.type.dom.PerformSearchResult;
 import io.webfolder.cdp.type.runtime.RemoteObject;
+import java.util.List;
 
 /**
  * This domain exposes DOM read/write operations
@@ -185,17 +186,18 @@ public interface DOM {
     List<Node> getFlattenedDocument(@Optional Integer depth, @Optional Boolean pierce);
 
     /**
-     * Returns node id at given location.
+     * Returns node id at given location. Depending on whether DOM domain is enabled, nodeId is
+     * either returned or not.
      * 
      * @param x X coordinate.
      * @param y Y coordinate.
      * @param includeUserAgentShadowDOM False to skip to the nearest non-UA shadow root ancestor (default: false).
      * 
-     * @return Id of the node at given coordinates.
+     * @return GetNodeForLocationResult
      */
     @Experimental
-    @Returns("nodeId")
-    Integer getNodeForLocation(Integer x, Integer y, @Optional Boolean includeUserAgentShadowDOM);
+    GetNodeForLocationResult getNodeForLocation(Integer x, Integer y,
+            @Optional Boolean includeUserAgentShadowDOM);
 
     /**
      * Returns node's HTML markup.
@@ -222,7 +224,7 @@ public interface DOM {
     Integer getRelayoutBoundary(Integer nodeId);
 
     /**
-     * Returns search results from given <code>fromIndex</code>to given<code>toIndex</code> from the search with the given
+     * Returns search results from given <code>fromIndex</code> to given <code>toIndex</code> from the search with the given
      * identifier.
      * 
      * @param searchId Unique search session identifier.
@@ -461,10 +463,11 @@ public interface DOM {
     /**
      * Returns iframe node that owns iframe with the given domain.
      * 
+     * 
+     * @return GetFrameOwnerResult
      */
     @Experimental
-    @Returns("nodeId")
-    Integer getFrameOwner(String frameId);
+    GetFrameOwnerResult getFrameOwner(String frameId);
 
     /**
      * Creates a deep copy of the specified node and places it into the target container before the
@@ -528,16 +531,16 @@ public interface DOM {
     List<Node> getFlattenedDocument();
 
     /**
-     * Returns node id at given location.
+     * Returns node id at given location. Depending on whether DOM domain is enabled, nodeId is
+     * either returned or not.
      * 
      * @param x X coordinate.
      * @param y Y coordinate.
      * 
-     * @return Id of the node at given coordinates.
+     * @return GetNodeForLocationResult
      */
     @Experimental
-    @Returns("nodeId")
-    Integer getNodeForLocation(Integer x, Integer y);
+    GetNodeForLocationResult getNodeForLocation(Integer x, Integer y);
 
     /**
      * Returns node's HTML markup.

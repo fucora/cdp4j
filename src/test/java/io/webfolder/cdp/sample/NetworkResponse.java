@@ -18,6 +18,7 @@
  */
 package io.webfolder.cdp.sample;
 
+
 import static io.webfolder.cdp.event.Events.NetworkLoadingFinished;
 import static io.webfolder.cdp.event.Events.NetworkResponseReceived;
 
@@ -31,7 +32,7 @@ import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 import io.webfolder.cdp.type.network.GetResponseBodyResult;
 import io.webfolder.cdp.type.network.Response;
-import io.webfolder.cdp.type.page.ResourceType;
+import io.webfolder.cdp.type.network.ResourceType;
 
 public class NetworkResponse {
 

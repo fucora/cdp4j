@@ -16,32 +16,45 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.type.heapprofiler;
+package io.webfolder.cdp.event.page;
 
-import java.util.ArrayList;
-import java.util.List;
+import io.webfolder.cdp.annotation.Domain;
+import io.webfolder.cdp.annotation.EventName;
+import io.webfolder.cdp.annotation.Experimental;
 
 /**
- * Sampling profile
+ * Issued for every compilation cache generated
+ * Is only available
+ * if Page
+ * setGenerateCompilationCache is enabled
  */
-public class SamplingHeapProfile {
-    private SamplingHeapProfileNode head;
+@Experimental
+@Domain("Page")
+@EventName("compilationCacheProduced")
+public class CompilationCacheProduced {
+    private String url;
 
-    private List<SamplingHeapProfileSample> samples = new ArrayList<>();
+    private String data;
 
-    public SamplingHeapProfileNode getHead() {
-        return head;
+    public String getUrl() {
+        return url;
     }
 
-    public void setHead(SamplingHeapProfileNode head) {
-        this.head = head;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public List<SamplingHeapProfileSample> getSamples() {
-        return samples;
+    /**
+     * Base64-encoded data
+     */
+    public String getData() {
+        return data;
     }
 
-    public void setSamples(List<SamplingHeapProfileSample> samples) {
-        this.samples = samples;
+    /**
+     * Base64-encoded data
+     */
+    public void setData(String data) {
+        this.data = data;
     }
 }

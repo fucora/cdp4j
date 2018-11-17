@@ -42,29 +42,33 @@ public class DocumentSnapshot {
 
     private TextBoxSnapshot textBoxes;
 
+    private Double scrollOffsetX;
+
+    private Double scrollOffsetY;
+
     /**
-     * Document URL that <code>Document</code>or<code>FrameOwner</code> node points to.
+     * Document URL that <code>Document</code> or <code>FrameOwner</code> node points to.
      */
     public Integer getDocumentURL() {
         return documentURL;
     }
 
     /**
-     * Document URL that <code>Document</code>or<code>FrameOwner</code> node points to.
+     * Document URL that <code>Document</code> or <code>FrameOwner</code> node points to.
      */
     public void setDocumentURL(Integer documentURL) {
         this.documentURL = documentURL;
     }
 
     /**
-     * Base URL that <code>Document</code>or<code>FrameOwner</code> node uses for URL completion.
+     * Base URL that <code>Document</code> or <code>FrameOwner</code> node uses for URL completion.
      */
     public Integer getBaseURL() {
         return baseURL;
     }
 
     /**
-     * Base URL that <code>Document</code>or<code>FrameOwner</code> node uses for URL completion.
+     * Base URL that <code>Document</code> or <code>FrameOwner</code> node uses for URL completion.
      */
     public void setBaseURL(Integer baseURL) {
         this.baseURL = baseURL;
@@ -180,5 +184,27 @@ public class DocumentSnapshot {
      */
     public void setTextBoxes(TextBoxSnapshot textBoxes) {
         this.textBoxes = textBoxes;
+    }
+
+    /**
+     * Scroll offsets.
+     */
+    public Double getScrollOffsetX() {
+        return scrollOffsetX;
+    }
+
+    /**
+     * Scroll offsets.
+     */
+    public void setScrollOffsetX(Double scrollOffsetX) {
+        this.scrollOffsetX = scrollOffsetX;
+    }
+
+    public Double getScrollOffsetY() {
+        return scrollOffsetY;
+    }
+
+    public void setScrollOffsetY(Double scrollOffsetY) {
+        this.scrollOffsetY = scrollOffsetY;
     }
 }

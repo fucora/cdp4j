@@ -19,6 +19,7 @@
 package io.webfolder.cdp.type.page;
 
 import io.webfolder.cdp.annotation.Experimental;
+import io.webfolder.cdp.type.network.ResourceType;
 
 /**
  * Information about the Resource on the page

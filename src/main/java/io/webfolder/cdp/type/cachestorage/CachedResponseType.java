@@ -16,65 +16,35 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.type.page;
+package io.webfolder.cdp.type.cachestorage;
 
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Resource type as it was perceived by the rendering engine
+ * type of HTTP response cached
  */
-public enum ResourceType {
-    @SerializedName("Document")
-    Document("Document"),
+public enum CachedResponseType {
+    @SerializedName("basic")
+    Basic("basic"),
 
-    @SerializedName("Stylesheet")
-    Stylesheet("Stylesheet"),
+    @SerializedName("cors")
+    Cors("cors"),
 
-    @SerializedName("Image")
-    Image("Image"),
+    @SerializedName("default")
+    Default("default"),
 
-    @SerializedName("Media")
-    Media("Media"),
+    @SerializedName("error")
+    Error("error"),
 
-    @SerializedName("Font")
-    Font("Font"),
+    @SerializedName("opaqueResponse")
+    OpaqueResponse("opaqueResponse"),
 
-    @SerializedName("Script")
-    Script("Script"),
-
-    @SerializedName("TextTrack")
-    TextTrack("TextTrack"),
-
-    @SerializedName("XHR")
-    XHR("XHR"),
-
-    @SerializedName("Fetch")
-    Fetch("Fetch"),
-
-    @SerializedName("EventSource")
-    EventSource("EventSource"),
-
-    @SerializedName("WebSocket")
-    WebSocket("WebSocket"),
-
-    @SerializedName("Manifest")
-    Manifest("Manifest"),
-
-    @SerializedName("SignedExchange")
-    SignedExchange("SignedExchange"),
-
-    @SerializedName("Ping")
-    Ping("Ping"),
-
-    @SerializedName("CSPViolationReport")
-    CSPViolationReport("CSPViolationReport"),
-
-    @SerializedName("Other")
-    Other("Other");
+    @SerializedName("opaqueRedirect")
+    OpaqueRedirect("opaqueRedirect");
 
     public final String value;
 
-    ResourceType(String value) {
+    CachedResponseType(String value) {
         this.value = value;
     }
 

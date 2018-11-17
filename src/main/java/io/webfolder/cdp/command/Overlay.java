@@ -96,8 +96,7 @@ public interface Overlay {
      * Backend then generates 'inspectNodeRequested' event upon element selection.
      * 
      * @param mode Set an inspection mode.
-     * @param highlightConfig A descriptor for the highlight appearance of hovered-over nodes. May be omitted if<code>enabled
-     * == false.
+     * @param highlightConfig A descriptor for the highlight appearance of hovered-over nodes. May be omitted if <code>enabled == false</code>.
      */
     void setInspectMode(InspectMode mode, @Optional HighlightConfig highlightConfig);
 
@@ -130,6 +129,13 @@ public interface Overlay {
      * @param show True for showing scroll bottleneck rects
      */
     void setShowScrollBottleneckRects(Boolean show);
+
+    /**
+     * Requests that backend shows hit-test borders on layers
+     * 
+     * @param show True for showing hit-test borders
+     */
+    void setShowHitTestBorders(Boolean show);
 
     /**
      * Paints viewport size upon main frame resize.

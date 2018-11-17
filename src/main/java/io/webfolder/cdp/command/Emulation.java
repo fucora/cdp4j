@@ -58,6 +58,14 @@ public interface Emulation {
     void resetPageScaleFactor();
 
     /**
+     * Enables or disables simulating a focused and active page.
+     * 
+     * @param enabled Whether to enable to disable focus emulation.
+     */
+    @Experimental
+    void setFocusEmulationEnabled(Boolean enabled);
+
+    /**
      * Enables CPU throttling to emulate slow CPUs.
      * 
      * @param rate Throttling rate as a slowdown factor (1 is no throttle, 2 is 2x slowdown, etc).

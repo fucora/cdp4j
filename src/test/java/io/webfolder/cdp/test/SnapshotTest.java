@@ -49,7 +49,7 @@ public class SnapshotTest {
         String url = get("src/test/resources/snapshot.html").toAbsolutePath().toUri().toString();
 
         Launcher launcher = new Launcher();
-
+        
         try (SessionFactory factory = launcher.launch(path); Session session = factory.create()) {
             session.navigate(url);
             DOMSnapshot snapshot = session.getCommand().getDOMSnapshot();

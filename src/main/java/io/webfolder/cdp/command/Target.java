@@ -48,6 +48,15 @@ public interface Target {
     String attachToTarget(String targetId, @Experimental @Optional Boolean flatten);
 
     /**
+     * Attaches to the browser target, only uses flat sessionId mode.
+     * 
+     * @return Id assigned to the session.
+     */
+    @Experimental
+    @Returns("sessionId")
+    String attachToBrowserTarget();
+
+    /**
      * Closes the target. If the target is a page that gets closed too.
      * 
      */
@@ -151,11 +160,13 @@ public interface Target {
      * automatically detaches from all currently attached targets.
      * 
      * @param autoAttach Whether to auto-attach to related targets.
-     * @param waitForDebuggerOnStart Whether to pause new targets when attaching to them. Use <code>Runtime.runIfWaitingForDebugger</code>
+     * @param waitForDebuggerOnStart Whether to pause new targets when attaching to them. Use<code>Runtime.runIfWaitingForDebugger</code>
      * to run paused targets.
+     * @param flatten Enables "flat" access to the session via specifying sessionId attribute in the commands.
      */
     @Experimental
-    void setAutoAttach(Boolean autoAttach, Boolean waitForDebuggerOnStart);
+    void setAutoAttach(Boolean autoAttach, Boolean waitForDebuggerOnStart,
+            @Experimental @Optional Boolean flatten);
 
     /**
      * Controls whether to discover available targets and notify via
@@ -224,4 +235,16 @@ public interface Target {
      * 
      */
     void sendMessageToTarget(String message);
+
+    /**
+     * Controls whether to automatically attach to new targets which are considered to be related to
+     * this one. When turned on, attaches to all existing related targets as well. When turned off,
+     * automatically detaches from all currently attached targets.
+     * 
+     * @param autoAttach Whether to auto-attach to related targets.
+     * @param waitForDebuggerOnStart Whether to pause new targets when attaching to them. Use<code>Runtime.runIfWaitingForDebugger</code>
+     * to run paused targets.
+     */
+    @Experimental
+    void setAutoAttach(Boolean autoAttach, Boolean waitForDebuggerOnStart);
 }

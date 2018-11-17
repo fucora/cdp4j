@@ -41,8 +41,6 @@ public class AXNode {
 
     private List<AXProperty> properties = new ArrayList<>();
 
-    private List<String> childIds = new ArrayList<>();
-
     private Integer backendDOMNodeId;
 
     /**
@@ -155,20 +153,6 @@ public class AXNode {
      */
     public void setProperties(List<AXProperty> properties) {
         this.properties = properties;
-    }
-
-    /**
-     * IDs for each of this node's child nodes.
-     */
-    public List<String> getChildIds() {
-        return childIds;
-    }
-
-    /**
-     * IDs for each of this node's child nodes.
-     */
-    public void setChildIds(List<String> childIds) {
-        this.childIds = childIds;
     }
 
     /**

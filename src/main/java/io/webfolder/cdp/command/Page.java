@@ -25,6 +25,7 @@ import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.constant.DownloadBehavior;
 import io.webfolder.cdp.type.constant.ImageFormat;
 import io.webfolder.cdp.type.constant.Platform;
+import io.webfolder.cdp.type.constant.SnapshotType;
 import io.webfolder.cdp.type.constant.TargetLifecycleState;
 import io.webfolder.cdp.type.debugger.SearchMatch;
 import io.webfolder.cdp.type.emulation.ScreenOrientation;
@@ -60,11 +61,15 @@ public interface Page {
     /**
      * Evaluates given script in every frame upon creation (before loading frame's scripts).
      * 
+     * @param worldName If specified, creates an isolated world with the given name and evaluates given script in it.
+     * This world name will be used as the ExecutionContextDescription::name when the corresponding
+     * event is emitted.
      * 
      * @return Identifier of the added script.
      */
     @Returns("identifier")
-    String addScriptToEvaluateOnNewDocument(String source);
+    String addScriptToEvaluateOnNewDocument(String source,
+            @Experimental @Optional String worldName);
 
     /**
      * Brings page to front (activates tab).
@@ -84,6 +89,18 @@ public interface Page {
     @Returns("data")
     byte[] captureScreenshot(@Optional ImageFormat format, @Optional Integer quality,
             @Optional Viewport clip, @Experimental @Optional Boolean fromSurface);
+
+    /**
+     * Returns a snapshot of the page as a string. For MHTML format, the serialization includes
+     * iframes, shadow DOM, external resources, and element-inline styles.
+     * 
+     * @param format Format (defaults to mhtml).
+     * 
+     * @return Serialized page data.
+     */
+    @Experimental
+    @Returns("data")
+    String captureSnapshot(@Optional SnapshotType format);
 
     /**
      * Clears the overriden device metrics.
@@ -467,10 +484,50 @@ public interface Page {
     void setWebLifecycleState(TargetLifecycleState state);
 
     /**
-     * Stops sending each frame in the <code>screencastFrame</code>.
+     * Stops sending each frame in the<code>screencastFrame</code>.
      */
     @Experimental
     void stopScreencast();
+
+    /**
+     * Forces compilation cache to be generated for every subresource script.
+     * 
+     */
+    @Experimental
+    void setProduceCompilationCache(Boolean enabled);
+
+    /**
+     * Seeds compilation cache for given url. Compilation cache does not survive
+     * cross-process navigation.
+     * 
+     * @param data Base64-encoded data
+     */
+    @Experimental
+    void addCompilationCache(String url, String data);
+
+    /**
+     * Clears seeded compilation cache.
+     */
+    @Experimental
+    void clearCompilationCache();
+
+    /**
+     * Generates a report for testing.
+     * 
+     * @param message Message to be displayed in the report.
+     * @param group Specifies the endpoint group to deliver the report to.
+     */
+    @Experimental
+    void generateTestReport(String message, @Optional String group);
+
+    /**
+     * Evaluates given script in every frame upon creation (before loading frame's scripts).
+     * 
+     * 
+     * @return Identifier of the added script.
+     */
+    @Returns("identifier")
+    String addScriptToEvaluateOnNewDocument(String source);
 
     /**
      * Capture page screenshot.
@@ -479,6 +536,16 @@ public interface Page {
      */
     @Returns("data")
     byte[] captureScreenshot();
+
+    /**
+     * Returns a snapshot of the page as a string. For MHTML format, the serialization includes
+     * iframes, shadow DOM, external resources, and element-inline styles.
+     * 
+     * @return Serialized page data.
+     */
+    @Experimental
+    @Returns("data")
+    String captureSnapshot();
 
     /**
      * Creates an isolated world for the given frame.
@@ -575,4 +642,12 @@ public interface Page {
      */
     @Experimental
     void startScreencast();
+
+    /**
+     * Generates a report for testing.
+     * 
+     * @param message Message to be displayed in the report.
+     */
+    @Experimental
+    void generateTestReport(String message);
 }

@@ -26,6 +26,7 @@ import io.webfolder.cdp.type.browser.Bounds;
 import io.webfolder.cdp.type.browser.GetVersionResult;
 import io.webfolder.cdp.type.browser.GetWindowForTargetResult;
 import io.webfolder.cdp.type.browser.Histogram;
+import io.webfolder.cdp.type.browser.PermissionType;
 import java.util.List;
 
 /**
@@ -34,9 +35,32 @@ import java.util.List;
 @Domain("Browser")
 public interface Browser {
     /**
+     * Grant specific permissions to the given origin and reject all others.
+     * 
+     * @param browserContextId BrowserContext to override permissions. When omitted, default browser context is used.
+     */
+    @Experimental
+    void grantPermissions(String origin, PermissionType permissions,
+            @Optional String browserContextId);
+
+    /**
+     * Reset all permission management for all origins.
+     * 
+     * @param browserContextId BrowserContext to reset permissions. When omitted, default browser context is used.
+     */
+    @Experimental
+    void resetPermissions(@Optional String browserContextId);
+
+    /**
      * Close browser gracefully.
      */
     void close();
+
+    /**
+     * Crashes browser on the main thread.
+     */
+    @Experimental
+    void crash();
 
     /**
      * Returns version information.
@@ -96,12 +120,12 @@ public interface Browser {
     /**
      * Get the browser window that contains the devtools target.
      * 
-     * @param targetId Devtools agent host id.
+     * @param targetId Devtools agent host id. If called as a part of the session, associated targetId is used.
      * 
      * @return GetWindowForTargetResult
      */
     @Experimental
-    GetWindowForTargetResult getWindowForTarget(String targetId);
+    GetWindowForTargetResult getWindowForTarget(@Optional String targetId);
 
     /**
      * Set position and/or size of the browser window.
@@ -112,6 +136,27 @@ public interface Browser {
      */
     @Experimental
     void setWindowBounds(Integer windowId, Bounds bounds);
+
+    /**
+     * Set dock tile details, platform-specific.
+     * 
+     * @param image Png encoded image.
+     */
+    @Experimental
+    void setDockTile(@Optional String badgeLabel, @Optional String image);
+
+    /**
+     * Grant specific permissions to the given origin and reject all others.
+     * 
+     */
+    @Experimental
+    void grantPermissions(String origin, PermissionType permissions);
+
+    /**
+     * Reset all permission management for all origins.
+     */
+    @Experimental
+    void resetPermissions();
 
     /**
      * Get Chrome histograms.
@@ -132,4 +177,18 @@ public interface Browser {
     @Experimental
     @Returns("histogram")
     Histogram getHistogram(String name);
+
+    /**
+     * Get the browser window that contains the devtools target.
+     * 
+     * @return GetWindowForTargetResult
+     */
+    @Experimental
+    GetWindowForTargetResult getWindowForTarget();
+
+    /**
+     * Set dock tile details, platform-specific.
+     */
+    @Experimental
+    void setDockTile();
 }

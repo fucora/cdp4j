@@ -19,7 +19,7 @@
 package io.webfolder.cdp.sample;
 
 import static io.webfolder.cdp.event.Events.NetworkRequestIntercepted;
-import static io.webfolder.cdp.type.page.ResourceType.Document;
+import static io.webfolder.cdp.type.network.ResourceType.Document;
 import static java.util.Arrays.asList;
 
 import io.webfolder.cdp.Launcher;

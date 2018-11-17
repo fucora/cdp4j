@@ -16,32 +16,32 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.type.heapprofiler;
+package io.webfolder.cdp.type.fetch;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gson.annotations.SerializedName;
 
 /**
- * Sampling profile
+ * Stages of the request to handle
+ * Request will intercept before the request is
+ * sent
+ * Response will intercept after the response is received (but before response
+ * body is received
  */
-public class SamplingHeapProfile {
-    private SamplingHeapProfileNode head;
+public enum RequestStage {
+    @SerializedName("Request")
+    Request("Request"),
 
-    private List<SamplingHeapProfileSample> samples = new ArrayList<>();
+    @SerializedName("Response")
+    Response("Response");
 
-    public SamplingHeapProfileNode getHead() {
-        return head;
+    public final String value;
+
+    RequestStage(String value) {
+        this.value = value;
     }
 
-    public void setHead(SamplingHeapProfileNode head) {
-        this.head = head;
-    }
-
-    public List<SamplingHeapProfileSample> getSamples() {
-        return samples;
-    }
-
-    public void setSamples(List<SamplingHeapProfileSample> samples) {
-        this.samples = samples;
+    @Override
+    public String toString() {
+        return value;
     }
 }

@@ -20,8 +20,8 @@ package io.webfolder.cdp.event.network;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
+import io.webfolder.cdp.type.network.ResourceType;
 import io.webfolder.cdp.type.network.Response;
-import io.webfolder.cdp.type.page.ResourceType;
 
 /**
  * Fired when HTTP response is available

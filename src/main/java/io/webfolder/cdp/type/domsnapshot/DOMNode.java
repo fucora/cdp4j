@@ -80,6 +80,10 @@ public class DOMNode {
 
     private String originURL;
 
+    private Double scrollOffsetX;
+
+    private Double scrollOffsetY;
+
     /**
      * <code>Node</code>'s nodeType.
      */
@@ -109,7 +113,7 @@ public class DOMNode {
     }
 
     /**
-     * <code>Node</code>'s nodeValue.
+     * <code>Node<code>'s nodeValue.
      */
     public String getNodeValue() {
         return nodeValue;
@@ -193,7 +197,7 @@ public class DOMNode {
     }
 
     /**
-     * The indexes of the node's child nodes in the <code>domNodes</code>array returned by<code>getSnapshot</code>, if
+     * The indexes of the node's child nodes in the <code>domNodes</code> array returned by<code>getSnapshot</code>, if
      * any.
      */
     public List<Integer> getChildNodeIndexes() {
@@ -201,7 +205,7 @@ public class DOMNode {
     }
 
     /**
-     * The indexes of the node's child nodes in the <code>domNodes</code>array returned by<code>getSnapshot</code>, if
+     * The indexes of the node's child nodes in the <code>domNodes</code> array returned by<code>getSnapshot</code>, if
      * any.
      */
     public void setChildNodeIndexes(List<Integer> childNodeIndexes) {
@@ -209,7 +213,7 @@ public class DOMNode {
     }
 
     /**
-     * Attributes of an <code>Element</code> node.
+     * Attributes of an<code>Element</code> node.
      */
     public List<NameValue> getAttributes() {
         return attributes;
@@ -255,28 +259,28 @@ public class DOMNode {
     }
 
     /**
-     * Document URL that <code>Document</code>or<code>FrameOwner</code> node points to.
+     * Document URL that <code>Document</code> or <code>FrameOwner</code> node points to.
      */
     public String getDocumentURL() {
         return documentURL;
     }
 
     /**
-     * Document URL that <code>Document</code>or<code>FrameOwner</code> node points to.
+     * Document URL that <code>Document</code> or <code>FrameOwner</code> node points to.
      */
     public void setDocumentURL(String documentURL) {
         this.documentURL = documentURL;
     }
 
     /**
-     * Base URL that <code>Document</code>or<code>FrameOwner</code> node uses for URL completion.
+     * Base URL that <code>Document</code> or <code>FrameOwner</code> node uses for URL completion.
      */
     public String getBaseURL() {
         return baseURL;
     }
 
     /**
-     * Base URL that <code>Document</code>or<code>FrameOwner</code> node uses for URL completion.
+     * Base URL that <code>Document</code> or <code>FrameOwner</code> node uses for URL completion.
      */
     public void setBaseURL(String baseURL) {
         this.baseURL = baseURL;
@@ -454,5 +458,27 @@ public class DOMNode {
      */
     public void setOriginURL(String originURL) {
         this.originURL = originURL;
+    }
+
+    /**
+     * Scroll offsets, set when this node is a Document.
+     */
+    public Double getScrollOffsetX() {
+        return scrollOffsetX;
+    }
+
+    /**
+     * Scroll offsets, set when this node is a Document.
+     */
+    public void setScrollOffsetX(Double scrollOffsetX) {
+        this.scrollOffsetX = scrollOffsetX;
+    }
+
+    public Double getScrollOffsetY() {
+        return scrollOffsetY;
+    }
+
+    public void setScrollOffsetY(Double scrollOffsetY) {
+        this.scrollOffsetY = scrollOffsetY;
     }
 }

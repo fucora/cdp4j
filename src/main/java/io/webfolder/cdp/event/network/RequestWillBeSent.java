@@ -22,8 +22,8 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.network.Initiator;
 import io.webfolder.cdp.type.network.Request;
+import io.webfolder.cdp.type.network.ResourceType;
 import io.webfolder.cdp.type.network.Response;
-import io.webfolder.cdp.type.page.ResourceType;
 
 /**
  * Fired when page is about to send HTTP request

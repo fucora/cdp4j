@@ -16,73 +16,75 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.type.network;
+package io.webfolder.cdp.type.memory;
 
 /**
- * Information about the cached resource
+ * Executable module information
  */
-public class CachedResource {
-    private String url;
+public class Module {
+    private String name;
 
-    private ResourceType type;
+    private String uuid;
 
-    private Response response;
+    private String baseAddress;
 
-    private Double bodySize;
+    private Double size;
 
     /**
-     * Resource URL. This is the url of the original network request.
+     * Name of the module.
      */
-    public String getUrl() {
-        return url;
+    public String getName() {
+        return name;
     }
 
     /**
-     * Resource URL. This is the url of the original network request.
+     * Name of the module.
      */
-    public void setUrl(String url) {
-        this.url = url;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
-     * Type of this resource.
+     * UUID of the module.
      */
-    public ResourceType getType() {
-        return type;
+    public String getUuid() {
+        return uuid;
     }
 
     /**
-     * Type of this resource.
+     * UUID of the module.
      */
-    public void setType(ResourceType type) {
-        this.type = type;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     /**
-     * Cached response data.
+     * Base address where the module is loaded into memory. Encoded as a decimal
+     * or hexadecimal (0x prefixed) string.
      */
-    public Response getResponse() {
-        return response;
+    public String getBaseAddress() {
+        return baseAddress;
     }
 
     /**
-     * Cached response data.
+     * Base address where the module is loaded into memory. Encoded as a decimal
+     * or hexadecimal (0x prefixed) string.
      */
-    public void setResponse(Response response) {
-        this.response = response;
+    public void setBaseAddress(String baseAddress) {
+        this.baseAddress = baseAddress;
     }
 
     /**
-     * Cached response body size.
+     * Size of the module in bytes.
      */
-    public Double getBodySize() {
-        return bodySize;
+    public Double getSize() {
+        return size;
     }
 
     /**
-     * Cached response body size.
+     * Size of the module in bytes.
      */
-    public void setBodySize(Double bodySize) {
-        this.bodySize = bodySize;
+    public void setSize(Double size) {
+        this.size = size;
     }
 }

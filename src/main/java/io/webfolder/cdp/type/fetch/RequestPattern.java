@@ -16,20 +16,18 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.type.network;
+package io.webfolder.cdp.type.fetch;
 
 import io.webfolder.cdp.annotation.Experimental;
+import io.webfolder.cdp.type.network.ResourceType;
 
-/**
- * Request pattern for interception
- */
 @Experimental
 public class RequestPattern {
     private String urlPattern;
 
     private ResourceType resourceType;
 
-    private InterceptionStage interceptionStage;
+    private RequestStage requestStage;
 
     /**
      * Wildcards ('*' -> zero or more, '?' -> exactly one) are allowed. Escape character is
@@ -64,14 +62,14 @@ public class RequestPattern {
     /**
      * Stage at wich to begin intercepting requests. Default is Request.
      */
-    public InterceptionStage getInterceptionStage() {
-        return interceptionStage;
+    public RequestStage getRequestStage() {
+        return requestStage;
     }
 
     /**
      * Stage at wich to begin intercepting requests. Default is Request.
      */
-    public void setInterceptionStage(InterceptionStage interceptionStage) {
-        this.interceptionStage = interceptionStage;
+    public void setRequestStage(RequestStage requestStage) {
+        this.requestStage = requestStage;
     }
 }

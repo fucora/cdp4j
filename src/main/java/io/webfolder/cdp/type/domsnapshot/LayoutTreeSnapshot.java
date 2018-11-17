@@ -31,15 +31,17 @@ public class LayoutTreeSnapshot {
 
     private List<Integer> text = new ArrayList<>();
 
+    private RareBooleanData stackingContexts;
+
     /**
-     * The index of the related DOM node in the <code>domNodes</code>array returned by<code>getSnapshot</code>.
+     * The index of the related DOM node in the <code>domNodes</code> array returned by<code>getSnapshot</code>.
      */
     public List<Integer> getNodeIndex() {
         return nodeIndex;
     }
 
     /**
-     * The index of the related DOM node in the <code>domNodes</code>array returned by<code>getSnapshot</code>.
+     * The index of the related DOM node in the <code>domNodes</code> array returned by<code>getSnapshot</code>.
      */
     public void setNodeIndex(List<Integer> nodeIndex) {
         this.nodeIndex = nodeIndex;
@@ -71,5 +73,19 @@ public class LayoutTreeSnapshot {
      */
     public void setText(List<Integer> text) {
         this.text = text;
+    }
+
+    /**
+     * Stacking context information.
+     */
+    public RareBooleanData getStackingContexts() {
+        return stackingContexts;
+    }
+
+    /**
+     * Stacking context information.
+     */
+    public void setStackingContexts(RareBooleanData stackingContexts) {
+        this.stackingContexts = stackingContexts;
     }
 }

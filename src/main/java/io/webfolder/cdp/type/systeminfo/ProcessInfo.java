@@ -16,32 +16,59 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.type.heapprofiler;
-
-import java.util.ArrayList;
-import java.util.List;
+package io.webfolder.cdp.type.systeminfo;
 
 /**
- * Sampling profile
+ * Represents process info
  */
-public class SamplingHeapProfile {
-    private SamplingHeapProfileNode head;
+public class ProcessInfo {
+    private String type;
 
-    private List<SamplingHeapProfileSample> samples = new ArrayList<>();
+    private Integer id;
 
-    public SamplingHeapProfileNode getHead() {
-        return head;
+    private Double cpuTime;
+
+    /**
+     * Specifies process type.
+     */
+    public String getType() {
+        return type;
     }
 
-    public void setHead(SamplingHeapProfileNode head) {
-        this.head = head;
+    /**
+     * Specifies process type.
+     */
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public List<SamplingHeapProfileSample> getSamples() {
-        return samples;
+    /**
+     * Specifies process id.
+     */
+    public Integer getId() {
+        return id;
     }
 
-    public void setSamples(List<SamplingHeapProfileSample> samples) {
-        this.samples = samples;
+    /**
+     * Specifies process id.
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     * Specifies cumulative CPU usage in seconds across all threads of the
+     * process since the process start.
+     */
+    public Double getCpuTime() {
+        return cpuTime;
+    }
+
+    /**
+     * Specifies cumulative CPU usage in seconds across all threads of the
+     * process since the process start.
+     */
+    public void setCpuTime(Double cpuTime) {
+        this.cpuTime = cpuTime;
     }
 }

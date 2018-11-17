@@ -16,32 +16,29 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.type.heapprofiler;
-
-import java.util.ArrayList;
-import java.util.List;
+package io.webfolder.cdp.type.fetch;
 
 /**
- * Sampling profile
+ * Response HTTP header entry
  */
-public class SamplingHeapProfile {
-    private SamplingHeapProfileNode head;
+public class HeaderEntry {
+    private String name;
 
-    private List<SamplingHeapProfileSample> samples = new ArrayList<>();
+    private String value;
 
-    public SamplingHeapProfileNode getHead() {
-        return head;
+    public String getName() {
+        return name;
     }
 
-    public void setHead(SamplingHeapProfileNode head) {
-        this.head = head;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public List<SamplingHeapProfileSample> getSamples() {
-        return samples;
+    public String getValue() {
+        return value;
     }
 
-    public void setSamples(List<SamplingHeapProfileSample> samples) {
-        this.samples = samples;
+    public void setValue(String value) {
+        this.value = value;
     }
 }

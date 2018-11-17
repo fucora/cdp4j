@@ -38,29 +38,31 @@ public class LayoutTreeNode {
 
     private Integer paintOrder;
 
+    private Boolean isStackingContext;
+
     /**
-     * The index of the related DOM node in the <code>domNodes</code> array returned by <code>getSnapshot</code>.
+     * The index of the related DOM node in the <code>domNodes</code> array returned by<code>getSnapshot</code>.
      */
     public Integer getDomNodeIndex() {
         return domNodeIndex;
     }
 
     /**
-     * The index of the related DOM node in the <code>domNodes</code> array returned by <code>getSnapshot</code>.
+     * The index of the related DOM node in the <code>domNodes</code> array returned by<code>getSnapshot</code>.
      */
     public void setDomNodeIndex(Integer domNodeIndex) {
         this.domNodeIndex = domNodeIndex;
     }
 
     /**
-     * The absolute position bounding box.
+     * The bounding box in document coordinates. Note that scroll offset of the document is ignored.
      */
     public Rect getBoundingBox() {
         return boundingBox;
     }
 
     /**
-     * The absolute position bounding box.
+     * The bounding box in document coordinates. Note that scroll offset of the document is ignored.
      */
     public void setBoundingBox(Rect boundingBox) {
         this.boundingBox = boundingBox;
@@ -95,14 +97,14 @@ public class LayoutTreeNode {
     }
 
     /**
-     * Index into the <code>computedStyles</code>array returned by<code>getSnapshot</code>.
+     * Index into the <code>computedStyles</code> array returned by <code>getSnapshot</code>.
      */
     public Integer getStyleIndex() {
         return styleIndex;
     }
 
     /**
-     * Index into the <code>computedStyles</code>array returned by<code>getSnapshot</code>.
+     * Index into the <code>computedStyles</code> array returned by <code>getSnapshot</code>.
      */
     public void setStyleIndex(Integer styleIndex) {
         this.styleIndex = styleIndex;
@@ -124,5 +126,19 @@ public class LayoutTreeNode {
      */
     public void setPaintOrder(Integer paintOrder) {
         this.paintOrder = paintOrder;
+    }
+
+    /**
+     * Set to true to indicate the element begins a new stacking context.
+     */
+    public Boolean isIsStackingContext() {
+        return isStackingContext;
+    }
+
+    /**
+     * Set to true to indicate the element begins a new stacking context.
+     */
+    public void setIsStackingContext(Boolean isStackingContext) {
+        this.isStackingContext = isStackingContext;
     }
 }
