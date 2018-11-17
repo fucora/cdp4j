@@ -28,7 +28,7 @@ import io.webfolder.cdp.event.runtime.BindingCalled;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
-public class AddBinding {
+public class InvokeJavaFromJs {
 
     public static void main(String[] args) {
         Launcher launcher = new Launcher();
