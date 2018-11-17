@@ -1,17 +1,17 @@
 /**
  * cdp4j Commercial License
  *
- * Copyright 2018 WebFolder OÜ
+ * Copyright 2017, 2018 WebFolder OÜ
  *
- * Permission is hereby granted, to "____"
- * obtaining a copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute and sublicense of the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
+ * Permission  is hereby  granted,  to "____" obtaining  a  copy of  this software  and
+ * associated  documentation files  (the "Software"), to deal in  the Software  without
+ * restriction, including without limitation  the rights  to use, copy, modify,  merge,
+ * publish, distribute  and sublicense  of the Software,  and to permit persons to whom
+ * the Software is furnished to do so, subject to the following conditions:
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR  IMPLIED,
+ * INCLUDING  BUT NOT  LIMITED  TO THE  WARRANTIES  OF  MERCHANTABILITY, FITNESS  FOR A
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL  THE AUTHORS  OR COPYRIGHT
  * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
@@ -334,9 +334,9 @@ public class Session implements AutoCloseable,
         logEntry("navigate", url);
         NavigateResult navigate = command.getPage().navigate(url);
         if ( navigate != null ) {
-        	this.frameId = navigate.getFrameId();
+            this.frameId = navigate.getFrameId();
         } else {
-        	throw new DestinationUnreachableException(url);
+            throw new DestinationUnreachableException(url);
         }
         return this;
     }
@@ -359,7 +359,7 @@ public class Session implements AutoCloseable,
 
         NavigateResult navigate = command.getPage().navigate(url);
         if (navigate == null) {
-        	throw new DestinationUnreachableException(url);
+            throw new DestinationUnreachableException(url);
         }
 
         this.frameId = navigate.getFrameId();
@@ -733,75 +733,75 @@ public class Session implements AutoCloseable,
     }
 
     @SuppressWarnings("unchecked")
-	public <T> T registerJsFunction(Class<T> klass) {
-    	if ( ! klass.isInterface() ) {
-    		throw new CdpException("Class must be interface: " + klass.getName());
-    	}
-    	if (asList(klass.getMethods())
-	    				.stream()
-	    				.filter(p -> p.isAnnotationPresent(JsFunction.class))
-	    				.count() == 0) {
-    		throw new CdpException("Interface must be contain at least one @JsFunction");
-    	}
-    	if (jsFunctions.containsKey(klass)) {
-    		throw new CdpException("Duplicate Registration is not allowed: " + klass);
-    	}
-    	if (jsFunctions.keySet()
-    					.stream()
-    					.filter(p -> p.getSimpleName()
-						.equals(klass.getSimpleName())).count() > 0) {
-			throw new CdpException("Duplicate class name is not allowed: " + klass.getSimpleName());    		
-    	}
-		Method[] methods = klass.getMethods();
-		StringBuilder builder = new StringBuilder();
-		builder.append(format("document.%s = document.%s || {};", klass.getSimpleName(), klass.getSimpleName()));
-		for (Method next : methods) {
-			JsFunction function = next.getAnnotation(JsFunction.class);
-			if (function == null) {
-				continue;
-			}
-			StringBuilder jsMethod = new StringBuilder();
-			jsMethod.append("document.");
-			jsMethod.append(klass.getSimpleName());
-			jsMethod.append(".");
-			jsMethod.append(next.getName());
-			jsMethod.append(" = function(");
-			int count = next.getParameterCount();
-			StringJoiner joiner = new StringJoiner(", ");
-			for (int i = 0; i < count; i++) {
-				Parameter parameter = next.getParameters()[i];
-				joiner.add(parameter.getName());
-			}
-			jsMethod.append(joiner.toString());
-			jsMethod.append(") { ");
-			jsMethod.append(function.value());
-			jsMethod.append(" };");
-			builder.append(jsMethod.toString());
-		}
-		Page page = getCommand().getPage();
-		page.enable();
-		page.addScriptToEvaluateOnNewDocument(builder.toString());
-		Object instance = newProxyInstance(getClass().getClassLoader(),
-											new Class<?>[] { klass },
-											(InvocationHandler) (proxy, method, args) -> {
-			String className = method.getDeclaringClass().getSimpleName();
-			String methodName = method.getName();
-			Class<?> returnType = method.getReturnType();
-			if ((void.class.equals(returnType) || Void.class.equals(returnType)) && (args == null || args.length == 0)) {
-				callFunction("document." + className + "." + methodName);
-				return null;
-			} else {
-				Object result = callFunction("document." + className + "." + methodName, returnType, args);
-				return result;
-			}
-		});
-		jsFunctions.put(klass, instance);
-		return (T) instance;
+    public <T> T registerJsFunction(Class<T> klass) {
+        if ( ! klass.isInterface() ) {
+            throw new CdpException("Class must be interface: " + klass.getName());
+        }
+        if (asList(klass.getMethods())
+                        .stream()
+                        .filter(p -> p.isAnnotationPresent(JsFunction.class))
+                        .count() == 0) {
+            throw new CdpException("Interface must be contain at least one @JsFunction");
+        }
+        if (jsFunctions.containsKey(klass)) {
+            throw new CdpException("Duplicate Registration is not allowed: " + klass);
+        }
+        if (jsFunctions.keySet()
+                        .stream()
+                        .filter(p -> p.getSimpleName()
+                        .equals(klass.getSimpleName())).count() > 0) {
+            throw new CdpException("Duplicate class name is not allowed: " + klass.getSimpleName());            
+        }
+        Method[] methods = klass.getMethods();
+        StringBuilder builder = new StringBuilder();
+        builder.append(format("document.%s = document.%s || {};", klass.getSimpleName(), klass.getSimpleName()));
+        for (Method next : methods) {
+            JsFunction function = next.getAnnotation(JsFunction.class);
+            if (function == null) {
+                continue;
+            }
+            StringBuilder jsMethod = new StringBuilder();
+            jsMethod.append("document.");
+            jsMethod.append(klass.getSimpleName());
+            jsMethod.append(".");
+            jsMethod.append(next.getName());
+            jsMethod.append(" = function(");
+            int count = next.getParameterCount();
+            StringJoiner joiner = new StringJoiner(", ");
+            for (int i = 0; i < count; i++) {
+                Parameter parameter = next.getParameters()[i];
+                joiner.add(parameter.getName());
+            }
+            jsMethod.append(joiner.toString());
+            jsMethod.append(") { ");
+            jsMethod.append(function.value());
+            jsMethod.append(" };");
+            builder.append(jsMethod.toString());
+        }
+        Page page = getCommand().getPage();
+        page.enable();
+        page.addScriptToEvaluateOnNewDocument(builder.toString());
+        Object instance = newProxyInstance(getClass().getClassLoader(),
+                                            new Class<?>[] { klass },
+                                            (InvocationHandler) (proxy, method, args) -> {
+            String className = method.getDeclaringClass().getSimpleName();
+            String methodName = method.getName();
+            Class<?> returnType = method.getReturnType();
+            if ((void.class.equals(returnType) || Void.class.equals(returnType)) && (args == null || args.length == 0)) {
+                callFunction("document." + className + "." + methodName);
+                return null;
+            } else {
+                Object result = callFunction("document." + className + "." + methodName, returnType, args);
+                return result;
+            }
+        });
+        jsFunctions.put(klass, instance);
+        return (T) instance;
     }
 
     @SuppressWarnings("unchecked")
-	public <T> T getJsFunction(Class<T> klass) {
-    	return (T) jsFunctions.get(klass);
+    public <T> T getJsFunction(Class<T> klass) {
+        return (T) jsFunctions.get(klass);
     }
 
     boolean isPrimitive(Class<?> klass) {
