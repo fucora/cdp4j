@@ -1,13 +1,3 @@
-**IMPORTANT!**
-==============
-
-I'm sorry to say that I can no longer provide the cdp4j at no charge.
-The WebFolder OÜ open source effort has been cross-financed by our consulting services and product revenues in the past.
-But as a one-man-company I cannot justify the time and quite high costs for maintenance, for shaping quality APIs,
-writing docs, providing example sources, and a huge bulk of work to keep the cdp4j up-to-date.
-
-**We will still improve and support the cdp4j but for only Commercial License customers.**
-
 cdp4j - Chrome DevTools Protocol for Java
 =================================================
 
@@ -89,7 +79,7 @@ Download
 
 Supported Platforms
 -------------------
-cdp4j has been tested under Windows 10 and Ubuntu, but should work on any platform where a Java & Chrome/Chromium available.
+cdp4j has been tested under Windows 10, macOS and Ubuntu, but should work on any platform where a Java & Chrome/Chromium available.
 
 Release Notes
 -------------
@@ -97,7 +87,7 @@ Release Notes
 
 Headless Mode
 -------------
-cdp4j can be run in "headless" mode using with [Headless Chrome](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md).
+cdp4j can be run in "headless" mode using with __--headless__ argument.
 
 ### Install Chrome on Debian/Ubuntu
 
