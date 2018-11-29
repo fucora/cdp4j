@@ -1,5 +1,12 @@
 cdp4j Release Notes
 -------------------------------------------------------------------------------
+### 3.0.7 - November 29, 2018
+
+* Update websocket client library (nv-websocket-client) to 2.6
+* Roll devtools protocol to r608591
+* retry to get cdp4jId more than [once](https://github.com/webfolderio/cdp4j/commit/467a0a2ac9e47be8011f7eb189ee1cec2fbeaff6)
+* Selector.matches() return false instead of throwing [exception](https://github.com/webfolderio/cdp4j/commit/147ced7a60c7e753414daac09265d39cf7dd87fa)
+
 ### 3.0.6 - August 15, 2018
 
 * Added @JsFunction annotation
