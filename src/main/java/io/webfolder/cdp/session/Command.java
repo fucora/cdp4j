@@ -21,6 +21,7 @@ package io.webfolder.cdp.session;
 import io.webfolder.cdp.command.Accessibility;
 import io.webfolder.cdp.command.Animation;
 import io.webfolder.cdp.command.ApplicationCache;
+import io.webfolder.cdp.command.Audits;
 import io.webfolder.cdp.command.Browser;
 import io.webfolder.cdp.command.CSS;
 import io.webfolder.cdp.command.CacheStorage;
@@ -32,6 +33,8 @@ import io.webfolder.cdp.command.Database;
 import io.webfolder.cdp.command.Debugger;
 import io.webfolder.cdp.command.DeviceOrientation;
 import io.webfolder.cdp.command.Emulation;
+import io.webfolder.cdp.command.Fetch;
+import io.webfolder.cdp.command.HeadlessExperimental;
 import io.webfolder.cdp.command.HeapProfiler;
 import io.webfolder.cdp.command.IO;
 import io.webfolder.cdp.command.IndexedDB;
@@ -43,6 +46,7 @@ import io.webfolder.cdp.command.Memory;
 import io.webfolder.cdp.command.Network;
 import io.webfolder.cdp.command.Overlay;
 import io.webfolder.cdp.command.Page;
+import io.webfolder.cdp.command.Performance;
 import io.webfolder.cdp.command.Profiler;
 import io.webfolder.cdp.command.Runtime;
 import io.webfolder.cdp.command.Schema;
@@ -73,6 +77,10 @@ public class Command {
 
     public ApplicationCache getApplicationCache() {
         return getProxy(ApplicationCache.class);
+    }
+
+    public Audits getAudits() {
+        return getProxy(Audits.class);
     }
 
     public Browser getBrowser() {
@@ -115,6 +123,14 @@ public class Command {
         return getProxy(Emulation.class);
     }
 
+    public Fetch getFetch() {
+        return getProxy(Fetch.class);
+    }
+
+    public HeadlessExperimental getHeadlessExperimental() {
+        return getProxy(HeadlessExperimental.class);
+    }
+
     public HeapProfiler getHeapProfiler() {
         return getProxy(HeapProfiler.class);
     }
@@ -153,6 +169,10 @@ public class Command {
 
     public Page getPage() {
         return getProxy(Page.class);
+    }
+
+    public Performance getPerformance() {
+        return getProxy(Performance.class);
     }
 
     public Profiler getProfiler() {
