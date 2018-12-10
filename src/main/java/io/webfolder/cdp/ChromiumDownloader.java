@@ -178,7 +178,7 @@ public class ChromiumDownloader implements Downloader {
 
         String url;
         if ( WINDOWS ) {
-            url = format("%s/Win_x64/%d/chrome-win32.zip", DOWNLOAD_HOST, version.getRevision());
+            url = format("%s/Win_x64/%d/chrome-win.zip", DOWNLOAD_HOST, version.getRevision());
         } else if ( LINUX ) {
             url = format("%s/Linux_x64/%d/chrome-linux.zip", DOWNLOAD_HOST, version.getRevision());
         } else if ( MAC ) {
