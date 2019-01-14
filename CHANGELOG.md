@@ -1,5 +1,10 @@
 cdp4j Release Notes
 -------------------------------------------------------------------------------
+### 3.0.8 - January 14, 2019
+
+* Updated copyright date
+* Added missing [getters](https://github.com/webfolderio/cdp4j/commit/d38444833d272500463cf3471885d45ebebb3b53)
+
 ### 3.0.7 - November 29, 2018
 
 * Update websocket client library (nv-websocket-client) to 2.6
