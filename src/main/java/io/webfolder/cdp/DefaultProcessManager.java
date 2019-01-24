@@ -23,6 +23,7 @@ import static java.lang.ProcessHandle.of;
 import java.lang.ProcessHandle.Info;
 import java.time.Instant;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class DefaultProcessManager extends ProcessManager {
 
@@ -52,16 +53,17 @@ public class DefaultProcessManager extends ProcessManager {
                     info.startInstant().get().equals(startTime) &&
                     info.command().isPresent() &&
                     info.command().get().equals(command)) {
-                handle.descendants().forEach(ph -> {
-                    try {
-                        if (ph.isAlive()) {
-                            ph.destroyForcibly();
+                try (Stream<ProcessHandle> descendants = handle.descendants()) {
+                    descendants.forEach(ph -> {
+                        try {
+                            if (ph.isAlive()) {
+                                ph.destroyForcibly();
+                            }
+                        } catch (Exception ignored) {
+                            
                         }
-                    } catch (Exception ignored) {
-
-                    }
-                });
-
+                    });
+                }
                 return handle.destroyForcibly();
             }
         }
