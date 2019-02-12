@@ -53,15 +53,16 @@ public class CloseSessionOnRedirect {
                         session.close();
 
                         System.out.println("");
-                        System.out.println("Redirect URL         : " + rws.getRequest().getUrl());
-                        System.out.println("Redirect Status Code : " + rr.getStatus());
-                        System.out.println("Redirect Header      : " + rws.getRedirectResponse().getHeaders());
+                        System.out.println("Redirect URL          : " + rws.getRequest().getUrl());
+                        System.out.println("Redirect URL Fragment : " + rws.getRequest().getUrlFragment());
+                        System.out.println("Redirect Status Code  : " + rr.getStatus());
+                        System.out.println("Redirect Header       : " + rws.getRedirectResponse().getHeaders());
                         System.out.println("");
                     }
                 }
             });
 
-            session.navigate("https://httpbin.org/redirect-to?url=https://webfolder.io?cdp4j");
+            session.navigate("https://httpbin.org/redirect-to?url=https://webfolder.io?cdp4j#test-url-fragment");
 
             if ( ! terminateSession ) {
                 session.waitDocumentReady();
