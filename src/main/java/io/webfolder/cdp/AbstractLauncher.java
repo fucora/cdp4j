@@ -47,7 +47,7 @@ abstract class AbstractLauncher {
         }
 
         // Disable built-in Google Translate service
-        list.add("--disable-translate");
+        list.add("--disable-features=TranslateUI");
         // Disable all chrome extensions entirely
         list.add("--disable-extensions");
         // Disable various background network services, including extension updating,
