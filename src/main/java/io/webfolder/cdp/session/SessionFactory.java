@@ -33,6 +33,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.Proxy;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
@@ -45,6 +46,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.neovisionaries.ws.client.ProxySettings;
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketException;
 import com.neovisionaries.ws.client.WebSocketFactory;
@@ -107,6 +109,8 @@ public class SessionFactory implements AutoCloseable {
     private volatile int webSocketReadTimeout = DEFAULT_WS_READ_TIMEOUT;
 
     private volatile int majorVersion;
+
+    private Proxy httpClientProxy;
 
     public SessionFactory() {
         this(DEFAULT_HOST,
@@ -438,7 +442,9 @@ public class SessionFactory implements AutoCloseable {
         Reader reader   = null;
         try {
             url = new URL(sessions);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            HttpURLConnection conn = httpClientProxy != null ?
+                            (HttpURLConnection) url.openConnection(httpClientProxy) :
+                            (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(connectionTimeout);
             reader = new InputStreamReader(conn.getInputStream());
             @SuppressWarnings("unchecked")
@@ -523,6 +529,14 @@ public class SessionFactory implements AutoCloseable {
         this.webSocketReadTimeout = webSocketReadTimeout;
     }
 
+    public ProxySettings getWebSocketProxySettings() {
+        return factory.getProxySettings();
+    }
+
+    public void setHttpClientProxy(Proxy proxy) {
+        this.httpClientProxy = proxy;
+    }
+    
     @Override
     public String toString() {
         return "SessionFactory [host=" + host + ", port=" + port + ", sessions=" + sessions + "]";
