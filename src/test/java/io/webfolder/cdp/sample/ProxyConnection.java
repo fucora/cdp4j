@@ -1,6 +1,7 @@
 package io.webfolder.cdp.sample;
 
 import static java.lang.String.format;
+import static java.net.Proxy.Type.SOCKS;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -22,7 +23,9 @@ public class ProxyConnection {
         ProxySelector proxySelector = proxySearch.getProxySelector();
 
         SessionFactory factory = new SessionFactory();
-        Proxy cdp4jProxy = getProxy(proxySelector, new URI(format("http://%s:%d", factory.getHost(), factory.getPort())));
+        Proxy cdp4jProxy = getProxy(proxySelector,
+                                        new URI(format("http://%s:%d", factory.getHost(), factory.getPort())),
+                                        false);
 
         if (cdp4jProxy != null) {
             factory.setHttpClientProxy(cdp4jProxy);
@@ -33,14 +36,15 @@ public class ProxyConnection {
 
         String url = "https://google.com";
 
-        Proxy chromeProxy = getProxy(proxySelector, new URI(url));
+        Proxy chromeProxy = getProxy(proxySelector, new URI(url), true);
 
         List<String> arguments = new ArrayList<>();
 
         if (chromeProxy != null) {
+            String protocol = SOCKS.equals(chromeProxy.type()) ? "socks5" : "http";
             InetSocketAddress chromeProxyAddress = (InetSocketAddress) chromeProxy.address();
             arguments.add(format("--proxy-server=%s://%s:%d",
-                                chromeProxy.type().name().toLowerCase(),
+                                protocol,
                                 chromeProxyAddress.getHostName(),
                                 chromeProxyAddress.getPort()));
         }
@@ -58,7 +62,7 @@ public class ProxyConnection {
         }
     }
 
-    protected static Proxy getProxy(ProxySelector selector, URI uri) {
+    protected static Proxy getProxy(ProxySelector selector, URI uri, boolean supportSocks) {
         if (selector == null) {
             return null;
         }
@@ -68,6 +72,11 @@ public class ProxyConnection {
             switch (proxy.type()) {
                 case HTTP:
                     found = proxy;
+                break;
+                case SOCKS:
+                    if (supportSocks) {
+                        found = proxy;
+                    }
                 break;
                 default:
                     found = null;
