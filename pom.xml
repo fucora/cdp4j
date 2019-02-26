@@ -262,6 +262,12 @@
    <version>1.18</version>
    <scope>provided</scope>
   </dependency>
+  <dependency>
+    <groupId>com.github.markusbernhardt</groupId>
+    <artifactId>proxy-vole</artifactId>
+    <version>1.0.5</version>
+    <scope>provided</scope>
+  </dependency>
  </dependencies>
  <properties>
   <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
