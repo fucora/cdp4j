@@ -1,7 +1,7 @@
 cdp4j Release Notes
 -------------------------------------------------------------------------------
 
-### 3.0.9 - January 14, 2019
+### 3.0.9 - June 8, 2019
 
 * Added proxy connection [sample](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/ProxyConnection.java)
 * Added [proxy support] to ws connection(https://github.com/webfolderio/cdp4j/commit/a448b63ed1fcd0c736ebce90d043eaa0bbe6ca56)
