@@ -369,7 +369,7 @@ public interface Selector {
                 final String selector,
                 final Object ...args) {
         final DOM     dom    = getThis().getCommand().getDOM();
-        final boolean xpath  = selector.charAt(0) == '/';
+        final boolean xpath  = selector.charAt(0) == '/' || selector.charAt(0) == '(';
         if (xpath) {
             RemoteObject docObjectId = null;
             if (contextId == null) {
