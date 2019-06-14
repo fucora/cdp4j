@@ -57,7 +57,7 @@ Add the following to your POM's `<dependencies>` tag:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>cdp4j</artifactId>
-    <version>3.0.9</version>
+    <version>3.0.10</version>
 </dependency>
 ```
 
@@ -67,15 +67,15 @@ Using development (SNAPSHOT) version:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>cdp4j</artifactId>
-    <version>3.0.10-SNAPSHOT</version>
+    <version>3.0.11-SNAPSHOT</version>
 </dependency>
 ```
 
 Download
 --------
-[cdp4j-3.0.9.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/3.0.9/cdp4j-3.0.9.jar) - 865 KB
+[cdp4j-3.0.10.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/3.0.10/cdp4j-3.0.10.jar) - 866 KB
 
-[cdp4j-3.0.9-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/3.0.9/cdp4j-3.0.9-sources.jar) - 656 KB
+[cdp4j-3.0.10-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/3.0.10/cdp4j-3.0.10-sources.jar) - 656 KB
 
 Supported Platforms
 -------------------
@@ -196,7 +196,7 @@ Samples
 | [UserAgent](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/UserAgent.java) | [WaitUntil](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/WaitUntil.java) | [XPathSelector](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/XPathSelector.java) | [CodeCoverage](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/CodeCoverage.java) |
 | [PrintToPDF](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/PrintToPDF.java) | [BasicAuthentication](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/BasicAuthentication.java) | [DownloadFile](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/DownloadFile.java) | [Crawler](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Crawler.java) |
 | [MultiProcess](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/MultiProcess.java) | [FollowRedirects](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/FollowRedirects.java) | [CloseSessionOnRedirect](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/CloseSessionOnRedirect.java) | [Readability](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Readability.java) |
-| [InvokeJavaFromJs](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/InvokeJavaFromJs.java) | [InvokeJsFromJava](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/InvokeJsFromJava.java) | []() | []() |
+| [InvokeJavaFromJs](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/InvokeJavaFromJs.java) | [InvokeJsFromJava](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/InvokeJsFromJava.java) | [Profiling](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Profiling.java) | []() |
 
 Building cdp4j
 --------------

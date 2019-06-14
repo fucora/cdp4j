@@ -1,6 +1,13 @@
 cdp4j Release Notes
 -------------------------------------------------------------------------------
 
+### 3.0.10 - June 14, 2019
+
+* Added [TaskKillProcessManager](https://github.com/webfolderio/cdp4j/blob/master/src/main/java/io/webfolder/cdp/TaskKillProcessManager.java), Alternative implmentation of [WindowsProcessManager](https://github.com/webfolderio/cdp4j/blob/master/src/main/java/io/webfolder/cdp/WindowsProcessManager.java)
+* Fixed xpath selector [bug](https://github.com/webfolderio/cdp4j/commit/f173ca373163ee56a3c98df9f92fe04b50b1606d)
+* Added missing value field to [DataCollected](https://github.com/webfolderio/cdp4j/commit/1c9eae3bfa054af2ce0568c0a7971c493b446f36) class
+* Added Profiling [sample](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Profiling.java).
+
 ### 3.0.9 - June 8, 2019
 
 * Added proxy connection [sample](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/ProxyConnection.java)
