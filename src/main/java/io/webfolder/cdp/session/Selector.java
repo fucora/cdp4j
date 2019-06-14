@@ -458,7 +458,7 @@ public interface Selector {
         }
         Integer nodeId = EMPTY_NODE_ID;
         DOM dom = getThis().getCommand().getDOM();
-        final boolean xpath = selector.charAt(0) == '/';
+        final boolean xpath = isXPath(selector);
         if (xpath) {
             String objectId = getThis().getObjectId(context, format(selector, args));
             if ( objectId != null ) {
