@@ -304,7 +304,7 @@ public interface Selector {
                     final String selector,
                     final Object ...args) {
         final DOM     dom       = getThis().getCommand().getDOM();
-        final boolean xpath     = selector.charAt(0) == '/';
+        final boolean xpath     = isXPath(selector);
         List<String>  objectIds = new ArrayList<>();
         if (xpath) {
             final Runtime  runtime       = getThis().getCommand().getRuntime();
@@ -369,7 +369,7 @@ public interface Selector {
                 final String selector,
                 final Object ...args) {
         final DOM     dom    = getThis().getCommand().getDOM();
-        final boolean xpath  = selector.charAt(0) == '/' || selector.charAt(0) == '(';
+        final boolean xpath  = isXPath(selector);
         if (xpath) {
             RemoteObject docObjectId = null;
             if (contextId == null) {
@@ -498,6 +498,10 @@ public interface Selector {
         }
         return getThis();
     }
+
+    static boolean isXPath(String selector) {
+    	return selector.charAt(0) == '/' || selector.charAt(0) == '(';
+	}
 
     Session getThis();
 }
