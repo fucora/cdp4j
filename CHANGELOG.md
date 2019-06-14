@@ -1,6 +1,10 @@
 cdp4j Release Notes
 -------------------------------------------------------------------------------
 
+### 3.0.11 - June 14, 2019
+
+* Fixed xpath selector [bug](https://github.com/webfolderio/cdp4j/commit/c612087c9b8f7d491b8c6f4b88edbff060d3a4f5)
+
 ### 3.0.10 - June 14, 2019
 
 * Added [TaskKillProcessManager](https://github.com/webfolderio/cdp4j/blob/master/src/main/java/io/webfolder/cdp/TaskKillProcessManager.java), Alternative implmentation of [WindowsProcessManager](https://github.com/webfolderio/cdp4j/blob/master/src/main/java/io/webfolder/cdp/WindowsProcessManager.java)
