@@ -27,6 +27,12 @@ public enum InspectMode {
     @SerializedName("searchForUAShadowDOM")
     SearchForUAShadowDOM("searchForUAShadowDOM"),
 
+    @SerializedName("captureAreaScreenshot")
+    CaptureAreaScreenshot("captureAreaScreenshot"),
+
+    @SerializedName("showDistances")
+    ShowDistances("showDistances"),
+
     @SerializedName("none")
     None("none");
 

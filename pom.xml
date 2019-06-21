@@ -132,6 +132,7 @@
       <exclude>src/main/java/com/neovisionaries/ws/client/WebSocketOutputStream.java</exclude>
       <exclude>src/main/java/com/neovisionaries/ws/client/DefaultMasker.java</exclude>
       <exclude>src/main/java/com/neovisionaries/ws/client/Masker.java</exclude>
+      <exclude>src/main/java/com/neovisionaries/ws/client/WebSocket.java</exclude>
       <exclude>src/main/java/com/neovisionaries/ws/client/ZeroMasker.java</exclude>
       <exclude>src/main/java/io/webfolder/cdp/logger/FormattingTuple.java</exclude>
       <exclude>src/main/java/io/webfolder/cdp/logger/MessageFormatter.java</exclude>

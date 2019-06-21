@@ -29,7 +29,7 @@ public interface Storage {
      * Clears storage for origin.
      * 
      * @param origin Security origin.
-     * @param storageTypes Comma separated origin names.
+     * @param storageTypes Comma separated list of StorageType to clear.
      */
     void clearDataForOrigin(String origin, String storageTypes);
 

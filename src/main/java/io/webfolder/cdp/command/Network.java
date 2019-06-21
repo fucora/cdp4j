@@ -185,7 +185,7 @@ public interface Network {
      * 
      * @param requestId Identifier of the network request to get content for.
      * 
-     * @return Base64-encoded request body.
+     * @return Request body string, omitting files from multipart requests
      */
     @Returns("postData")
     byte[] getRequestPostData(String requestId);
@@ -304,7 +304,7 @@ public interface Network {
     void setExtraHTTPHeaders(Map<String, Object> headers);
 
     /**
-     * Sets the requests to intercept that match a the provided patterns and optionally resource types.
+     * Sets the requests to intercept that match the provided patterns and optionally resource types.
      * 
      * @param patterns Requests matching any of these patterns will be forwarded and wait for the corresponding
      * continueInterceptedRequest call.

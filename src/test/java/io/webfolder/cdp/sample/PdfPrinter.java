@@ -20,6 +20,7 @@ package io.webfolder.cdp.sample;
 
 import static java.lang.Thread.sleep;
 import static java.util.Arrays.asList;
+import static java.util.Base64.getDecoder;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,6 +36,7 @@ import io.webfolder.cdp.AdaptiveProcessManager;
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
+import io.webfolder.cdp.type.page.PrintToPDFResult;
 
 public class PdfPrinter implements AutoCloseable {
 
@@ -151,7 +153,8 @@ public class PdfPrinter implements AutoCloseable {
                     s.navigate(next);
                     try {
                         s.waitDocumentReady();
-                        byte[] content = s.getCommand().getPage().printToPDF();
+                        PrintToPDFResult result = s.getCommand().getPage().printToPDF();
+                        byte[] content = getDecoder().decode(result.getData());
                         if ( content != null ) {
                             System.out.println("PDF size: " + content.length + " (" + next + ")");
                         }

@@ -24,6 +24,8 @@ import static java.nio.file.Files.createTempFile;
 import static java.nio.file.Files.write;
 import static java.util.Arrays.asList;
 
+import static java.util.Base64.getDecoder;
+
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -31,6 +33,7 @@ import io.webfolder.cdp.AdaptiveProcessManager;
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
+import io.webfolder.cdp.type.page.PrintToPDFResult;
 
 public class PrintToPDF {
 
@@ -38,7 +41,6 @@ public class PrintToPDF {
     // https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md
     public static void main(String[] args) throws IOException {
         Launcher launcher = new Launcher();
-        launcher.setProcessManager(new AdaptiveProcessManager());
 
         Path file = createTempFile("cdp4j", ".pdf");
 
@@ -50,11 +52,13 @@ public class PrintToPDF {
                 session.navigate("https://webfolder.io/cdp4j.html");
                 session.waitDocumentReady();
 
-                byte[] content = session
-                                    .getCommand()
-                                    .getPage()
-                                    .printToPDF();
+                PrintToPDFResult result = session
+		                                    .getCommand()
+		                                    .getPage()
+		                                    .printToPDF();
 
+                byte[] content = getDecoder().decode(result.getData());
+                
                 write(file, content);
             }
 

@@ -54,6 +54,8 @@ public class RequestPaused {
 
     private List<HeaderEntry> responseHeaders = new ArrayList<>();
 
+    private String networkId;
+
     /**
      * Each request the page makes will have a unique id.
      */
@@ -150,5 +152,21 @@ public class RequestPaused {
      */
     public void setResponseHeaders(List<HeaderEntry> responseHeaders) {
         this.responseHeaders = responseHeaders;
+    }
+
+    /**
+     * If the intercepted request had a corresponding Network.requestWillBeSent event fired for it,
+     * then this networkId will be the same as the requestId present in the requestWillBeSent event.
+     */
+    public String getNetworkId() {
+        return networkId;
+    }
+
+    /**
+     * If the intercepted request had a corresponding Network.requestWillBeSent event fired for it,
+     * then this networkId will be the same as the requestId present in the requestWillBeSent event.
+     */
+    public void setNetworkId(String networkId) {
+        this.networkId = networkId;
     }
 }

@@ -22,7 +22,7 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 
 /**
- * Fired when WebSocket frame error occurs
+ * Fired when WebSocket message error occurs
  */
 @Domain("Network")
 @EventName("webSocketFrameError")
@@ -62,14 +62,14 @@ public class WebSocketFrameError {
     }
 
     /**
-     * WebSocket frame error message.
+     * WebSocket error message.
      */
     public String getErrorMessage() {
         return errorMessage;
     }
 
     /**
-     * WebSocket frame error message.
+     * WebSocket error message.
      */
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;

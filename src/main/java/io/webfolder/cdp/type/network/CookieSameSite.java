@@ -31,7 +31,13 @@ public enum CookieSameSite {
     Strict("Strict"),
 
     @SerializedName("Lax")
-    Lax("Lax");
+    Lax("Lax"),
+
+    @SerializedName("Extended")
+    Extended("Extended"),
+
+    @SerializedName("None")
+    None("None");
 
     public final String value;
 

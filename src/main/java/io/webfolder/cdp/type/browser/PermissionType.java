@@ -60,6 +60,9 @@ public enum PermissionType {
     @SerializedName("paymentHandler")
     PaymentHandler("paymentHandler"),
 
+    @SerializedName("periodicBackgroundSync")
+    PeriodicBackgroundSync("periodicBackgroundSync"),
+
     @SerializedName("protectedMediaIdentifier")
     ProtectedMediaIdentifier("protectedMediaIdentifier"),
 
@@ -67,7 +70,16 @@ public enum PermissionType {
     Sensors("sensors"),
 
     @SerializedName("videoCapture")
-    VideoCapture("videoCapture");
+    VideoCapture("videoCapture"),
+
+    @SerializedName("idleDetection")
+    IdleDetection("idleDetection"),
+
+    @SerializedName("wakeLockScreen")
+    WakeLockScreen("wakeLockScreen"),
+
+    @SerializedName("wakeLockSystem")
+    WakeLockSystem("wakeLockSystem");
 
     public final String value;
 

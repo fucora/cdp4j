@@ -30,6 +30,10 @@ public class GPUDevice {
 
     private String deviceString;
 
+    private String driverVendor;
+
+    private String driverVersion;
+
     /**
      * PCI ID of the GPU vendor, if available; 0 otherwise.
      */
@@ -84,5 +88,33 @@ public class GPUDevice {
      */
     public void setDeviceString(String deviceString) {
         this.deviceString = deviceString;
+    }
+
+    /**
+     * String description of the GPU driver vendor.
+     */
+    public String getDriverVendor() {
+        return driverVendor;
+    }
+
+    /**
+     * String description of the GPU driver vendor.
+     */
+    public void setDriverVendor(String driverVendor) {
+        this.driverVendor = driverVendor;
+    }
+
+    /**
+     * String description of the GPU driver version.
+     */
+    public String getDriverVersion() {
+        return driverVersion;
+    }
+
+    /**
+     * String description of the GPU driver version.
+     */
+    public void setDriverVersion(String driverVersion) {
+        this.driverVersion = driverVersion;
     }
 }

@@ -6,3 +6,4 @@
 /src/test/java/io/webfolder/cdp/sample/Generator.java
 /.idea
 /*.iml
+/src/test/java/io/webfolder/cdp/Generator.java

@@ -33,7 +33,7 @@ public class NodeTreeSnapshot {
 
     private List<Integer> nodeValue = new ArrayList<>();
 
-    private List<Integer> backendNodeId = new ArrayList<>();
+    private List<String> backendNodeId = new ArrayList<>();
 
     private RareStringData textValue;
 
@@ -112,14 +112,14 @@ public class NodeTreeSnapshot {
     /**
      * <code>Node</code>'s id, corresponds to DOM.Node.backendNodeId.
      */
-    public List<Integer> getBackendNodeId() {
+    public List<String> getBackendNodeId() {
         return backendNodeId;
     }
 
     /**
      * <code>Node</code>'s id, corresponds to DOM.Node.backendNodeId.
      */
-    public void setBackendNodeId(List<Integer> backendNodeId) {
+    public void setBackendNodeId(List<String> backendNodeId) {
         this.backendNodeId = backendNodeId;
     }
 

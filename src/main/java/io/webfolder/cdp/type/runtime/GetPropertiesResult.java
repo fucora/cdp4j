@@ -25,6 +25,8 @@ public class GetPropertiesResult {
 
     private List<InternalPropertyDescriptor> internalProperties;
 
+    private List<PrivatePropertyDescriptor> privateProperties;
+
     private ExceptionDetails exceptionDetails;
 
     public List<PropertyDescriptor> getResult() {
@@ -33,6 +35,10 @@ public class GetPropertiesResult {
 
     public List<InternalPropertyDescriptor> getInternalProperties() {
         return internalProperties;
+    }
+
+    public List<PrivatePropertyDescriptor> getPrivateProperties() {
+        return privateProperties;
     }
 
     public ExceptionDetails getExceptionDetails() {

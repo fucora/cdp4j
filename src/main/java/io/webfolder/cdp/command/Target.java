@@ -106,13 +106,17 @@ public interface Target {
      * @param browserContextId The browser context to create the page in.
      * @param enableBeginFrameControl Whether BeginFrames for this target will be controlled via DevTools (headless chrome only,
      * not supported on MacOS yet, false by default).
+     * @param newWindow Whether to create a new Window or Tab (chrome-only, false by default).
+     * @param background Whether to create the target in background or foreground (chrome-only,
+     * false by default).
      * 
      * @return The id of the page opened.
      */
     @Returns("targetId")
     String createTarget(String url, @Optional Integer width, @Optional Integer height,
             @Optional String browserContextId,
-            @Experimental @Optional Boolean enableBeginFrameControl);
+            @Experimental @Optional Boolean enableBeginFrameControl, @Optional Boolean newWindow,
+            @Optional Boolean background);
 
     /**
      * Detaches session with given id.
@@ -160,7 +164,7 @@ public interface Target {
      * automatically detaches from all currently attached targets.
      * 
      * @param autoAttach Whether to auto-attach to related targets.
-     * @param waitForDebuggerOnStart Whether to pause new targets when attaching to them. Use<code>Runtime.runIfWaitingForDebugger</code>
+     * @param waitForDebuggerOnStart Whether to pause new targets when attaching to them. Use <code>Runtime.runIfWaitingForDebugger</code>
      * to run paused targets.
      * @param flatten Enables "flat" access to the session via specifying sessionId attribute in the commands.
      */
@@ -242,7 +246,7 @@ public interface Target {
      * automatically detaches from all currently attached targets.
      * 
      * @param autoAttach Whether to auto-attach to related targets.
-     * @param waitForDebuggerOnStart Whether to pause new targets when attaching to them. Use<code>Runtime.runIfWaitingForDebugger</code>
+     * @param waitForDebuggerOnStart Whether to pause new targets when attaching to them. Use <code>Runtime.runIfWaitingForDebugger</code>
      * to run paused targets.
      */
     @Experimental

@@ -339,7 +339,7 @@ public interface Selector {
                 return emptyList();
             }
             for (Integer next : nodeIds) {
-                RemoteObject remoteObject = dom.resolveNode(next, null, null);
+                RemoteObject remoteObject = dom.resolveNode(next, null, null, getThis().getExecutionContextId());
                 if (remoteObject == null) {
                     return null;
                 }
@@ -374,7 +374,7 @@ public interface Selector {
             RemoteObject docObjectId = null;
             if (contextId == null) {
                 Node document = dom.getDocument();
-                docObjectId = dom.resolveNode(document.getNodeId(), null, null);
+                docObjectId = dom.resolveNode(document.getNodeId(), null, null, getThis().getExecutionContextId());
             }
 
             List<CallArgument> arguments = new ArrayList<>(2);
@@ -433,7 +433,7 @@ public interface Selector {
             if (nodeId == null || nodeId.intValue() == 0) {
                 return null;
             }
-            RemoteObject remoteObject = dom.resolveNode(nodeId, null, null);
+            RemoteObject remoteObject = dom.resolveNode(nodeId, null, null, getThis().getExecutionContextId());
             if (remoteObject == null) {
                 return null;
             }
@@ -500,8 +500,8 @@ public interface Selector {
     }
 
     static boolean isXPath(String selector) {
-    	return selector.charAt(0) == '/' || selector.charAt(0) == '(';
-	}
+        return selector.charAt(0) == '/' || selector.charAt(0) == '(';
+    }
 
     Session getThis();
 }

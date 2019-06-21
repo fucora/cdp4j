@@ -134,7 +134,7 @@ public interface Navigator {
     public default String getPathname() {
         DOM dom = getThis().getCommand().getDOM();
         Integer nodeId = dom.getDocument().getNodeId();
-        RemoteObject remoteObject = dom.resolveNode(nodeId, null, null);
+        RemoteObject remoteObject = dom.resolveNode(nodeId, null, null, getThis().getExecutionContextId());
         String pathname = (String) getThis().getPropertyByObjectId(remoteObject.getObjectId(), "location.pathname");
         getThis().releaseObject(remoteObject.getObjectId());
         System.out.println(pathname);
@@ -180,7 +180,7 @@ public interface Navigator {
         getThis().disableFlowLog();
         DOM dom = getThis().getCommand().getDOM();
         Integer nodeId = dom.getDocument().getNodeId();
-        RemoteObject remoteObject = dom.resolveNode(nodeId, null, null);
+        RemoteObject remoteObject = dom.resolveNode(nodeId, null, null, getThis().getExecutionContextId());
         String title = (String) getThis().getPropertyByObjectId(remoteObject.getObjectId(), "documentElement.outerHTML");
         getThis().logExit("getContent", title);
         getThis().releaseObject(remoteObject.getObjectId());
@@ -195,7 +195,7 @@ public interface Navigator {
     default String getTitle() {
         DOM dom = getThis().getCommand().getDOM();
         Integer nodeId = dom.getDocument().getNodeId();
-        RemoteObject remoteObject = dom.resolveNode(nodeId, null, null);
+        RemoteObject remoteObject = dom.resolveNode(nodeId, null, null, getThis().getExecutionContextId());
         String title = (String) getThis().getPropertyByObjectId(remoteObject.getObjectId(), "title");
         getThis().logExit("getTitle", title);
         getThis().releaseObject(remoteObject.getObjectId());

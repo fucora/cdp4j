@@ -22,10 +22,8 @@ import io.webfolder.cdp.annotation.Experimental;
 
 /**
  * If <code>debuggerId</code> is set stack trace comes from another debugger and can be resolved there
- * This
- * allows to track cross-debugger calls
- * See Runtime <code>StackTrace<code> and Debugger
- * paused</code>for usages
+ * This allows to track cross-debugger calls
+ * See <code>Runtime.StackTrace</code> and <code>Debugger.paused</code> for usages.
  */
 @Experimental
 public class StackTraceId {

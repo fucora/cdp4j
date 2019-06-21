@@ -21,8 +21,14 @@ package io.webfolder.cdp.type.constant;
 import com.google.gson.annotations.SerializedName;
 
 public enum PauseReason {
-    @SerializedName("XHR")
-    XHR("XHR"),
+    @SerializedName("ambiguous")
+    Ambiguous("ambiguous"),
+
+    @SerializedName("assert")
+    Assert("assert"),
+
+    @SerializedName("debugCommand")
+    DebugCommand("debugCommand"),
 
     @SerializedName("DOM")
     DOM("DOM"),
@@ -33,14 +39,8 @@ public enum PauseReason {
     @SerializedName("exception")
     Exception("exception"),
 
-    @SerializedName("assert")
-    Assert("assert"),
-
-    @SerializedName("debugCommand")
-    DebugCommand("debugCommand"),
-
-    @SerializedName("promiseRejection")
-    PromiseRejection("promiseRejection"),
+    @SerializedName("instrumentation")
+    Instrumentation("instrumentation"),
 
     @SerializedName("OOM")
     OOM("OOM"),
@@ -48,8 +48,11 @@ public enum PauseReason {
     @SerializedName("other")
     Other("other"),
 
-    @SerializedName("ambiguous")
-    Ambiguous("ambiguous");
+    @SerializedName("promiseRejection")
+    PromiseRejection("promiseRejection"),
+
+    @SerializedName("XHR")
+    XHR("XHR");
 
     public final String value;
 

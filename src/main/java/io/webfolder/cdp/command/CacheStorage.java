@@ -20,9 +20,11 @@ package io.webfolder.cdp.command;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
+import io.webfolder.cdp.annotation.Optional;
 import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.cachestorage.Cache;
 import io.webfolder.cdp.type.cachestorage.CachedResponse;
+import io.webfolder.cdp.type.cachestorage.Header;
 import io.webfolder.cdp.type.cachestorage.RequestEntriesResult;
 import java.util.List;
 
@@ -57,13 +59,28 @@ public interface CacheStorage {
     /**
      * Fetches cache entry.
      * 
-     * @param cacheId Id of cache that contains the enty.
+     * @param cacheId Id of cache that contains the entry.
      * @param requestURL URL spec of the request.
+     * @param requestHeaders headers of the request.
      * 
      * @return Response read from the cache.
      */
     @Returns("response")
-    CachedResponse requestCachedResponse(String cacheId, String requestURL);
+    CachedResponse requestCachedResponse(String cacheId, String requestURL,
+            List<Header> requestHeaders);
+
+    /**
+     * Requests data from cache.
+     * 
+     * @param cacheId ID of cache to get entries from.
+     * @param skipCount Number of records to skip.
+     * @param pageSize Number of records to fetch.
+     * @param pathFilter If present, only return the entries containing this substring in the path
+     * 
+     * @return RequestEntriesResult
+     */
+    RequestEntriesResult requestEntries(String cacheId, Integer skipCount, Integer pageSize,
+            @Optional String pathFilter);
 
     /**
      * Requests data from cache.

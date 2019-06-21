@@ -59,6 +59,8 @@ public class RequestIntercepted {
 
     private Map<String, Object> responseHeaders = new HashMap<>();
 
+    private String requestId;
+
     /**
      * Each request the page makes will have a unique id, however if any redirects are encountered
      * while processing that fetch, they will be reported with the same id as the original fetch.
@@ -219,5 +221,21 @@ public class RequestIntercepted {
      */
     public void setResponseHeaders(Map<String, Object> responseHeaders) {
         this.responseHeaders = responseHeaders;
+    }
+
+    /**
+     * If the intercepted request had a corresponding requestWillBeSent event fired for it, then
+     * this requestId will be the same as the requestId present in the requestWillBeSent event.
+     */
+    public String getRequestId() {
+        return requestId;
+    }
+
+    /**
+     * If the intercepted request had a corresponding requestWillBeSent event fired for it, then
+     * this requestId will be the same as the requestId present in the requestWillBeSent event.
+     */
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
     }
 }

@@ -35,8 +35,6 @@ import java.util.Map;
 public class SignedExchangeHeader {
     private String requestUrl;
 
-    private String requestMethod;
-
     private Integer responseCode;
 
     private Map<String, Object> responseHeaders = new HashMap<>();
@@ -55,20 +53,6 @@ public class SignedExchangeHeader {
      */
     public void setRequestUrl(String requestUrl) {
         this.requestUrl = requestUrl;
-    }
-
-    /**
-     * Signed exchange request method.
-     */
-    public String getRequestMethod() {
-        return requestMethod;
-    }
-
-    /**
-     * Signed exchange request method.
-     */
-    public void setRequestMethod(String requestMethod) {
-        this.requestMethod = requestMethod;
     }
 
     /**

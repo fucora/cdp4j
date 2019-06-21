@@ -22,9 +22,11 @@ import io.webfolder.cdp.command.Accessibility;
 import io.webfolder.cdp.command.Animation;
 import io.webfolder.cdp.command.ApplicationCache;
 import io.webfolder.cdp.command.Audits;
+import io.webfolder.cdp.command.BackgroundService;
 import io.webfolder.cdp.command.Browser;
 import io.webfolder.cdp.command.CSS;
 import io.webfolder.cdp.command.CacheStorage;
+import io.webfolder.cdp.command.Cast;
 import io.webfolder.cdp.command.DOM;
 import io.webfolder.cdp.command.DOMDebugger;
 import io.webfolder.cdp.command.DOMSnapshot;
@@ -57,8 +59,9 @@ import io.webfolder.cdp.command.SystemInfo;
 import io.webfolder.cdp.command.Target;
 import io.webfolder.cdp.command.Tethering;
 import io.webfolder.cdp.command.Tracing;
+import io.webfolder.cdp.command.WebAudio;
+import io.webfolder.cdp.command.WebAuthn;
 
-@SuppressWarnings("deprecation")
 public class Command {
 
     private final Session session;
@@ -221,6 +224,22 @@ public class Command {
 
     public DOMSnapshot getDOMSnapshot() {
         return getProxy(DOMSnapshot.class);
+    }
+
+    public BackgroundService getBackgroundService() {
+    	return getProxy(BackgroundService.class);
+    }
+
+    public Cast getCast() {
+    	return getProxy(Cast.class);
+    }
+
+    public WebAudio getWebAudio() {
+    	return getProxy(WebAudio.class);
+    }
+
+    public WebAuthn WebAuthn() {
+    	return getProxy(WebAuthn.class);
     }
 
     @SuppressWarnings("unchecked")

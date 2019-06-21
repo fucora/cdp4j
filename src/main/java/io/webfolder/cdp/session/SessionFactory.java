@@ -222,7 +222,7 @@ public class SessionFactory implements AutoCloseable {
             String targetId = target.createTarget("about:blank",
                                                     DEFAULT_SCREEN_WIDTH,
                                                     DEFAULT_SCREEN_HEIGHT,
-                                                    browserContextId, false);            
+                                                    browserContextId, false, null, null);
             boolean found = false;
             for (int i = 0; i < 500 && ! found; i++) {
                 for (TabInfo info : tabs) {

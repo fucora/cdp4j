@@ -25,7 +25,6 @@ import java.util.List;
 /**
  * This domain is deprecated
  */
-@Deprecated
 @Domain("Schema")
 public interface Schema {
     /**

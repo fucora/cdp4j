@@ -36,6 +36,8 @@ public class VisualViewport {
 
     private Double scale;
 
+    private Double zoom;
+
     /**
      * Horizontal offset relative to the layout viewport (CSS pixels).
      */
@@ -132,5 +134,19 @@ public class VisualViewport {
      */
     public void setScale(Double scale) {
         this.scale = scale;
+    }
+
+    /**
+     * Page zoom factor (CSS to device independent pixels ratio).
+     */
+    public Double getZoom() {
+        return zoom;
+    }
+
+    /**
+     * Page zoom factor (CSS to device independent pixels ratio).
+     */
+    public void setZoom(Double zoom) {
+        this.zoom = zoom;
     }
 }

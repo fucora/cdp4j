@@ -27,7 +27,7 @@ import java.util.List;
 public class DatabaseWithObjectStores {
     private String name;
 
-    private Integer version;
+    private Double version;
 
     private List<ObjectStore> objectStores = new ArrayList<>();
 
@@ -46,16 +46,18 @@ public class DatabaseWithObjectStores {
     }
 
     /**
-     * Database version.
+     * Database version (type is not 'integer', as the standard
+     * requires the version number to be 'unsigned long long')
      */
-    public Integer getVersion() {
+    public Double getVersion() {
         return version;
     }
 
     /**
-     * Database version.
+     * Database version (type is not 'integer', as the standard
+     * requires the version number to be 'unsigned long long')
      */
-    public void setVersion(Integer version) {
+    public void setVersion(Double version) {
         this.version = version;
     }
 

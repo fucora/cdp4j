@@ -63,6 +63,12 @@ public interface Browser {
     void crash();
 
     /**
+     * Crashes GPU process.
+     */
+    @Experimental
+    void crashGpuProcess();
+
+    /**
      * Returns version information.
      * 
      * @return GetVersionResult

@@ -23,13 +23,13 @@ import java.util.List;
 public class RequestEntriesResult {
     private List<DataEntry> cacheDataEntries;
 
-    private Boolean hasMore;
+    private Double returnCount;
 
     public List<DataEntry> getCacheDataEntries() {
         return cacheDataEntries;
     }
 
-    public Boolean getHasMore() {
-        return hasMore;
+    public Double getReturnCount() {
+        return returnCount;
     }
 }

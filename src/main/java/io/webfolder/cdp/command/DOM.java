@@ -380,12 +380,13 @@ public interface DOM {
      * @param nodeId Id of the node to resolve.
      * @param backendNodeId Backend identifier of the node to resolve.
      * @param objectGroup Symbolic group name that can be used to release multiple objects.
+     * @param executionContextId Execution context in which to resolve the node.
      * 
      * @return JavaScript object wrapper for given node.
      */
     @Returns("object")
     RemoteObject resolveNode(@Optional Integer nodeId, @Optional Integer backendNodeId,
-            @Optional String objectGroup);
+            @Optional String objectGroup, @Optional Integer executionContextId);
 
     /**
      * Sets attribute for an element with given id.
@@ -417,6 +418,16 @@ public interface DOM {
      */
     void setFileInputFiles(List<String> files, @Optional Integer nodeId,
             @Optional Integer backendNodeId, @Optional String objectId);
+
+    /**
+     * Returns file information for the given
+     * File wrapper.
+     * 
+     * @param objectId JavaScript object id of the node wrapper.
+     */
+    @Experimental
+    @Returns("path")
+    String getFileInfo(String objectId);
 
     /**
      * Enables console to refer to the node with given id via  (see Command Line API for more details

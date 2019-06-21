@@ -23,17 +23,11 @@ public class GetBackgroundColorsResult {
 
     private String computedFontWeight;
 
-    private String computedBodyFontSize;
-
     public String getComputedFontSize() {
         return computedFontSize;
     }
 
     public String getComputedFontWeight() {
         return computedFontWeight;
-    }
-
-    public String getComputedBodyFontSize() {
-        return computedBodyFontSize;
     }
 }

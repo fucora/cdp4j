@@ -187,23 +187,29 @@ public class DocumentSnapshot {
     }
 
     /**
-     * Scroll offsets.
+     * Horizontal scroll offset.
      */
     public Double getScrollOffsetX() {
         return scrollOffsetX;
     }
 
     /**
-     * Scroll offsets.
+     * Horizontal scroll offset.
      */
     public void setScrollOffsetX(Double scrollOffsetX) {
         this.scrollOffsetX = scrollOffsetX;
     }
 
+    /**
+     * Vertical scroll offset.
+     */
     public Double getScrollOffsetY() {
         return scrollOffsetY;
     }
 
+    /**
+     * Vertical scroll offset.
+     */
     public void setScrollOffsetY(Double scrollOffsetY) {
         this.scrollOffsetY = scrollOffsetY;
     }

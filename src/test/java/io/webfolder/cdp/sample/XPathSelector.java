@@ -33,7 +33,7 @@ public class XPathSelector {
                 .navigate("https://webfolder.io")
                 .waitDocumentReady();
 
-            String title = session.getText("/html/head/title");
+            String title = session.getText("//title");
 
             System.out.println(title);
         }

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Details of post layout rendered text positions
+ * Table of details of the post layout rendered text positions
  * The exact layout should not be regarded as
  * stable and may change between versions
  */
@@ -36,14 +36,14 @@ public class TextBoxSnapshot {
     private List<Integer> length = new ArrayList<>();
 
     /**
-     * Intex of th elayout tree node that owns this box collection.
+     * Index of the layout tree node that owns this box collection.
      */
     public List<Integer> getLayoutIndex() {
         return layoutIndex;
     }
 
     /**
-     * Intex of th elayout tree node that owns this box collection.
+     * Index of the layout tree node that owns this box collection.
      */
     public void setLayoutIndex(List<Integer> layoutIndex) {
         this.layoutIndex = layoutIndex;

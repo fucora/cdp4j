@@ -65,10 +65,12 @@ public interface DOMSnapshot {
      * flattened.
      * 
      * @param computedStyles Whitelist of computed styles to return.
+     * @param includeDOMRects Whether to include DOM rectangles (offsetRects, clientRects, scrollRects) into the snapshot
      * 
      * @return CaptureSnapshotResult
      */
-    CaptureSnapshotResult captureSnapshot(List<String> computedStyles);
+    CaptureSnapshotResult captureSnapshot(List<String> computedStyles,
+            @Optional Boolean includeDOMRects);
 
     /**
      * Returns a document snapshot, including the full DOM tree of the root node (including iframes,
@@ -81,4 +83,16 @@ public interface DOMSnapshot {
      * @return GetSnapshotResult
      */
     GetSnapshotResult getSnapshot(List<String> computedStyleWhitelist);
+
+    /**
+     * Returns a document snapshot, including the full DOM tree of the root node (including iframes,
+     * template contents, and imported documents) in a flattened array, as well as layout and
+     * white-listed computed style information for the nodes. Shadow DOM in the returned DOM tree is
+     * flattened.
+     * 
+     * @param computedStyles Whitelist of computed styles to return.
+     * 
+     * @return CaptureSnapshotResult
+     */
+    CaptureSnapshotResult captureSnapshot(List<String> computedStyles);
 }

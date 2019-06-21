@@ -22,26 +22,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Details of an element in the DOM tree with a LayoutObject
+ * Table of details of an element in the DOM tree with a LayoutObject
  */
 public class LayoutTreeSnapshot {
     private List<Integer> nodeIndex = new ArrayList<>();
 
-    private List<List<Double>> bounds = new ArrayList<>();
+    private List<Double> bounds = new ArrayList<>();
 
     private List<Integer> text = new ArrayList<>();
 
     private RareBooleanData stackingContexts;
 
+    private List<Double> offsetRects = new ArrayList<>();
+
+    private List<Double> scrollRects = new ArrayList<>();
+
+    private List<Double> clientRects = new ArrayList<>();
+
     /**
-     * The index of the related DOM node in the <code>domNodes</code> array returned by<code>getSnapshot</code>.
+     * Index of the corresponding node in the <code>NodeTreeSnapshot</code> array returned by <code>captureSnapshot</code>.
      */
     public List<Integer> getNodeIndex() {
         return nodeIndex;
     }
 
     /**
-     * The index of the related DOM node in the <code>domNodes</code> array returned by<code>getSnapshot</code>.
+     * Index of the corresponding node in the <code>NodeTreeSnapshot</code> array returned by <code>captureSnapshot</code>.
      */
     public void setNodeIndex(List<Integer> nodeIndex) {
         this.nodeIndex = nodeIndex;
@@ -50,14 +56,14 @@ public class LayoutTreeSnapshot {
     /**
      * The absolute position bounding box.
      */
-    public List<List<Double>> getBounds() {
+    public List<Double> getBounds() {
         return bounds;
     }
 
     /**
      * The absolute position bounding box.
      */
-    public void setBounds(List<List<Double>> bounds) {
+    public void setBounds(List<Double> bounds) {
         this.bounds = bounds;
     }
 
@@ -87,5 +93,47 @@ public class LayoutTreeSnapshot {
      */
     public void setStackingContexts(RareBooleanData stackingContexts) {
         this.stackingContexts = stackingContexts;
+    }
+
+    /**
+     * The offset rect of nodes. Only available when includeDOMRects is set to true
+     */
+    public List<Double> getOffsetRects() {
+        return offsetRects;
+    }
+
+    /**
+     * The offset rect of nodes. Only available when includeDOMRects is set to true
+     */
+    public void setOffsetRects(List<Double> offsetRects) {
+        this.offsetRects = offsetRects;
+    }
+
+    /**
+     * The scroll rect of nodes. Only available when includeDOMRects is set to true
+     */
+    public List<Double> getScrollRects() {
+        return scrollRects;
+    }
+
+    /**
+     * The scroll rect of nodes. Only available when includeDOMRects is set to true
+     */
+    public void setScrollRects(List<Double> scrollRects) {
+        this.scrollRects = scrollRects;
+    }
+
+    /**
+     * The client rect of nodes. Only available when includeDOMRects is set to true
+     */
+    public List<Double> getClientRects() {
+        return clientRects;
+    }
+
+    /**
+     * The client rect of nodes. Only available when includeDOMRects is set to true
+     */
+    public void setClientRects(List<Double> clientRects) {
+        this.clientRects = clientRects;
     }
 }

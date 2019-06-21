@@ -21,6 +21,7 @@ package io.webfolder.cdp.event.tracing;
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.tracing.StreamCompression;
+import io.webfolder.cdp.type.tracing.StreamFormat;
 
 /**
  * Signals that tracing is stopped and there is no trace buffers pending flush, all data were
@@ -29,9 +30,29 @@ import io.webfolder.cdp.type.tracing.StreamCompression;
 @Domain("Tracing")
 @EventName("tracingComplete")
 public class TracingComplete {
+    private Boolean dataLossOccurred;
+
     private String stream;
 
+    private StreamFormat traceFormat;
+
     private StreamCompression streamCompression;
+
+    /**
+     * Indicates whether some trace data is known to have been lost, e.g. because the trace ring
+     * buffer wrapped around.
+     */
+    public Boolean isDataLossOccurred() {
+        return dataLossOccurred;
+    }
+
+    /**
+     * Indicates whether some trace data is known to have been lost, e.g. because the trace ring
+     * buffer wrapped around.
+     */
+    public void setDataLossOccurred(Boolean dataLossOccurred) {
+        this.dataLossOccurred = dataLossOccurred;
+    }
 
     /**
      * A handle of the stream that holds resulting trace data.
@@ -45,6 +66,20 @@ public class TracingComplete {
      */
     public void setStream(String stream) {
         this.stream = stream;
+    }
+
+    /**
+     * Trace data format of returned stream.
+     */
+    public StreamFormat getTraceFormat() {
+        return traceFormat;
+    }
+
+    /**
+     * Trace data format of returned stream.
+     */
+    public void setTraceFormat(StreamFormat traceFormat) {
+        this.traceFormat = traceFormat;
     }
 
     /**

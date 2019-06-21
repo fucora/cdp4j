@@ -23,7 +23,7 @@ import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.network.WebSocketFrame;
 
 /**
- * Fired when WebSocket frame is received
+ * Fired when WebSocket message is received
  */
 @Domain("Network")
 @EventName("webSocketFrameReceived")

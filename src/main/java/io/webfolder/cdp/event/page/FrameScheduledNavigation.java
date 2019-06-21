@@ -20,13 +20,11 @@ package io.webfolder.cdp.event.page;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
-import io.webfolder.cdp.annotation.Experimental;
-import io.webfolder.cdp.type.constant.FrameNavigationReason;
+import io.webfolder.cdp.type.constant.ClientNavigationReason;
 
 /**
  * Fired when frame schedules a potential navigation
  */
-@Experimental
 @Domain("Page")
 @EventName("frameScheduledNavigation")
 public class FrameScheduledNavigation {
@@ -34,7 +32,7 @@ public class FrameScheduledNavigation {
 
     private Double delay;
 
-    private FrameNavigationReason reason;
+    private ClientNavigationReason reason;
 
     private String url;
 
@@ -71,14 +69,14 @@ public class FrameScheduledNavigation {
     /**
      * The reason for the navigation.
      */
-    public FrameNavigationReason getReason() {
+    public ClientNavigationReason getReason() {
         return reason;
     }
 
     /**
      * The reason for the navigation.
      */
-    public void setReason(FrameNavigationReason reason) {
+    public void setReason(ClientNavigationReason reason) {
         this.reason = reason;
     }
 

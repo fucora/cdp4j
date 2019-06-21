@@ -38,34 +38,35 @@ public class BingTranslator {
                 .enableNetworkLog();
 
             Option en = session
-                        .getOptions("#t_sl")
+                        .getOptions("#tta_srcsl")
                         .stream()
                         .filter(p -> "en".equals(p.getValue()))
                         .findFirst()
                         .get();
             
             Option et = session
-                        .getOptions("#t_tl")
+                        .getOptions("#tta_tgtsl")
                         .stream()
                         .filter(p -> "et".equals(p.getValue()))
                         .findFirst()
                         .get();
 
             session
-                .click("#t_sl") // click source language
+                .click("#tta_srcsl") // click source language
                 .wait(500)
-                .setSelectedIndex("#t_sl", en.getIndex()) // choose English
+                .setSelectedIndex("#tta_srcsl", en.getIndex()) // choose English
                 .wait(500)
-                .click("#t_tl") // click destination language
+                .click("#tta_tgtsl") // click destination language
                 .wait(500)
-                .setSelectedIndex("#t_tl", et.getIndex()) // choose Estonian
+                .setSelectedIndex("#tta_tgtsl", et.getIndex()) // choose Estonian
                 .wait(500);
 
-            session.focus("#t_sv")
+            session.focus("#tta_input")
+            		.wait(100)
                     .sendKeys("hello world")
                     .wait(1000);
 
-            System.out.println(session.getValue("#t_tv"));
+            System.out.println(session.getValue("#tta_output"));
         }
     }
 }

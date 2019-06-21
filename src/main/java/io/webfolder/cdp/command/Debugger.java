@@ -18,12 +18,14 @@
  */
 package io.webfolder.cdp.command;
 
+import java.util.List;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
 import io.webfolder.cdp.annotation.Returns;
+import io.webfolder.cdp.type.constant.InstrumentationName;
 import io.webfolder.cdp.type.constant.PauseOnExceptionState;
-import io.webfolder.cdp.type.constant.TargetCallFrames;
 import io.webfolder.cdp.type.debugger.BreakLocation;
 import io.webfolder.cdp.type.debugger.EvaluateOnCallFrameResult;
 import io.webfolder.cdp.type.debugger.Location;
@@ -36,7 +38,6 @@ import io.webfolder.cdp.type.debugger.SetScriptSourceResult;
 import io.webfolder.cdp.type.runtime.CallArgument;
 import io.webfolder.cdp.type.runtime.StackTrace;
 import io.webfolder.cdp.type.runtime.StackTraceId;
-import java.util.List;
 
 /**
  * Debugger domain exposes JavaScript debugging capabilities
@@ -50,7 +51,8 @@ public interface Debugger {
      * 
      * @param location Location to continue to.
      */
-    void continueToLocation(Location location, @Optional TargetCallFrames targetCallFrames);
+    void continueToLocation(Location location,
+            @Optional Location targetCallFrames);
 
     /**
      * Disables debugger for given page.
@@ -61,10 +63,13 @@ public interface Debugger {
      * Enables debugger for the given page. Clients should not assume that the debugging has been
      * enabled until the result for this command is received.
      * 
+     * @param maxScriptsCacheSize The maximum size in bytes of collected scripts (not referenced by other heap objects)
+     * the debugger can hold. Puts no limit if paramter is omitted.
+     * 
      * @return Unique identifier of the debugger.
      */
     @Returns("debuggerId")
-    String enable();
+    String enable(@Experimental @Optional Double maxScriptsCacheSize);
 
     /**
      * Evaluates expression on a given call frame.
@@ -152,15 +157,6 @@ public interface Debugger {
     void resume();
 
     /**
-     * This method is deprecated - use Debugger.stepInto with breakOnAsyncCall and
-     * Debugger.pauseOnAsyncTask instead. Steps into next scheduled async task if any is scheduled
-     * before next pause. Returns success when async task is actually scheduled, returns error if no
-     * task were scheduled or another scheduleStepIntoAsync was called.
-     */
-    @Experimental
-    void scheduleStepIntoAsync();
-
-    /**
      * Searches for given string in script content.
      * 
      * @param scriptId Id of the script to search in.
@@ -213,6 +209,16 @@ public interface Debugger {
      * @return SetBreakpointResult
      */
     SetBreakpointResult setBreakpoint(Location location, @Optional String condition);
+
+    /**
+     * Sets instrumentation breakpoint.
+     * 
+     * @param instrumentation Instrumentation name.
+     * 
+     * @return Id of the created breakpoint for further reference.
+     */
+    @Returns("breakpointId")
+    String setInstrumentationBreakpoint(InstrumentationName instrumentation);
 
     /**
      * Sets JavaScript breakpoint at given location specified either by URL or URL regex. Once this
@@ -330,6 +336,15 @@ public interface Debugger {
      * @param location Location to continue to.
      */
     void continueToLocation(Location location);
+
+    /**
+     * Enables debugger for the given page. Clients should not assume that the debugging has been
+     * enabled until the result for this command is received.
+     * 
+     * @return Unique identifier of the debugger.
+     */
+    @Returns("debuggerId")
+    String enable();
 
     /**
      * Evaluates expression on a given call frame.

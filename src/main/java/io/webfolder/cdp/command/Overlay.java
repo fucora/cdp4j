@@ -65,9 +65,10 @@ public interface Overlay {
      * @param nodeId Identifier of the node to highlight.
      * @param backendNodeId Identifier of the backend node to highlight.
      * @param objectId JavaScript object id of the node to be highlighted.
+     * @param selector Selectors to highlight relevant nodes.
      */
     void highlightNode(HighlightConfig highlightConfig, @Optional Integer nodeId,
-            @Optional Integer backendNodeId, @Optional String objectId);
+            @Optional Integer backendNodeId, @Optional String objectId, @Optional String selector);
 
     /**
      * Highlights given quad. Coordinates are absolute with respect to the main frame viewport.
@@ -96,9 +97,17 @@ public interface Overlay {
      * Backend then generates 'inspectNodeRequested' event upon element selection.
      * 
      * @param mode Set an inspection mode.
-     * @param highlightConfig A descriptor for the highlight appearance of hovered-over nodes. May be omitted if <code>enabled == false</code>.
+     * @param highlightConfig A descriptor for the highlight appearance of hovered-over nodes. May be omitted if `enabled
+     * == false`.
      */
     void setInspectMode(InspectMode mode, @Optional HighlightConfig highlightConfig);
+
+    /**
+     * Highlights owner element of all frames detected to be ads.
+     * 
+     * @param show True for showing ad highlights
+     */
+    void setShowAdHighlights(Boolean show);
 
     void setPausedInDebuggerMessage(@Optional String message);
 
@@ -124,6 +133,13 @@ public interface Overlay {
     void setShowPaintRects(Boolean result);
 
     /**
+     * Requests that backend shows layout shift regions
+     * 
+     * @param result True for showing layout shift regions
+     */
+    void setShowLayoutShiftRegions(Boolean result);
+
+    /**
      * Requests that backend shows scroll bottleneck rects
      * 
      * @param show True for showing scroll bottleneck rects
@@ -143,8 +159,6 @@ public interface Overlay {
      * @param show Whether to paint size or not.
      */
     void setShowViewportSizeOnResize(Boolean show);
-
-    void setSuspended(Boolean suspended);
 
     /**
      * Highlights owner element of the frame with given id.

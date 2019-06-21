@@ -25,6 +25,7 @@ import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.constant.TransferMode;
 import io.webfolder.cdp.type.tracing.RequestMemoryDumpResult;
 import io.webfolder.cdp.type.tracing.StreamCompression;
+import io.webfolder.cdp.type.tracing.StreamFormat;
 import io.webfolder.cdp.type.tracing.TraceConfig;
 import java.util.List;
 
@@ -66,12 +67,15 @@ public interface Tracing {
      * @param bufferUsageReportingInterval If set, the agent will issue bufferUsage events at this interval, specified in milliseconds
      * @param transferMode Whether to report trace events as series of dataCollected events or to save trace to a
      * stream (defaults to <code>ReportEvents</code>).
+     * @param streamFormat Trace data format to use. This only applies when using <code>ReturnAsStream</code>
+     * transfer mode (defaults to <code>json</code>).
      * @param streamCompression Compression format to use. This only applies when using <code>ReturnAsStream</code>
      * transfer mode (defaults to <code>none</code>)
      */
     void start(@Optional String categories, @Optional String options,
             @Optional Double bufferUsageReportingInterval, @Optional TransferMode transferMode,
-            @Optional StreamCompression streamCompression, @Optional TraceConfig traceConfig);
+            @Optional StreamFormat streamFormat, @Optional StreamCompression streamCompression,
+            @Optional TraceConfig traceConfig);
 
     /**
      * Start trace events collection.

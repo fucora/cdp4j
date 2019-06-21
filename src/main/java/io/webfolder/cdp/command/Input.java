@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.command;
 
+import java.util.List;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
@@ -27,7 +29,6 @@ import io.webfolder.cdp.type.constant.MouseEventType;
 import io.webfolder.cdp.type.constant.TouchEventType;
 import io.webfolder.cdp.type.input.GestureSourceType;
 import io.webfolder.cdp.type.input.TouchPoint;
-import java.util.List;
 
 @Domain("Input")
 public interface Input {
@@ -81,9 +82,12 @@ public interface Input {
      * (default: 0).
      * @param timestamp Time at which the event occurred.
      * @param button Mouse button (default: "none").
+     * @param buttons A number indicating which buttons are pressed on the mouse when a mouse event is triggered.
+     * Left=1, Right=2, Middle=4, Back=8, Forward=16, None=0.
      * @param clickCount Number of times the mouse button was clicked (default: 0).
      * @param deltaX X delta in CSS pixels for mouse wheel event (default: 0).
      * @param deltaY Y delta in CSS pixels for mouse wheel event (default: 0).
+     * @param pointerType Pointer type (default: "mouse").
      */
     void dispatchMouseEvent(MouseEventType type, Double x, Double y, @Optional Integer modifiers,
             @Optional Double timestamp, @Optional MouseButtonType button,

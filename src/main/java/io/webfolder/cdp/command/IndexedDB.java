@@ -23,6 +23,7 @@ import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
 import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.indexeddb.DatabaseWithObjectStores;
+import io.webfolder.cdp.type.indexeddb.GetMetadataResult;
 import io.webfolder.cdp.type.indexeddb.KeyRange;
 import io.webfolder.cdp.type.indexeddb.RequestDataResult;
 import java.util.List;
@@ -81,6 +82,18 @@ public interface IndexedDB {
     RequestDataResult requestData(String securityOrigin, String databaseName,
             String objectStoreName, String indexName, Integer skipCount, Integer pageSize,
             @Optional KeyRange keyRange);
+
+    /**
+     * Gets metadata of an object store
+     * 
+     * @param securityOrigin Security origin.
+     * @param databaseName Database name.
+     * @param objectStoreName Object store name.
+     * 
+     * @return GetMetadataResult
+     */
+    GetMetadataResult getMetadata(String securityOrigin, String databaseName,
+            String objectStoreName);
 
     /**
      * Requests database with given name in given frame.

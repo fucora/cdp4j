@@ -213,42 +213,42 @@ public class Node {
     }
 
     /**
-     * Attributes of the <code>Element</code>node in the form of flat array<code>[name1, value1, name2, value2]</code>.
+     * Attributes of the <code>Element</code> node in the form of flat array `[name1, value1, name2, value2]`.
      */
     public List<String> getAttributes() {
         return attributes;
     }
 
     /**
-     * Attributes of the <code>Element</code>node in the form of flat array<code>[name1, value1, name2, value2]</code>.
+     * Attributes of the <code>Element</code> node in the form of flat array `[name1, value1, name2, value2]`.
      */
     public void setAttributes(List<String> attributes) {
         this.attributes = attributes;
     }
 
     /**
-     * Document URL that <code>Document</code>or<code>FrameOwner</code> node points to.
+     * Document URL that <code>Document</code> or <code>FrameOwner</code> node points to.
      */
     public String getDocumentURL() {
         return documentURL;
     }
 
     /**
-     * Document URL that <code>Document</code>or<code>FrameOwner</code> node points to.
+     * Document URL that <code>Document</code> or <code>FrameOwner</code> node points to.
      */
     public void setDocumentURL(String documentURL) {
         this.documentURL = documentURL;
     }
 
     /**
-     * Base URL that <code>Document</code>or<code>FrameOwner</code> node uses for URL completion.
+     * Base URL that <code>Document</code> or <code>FrameOwner</code> node uses for URL completion.
      */
     public String getBaseURL() {
         return baseURL;
     }
 
     /**
-     * Base URL that <code>Document</code>or<code>FrameOwner</code> node uses for URL completion.
+     * Base URL that <code>Document</code> or <code>FrameOwner</code> node uses for URL completion.
      */
     public void setBaseURL(String baseURL) {
         this.baseURL = baseURL;

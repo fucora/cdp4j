@@ -41,14 +41,14 @@ public class LayoutTreeNode {
     private Boolean isStackingContext;
 
     /**
-     * The index of the related DOM node in the <code>domNodes</code> array returned by<code>getSnapshot</code>.
+     * The index of the related DOM node in the <code>domNodes</code> array returned by <code>getSnapshot</code>.
      */
     public Integer getDomNodeIndex() {
         return domNodeIndex;
     }
 
     /**
-     * The index of the related DOM node in the <code>domNodes</code> array returned by<code>getSnapshot</code>.
+     * The index of the related DOM node in the <code>domNodes</code> array returned by <code>getSnapshot</code>.
      */
     public void setDomNodeIndex(Integer domNodeIndex) {
         this.domNodeIndex = domNodeIndex;

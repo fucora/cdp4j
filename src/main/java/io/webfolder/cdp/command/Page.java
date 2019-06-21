@@ -18,12 +18,15 @@
  */
 package io.webfolder.cdp.command;
 
+import java.util.List;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
 import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.type.constant.DownloadBehavior;
 import io.webfolder.cdp.type.constant.ImageFormat;
+import io.webfolder.cdp.type.constant.PdfTransferMode;
 import io.webfolder.cdp.type.constant.Platform;
 import io.webfolder.cdp.type.constant.SnapshotType;
 import io.webfolder.cdp.type.constant.TargetLifecycleState;
@@ -39,9 +42,9 @@ import io.webfolder.cdp.type.page.GetLayoutMetricsResult;
 import io.webfolder.cdp.type.page.GetNavigationHistoryResult;
 import io.webfolder.cdp.type.page.GetResourceContentResult;
 import io.webfolder.cdp.type.page.NavigateResult;
+import io.webfolder.cdp.type.page.PrintToPDFResult;
 import io.webfolder.cdp.type.page.TransitionType;
 import io.webfolder.cdp.type.page.Viewport;
-import java.util.List;
 
 /**
  * Actions and events related to the inspected page belong to the page domain
@@ -158,6 +161,10 @@ public interface Page {
      */
     GetAppManifestResult getAppManifest();
 
+    @Experimental
+    @Returns("errors")
+    List<String> getInstallabilityErrors();
+
     /**
      * Returns all browser cookies. Depending on the backend support, will return detailed cookie
      * information in the <code>cookies</code> field.
@@ -189,6 +196,11 @@ public interface Page {
      * @return GetNavigationHistoryResult
      */
     GetNavigationHistoryResult getNavigationHistory();
+
+    /**
+     * Resets navigation history for the current page.
+     */
+    void resetNavigationHistory();
 
     /**
      * Returns content of the given resource.
@@ -264,20 +276,21 @@ public interface Page {
      * - <code>pageNumber</code>: current page number
      * - <code>totalPages</code>: total pages in the document
      *
-     * For example, <code><span class=title></span></code> would generate span containing the title.
+     * For example, `<span class=title></span>` would generate span containing the title.
      * @param footerTemplate HTML template for the print footer. Should use the same format as the <code>headerTemplate</code>.
      * @param preferCSSPageSize Whether or not to prefer page size as defined by css. Defaults to false,
      * in which case the content will be scaled to fit the paper size.
+     * @param transferMode return as stream
      * 
-     * @return Base64-encoded pdf data.
+     * @return PrintToPDFResult
      */
-    @Returns("data")
-    byte[] printToPDF(@Optional Boolean landscape, @Optional Boolean displayHeaderFooter,
+    PrintToPDFResult printToPDF(@Optional Boolean landscape, @Optional Boolean displayHeaderFooter,
             @Optional Boolean printBackground, @Optional Double scale, @Optional Double paperWidth,
             @Optional Double paperHeight, @Optional Double marginTop, @Optional Double marginBottom,
             @Optional Double marginLeft, @Optional Double marginRight, @Optional String pageRanges,
             @Optional Boolean ignoreInvalidPageRanges, @Optional String headerTemplate,
-            @Optional String footerTemplate, @Optional Boolean preferCSSPageSize);
+            @Optional String footerTemplate, @Optional Boolean preferCSSPageSize,
+            @Experimental @Optional PdfTransferMode transferMode);
 
     /**
      * Reloads given page optionally ignoring the cache.
@@ -300,9 +313,6 @@ public interface Page {
      * 
      */
     void removeScriptToEvaluateOnNewDocument(String identifier);
-
-    @Experimental
-    void requestAppBanner();
 
     /**
      * Acknowledges that a screencast frame has been received by the frontend.
@@ -484,7 +494,7 @@ public interface Page {
     void setWebLifecycleState(TargetLifecycleState state);
 
     /**
-     * Stops sending each frame in the<code>screencastFrame</code>.
+     * Stops sending each frame in the <code>screencastFrame</code>.
      */
     @Experimental
     void stopScreencast();
@@ -519,6 +529,12 @@ public interface Page {
      */
     @Experimental
     void generateTestReport(String message, @Optional String group);
+
+    /**
+     * Pauses page execution. Can be resumed using generic Runtime.runIfWaitingForDebugger.
+     */
+    @Experimental
+    void waitForDebugger();
 
     /**
      * Evaluates given script in every frame upon creation (before loading frame's scripts).
@@ -576,10 +592,9 @@ public interface Page {
     /**
      * Print page as PDF.
      * 
-     * @return Base64-encoded pdf data.
+     * @return PrintToPDFResult
      */
-    @Returns("data")
-    byte[] printToPDF();
+    PrintToPDFResult printToPDF();
 
     /**
      * Reloads given page optionally ignoring the cache.

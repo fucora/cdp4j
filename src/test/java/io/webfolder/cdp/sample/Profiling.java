@@ -29,6 +29,7 @@ import io.webfolder.cdp.listener.EventListener;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 import io.webfolder.cdp.type.constant.TransferMode;
+import io.webfolder.cdp.type.tracing.StreamFormat;
 
 public class Profiling {
 
@@ -43,6 +44,7 @@ public class Profiling {
                           "sampling-frequency=10000",
                           500D,
                           TransferMode.ReportEvents,
+                          StreamFormat.Json,
                           null,
                           null);
 
