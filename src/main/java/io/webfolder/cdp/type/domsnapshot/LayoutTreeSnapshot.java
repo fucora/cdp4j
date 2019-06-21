@@ -27,7 +27,7 @@ import java.util.List;
 public class LayoutTreeSnapshot {
     private List<Integer> nodeIndex = new ArrayList<>();
 
-    private List<Double> bounds = new ArrayList<>();
+    private List<List<Double>> bounds = new ArrayList<>();
 
     private List<Integer> text = new ArrayList<>();
 
@@ -38,6 +38,8 @@ public class LayoutTreeSnapshot {
     private List<Double> scrollRects = new ArrayList<>();
 
     private List<Double> clientRects = new ArrayList<>();
+
+    private List<List<String>> styles = new ArrayList<>();
 
     /**
      * Index of the corresponding node in the <code>NodeTreeSnapshot</code> array returned by <code>captureSnapshot</code>.
@@ -56,14 +58,14 @@ public class LayoutTreeSnapshot {
     /**
      * The absolute position bounding box.
      */
-    public List<Double> getBounds() {
+    public List<List<Double>> getBounds() {
         return bounds;
     }
 
     /**
      * The absolute position bounding box.
      */
-    public void setBounds(List<Double> bounds) {
+    public void setBounds(List<List<Double>> bounds) {
         this.bounds = bounds;
     }
 
@@ -136,4 +138,18 @@ public class LayoutTreeSnapshot {
     public void setClientRects(List<Double> clientRects) {
         this.clientRects = clientRects;
     }
+
+	/**
+	 * Array of indexes specifying computed style strings, filtered according to the <code>computedStyles</code> parameter passed to <code>captureSnapshot</code>.
+	 */
+	public List<List<String>> getStyles() {
+		return styles;
+	}
+
+	/**
+	 * Array of indexes specifying computed style strings, filtered according to the <code>computedStyles</code> parameter passed to <code>captureSnapshot</code>.
+	 */
+	public void setStyles(List<List<String>> styles) {
+		this.styles = styles;
+	}
 }
