@@ -173,10 +173,7 @@ try (SessionFactory factory = launcher.launch(asList("--headless", "--disable-gp
         session.navigate("https://webfolder.io?cdp4j");
         session.waitDocumentReady();
         session.wait(1000);
-        byte[] content = session
-                            .getCommand()
-                            .getPage()
-                            .printToPDF();
+        byte[] content = session.printToPDF();
         write(file, content);
         if (isDesktopSupported()) {
             getDesktop().open(file.toFile());
@@ -196,7 +193,7 @@ Samples
 | [UserAgent](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/UserAgent.java) | [WaitUntil](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/WaitUntil.java) | [XPathSelector](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/XPathSelector.java) | [CodeCoverage](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/CodeCoverage.java) |
 | [PrintToPDF](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/PrintToPDF.java) | [BasicAuthentication](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/BasicAuthentication.java) | [DownloadFile](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/DownloadFile.java) | [Crawler](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Crawler.java) |
 | [MultiProcess](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/MultiProcess.java) | [FollowRedirects](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/FollowRedirects.java) | [CloseSessionOnRedirect](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/CloseSessionOnRedirect.java) | [Readability](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Readability.java) |
-| [InvokeJavaFromJs](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/InvokeJavaFromJs.java) | [InvokeJsFromJava](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/InvokeJsFromJava.java) | [Profiling](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Profiling.java) | []() |
+| [InvokeJavaFromJs](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/InvokeJavaFromJs.java) | [InvokeJsFromJava](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/InvokeJsFromJava.java) | [Profiling](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/Profiling.java) | [PrintPDFtoFile](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/PrintPDFtoFile.java) |
 
 Building cdp4j
 --------------
