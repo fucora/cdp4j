@@ -276,7 +276,7 @@ public interface Page {
      * - <code>pageNumber</code>: current page number
      * - <code>totalPages</code>: total pages in the document
      *
-     * For example, `<span class=title></span>` would generate span containing the title.
+     * For example, <span class=title></span> would generate span containing the title.
      * @param footerTemplate HTML template for the print footer. Should use the same format as the <code>headerTemplate</code>.
      * @param preferCSSPageSize Whether or not to prefer page size as defined by css. Defaults to false,
      * in which case the content will be scaled to fit the paper size.

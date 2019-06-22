@@ -57,6 +57,8 @@ public class InvokeJavaFromJs {
 
             session.evaluate("sendMessage(JSON.stringify({ 'foo' : 'bar' }));");
             session.evaluate("sendMessage(JSON.stringify({ 'hello' : 'world' }));");
+        } finally {
+        	launcher.kill();
         }
     }
 }

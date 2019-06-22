@@ -68,6 +68,8 @@ public class NetworkResponse {
             });
             session.navigate("http://cnn.com");
             session.waitDocumentReady();
+        } finally {
+        	launcher.kill();
         }
     }
 }

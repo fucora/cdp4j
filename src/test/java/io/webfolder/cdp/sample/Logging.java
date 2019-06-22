@@ -44,6 +44,8 @@ public class Logging {
 
             session.evaluate("fetch('https://google.com')");
             session.wait(2000);
+        } finally {
+        	launcher.kill();
         }
     }
 }

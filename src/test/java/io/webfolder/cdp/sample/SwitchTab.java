@@ -68,7 +68,8 @@ public class SwitchTab {
                     session.navigate("https://bing.com");
                 }
             }
+        } finally {
+        	launcher.kill();
         }
     }
 }
-

@@ -46,6 +46,8 @@ public class DownloadFile {
             // click the download link
             session.click("code");
             session.wait(2000 * 200);
+        } finally {
+        	launcher.kill();
         }
     }
 }

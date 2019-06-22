@@ -47,6 +47,8 @@ public class EvaluateOnNewDocument {
             session.navigate(url.toString());
 
             session.wait(500);
+        } finally {
+        	launcher.kill();
         }
     }
 }

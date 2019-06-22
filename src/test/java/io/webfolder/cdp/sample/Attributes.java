@@ -40,6 +40,8 @@ public class Attributes {
             session.setAttribute("input", "value", "bar");
             value = session.getAttribute("input", "value");
             System.out.println("New Value: " + value);
+        } finally {
+        	launcher.kill();
         }
     }
 }

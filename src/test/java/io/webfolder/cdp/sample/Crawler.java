@@ -243,5 +243,7 @@ public class Crawler {
         }
 
         dummySession.close();
+
+        launcher.kill();
     }
 }

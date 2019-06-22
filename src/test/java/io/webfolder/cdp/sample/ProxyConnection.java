@@ -77,6 +77,7 @@ public class ProxyConnection {
             System.out.println(content);
         } finally {
             factory.close();
+            launcher.kill();
         }
     }
 

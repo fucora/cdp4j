@@ -36,6 +36,8 @@ public class XPathSelector {
             String title = session.getText("//title");
 
             System.out.println(title);
+        } finally {
+        	launcher.kill();
         }
     }
 }

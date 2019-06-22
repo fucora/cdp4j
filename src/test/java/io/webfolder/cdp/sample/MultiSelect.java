@@ -64,6 +64,8 @@ public class MultiSelect {
             session.getOptions("select").stream().filter(o -> o.isSelected()).count());
 
             session.wait(1000);
+        } finally {
+        	launcher.kill();
         }
     }
 }

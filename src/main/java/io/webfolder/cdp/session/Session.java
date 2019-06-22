@@ -26,6 +26,7 @@ import static io.webfolder.cdp.event.Events.RuntimeConsoleAPICalled;
 import static io.webfolder.cdp.session.WaitUntil.DomReady;
 import static io.webfolder.cdp.session.WaitUntil.Load;
 import static io.webfolder.cdp.type.constant.ImageFormat.Png;
+import static io.webfolder.cdp.type.constant.PdfTransferMode.ReturnAsStream;
 import static io.webfolder.cdp.type.network.ResourceType.Document;
 import static io.webfolder.cdp.type.network.ResourceType.XHR;
 import static java.lang.Boolean.FALSE;
@@ -36,12 +37,17 @@ import static java.lang.String.valueOf;
 import static java.lang.ThreadLocal.withInitial;
 import static java.lang.reflect.Proxy.newProxyInstance;
 import static java.util.Arrays.asList;
+import static java.util.Base64.getDecoder;
 import static java.util.Locale.ENGLISH;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import static java.nio.file.StandardOpenOption.*;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -60,6 +66,7 @@ import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
 import io.webfolder.cdp.command.CSS;
 import io.webfolder.cdp.command.Emulation;
+import io.webfolder.cdp.command.IO;
 import io.webfolder.cdp.command.Page;
 import io.webfolder.cdp.event.log.EntryAdded;
 import io.webfolder.cdp.event.network.ResponseReceived;
@@ -76,10 +83,12 @@ import io.webfolder.cdp.logger.LoggerFactory;
 import io.webfolder.cdp.type.constant.ImageFormat;
 import io.webfolder.cdp.type.css.SourceRange;
 import io.webfolder.cdp.type.dom.Rect;
+import io.webfolder.cdp.type.io.ReadResult;
 import io.webfolder.cdp.type.log.LogEntry;
 import io.webfolder.cdp.type.network.Response;
 import io.webfolder.cdp.type.page.GetLayoutMetricsResult;
 import io.webfolder.cdp.type.page.NavigateResult;
+import io.webfolder.cdp.type.page.PrintToPDFResult;
 import io.webfolder.cdp.type.page.Viewport;
 import io.webfolder.cdp.type.runtime.RemoteObject;
 
@@ -547,7 +556,64 @@ public class Session implements AutoCloseable,
         }
         return data;
     }
-    
+
+    /**
+     * Print page as PDF.
+     * 
+     * <strong>Performance tip</strong>: Prefer to use {@link #printToPDF(Path)} if pdf content is to big.
+     * 
+     * @return pdf content as a byte array
+     */
+    public byte[] printToPDF() {
+        PrintToPDFResult result = getCommand()
+					                .getPage()
+					                .printToPDF();
+        byte[] content = getDecoder().decode(result.getData());
+        return content;
+    }
+
+    /**
+     * Print PDF content to a file
+     * 
+     * @param file pdf file path
+     */
+    public void printToPDF(Path file) {
+        PrintToPDFResult pdfResult = getCommand()
+						                .getPage()
+						                .printToPDF(null, null,
+						                			null, null,
+						                			null, null,
+						                			null, null,
+						                			null, null,
+						                			null, null,
+						                			null, null,
+						                			null, ReturnAsStream);
+        IO io = getCommand().getIO();
+        String stream = pdfResult.getStream();
+        boolean eof = false;
+        try {
+        	while ( ! eof ) {
+        		ReadResult streamResult = io.read(stream);
+        		eof = streamResult.getEof();
+        		if (streamResult.getBase64Encoded()) {
+        			if ( streamResult.getData() != null &&
+        					! streamResult.getData().isEmpty() ) {
+        				byte[] content = getDecoder().decode(streamResult.getData());
+        				try {
+							Files.write(file, content, APPEND);
+						} catch (IOException e) {
+							throw new CdpException(e);
+						}
+    				}
+    			} else {
+    				throw new CdpException("Inavlid content encoding: it must be base64");
+    			}
+    		}
+    	} finally {
+    		io.close(stream);
+		}
+    }
+
     /**
      * Causes the current thread to wait until waiting time elapses.
      * 

@@ -67,6 +67,8 @@ public class BingTranslator {
                     .wait(1000);
 
             System.out.println(session.getValue("#tta_output"));
+        } finally {
+        	launcher.kill();
         }
     }
 }

@@ -45,6 +45,8 @@ public class Screenshot {
             session.activate();
             byte[] data = session.captureScreenshot();
             write(file, data);
+        } finally {
+        	launcher.kill();
         }
 
         if (isDesktopSupported()) {

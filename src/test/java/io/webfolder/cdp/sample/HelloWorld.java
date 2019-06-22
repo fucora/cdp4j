@@ -33,6 +33,8 @@ public class HelloWorld {
             session.waitDocumentReady();
             String content = session.getContent();
             System.out.println(content);
+        } finally {
+        	launcher.kill();
         }
     }
 }

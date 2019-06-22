@@ -44,6 +44,8 @@ public class WaitUntil {
                 String time = session.getText("#time");
                 System.out.println(time);
             }
+        } finally {
+        	launcher.kill();
         }
     }
 }

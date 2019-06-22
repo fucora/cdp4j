@@ -45,6 +45,8 @@ public class UserAgent {
             Map headers = (Map) json.get("headers");
 
             System.out.println(headers.get("User-Agent"));
+        } finally {
+        	launcher.kill();
         }
     }
 }

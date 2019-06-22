@@ -77,6 +77,8 @@ public class InvokeJsFromJava {
             List<Double> list = utility.increment(asList(0, 1, 2, 3), 1);
             System.out.println(list);
             session.wait(500);
+        } finally {
+        	launcher.kill();
         }
     }
 }

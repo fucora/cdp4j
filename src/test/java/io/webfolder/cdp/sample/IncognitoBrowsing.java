@@ -69,6 +69,8 @@ public class IncognitoBrowsing {
             factory.disposeBrowserContext(secondContext);
 
             launcher.getProcessManager().kill();
+        } finally {
+        	launcher.kill();
         }
     }
 }

@@ -43,6 +43,8 @@ public class CheckBox {
             session.setChecked("input[name='red']", false);
             System.out.println("Checked: " + session.isChecked("input[name='red']"));
             session.wait(1000);
+        } finally {
+        	launcher.kill();
         }
     }
 }

@@ -42,6 +42,8 @@ public class SharedSession {
                 secondSession.wait(1000);
                 System.out.println(session2);
             }
+        } finally {
+        	launcher.kill();
         }
     }
 }

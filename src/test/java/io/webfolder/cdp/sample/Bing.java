@@ -46,6 +46,8 @@ public class Bing {
             System.out.println("Path name    : " + session.getPathname());
     
             System.out.println(firstResult);            
+        } finally {
+        	launcher.kill();
         }
     }
 }

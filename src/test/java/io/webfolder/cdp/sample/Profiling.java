@@ -79,6 +79,8 @@ public class Profiling {
             System.out.println("Tracing ended");
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } finally {
+        	launcher.kill();
         }
     }
 }
