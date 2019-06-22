@@ -89,7 +89,7 @@ class MessageAdapter {
 
     void onMessage(final String data, boolean async) throws Exception {
         Runnable runnable = () -> {
-            log.debug(data);
+            log.debug("<-- {}", data);
             JsonElement  json = gson.fromJson(data, JsonElement.class);
             JsonObject object = json.getAsJsonObject();
             JsonElement idElement = object.get("id");
@@ -147,8 +147,9 @@ class MessageAdapter {
     }
 
     Map<String, Events> listEvents() {
-        Map<String, Events> map = new HashMap<>();
-        for (Events next : Events.values()) {
+        Events[] values = Events.values();
+        Map<String, Events> map = new HashMap<>(values.length);
+        for (Events next : values) {
             map.put(next.domain + "." + next.name, next);
         }
         return unmodifiableMap(map);

@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.session;
 
-import static java.lang.String.format;
 import static java.util.Base64.getDecoder;
 
 import java.lang.reflect.InvocationHandler;
@@ -98,22 +97,20 @@ class SessionInvocationHandler implements InvocationHandler {
         final String command = method.getName();
 
         final boolean hasArgs = args != null && args.length > 0;
-        final boolean voidMethod = void.class.equals(method.getReturnType());
-
-        boolean enable = "enable".intern() == command && voidMethod;
+        final boolean isVoid  = void.class.equals(method.getReturnType());
 
         // it's unnecessary to call enable command more than once.
+        boolean enable = isVoid && command.equals("enable");
         if (enable && enabledDomains.contains(domain)) {
             return null;
         }
 
-        boolean disable = "disable".intern() == command && voidMethod;
-
+        boolean disable = isVoid && "disable".equals(command);
         if (disable) {
             enabledDomains.remove(domain);
         }
 
-        Map<String, Object> params = new HashMap<>(hasArgs ? args.length : 0);
+        Map<String, Object> params = hasArgs ? new HashMap<>(args.length) : null;
 
         if (hasArgs) {
             int argIndex = 0;
@@ -127,12 +124,14 @@ class SessionInvocationHandler implements InvocationHandler {
         int id = counter.incrementAndGet();
         Map<String, Object> map = new HashMap<>(3);
         map.put("id"    , id);
-        map.put("method", format("%s.%s", domain, command));
-        map.put("params", params);
+        map.put("method", domain + "." + command);
+        if (hasArgs) {
+            map.put("params", params);
+        }
 
         String json = gson.toJson(map);
 
-        log.debug(json);
+        log.debug("--> {}", json);
 
         WSContext context = null;
 
@@ -161,14 +160,14 @@ class SessionInvocationHandler implements InvocationHandler {
 
         Class<?> retType = method.getReturnType();
 
-        if (voidMethod || retType.equals(Void.class)) {
+        if (isVoid || retType.equals(Void.class)) {
             return null;
         }
 
         JsonElement data = context.getData();
 
         String returns = method.isAnnotationPresent(Returns.class) ?
-                    method.getAnnotation(Returns.class).value() : null;
+                             method.getAnnotation(Returns.class).value() : null;
 
         if (data == null) {
             return null;
@@ -234,6 +233,7 @@ class SessionInvocationHandler implements InvocationHandler {
             try {
                 context.setData(null);
             } catch (Throwable t) {
+                // ignore
             }
         }
     }
