@@ -280,10 +280,11 @@ public class SessionFactory implements AutoCloseable {
                                         this, listeners,
                                         loggerFactory, false,
                                         browserSession, getMajorVersion());
-        WSAdapter wsAdapter = new WSAdapter(gson, contexts,
+        MessageAdapter adapter = new MessageAdapter(gson, contexts,
                                                 listeners, threadPool,
                                                 loggerFactory.getLogger("cdp4j.ws.response"));
-        wsAdapter.setSession(session);
+        adapter.setSession(session);
+        WSAdapter wsAdapter = new WSAdapter(adapter);
         wsAdapters.put(sessionId, wsAdapter);
         sessions.put(sessionId, session);
 
@@ -326,10 +327,10 @@ public class SessionFactory implements AutoCloseable {
             }
             Map<Integer, WSContext> contexts = new ConcurrentHashMap<>();
             List<EventListener> listeners = new CopyOnWriteArrayList<>();
-            WSAdapter adapter = new WSAdapter(gson, contexts,
-                                        listeners, threadPool,
-                                        loggerFactory.getLogger("cdp4j.ws.response"));
-            webSocket.addListener(adapter);
+            MessageAdapter adapter = new MessageAdapter(gson, contexts,
+                                                        listeners, threadPool,
+                                                        loggerFactory.getLogger("cdp4j.ws.response"));
+            webSocket.addListener(new WSAdapter(adapter));
             try {
                 webSocket.connect();
             } catch (WebSocketException e) {
