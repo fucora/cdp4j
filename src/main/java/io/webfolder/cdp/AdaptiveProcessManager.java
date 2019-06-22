@@ -42,6 +42,7 @@ public class AdaptiveProcessManager extends ProcessManager {
 
     private CdpLogger logger = new CdpLoggerFactory().getLogger("cdp4j.process-manager");
     
+    @SuppressWarnings("deprecation")
     public AdaptiveProcessManager() {
         if ( ! JAVA_8 ) {
            processManager = new DefaultProcessManager();

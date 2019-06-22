@@ -26,6 +26,12 @@ import org.jvnet.winp.WinProcess;
 
 import io.webfolder.cdp.exception.CdpException;
 
+/**
+ * This class will be removed after version 4.0
+ * 
+ * Prefer to use {@link TaskKillProcessManager} if you are using Java 8.
+ */
+@Deprecated
 public class WindowsProcessManager extends ProcessManager {
 
     private int pid;
