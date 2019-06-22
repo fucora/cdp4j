@@ -57,7 +57,7 @@ class TargetListener implements EventListener {
                     WSAdapter wsAdapter = wsAdapters.get(session.getId());
                     if ( wsAdapter != null ) {
                         try {
-                            wsAdapter.getAdapter().onMessage(receivedMessage.getMessage(), false);
+                            wsAdapter.getAdapter().processSync(receivedMessage.getMessage());
                         } catch (Exception e) {
                             throw new CdpException(e);
                         }

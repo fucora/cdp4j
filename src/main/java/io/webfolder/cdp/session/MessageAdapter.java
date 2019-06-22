@@ -19,6 +19,7 @@
 package io.webfolder.cdp.session;
 
 import static java.lang.Integer.parseInt;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Collections.unmodifiableMap;
 
 import java.util.HashMap;
@@ -87,10 +88,21 @@ class MessageAdapter {
         this.log       = log; 
     }
 
-    void onMessage(final String data, boolean async) throws Exception {
+    void processSync(final String content) throws Exception {
+        Runnable task = getTask(content, null);
+        task.run();
+    }
+
+    void processAsync(final byte[] data) throws Exception {
+        Runnable task = getTask(null, data);
+        executor.execute(task);
+    }
+
+    Runnable getTask(String str, byte[] byteArray) {
         Runnable runnable = () -> {
-            log.debug("<-- {}", data);
-            JsonElement  json = gson.fromJson(data, JsonElement.class);
+            String content = byteArray != null ? new String(byteArray, 0, byteArray.length, UTF_8) : str;
+            log.debug("<-- {}", content);
+            JsonElement  json = gson.fromJson(content, JsonElement.class);
             JsonObject object = json.getAsJsonObject();
             JsonElement idElement = object.get("id");
             if ( idElement != null ) {
@@ -139,11 +151,7 @@ class MessageAdapter {
                 }
             }
         };
-        if (async) {
-            executor.execute(runnable);
-        } else {
-            runnable.run();
-        }
+        return runnable;
     }
 
     Map<String, Events> listEvents() {

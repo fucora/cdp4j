@@ -321,6 +321,7 @@ public class SessionFactory implements AutoCloseable {
             webSocket = null;
             try {
                 webSocket = factory.createSocket(webSocketDebuggerUrl);
+                webSocket.setDirectTextMessage(true);
                 webSocket.setPayloadMask(new ZeroMasker());
             } catch (IOException e) {
                 throw new CdpException(e);

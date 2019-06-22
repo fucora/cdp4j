@@ -106,9 +106,6 @@ class SessionInvocationHandler implements InvocationHandler {
         }
 
         boolean disable = isVoid && "disable".equals(command);
-        if (disable) {
-            enabledDomains.remove(domain);
-        }
 
         Map<String, Object> params = hasArgs ? new HashMap<>(args.length) : null;
 
@@ -156,22 +153,21 @@ class SessionInvocationHandler implements InvocationHandler {
 
         if (enable) {
             enabledDomains.add(domain);
+        } else if (disable) {
+            enabledDomains.remove(domain);
         }
 
-        Class<?> retType = method.getReturnType();
-
-        if (isVoid || retType.equals(Void.class)) {
+        if (isVoid) {
             return null;
         }
 
         JsonElement data = context.getData();
-
-        String returns = method.isAnnotationPresent(Returns.class) ?
-                             method.getAnnotation(Returns.class).value() : null;
-
         if (data == null) {
             return null;
         }
+
+        String returns = method.isAnnotationPresent(Returns.class) ?
+                             method.getAnnotation(Returns.class).value() : null;
 
         if ( ! data.isJsonObject() ) {
             throw new CdpException("invalid response");
@@ -193,6 +189,8 @@ class SessionInvocationHandler implements InvocationHandler {
 
             JsonElement jsonElement = resultObject.get(returns);
 
+            Class<?> retType = method.getReturnType();
+
             if ( jsonElement != null && jsonElement.isJsonPrimitive() ) {
                 if (String.class.equals(retType)) {
                     return resultObject.get(returns).getAsString();
@@ -205,7 +203,7 @@ class SessionInvocationHandler implements InvocationHandler {
                 }
             }
 
-            if (jsonElement != null && byte[].class.equals(genericReturnType)) {
+            if ( jsonElement != null && byte[].class.equals(genericReturnType) ) {
                 String encoded = gson.fromJson(jsonElement, String.class);
                 if (encoded == null || encoded.trim().isEmpty()) {
                     return null;

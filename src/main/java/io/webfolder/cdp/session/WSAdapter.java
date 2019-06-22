@@ -30,8 +30,8 @@ class WSAdapter extends WebSocketAdapter {
     }
 
     @Override
-    public void onTextMessage(WebSocket websocket, String text) throws Exception {
-        adapter.onMessage(text, true);
+    public void onTextMessage(WebSocket websocket, byte[] data) throws Exception {
+        adapter.processAsync(data);
     }
 
     public MessageAdapter getAdapter() {
