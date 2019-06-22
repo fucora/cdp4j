@@ -37,7 +37,7 @@ public class XPathSelector {
 
             System.out.println(title);
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

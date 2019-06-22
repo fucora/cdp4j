@@ -48,7 +48,7 @@ public class Select {
             Optional<Option> selected = session.getOptions("select").stream().filter(o -> o.isSelected()).findFirst();
             System.out.println("Selected        : " + selected.get().getText());
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
 
     }

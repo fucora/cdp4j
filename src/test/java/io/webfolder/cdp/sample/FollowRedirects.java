@@ -77,7 +77,7 @@ public class FollowRedirects {
 
             System.out.println(session.evaluate("document.location.href"));
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

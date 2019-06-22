@@ -43,7 +43,7 @@ public class SharedSession {
                 System.out.println(session2);
             }
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

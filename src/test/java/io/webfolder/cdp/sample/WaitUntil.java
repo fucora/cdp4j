@@ -45,7 +45,7 @@ public class WaitUntil {
                 System.out.println(time);
             }
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

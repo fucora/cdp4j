@@ -68,7 +68,7 @@ public class CloseSessionOnRedirect {
                 session.waitDocumentReady();
             }
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

@@ -80,7 +80,7 @@ public class Profiling {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

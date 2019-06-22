@@ -47,7 +47,7 @@ public class Bing {
     
             System.out.println(firstResult);            
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

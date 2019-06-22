@@ -70,7 +70,7 @@ public class IncognitoBrowsing {
 
             launcher.getProcessManager().kill();
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

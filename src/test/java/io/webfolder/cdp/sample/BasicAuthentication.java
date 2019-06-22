@@ -87,7 +87,7 @@ public class BasicAuthentication {
             System.out.println("Authenticated: " + authenticated);
             System.out.println("User:" + user);
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

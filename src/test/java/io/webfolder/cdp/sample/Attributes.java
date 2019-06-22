@@ -41,7 +41,7 @@ public class Attributes {
             value = session.getAttribute("input", "value");
             System.out.println("New Value: " + value);
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

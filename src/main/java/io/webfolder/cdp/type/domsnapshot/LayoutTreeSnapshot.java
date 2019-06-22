@@ -139,17 +139,17 @@ public class LayoutTreeSnapshot {
         this.clientRects = clientRects;
     }
 
-	/**
-	 * Array of indexes specifying computed style strings, filtered according to the <code>computedStyles</code> parameter passed to <code>captureSnapshot</code>.
-	 */
-	public List<List<String>> getStyles() {
-		return styles;
-	}
+    /**
+     * Array of indexes specifying computed style strings, filtered according to the <code>computedStyles</code> parameter passed to <code>captureSnapshot</code>.
+     */
+    public List<List<String>> getStyles() {
+        return styles;
+    }
 
-	/**
-	 * Array of indexes specifying computed style strings, filtered according to the <code>computedStyles</code> parameter passed to <code>captureSnapshot</code>.
-	 */
-	public void setStyles(List<List<String>> styles) {
-		this.styles = styles;
-	}
+    /**
+     * Array of indexes specifying computed style strings, filtered according to the <code>computedStyles</code> parameter passed to <code>captureSnapshot</code>.
+     */
+    public void setStyles(List<List<String>> styles) {
+        this.styles = styles;
+    }
 }

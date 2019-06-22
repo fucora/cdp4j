@@ -85,7 +85,7 @@ public class CodeCoverage {
 
             profiler.disable();
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

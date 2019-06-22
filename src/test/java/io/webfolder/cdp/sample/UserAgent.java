@@ -46,7 +46,7 @@ public class UserAgent {
 
             System.out.println(headers.get("User-Agent"));
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

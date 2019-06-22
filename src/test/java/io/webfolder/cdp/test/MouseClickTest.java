@@ -42,7 +42,7 @@ public class MouseClickTest {
             Boolean clicked = session.getVariable("clicked", Boolean.class);
             assertTrue(clicked);
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

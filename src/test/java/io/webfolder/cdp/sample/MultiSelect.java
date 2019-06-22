@@ -65,7 +65,7 @@ public class MultiSelect {
 
             session.wait(1000);
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

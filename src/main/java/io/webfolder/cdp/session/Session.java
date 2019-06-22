@@ -566,8 +566,8 @@ public class Session implements AutoCloseable,
      */
     public byte[] printToPDF() {
         PrintToPDFResult result = getCommand()
-					                .getPage()
-					                .printToPDF();
+                                    .getPage()
+                                    .printToPDF();
         byte[] content = getDecoder().decode(result.getData());
         return content;
     }
@@ -579,39 +579,39 @@ public class Session implements AutoCloseable,
      */
     public void printToPDF(Path file) {
         PrintToPDFResult pdfResult = getCommand()
-						                .getPage()
-						                .printToPDF(null, null,
-						                			null, null,
-						                			null, null,
-						                			null, null,
-						                			null, null,
-						                			null, null,
-						                			null, null,
-						                			null, ReturnAsStream);
+                                        .getPage()
+                                        .printToPDF(null, null,
+                                                    null, null,
+                                                    null, null,
+                                                    null, null,
+                                                    null, null,
+                                                    null, null,
+                                                    null, null,
+                                                    null, ReturnAsStream);
         IO io = getCommand().getIO();
         String stream = pdfResult.getStream();
         boolean eof = false;
         try {
-        	while ( ! eof ) {
-        		ReadResult streamResult = io.read(stream);
-        		eof = streamResult.getEof();
-        		if (streamResult.getBase64Encoded()) {
-        			if ( streamResult.getData() != null &&
-        					! streamResult.getData().isEmpty() ) {
-        				byte[] content = getDecoder().decode(streamResult.getData());
-        				try {
-							Files.write(file, content, APPEND);
-						} catch (IOException e) {
-							throw new CdpException(e);
-						}
-    				}
-    			} else {
-    				throw new CdpException("Inavlid content encoding: it must be base64");
-    			}
-    		}
-    	} finally {
-    		io.close(stream);
-		}
+            while ( ! eof ) {
+                ReadResult streamResult = io.read(stream);
+                eof = streamResult.getEof();
+                if (streamResult.getBase64Encoded()) {
+                    if ( streamResult.getData() != null &&
+                            ! streamResult.getData().isEmpty() ) {
+                        byte[] content = getDecoder().decode(streamResult.getData());
+                        try {
+                            Files.write(file, content, APPEND);
+                        } catch (IOException e) {
+                            throw new CdpException(e);
+                        }
+                    }
+                } else {
+                    throw new CdpException("Inavlid content encoding: it must be base64");
+                }
+            }
+        } finally {
+            io.close(stream);
+        }
     }
 
     /**

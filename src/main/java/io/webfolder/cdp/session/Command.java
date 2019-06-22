@@ -227,19 +227,19 @@ public class Command {
     }
 
     public BackgroundService getBackgroundService() {
-    	return getProxy(BackgroundService.class);
+        return getProxy(BackgroundService.class);
     }
 
     public Cast getCast() {
-    	return getProxy(Cast.class);
+        return getProxy(Cast.class);
     }
 
     public WebAudio getWebAudio() {
-    	return getProxy(WebAudio.class);
+        return getProxy(WebAudio.class);
     }
 
     public WebAuthn WebAuthn() {
-    	return getProxy(WebAuthn.class);
+        return getProxy(WebAuthn.class);
     }
 
     @SuppressWarnings("unchecked")

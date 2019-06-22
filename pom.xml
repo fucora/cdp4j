@@ -269,10 +269,10 @@
     <version>1.0.5</version>
     <scope>provided</scope>
     <exclusions>
-    	<exclusion>
-    		<groupId>org.javadelight</groupId>
-    		<artifactId>delight-nashorn-sandbox</artifactId>
-    	</exclusion>
+        <exclusion>
+            <groupId>org.javadelight</groupId>
+            <artifactId>delight-nashorn-sandbox</artifactId>
+        </exclusion>
     </exclusions>
   </dependency>
  </dependencies>

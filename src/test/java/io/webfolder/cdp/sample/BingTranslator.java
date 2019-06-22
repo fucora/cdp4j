@@ -62,13 +62,13 @@ public class BingTranslator {
                 .wait(500);
 
             session.focus("#tta_input")
-            		.wait(100)
+                    .wait(100)
                     .sendKeys("hello world")
                     .wait(1000);
 
             System.out.println(session.getValue("#tta_output"));
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

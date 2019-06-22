@@ -78,7 +78,7 @@ public class InvokeJsFromJava {
             System.out.println(list);
             session.wait(500);
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

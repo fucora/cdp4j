@@ -36,7 +36,7 @@ public class SendKeys {
             session.sendEnter();
             session.wait(2000);
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

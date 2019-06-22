@@ -69,7 +69,7 @@ public class SwitchTab {
                 }
             }
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }

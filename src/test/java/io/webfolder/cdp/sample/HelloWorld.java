@@ -34,7 +34,7 @@ public class HelloWorld {
             String content = session.getContent();
             System.out.println(content);
         } finally {
-        	launcher.kill();
+            launcher.kill();
         }
     }
 }
