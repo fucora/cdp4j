@@ -18,20 +18,19 @@
  */
 package io.webfolder.cdp.type.dom;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Box model
  */
 public class BoxModel {
-    private List<Double> content = new ArrayList<>();
+    private List<Double> content;
 
-    private List<Double> padding = new ArrayList<>();
+    private List<Double> padding;
 
-    private List<Double> border = new ArrayList<>();
+    private List<Double> border;
 
-    private List<Double> margin = new ArrayList<>();
+    private List<Double> margin;
 
     private Integer width;
 

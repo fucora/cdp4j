@@ -18,9 +18,9 @@
  */
 package io.webfolder.cdp.type.browser;
 
-import io.webfolder.cdp.annotation.Experimental;
-import java.util.ArrayList;
 import java.util.List;
+
+import io.webfolder.cdp.annotation.Experimental;
 
 /**
  * Chrome histogram
@@ -33,7 +33,7 @@ public class Histogram {
 
     private Integer count;
 
-    private List<Bucket> buckets = new ArrayList<>();
+    private List<Bucket> buckets;
 
     /**
      * Name.

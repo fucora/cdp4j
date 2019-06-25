@@ -18,14 +18,13 @@
  */
 package io.webfolder.cdp.type.css;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Selector list data
  */
 public class SelectorList {
-    private List<Value> selectors = new ArrayList<>();
+    private List<Value> selectors;
 
     private String text;
 

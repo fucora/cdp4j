@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.event.debugger;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.webfolder.cdp.annotation.Domain;
@@ -34,7 +33,7 @@ import io.webfolder.cdp.type.runtime.StackTraceId;
 @Domain("Debugger")
 @EventName("paused")
 public class Paused {
-    private List<CallFrame> callFrames = new ArrayList<>();
+    private List<CallFrame> callFrames;
 
     private PauseReason reason;
 

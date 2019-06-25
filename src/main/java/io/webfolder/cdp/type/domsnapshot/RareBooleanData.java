@@ -18,11 +18,10 @@
  */
 package io.webfolder.cdp.type.domsnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RareBooleanData {
-    private List<Integer> index = new ArrayList<>();
+    private List<Integer> index;
 
     public List<Integer> getIndex() {
         return index;

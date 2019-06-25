@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.css;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +26,7 @@ import java.util.List;
 public class RuleMatch {
     private CSSRule rule;
 
-    private List<Integer> matchingSelectors = new ArrayList<>();
+    private List<Integer> matchingSelectors;
 
     /**
      * CSS rule in the match.

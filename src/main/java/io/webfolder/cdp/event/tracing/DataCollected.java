@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.event.tracing;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +33,7 @@ import io.webfolder.cdp.annotation.EventName;
 @EventName("dataCollected")
 public class DataCollected {
 
-    private List<Map<String, Object>> value = new ArrayList<>();
+    private List<Map<String, Object>> value;
 
     public List<Map<String, Object>> getValue() {
         return value;

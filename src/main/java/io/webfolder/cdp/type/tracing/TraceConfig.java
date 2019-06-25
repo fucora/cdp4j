@@ -18,9 +18,9 @@
  */
 package io.webfolder.cdp.type.tracing;
 
-import io.webfolder.cdp.type.constant.TraceRecordMode;
-import java.util.ArrayList;
 import java.util.List;
+
+import io.webfolder.cdp.type.constant.TraceRecordMode;
 
 public class TraceConfig {
     private TraceRecordMode recordMode;
@@ -31,11 +31,11 @@ public class TraceConfig {
 
     private Boolean enableArgumentFilter;
 
-    private List<String> includedCategories = new ArrayList<>();
+    private List<String> includedCategories;
 
-    private List<String> excludedCategories = new ArrayList<>();
+    private List<String> excludedCategories;
 
-    private List<String> syntheticDelays = new ArrayList<>();
+    private List<String> syntheticDelays;
 
     private MemoryDumpConfig memoryDumpConfig;
 

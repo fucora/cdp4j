@@ -111,7 +111,6 @@ public class Launcher extends AbstractLauncher {
                 	}
                 }
             }
-            throw new CdpException("Unable to find chrome.exe");
         } catch (Throwable e) {
             // ignore
         }
@@ -124,17 +123,7 @@ public class Launcher extends AbstractLauncher {
      * @return {@code true} if browser is found on predefined paths
      */
     public boolean isChromeInstalled() {
-    	String path = null;
-    	try {
-    		path = findChrome();
-    	} catch (CdpException e) {
-    		if ("Unable to find chrome.exe".equals(e.getMessage())) {
-    			// ignore
-    		} else {
-    			throw e;
-    		}
-    	}
-    	return path != null ? true : false;
+    	return findChrome() != null ? true : false;
     }
 
     protected List<String> getChromeWinPaths() {

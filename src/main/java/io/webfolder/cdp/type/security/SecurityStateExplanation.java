@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.security;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,9 +34,9 @@ public class SecurityStateExplanation {
 
     private MixedContentType mixedContentType;
 
-    private List<String> certificate = new ArrayList<>();
+    private List<String> certificate;
 
-    private List<String> recommendations = new ArrayList<>();
+    private List<String> recommendations;
 
     /**
      * Security state representing the severity of the factor being explained.

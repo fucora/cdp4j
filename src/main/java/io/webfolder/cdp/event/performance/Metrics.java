@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.event.performance;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.webfolder.cdp.annotation.Domain;
@@ -31,7 +30,7 @@ import io.webfolder.cdp.type.performance.Metric;
 @Domain("Performance")
 @EventName("metrics")
 public class Metrics {
-    private List<Metric> metrics = new ArrayList<>();
+    private List<Metric> metrics;
 
     private String title;
 

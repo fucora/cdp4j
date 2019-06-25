@@ -18,9 +18,9 @@
  */
 package io.webfolder.cdp.type.profiler;
 
-import io.webfolder.cdp.type.runtime.CallFrame;
-import java.util.ArrayList;
 import java.util.List;
+
+import io.webfolder.cdp.type.runtime.CallFrame;
 
 /**
  * Profile node
@@ -33,11 +33,11 @@ public class ProfileNode {
 
     private Integer hitCount;
 
-    private List<Integer> children = new ArrayList<>();
+    private List<Integer> children;
 
     private String deoptReason;
 
-    private List<PositionTickInfo> positionTicks = new ArrayList<>();
+    private List<PositionTickInfo> positionTicks;
 
     /**
      * Unique id of the node.

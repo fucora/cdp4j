@@ -18,11 +18,10 @@
  */
 package io.webfolder.cdp.type.network;
 
-import io.webfolder.cdp.annotation.Experimental;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import io.webfolder.cdp.annotation.Experimental;
 
 /**
  * Information about a signed exchange header
@@ -37,9 +36,9 @@ public class SignedExchangeHeader {
 
     private Integer responseCode;
 
-    private Map<String, Object> responseHeaders = new HashMap<>();
+    private Map<String, Object> responseHeaders;
 
-    private List<SignedExchangeSignature> signatures = new ArrayList<>();
+    private List<SignedExchangeSignature> signatures;
 
     /**
      * Signed exchange request URL.

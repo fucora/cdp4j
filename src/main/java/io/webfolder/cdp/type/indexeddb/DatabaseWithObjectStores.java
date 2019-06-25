@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.indexeddb;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ public class DatabaseWithObjectStores {
 
     private Double version;
 
-    private List<ObjectStore> objectStores = new ArrayList<>();
+    private List<ObjectStore> objectStores;
 
     /**
      * Database name.

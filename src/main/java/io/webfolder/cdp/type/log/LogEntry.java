@@ -18,12 +18,12 @@
  */
 package io.webfolder.cdp.type.log;
 
+import java.util.List;
+
 import io.webfolder.cdp.type.constant.LogEntrySeverity;
 import io.webfolder.cdp.type.constant.LogEntrySource;
 import io.webfolder.cdp.type.runtime.RemoteObject;
 import io.webfolder.cdp.type.runtime.StackTrace;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Log entry
@@ -47,7 +47,7 @@ public class LogEntry {
 
     private String workerId;
 
-    private List<RemoteObject> args = new ArrayList<>();
+    private List<RemoteObject> args;
 
     /**
      * Log entry source.

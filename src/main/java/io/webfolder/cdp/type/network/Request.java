@@ -18,10 +18,10 @@
  */
 package io.webfolder.cdp.type.network;
 
+import java.util.Map;
+
 import io.webfolder.cdp.type.constant.ReferrerPolicy;
 import io.webfolder.cdp.type.security.MixedContentType;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * HTTP request data
@@ -33,7 +33,7 @@ public class Request {
 
     private String method;
 
-    private Map<String, Object> headers = new HashMap<>();
+    private Map<String, Object> headers;
 
     private String postData;
 

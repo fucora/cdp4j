@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.animation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +26,7 @@ import java.util.List;
 public class KeyframesRule {
     private String name;
 
-    private List<KeyframeStyle> keyframes = new ArrayList<>();
+    private List<KeyframeStyle> keyframes;
 
     /**
      * CSS keyframed animation's name.

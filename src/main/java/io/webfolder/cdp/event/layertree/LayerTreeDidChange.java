@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.event.layertree;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.webfolder.cdp.annotation.Domain;
@@ -28,7 +27,7 @@ import io.webfolder.cdp.type.layertree.Layer;
 @Domain("LayerTree")
 @EventName("layerTreeDidChange")
 public class LayerTreeDidChange {
-    private List<Layer> layers = new ArrayList<>();
+    private List<Layer> layers;
 
     /**
      * Layer tree, absent if not in the comspositing mode.

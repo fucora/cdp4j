@@ -18,16 +18,16 @@
  */
 package io.webfolder.cdp.type.css;
 
-import io.webfolder.cdp.annotation.Experimental;
-import java.util.ArrayList;
 import java.util.List;
+
+import io.webfolder.cdp.annotation.Experimental;
 
 /**
  * A subset of the full ComputedStyle as defined by the request whitelist
  */
 @Experimental
 public class ComputedStyle {
-    private List<CSSComputedStyleProperty> properties = new ArrayList<>();
+    private List<CSSComputedStyleProperty> properties;
 
     public List<CSSComputedStyleProperty> getProperties() {
         return properties;

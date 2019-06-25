@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.backgroundservice;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BackgroundServiceEvent {
@@ -34,7 +33,7 @@ public class BackgroundServiceEvent {
 
     private String instanceId;
 
-    private List<EventMetadata> eventMetadata = new ArrayList<>();
+    private List<EventMetadata> eventMetadata;
 
     /**
      * Timestamp of the event (in seconds).

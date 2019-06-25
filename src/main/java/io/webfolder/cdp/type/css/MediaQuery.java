@@ -18,14 +18,13 @@
  */
 package io.webfolder.cdp.type.css;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Media query descriptor
  */
 public class MediaQuery {
-    private List<MediaQueryExpression> expressions = new ArrayList<>();
+    private List<MediaQueryExpression> expressions;
 
     private Boolean active;
 

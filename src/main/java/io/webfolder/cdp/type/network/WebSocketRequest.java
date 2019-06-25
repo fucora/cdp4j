@@ -18,14 +18,13 @@
  */
 package io.webfolder.cdp.type.network;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  * WebSocket request data
  */
 public class WebSocketRequest {
-    private Map<String, Object> headers = new HashMap<>();
+    private Map<String, Object> headers;
 
     /**
      * HTTP request headers.

@@ -18,9 +18,9 @@
  */
 package io.webfolder.cdp.type.page;
 
-import io.webfolder.cdp.annotation.Experimental;
-import java.util.ArrayList;
 import java.util.List;
+
+import io.webfolder.cdp.annotation.Experimental;
 
 /**
  * Information about the Frame hierarchy along with their cached resources
@@ -29,9 +29,9 @@ import java.util.List;
 public class FrameResourceTree {
     private Frame frame;
 
-    private List<FrameResourceTree> childFrames = new ArrayList<>();
+    private List<FrameResourceTree> childFrames;
 
-    private List<FrameResource> resources = new ArrayList<>();
+    private List<FrameResource> resources;
 
     /**
      * Frame information for this tree item.

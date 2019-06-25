@@ -18,26 +18,25 @@
  */
 package io.webfolder.cdp.type.systeminfo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Provides information about the GPU(s) on the system
  */
 public class GPUInfo {
-    private List<GPUDevice> devices = new ArrayList<>();
+    private List<GPUDevice> devices;
 
     private Object auxAttributes;
 
     private Object featureStatus;
 
-    private List<String> driverBugWorkarounds = new ArrayList<>();
+    private List<String> driverBugWorkarounds;
 
-    private List<VideoDecodeAcceleratorCapability> videoDecoding = new ArrayList<>();
+    private List<VideoDecodeAcceleratorCapability> videoDecoding;
 
-    private List<VideoEncodeAcceleratorCapability> videoEncoding = new ArrayList<>();
+    private List<VideoEncodeAcceleratorCapability> videoEncoding;
 
-    private List<ImageDecodeAcceleratorCapability> imageDecoding = new ArrayList<>();
+    private List<ImageDecodeAcceleratorCapability> imageDecoding;
 
     /**
      * The graphics devices on the system. Element 0 is the primary GPU.

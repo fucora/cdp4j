@@ -18,22 +18,21 @@
  */
 package io.webfolder.cdp.type.profiler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Profile
  */
 public class Profile {
-    private List<ProfileNode> nodes = new ArrayList<>();
+    private List<ProfileNode> nodes;
 
     private Double startTime;
 
     private Double endTime;
 
-    private List<Integer> samples = new ArrayList<>();
+    private List<Integer> samples;
 
-    private List<Integer> timeDeltas = new ArrayList<>();
+    private List<Integer> timeDeltas;
 
     /**
      * The list of profile nodes. First item is the root node.

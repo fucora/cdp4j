@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.css;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +26,7 @@ import java.util.List;
 public class InheritedStyleEntry {
     private CSSStyle inlineStyle;
 
-    private List<RuleMatch> matchedCSSRules = new ArrayList<>();
+    private List<RuleMatch> matchedCSSRules;
 
     /**
      * The ancestor node's inline style, if any, in the style inheritance chain.

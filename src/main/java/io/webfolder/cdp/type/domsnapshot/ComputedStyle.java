@@ -18,14 +18,13 @@
  */
 package io.webfolder.cdp.type.domsnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A subset of the full ComputedStyle as defined by the request whitelist
  */
 public class ComputedStyle {
-    private List<NameValue> properties = new ArrayList<>();
+    private List<NameValue> properties;
 
     /**
      * Name/value pairs of computed style properties.

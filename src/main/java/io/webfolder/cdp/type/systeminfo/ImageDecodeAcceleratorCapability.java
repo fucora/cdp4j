@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.systeminfo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +31,7 @@ public class ImageDecodeAcceleratorCapability {
 
     private Size minDimensions;
 
-    private List<SubsamplingFormat> subsamplings = new ArrayList<>();
+    private List<SubsamplingFormat> subsamplings;
 
     /**
      * Image coded, e.g. Jpeg.

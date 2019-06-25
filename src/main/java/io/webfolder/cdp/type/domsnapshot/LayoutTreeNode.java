@@ -18,9 +18,9 @@
  */
 package io.webfolder.cdp.type.domsnapshot;
 
-import io.webfolder.cdp.type.dom.Rect;
-import java.util.ArrayList;
 import java.util.List;
+
+import io.webfolder.cdp.type.dom.Rect;
 
 /**
  * Details of an element in the DOM tree with a LayoutObject
@@ -32,7 +32,7 @@ public class LayoutTreeNode {
 
     private String layoutText;
 
-    private List<InlineTextBox> inlineTextNodes = new ArrayList<>();
+    private List<InlineTextBox> inlineTextNodes;
 
     private Integer styleIndex;
 

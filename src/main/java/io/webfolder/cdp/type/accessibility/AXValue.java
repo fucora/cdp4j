@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.accessibility;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,9 +28,9 @@ public class AXValue {
 
     private Object value;
 
-    private List<AXRelatedNode> relatedNodes = new ArrayList<>();
+    private List<AXRelatedNode> relatedNodes;
 
-    private List<AXValueSource> sources = new ArrayList<>();
+    private List<AXValueSource> sources;
 
     /**
      * The type of this value.

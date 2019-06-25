@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.event.serviceworker;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.webfolder.cdp.annotation.Domain;
@@ -28,7 +27,7 @@ import io.webfolder.cdp.type.serviceworker.ServiceWorkerRegistration;
 @Domain("ServiceWorker")
 @EventName("workerRegistrationUpdated")
 public class WorkerRegistrationUpdated {
-    private List<ServiceWorkerRegistration> registrations = new ArrayList<>();
+    private List<ServiceWorkerRegistration> registrations;
 
     public List<ServiceWorkerRegistration> getRegistrations() {
         return registrations;

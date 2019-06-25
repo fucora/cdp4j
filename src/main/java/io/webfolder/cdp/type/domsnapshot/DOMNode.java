@@ -18,11 +18,11 @@
  */
 package io.webfolder.cdp.type.domsnapshot;
 
+import java.util.List;
+
 import io.webfolder.cdp.type.dom.PseudoType;
 import io.webfolder.cdp.type.dom.ShadowRootType;
 import io.webfolder.cdp.type.domdebugger.EventListener;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A Node in the DOM tree
@@ -44,11 +44,11 @@ public class DOMNode {
 
     private Integer backendNodeId;
 
-    private List<Integer> childNodeIndexes = new ArrayList<>();
+    private List<Integer> childNodeIndexes;
 
-    private List<NameValue> attributes = new ArrayList<>();
+    private List<NameValue> attributes;
 
-    private List<Integer> pseudoElementIndexes = new ArrayList<>();
+    private List<Integer> pseudoElementIndexes;
 
     private Integer layoutNodeIndex;
 
@@ -74,7 +74,7 @@ public class DOMNode {
 
     private Boolean isClickable;
 
-    private List<EventListener> eventListeners = new ArrayList<>();
+    private List<EventListener> eventListeners;
 
     private String currentSourceURL;
 

@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.event.fetch;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.webfolder.cdp.annotation.Domain;
@@ -52,7 +51,7 @@ public class RequestPaused {
 
     private Integer responseStatusCode;
 
-    private List<HeaderEntry> responseHeaders = new ArrayList<>();
+    private List<HeaderEntry> responseHeaders;
 
     private String networkId;
 

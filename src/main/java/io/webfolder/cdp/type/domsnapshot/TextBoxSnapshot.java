@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.domsnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,13 +26,13 @@ import java.util.List;
  * stable and may change between versions
  */
 public class TextBoxSnapshot {
-    private List<Integer> layoutIndex = new ArrayList<>();
+    private List<Integer> layoutIndex;
 
-    private List<List<Double>> bounds = new ArrayList<>();
+    private List<List<Double>> bounds;
 
-    private List<Integer> start = new ArrayList<>();
+    private List<Integer> start;
 
-    private List<Integer> length = new ArrayList<>();
+    private List<Integer> length;
 
     /**
      * Index of the layout tree node that owns this box collection.

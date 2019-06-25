@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.network;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,7 +38,7 @@ public class SecurityDetails {
 
     private String subjectName;
 
-    private List<String> sanList = new ArrayList<>();
+    private List<String> sanList;
 
     private String issuer;
 
@@ -47,7 +46,7 @@ public class SecurityDetails {
 
     private Double validTo;
 
-    private List<SignedCertificateTimestamp> signedCertificateTimestampList = new ArrayList<>();
+    private List<SignedCertificateTimestamp> signedCertificateTimestampList;
 
     private CertificateTransparencyCompliance certificateTransparencyCompliance;
 

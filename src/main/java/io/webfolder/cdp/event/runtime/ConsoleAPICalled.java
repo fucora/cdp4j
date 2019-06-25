@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.event.runtime;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.webfolder.cdp.annotation.Domain;
@@ -35,7 +34,7 @@ import io.webfolder.cdp.type.runtime.StackTrace;
 public class ConsoleAPICalled {
     private ConsoleApiCallType type;
 
-    private List<RemoteObject> args = new ArrayList<>();
+    private List<RemoteObject> args;
 
     private Integer executionContextId;
 

@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.event.dom;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.webfolder.cdp.annotation.Domain;
@@ -35,7 +34,7 @@ import io.webfolder.cdp.type.dom.BackendNode;
 public class DistributedNodesUpdated {
     private Integer insertionPointId;
 
-    private List<BackendNode> distributedNodes = new ArrayList<>();
+    private List<BackendNode> distributedNodes;
 
     /**
      * Insertion point where distrubuted nodes were updated.

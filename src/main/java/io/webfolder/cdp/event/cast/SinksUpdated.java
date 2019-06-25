@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.event.cast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.webfolder.cdp.annotation.Domain;
@@ -33,7 +32,7 @@ import io.webfolder.cdp.type.cast.Sink;
 @Domain("Cast")
 @EventName("sinksUpdated")
 public class SinksUpdated {
-    private List<Sink> sinks = new ArrayList<>();
+    private List<Sink> sinks;
 
     public List<Sink> getSinks() {
         return sinks;

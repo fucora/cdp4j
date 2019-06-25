@@ -18,22 +18,21 @@
  */
 package io.webfolder.cdp.type.domsnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Table containing nodes
  */
 public class NodeTreeSnapshot {
-    private List<Integer> parentIndex = new ArrayList<>();
+    private List<Integer> parentIndex;
 
-    private List<Integer> nodeType = new ArrayList<>();
+    private List<Integer> nodeType;
 
-    private List<Integer> nodeName = new ArrayList<>();
+    private List<Integer> nodeName;
 
-    private List<Integer> nodeValue = new ArrayList<>();
+    private List<Integer> nodeValue;
 
-    private List<String> backendNodeId = new ArrayList<>();
+    private List<String> backendNodeId;
 
     private RareStringData textValue;
 

@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.memory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ public class SamplingProfileNode {
 
     private Double total;
 
-    private List<String> stack = new ArrayList<>();
+    private List<String> stack;
 
     /**
      * Size of the sampled allocation.

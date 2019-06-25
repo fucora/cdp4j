@@ -18,9 +18,9 @@
  */
 package io.webfolder.cdp.type.css;
 
-import io.webfolder.cdp.type.constant.CSSMediaSource;
-import java.util.ArrayList;
 import java.util.List;
+
+import io.webfolder.cdp.type.constant.CSSMediaSource;
 
 /**
  * CSS media rule descriptor
@@ -36,7 +36,7 @@ public class CSSMedia {
 
     private String styleSheetId;
 
-    private List<MediaQuery> mediaList = new ArrayList<>();
+    private List<MediaQuery> mediaList;
 
     /**
      * Media query text.

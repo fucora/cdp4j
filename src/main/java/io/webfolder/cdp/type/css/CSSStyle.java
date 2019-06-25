@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.css;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,9 +26,9 @@ import java.util.List;
 public class CSSStyle {
     private String styleSheetId;
 
-    private List<CSSProperty> cssProperties = new ArrayList<>();
+    private List<CSSProperty> cssProperties;
 
-    private List<ShorthandEntry> shorthandEntries = new ArrayList<>();
+    private List<ShorthandEntry> shorthandEntries;
 
     private String cssText;
 

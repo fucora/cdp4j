@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.applicationcache;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +32,7 @@ public class ApplicationCache {
 
     private Double updateTime;
 
-    private List<ApplicationCacheResource> resources = new ArrayList<>();
+    private List<ApplicationCacheResource> resources;
 
     /**
      * Manifest URL.

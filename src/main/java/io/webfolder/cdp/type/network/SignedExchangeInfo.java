@@ -18,9 +18,9 @@
  */
 package io.webfolder.cdp.type.network;
 
-import io.webfolder.cdp.annotation.Experimental;
-import java.util.ArrayList;
 import java.util.List;
+
+import io.webfolder.cdp.annotation.Experimental;
 
 /**
  * Information about a signed exchange response
@@ -33,7 +33,7 @@ public class SignedExchangeInfo {
 
     private SecurityDetails securityDetails;
 
-    private List<SignedExchangeError> errors = new ArrayList<>();
+    private List<SignedExchangeError> errors;
 
     /**
      * The outer response of signed HTTP exchange which was received from network.

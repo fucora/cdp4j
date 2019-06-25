@@ -18,9 +18,9 @@
  */
 package io.webfolder.cdp.type.heapprofiler;
 
-import io.webfolder.cdp.type.runtime.CallFrame;
-import java.util.ArrayList;
 import java.util.List;
+
+import io.webfolder.cdp.type.runtime.CallFrame;
 
 /**
  * Sampling Heap Profile node
@@ -33,7 +33,7 @@ public class SamplingHeapProfileNode {
 
     private Integer id;
 
-    private List<SamplingHeapProfileNode> children = new ArrayList<>();
+    private List<SamplingHeapProfileNode> children;
 
     /**
      * Function location.

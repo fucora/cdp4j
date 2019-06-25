@@ -18,9 +18,9 @@
  */
 package io.webfolder.cdp.type.css;
 
-import io.webfolder.cdp.type.dom.PseudoType;
-import java.util.ArrayList;
 import java.util.List;
+
+import io.webfolder.cdp.type.dom.PseudoType;
 
 /**
  * CSS rule collection for a single pseudo style
@@ -28,7 +28,7 @@ import java.util.List;
 public class PseudoElementMatches {
     private PseudoType pseudoType;
 
-    private List<RuleMatch> matches = new ArrayList<>();
+    private List<RuleMatch> matches;
 
     /**
      * Pseudo element type.

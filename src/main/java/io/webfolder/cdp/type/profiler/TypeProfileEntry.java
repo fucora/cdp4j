@@ -18,9 +18,9 @@
  */
 package io.webfolder.cdp.type.profiler;
 
-import io.webfolder.cdp.annotation.Experimental;
-import java.util.ArrayList;
 import java.util.List;
+
+import io.webfolder.cdp.annotation.Experimental;
 
 /**
  * Source offset and types for a parameter or return value
@@ -29,7 +29,7 @@ import java.util.List;
 public class TypeProfileEntry {
     private Integer offset;
 
-    private List<TypeObject> types = new ArrayList<>();
+    private List<TypeObject> types;
 
     /**
      * Source offset of the parameter or end of function for return values.

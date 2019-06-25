@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.event.security;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.webfolder.cdp.annotation.Domain;
@@ -37,7 +36,7 @@ public class SecurityStateChanged {
 
     private Boolean schemeIsCryptographic;
 
-    private List<SecurityStateExplanation> explanations = new ArrayList<>();
+    private List<SecurityStateExplanation> explanations;
 
     private InsecureContentStatus insecureContentStatus;
 

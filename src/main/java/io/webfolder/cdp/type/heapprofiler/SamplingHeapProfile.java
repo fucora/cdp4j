@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.heapprofiler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +26,7 @@ import java.util.List;
 public class SamplingHeapProfile {
     private SamplingHeapProfileNode head;
 
-    private List<SamplingHeapProfileSample> samples = new ArrayList<>();
+    private List<SamplingHeapProfileSample> samples;
 
     public SamplingHeapProfileNode getHead() {
         return head;

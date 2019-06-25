@@ -18,13 +18,12 @@
  */
 package io.webfolder.cdp.type.domsnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RareIntegerData {
-    private List<Integer> index = new ArrayList<>();
+    private List<Integer> index;
 
-    private List<Integer> value = new ArrayList<>();
+    private List<Integer> value;
 
     public List<Integer> getIndex() {
         return index;

@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.page;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +26,7 @@ import java.util.List;
 public class FrameTree {
     private Frame frame;
 
-    private List<FrameTree> childFrames = new ArrayList<>();
+    private List<FrameTree> childFrames;
 
     /**
      * Frame information for this tree item.

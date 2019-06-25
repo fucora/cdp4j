@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.network;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -29,11 +28,11 @@ public class WebSocketResponse {
 
     private String statusText;
 
-    private Map<String, Object> headers = new HashMap<>();
+    private Map<String, Object> headers;
 
     private String headersText;
 
-    private Map<String, Object> requestHeaders = new HashMap<>();
+    private Map<String, Object> requestHeaders;
 
     private String requestHeadersText;
 

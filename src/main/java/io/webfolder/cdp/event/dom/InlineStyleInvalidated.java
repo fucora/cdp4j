@@ -18,11 +18,11 @@
  */
 package io.webfolder.cdp.event.dom;
 
+import java.util.List;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Fired when <code>Element</code>'s inline style is modified via a CSS property modification
@@ -31,7 +31,7 @@ import java.util.List;
 @Domain("DOM")
 @EventName("inlineStyleInvalidated")
 public class InlineStyleInvalidated {
-    private List<Integer> nodeIds = new ArrayList<>();
+    private List<Integer> nodeIds;
 
     /**
      * Ids of the nodes for which the inline styles have been invalidated.

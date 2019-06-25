@@ -18,18 +18,17 @@
  */
 package io.webfolder.cdp.type.dom;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * CSS Shape Outside details
  */
 public class ShapeOutsideInfo {
-    private List<Double> bounds = new ArrayList<>();
+    private List<Double> bounds;
 
-    private List<Object> shape = new ArrayList<>();
+    private List<Object> shape;
 
-    private List<Object> marginShape = new ArrayList<>();
+    private List<Object> marginShape;
 
     /**
      * Shape bounds

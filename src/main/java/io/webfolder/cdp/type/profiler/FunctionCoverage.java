@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.profiler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +26,7 @@ import java.util.List;
 public class FunctionCoverage {
     private String functionName;
 
-    private List<CoverageRange> ranges = new ArrayList<>();
+    private List<CoverageRange> ranges;
 
     private Boolean isBlockCoverage;
 

@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.accessibility;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ public class AXNode {
 
     private Boolean ignored;
 
-    private List<AXProperty> ignoredReasons = new ArrayList<>();
+    private List<AXProperty> ignoredReasons;
 
     private AXValue role;
 
@@ -39,9 +38,9 @@ public class AXNode {
 
     private AXValue value;
 
-    private List<AXProperty> properties = new ArrayList<>();
+    private List<AXProperty> properties;
 
-    private List<String> childIds = new ArrayList<>();
+    private List<String> childIds;
 
     private Integer backendDOMNodeId;
 

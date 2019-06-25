@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.event.dom;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.webfolder.cdp.annotation.Domain;
@@ -35,7 +34,7 @@ import io.webfolder.cdp.type.dom.Node;
 public class SetChildNodes {
     private Integer parentId;
 
-    private List<Node> nodes = new ArrayList<>();
+    private List<Node> nodes;
 
     /**
      * Parent node id to populate with children.

@@ -18,28 +18,27 @@
  */
 package io.webfolder.cdp.type.domsnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Table of details of an element in the DOM tree with a LayoutObject
  */
 public class LayoutTreeSnapshot {
-    private List<Integer> nodeIndex = new ArrayList<>();
+    private List<Integer> nodeIndex;
 
-    private List<List<Double>> bounds = new ArrayList<>();
+    private List<List<Double>> bounds;
 
-    private List<Integer> text = new ArrayList<>();
+    private List<Integer> text;
 
     private RareBooleanData stackingContexts;
 
-    private List<Double> offsetRects = new ArrayList<>();
+    private List<Double> offsetRects;
 
-    private List<Double> scrollRects = new ArrayList<>();
+    private List<Double> scrollRects;
 
-    private List<Double> clientRects = new ArrayList<>();
+    private List<Double> clientRects;
 
-    private List<List<String>> styles = new ArrayList<>();
+    private List<List<String>> styles;
 
     /**
      * Index of the corresponding node in the <code>NodeTreeSnapshot</code> array returned by <code>captureSnapshot</code>.

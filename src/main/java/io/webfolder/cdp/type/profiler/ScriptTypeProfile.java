@@ -18,9 +18,9 @@
  */
 package io.webfolder.cdp.type.profiler;
 
-import io.webfolder.cdp.annotation.Experimental;
-import java.util.ArrayList;
 import java.util.List;
+
+import io.webfolder.cdp.annotation.Experimental;
 
 /**
  * Type profile data collected during runtime for a JavaScript script
@@ -31,7 +31,7 @@ public class ScriptTypeProfile {
 
     private String url;
 
-    private List<TypeProfileEntry> entries = new ArrayList<>();
+    private List<TypeProfileEntry> entries;
 
     /**
      * JavaScript script id.

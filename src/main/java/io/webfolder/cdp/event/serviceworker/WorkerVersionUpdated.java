@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.event.serviceworker;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.webfolder.cdp.annotation.Domain;
@@ -28,7 +27,7 @@ import io.webfolder.cdp.type.serviceworker.ServiceWorkerVersion;
 @Domain("ServiceWorker")
 @EventName("workerVersionUpdated")
 public class WorkerVersionUpdated {
-    private List<ServiceWorkerVersion> versions = new ArrayList<>();
+    private List<ServiceWorkerVersion> versions;
 
     public List<ServiceWorkerVersion> getVersions() {
         return versions;

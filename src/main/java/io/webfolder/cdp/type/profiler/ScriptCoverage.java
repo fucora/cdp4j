@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.profiler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ public class ScriptCoverage {
 
     private String url;
 
-    private List<FunctionCoverage> functions = new ArrayList<>();
+    private List<FunctionCoverage> functions;
 
     /**
      * JavaScript script id.

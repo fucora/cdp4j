@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.css;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +32,7 @@ public class CSSRule {
 
     private CSSStyle style;
 
-    private List<CSSMedia> media = new ArrayList<>();
+    private List<CSSMedia> media;
 
     /**
      * The css style sheet identifier (absent for user agent stylesheet and user-specified

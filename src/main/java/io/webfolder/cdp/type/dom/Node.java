@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.dom;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,9 +41,9 @@ public class Node {
 
     private Integer childNodeCount;
 
-    private List<Node> children = new ArrayList<>();
+    private List<Node> children;
 
-    private List<String> attributes = new ArrayList<>();
+    private List<String> attributes;
 
     private String documentURL;
 
@@ -70,15 +69,15 @@ public class Node {
 
     private Node contentDocument;
 
-    private List<Node> shadowRoots = new ArrayList<>();
+    private List<Node> shadowRoots;
 
     private Node templateContent;
 
-    private List<Node> pseudoElements = new ArrayList<>();
+    private List<Node> pseudoElements;
 
     private Node importedDocument;
 
-    private List<BackendNode> distributedNodes = new ArrayList<>();
+    private List<BackendNode> distributedNodes;
 
     private Boolean isSVG;
 

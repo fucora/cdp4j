@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.indexeddb;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +30,7 @@ public class ObjectStore {
 
     private Boolean autoIncrement;
 
-    private List<ObjectStoreIndex> indexes = new ArrayList<>();
+    private List<ObjectStoreIndex> indexes;
 
     /**
      * Object store name.

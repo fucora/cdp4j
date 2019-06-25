@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.runtime;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +26,7 @@ import java.util.List;
 public class StackTrace {
     private String description;
 
-    private List<CallFrame> callFrames = new ArrayList<>();
+    private List<CallFrame> callFrames;
 
     private StackTrace parent;
 

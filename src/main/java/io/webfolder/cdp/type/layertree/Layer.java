@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.layertree;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,7 +38,7 @@ public class Layer {
 
     private Double height;
 
-    private List<Double> transform = new ArrayList<>();
+    private List<Double> transform;
 
     private Double anchorX;
 
@@ -53,7 +52,7 @@ public class Layer {
 
     private Boolean invisible;
 
-    private List<ScrollRect> scrollRects = new ArrayList<>();
+    private List<ScrollRect> scrollRects;
 
     private StickyPositionConstraint stickyPositionConstraint;
 

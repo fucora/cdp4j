@@ -18,16 +18,15 @@
  */
 package io.webfolder.cdp.type.memory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Array of heap profile samples
  */
 public class SamplingProfile {
-    private List<SamplingProfileNode> samples = new ArrayList<>();
+    private List<SamplingProfileNode> samples;
 
-    private List<Module> modules = new ArrayList<>();
+    private List<Module> modules;
 
     public List<SamplingProfileNode> getSamples() {
         return samples;

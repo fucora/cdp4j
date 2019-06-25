@@ -18,9 +18,9 @@
  */
 package io.webfolder.cdp.type.network;
 
-import io.webfolder.cdp.annotation.Experimental;
-import java.util.ArrayList;
 import java.util.List;
+
+import io.webfolder.cdp.annotation.Experimental;
 
 /**
  * Information about a signed exchange signature
@@ -50,7 +50,7 @@ public class SignedExchangeSignature {
 
     private Integer expires;
 
-    private List<String> certificates = new ArrayList<>();
+    private List<String> certificates;
 
     /**
      * Signed exchange signature label.

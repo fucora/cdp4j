@@ -18,18 +18,19 @@
  */
 package io.webfolder.cdp;
 
-import com.jcabi.ssh.Shell;
-import com.jcabi.ssh.Ssh;
-import com.jcabi.ssh.SshByPassword;
-import io.webfolder.cdp.exception.CdpException;
-import io.webfolder.cdp.session.SessionFactory;
+import static java.util.stream.Collectors.joining;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.util.stream.Collectors.joining;
+import com.jcabi.ssh.Shell;
+import com.jcabi.ssh.Ssh;
+import com.jcabi.ssh.SshByPassword;
+
+import io.webfolder.cdp.exception.CdpException;
+import io.webfolder.cdp.session.SessionFactory;
 
 public class RemoteLauncher extends AbstractLauncher {
 

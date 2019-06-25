@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.type.cachestorage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ public class DataEntry {
 
     private String requestMethod;
 
-    private List<Header> requestHeaders = new ArrayList<>();
+    private List<Header> requestHeaders;
 
     private Double responseTime;
 
@@ -39,7 +38,7 @@ public class DataEntry {
 
     private CachedResponseType responseType;
 
-    private List<Header> responseHeaders = new ArrayList<>();
+    private List<Header> responseHeaders;
 
     /**
      * Request URL.

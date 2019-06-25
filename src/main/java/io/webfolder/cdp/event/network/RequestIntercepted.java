@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.event.network;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import io.webfolder.cdp.annotation.Domain;
@@ -57,7 +56,7 @@ public class RequestIntercepted {
 
     private Integer responseStatusCode;
 
-    private Map<String, Object> responseHeaders = new HashMap<>();
+    private Map<String, Object> responseHeaders;
 
     private String requestId;
 
