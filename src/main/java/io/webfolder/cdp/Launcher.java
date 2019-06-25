@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -101,11 +102,13 @@ public class Launcher extends AbstractLauncher {
                 });
                 final int exitCode = process.waitFor();
                 if (exitCode == 0) {
-                    final String location = toString(process.getInputStream()).trim().replace("\"", "");
-                    final File chrome = new File(location);
-                    if (chrome.exists() && chrome.canExecute()) {
-                        return chrome.toString();
-                    }
+                	try (InputStream is = process.getInputStream()) {
+                		String location = toString(is).trim().replace("\"", "");
+                		File chrome = new File(location);
+                		if (chrome.exists() && chrome.canExecute()) {
+                			return chrome.toString();
+                		}
+                	}
                 }
             }
             throw new CdpException("Unable to find chrome.exe");
@@ -115,12 +118,39 @@ public class Launcher extends AbstractLauncher {
         return null;
     }
 
+    /**
+     * Tests whether chrome/chromium is installed.
+     * 
+     * @return {@code true} if browser is found on predefined paths
+     */
+    public boolean isChromeInstalled() {
+    	String path = null;
+    	try {
+    		path = findChrome();
+    	} catch (CdpException e) {
+    		if ("Unable to find chrome.exe".equals(e.getMessage())) {
+    			// ignore
+    		} else {
+    			throw e;
+    		}
+    	}
+    	return path != null ? true : false;
+    }
+
     protected List<String> getChromeWinPaths() {
-        return asList(
-                "%localappdata%\\Google\\Chrome SxS\\Application\\chrome.exe", // Chrome Canary
-                "%programfiles%\\Google\\Chrome\\Application\\chrome.exe",     // Chrome Stable 64-bit
-                "%programfiles(x86)%\\Google\\Chrome\\Application\\chrome.exe" // Chrome Stable 32-bit
-        );
+    	List<String> prefixes = asList("%localappdata%",
+    								   "%programfiles%",
+    								   "%programfiles(x86)%");
+    	List<String> suffixes = asList(
+    			"\\Google\\Chrome SxS\\Application\\chrome.exe",
+    			"\\Google\\Chrome\\Application\\chrome.exe");
+    	List<String> installations = new ArrayList<String>(prefixes.size() * suffixes.size());
+    	for (String prefix : prefixes) {
+    		for (String suffix : suffixes) {
+    			installations.add(prefix + suffix);
+    		}
+    	}
+    	return installations;
     }
 
     public String findChromeOsxPath() {
