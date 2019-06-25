@@ -86,7 +86,7 @@ public class SessionFactory implements AutoCloseable {
 
     private static final Integer DEFAULT_SCREEN_HEIGHT = 768; // WXGA height
 
-    private static final int DEFAULT_WS_READ_TIMEOUT = 10 * 1000; // 10 seconds
+    private static final int DEFAULT_WS_READ_TIMEOUT = 60 * 1000; // 60 seconds
 
     private final Map<String, Session> sessions = new ConcurrentHashMap<>();
 
