@@ -102,8 +102,8 @@ class MessageAdapter {
         Runnable runnable = () -> {
             String content = byteArray != null ? new String(byteArray, 0, byteArray.length, UTF_8) : str;
             log.debug("<-- {}", content);
-            JsonElement  json = gson.fromJson(content, JsonElement.class);
-            JsonObject object = json.getAsJsonObject();
+            JsonElement json = gson.fromJson(content, JsonElement.class);
+            JsonObject  object = json.getAsJsonObject();
             JsonElement idElement = object.get("id");
             if ( idElement != null ) {
                 String id = idElement.getAsString();

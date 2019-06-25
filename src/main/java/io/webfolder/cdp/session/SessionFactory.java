@@ -74,7 +74,7 @@ public class SessionFactory implements AutoCloseable {
 
     private final int connectionTimeout;
 
-    private final WebSocketFactory factory;
+    private final WebSocketFactory webSocketFactory;
 
     private final Gson gson;
 
@@ -173,13 +173,13 @@ public class SessionFactory implements AutoCloseable {
         this.host              = host;
         this.port              = port;
         this.connectionTimeout = connectionTimeout;
-        this.factory           = new WebSocketFactory();
+        this.webSocketFactory  = new WebSocketFactory();
         this.loggerFactory     = createLoggerFactory(loggerType);
         this.threadPool        = threadPool;
         this.gson              = new GsonBuilder()
                                     .disableHtmlEscaping()
                                     .create();
-        this.factory.setConnectionTimeout(this.connectionTimeout);
+        this.webSocketFactory.setConnectionTimeout(this.connectionTimeout);
         if (ThreadPoolExecutor.class.isAssignableFrom(threadPool.getClass())) {
             ((ThreadPoolExecutor) threadPool).setKeepAliveTime(5, SECONDS);
         }
@@ -284,7 +284,7 @@ public class SessionFactory implements AutoCloseable {
                                                 listeners, threadPool,
                                                 loggerFactory.getLogger("cdp4j.ws.response"));
         adapter.setSession(session);
-        WSAdapter wsAdapter = new WSAdapter(adapter);
+        WSAdapter wsAdapter = new WSAdapter(adapter, session);
         wsAdapters.put(sessionId, wsAdapter);
         sessions.put(sessionId, session);
 
@@ -320,7 +320,7 @@ public class SessionFactory implements AutoCloseable {
             String webSocketDebuggerUrl = (String) version.get("webSocketDebuggerUrl");
             webSocket = null;
             try {
-                webSocket = factory.createSocket(webSocketDebuggerUrl);
+                webSocket = webSocketFactory.createSocket(webSocketDebuggerUrl);
                 webSocket.setDirectTextMessage(true);
                 webSocket.setPayloadMask(new ZeroMasker());
             } catch (IOException e) {
@@ -331,7 +331,7 @@ public class SessionFactory implements AutoCloseable {
             MessageAdapter adapter = new MessageAdapter(gson, contexts,
                                                         listeners, threadPool,
                                                         loggerFactory.getLogger("cdp4j.ws.response"));
-            webSocket.addListener(new WSAdapter(adapter));
+            webSocket.addListener(new WSAdapter(adapter, browserSession));
             try {
                 webSocket.connect();
             } catch (WebSocketException e) {
@@ -356,18 +356,9 @@ public class SessionFactory implements AutoCloseable {
 
     void close(Session session) {
         if (browserSession.isConnected()) {
-            int version = getMajorVersion();
-            if (version >= 68) {
-                session
-                    .getCommand()
-                    .getPage()
-                    .close();
-            } else {
-                browserSession
-                    .getCommand()
-                    .getTarget()
-                    .closeTarget(session.getTargetId());
-            }
+            session.getCommand()
+                   .getPage()
+                   .close();
         }
         session.dispose();
         wsAdapters.remove(session.getId());
@@ -532,7 +523,7 @@ public class SessionFactory implements AutoCloseable {
     }
 
     public ProxySettings getWebSocketProxySettings() {
-        return factory.getProxySettings();
+        return webSocketFactory.getProxySettings();
     }
 
     public void setHttpClientProxy(Proxy proxy) {

@@ -170,7 +170,7 @@ public class Session implements AutoCloseable,
                                                         sessionFactory.getWebSocketReadTimeout());
         this.targetId         = targetId; 
         this.sesessionFactory = sessionFactory;
-        this.listeners   = eventListeners;
+        this.listeners        = eventListeners;
         this.webSocket        = webSocket;
         this.log              = loggerFactory.getLogger("cdp4j.session");
         this.logFlow          = loggerFactory.getLogger("cdp4j.flow");
@@ -191,20 +191,22 @@ public class Session implements AutoCloseable,
     @Override
     public void close() {
         logEntry("close");
-        if (isConnected()) {
-            try {
-                sesessionFactory.close(this);
-            } finally {
-                terminate("closed");
-                connected.set(false);
+        if (connected.get()) {
+            connected.set(false);
+            if (webSocket.isOpen()) {
+                try {
+                    sesessionFactory.close(this);
+                } finally {
+                    terminate("closed");
+                }
+            } else {
+                dispose();
             }
-        } else {
-            dispose();
         }
     }
 
     public boolean isConnected() {
-        return connected.get() && webSocket.isOpen();
+        return connected.get();
     }
 
     /**
