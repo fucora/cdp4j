@@ -18,21 +18,16 @@
  */
 package io.webfolder.cdp.test;
 
-import static io.webfolder.cdp.ChromiumDownloader.getExecutable;
-import static io.webfolder.cdp.ChromiumDownloader.getLatestInstalledVersion;
 import static io.webfolder.cdp.session.WaitUntil.DomContentLoad;
 import static java.lang.Double.valueOf;
 import static java.nio.file.Paths.get;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
-import java.nio.file.Path;
 import java.util.List;
 
 import org.junit.Test;
 
-import io.webfolder.cdp.ChromiumDownloader;
-import io.webfolder.cdp.ChromiumVersion;
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
@@ -41,14 +36,10 @@ public class JsFunctionTest {
 
     @Test
     public void test() throws Exception {
-        ChromiumDownloader downloader = new ChromiumDownloader();
-        ChromiumVersion latest = getLatestInstalledVersion();
-        Path path = latest != null ? getExecutable(latest) : downloader.download();
-
         String uri = get("src/test/resources/js-function-test.html").toAbsolutePath().toUri().toString();
         Launcher launcher = new Launcher();
         
-        try (SessionFactory factory = launcher.launch(path); Session session = factory.create()) {
+        try (SessionFactory factory = launcher.launch(); Session session = factory.create()) {
             // Important!
             // Register the JsFunction before the navigate method
             session.registerJsFunction(MyJsFunction.class);

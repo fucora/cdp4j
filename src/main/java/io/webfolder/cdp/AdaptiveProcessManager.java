@@ -23,8 +23,6 @@ import static java.lang.System.getProperty;
 import static java.util.Locale.ENGLISH;
 
 import io.webfolder.cdp.exception.CdpException;
-import io.webfolder.cdp.logger.CdpLogger;
-import io.webfolder.cdp.logger.CdpLoggerFactory;
 
 public class AdaptiveProcessManager extends ProcessManager {
 
@@ -40,18 +38,11 @@ public class AdaptiveProcessManager extends ProcessManager {
 
     private static final boolean JAVA_8  = getProperty("java.version").startsWith("1.8.");
 
-    private CdpLogger logger = new CdpLoggerFactory().getLogger("cdp4j.process-manager");
-    
-    @SuppressWarnings("deprecation")
     public AdaptiveProcessManager() {
         if ( ! JAVA_8 ) {
            processManager = new DefaultProcessManager();
         } else if (WINDOWS) {
-            try {
-                processManager = new WindowsProcessManager();
-            } catch (Throwable t) {
-                logger.error(t.getMessage());
-            }
+            processManager = new TaskKillProcessManager();
         } else if (LINUX) {
             processManager = new LinuxProcessManager();
         } else if (MAC) {
