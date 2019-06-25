@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.webfolder</groupId>
   <artifactId>cdp4j</artifactId>
-  <version>3.0.12-SNAPSHOT</version>
+  <version>4.0.0-SNAPSHOT</version>
   <name>cdp4j</name>
   <licenses>
     <license>
