@@ -1,6 +1,10 @@
 cdp4j Release Notes
 -------------------------------------------------------------------------------
 
+### 3.0.12 - June 25, 2019
+
+* Added Launcher.isChromeInstalled() method
+
 ### 3.0.11 - June 14, 2019
 
 * Fixed xpath selector [bug](https://github.com/webfolderio/cdp4j/commit/c612087c9b8f7d491b8c6f4b88edbff060d3a4f5)
