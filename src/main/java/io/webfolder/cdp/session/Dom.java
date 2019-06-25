@@ -21,7 +21,6 @@ package io.webfolder.cdp.session;
 import static io.webfolder.cdp.session.Option.TYPE_TOKEN;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
-import static java.lang.Math.floor;
 import static java.lang.String.format;
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
