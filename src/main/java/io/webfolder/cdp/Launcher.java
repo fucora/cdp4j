@@ -102,13 +102,13 @@ public class Launcher extends AbstractLauncher {
                 });
                 final int exitCode = process.waitFor();
                 if (exitCode == 0) {
-                	try (InputStream is = process.getInputStream()) {
-                		String location = toString(is).trim().replace("\"", "");
-                		File chrome = new File(location);
-                		if (chrome.exists() && chrome.canExecute()) {
-                			return chrome.toString();
-                		}
-                	}
+                    try (InputStream is = process.getInputStream()) {
+                        String location = toString(is).trim().replace("\"", "");
+                        File chrome = new File(location);
+                        if (chrome.exists() && chrome.canExecute()) {
+                            return chrome.toString();
+                        }
+                    }
                 }
             }
         } catch (Throwable e) {
@@ -123,23 +123,23 @@ public class Launcher extends AbstractLauncher {
      * @return {@code true} if browser is found on predefined paths
      */
     public boolean isChromeInstalled() {
-    	return findChrome() != null ? true : false;
+        return findChrome() != null ? true : false;
     }
 
     protected List<String> getChromeWinPaths() {
-    	List<String> prefixes = asList("%localappdata%",
-    								   "%programfiles%",
-    								   "%programfiles(x86)%");
-    	List<String> suffixes = asList(
-    			"\\Google\\Chrome SxS\\Application\\chrome.exe",
-    			"\\Google\\Chrome\\Application\\chrome.exe");
-    	List<String> installations = new ArrayList<String>(prefixes.size() * suffixes.size());
-    	for (String prefix : prefixes) {
-    		for (String suffix : suffixes) {
-    			installations.add(prefix + suffix);
-    		}
-    	}
-    	return installations;
+        List<String> prefixes = asList("%localappdata%",
+                                       "%programfiles%",
+                                       "%programfiles(x86)%");
+        List<String> suffixes = asList(
+                "\\Google\\Chrome SxS\\Application\\chrome.exe",
+                "\\Google\\Chrome\\Application\\chrome.exe");
+        List<String> installations = new ArrayList<String>(prefixes.size() * suffixes.size());
+        for (String prefix : prefixes) {
+            for (String suffix : suffixes) {
+                installations.add(prefix + suffix);
+            }
+        }
+        return installations;
     }
 
     public String findChromeOsxPath() {
