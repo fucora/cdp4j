@@ -82,10 +82,6 @@ public class SessionFactory implements AutoCloseable {
 
     private static final int DEFAULT_CONNECTION_TIMEOUT = 60 * 1000; // 60 seconds
 
-    private static final Integer DEFAULT_SCREEN_WIDTH = 1366; // WXGA width
-
-    private static final Integer DEFAULT_SCREEN_HEIGHT = 768; // WXGA height
-
     private static final int DEFAULT_WS_READ_TIMEOUT = 10 * 1000; // 10 seconds
 
     private final Map<String, Session> sessions = new ConcurrentHashMap<>();
@@ -194,10 +190,18 @@ public class SessionFactory implements AutoCloseable {
     }
 
     public Session create() {
-        return create(null);
+        return create(null, new SessionSettings());
+    }
+
+    public Session create(SessionSettings sessionSettings) {
+        return create(null, sessionSettings);
     }
 
     public Session create(String browserContextId) {
+        return create(browserContextId, new SessionSettings());
+    }
+
+    public Session create(String browserContextId, SessionSettings sessionSettings) {
         boolean initialized = browserSession == null ? false : true;
 
         Session browserSession = getBrowserSession();
@@ -220,8 +224,8 @@ public class SessionFactory implements AutoCloseable {
 
         if (tab == null) {
             String targetId = target.createTarget("about:blank",
-                                                    DEFAULT_SCREEN_WIDTH,
-                                                    DEFAULT_SCREEN_HEIGHT,
+                                                    sessionSettings.getScreenWidth(),
+                                                    sessionSettings.getScreenHeight(),
                                                     browserContextId, false);            
             boolean found = false;
             for (int i = 0; i < 500 && ! found; i++) {
