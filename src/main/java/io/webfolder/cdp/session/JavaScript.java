@@ -33,6 +33,7 @@ import com.google.gson.JsonObject;
 
 import io.webfolder.cdp.command.Runtime;
 import io.webfolder.cdp.exception.CdpException;
+import io.webfolder.cdp.exception.UndefinedVariableException;
 import io.webfolder.cdp.type.constant.ObjectType;
 import io.webfolder.cdp.type.runtime.CallArgument;
 import io.webfolder.cdp.type.runtime.CallFunctionOnResult;
@@ -220,6 +221,9 @@ public interface JavaScript {
                                                         FALSE, FALSE,
                                                         FALSE, FALSE,
                                                         FALSE, getThis().getExecutionContextId(), null);
+        if (obj == null) {
+            throw new UndefinedVariableException(format("Variable [%s] is not defined", name), name);
+        }
 
         if ( obj.getExceptionDetails() != null &&
                 obj.getExceptionDetails().getException() != null ) {
@@ -229,7 +233,7 @@ public interface JavaScript {
 
         if (ObjectType.Undefined.equals(obj.getResult().getType())) {
             getThis().releaseObject(obj.getResult().getObjectId());
-            throw new CdpException(format("Variable [%s] is not defined", name));
+            throw new UndefinedVariableException(format("Variable [%s] is not defined", name), name);
         }
 
         Object value = null;
