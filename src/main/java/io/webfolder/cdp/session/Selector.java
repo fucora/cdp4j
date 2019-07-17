@@ -425,7 +425,11 @@ public interface Selector {
             String objectId = result.getResult().getObjectId();
             return ex == null ? objectId : null;
         } else {
-            Integer rootNodeId = dom.getDocument().getNodeId();
+            Node document = dom.getDocument();
+            if (document == null) {
+                return null;
+            }
+            Integer rootNodeId = document.getNodeId();
             if (rootNodeId == null) {
                 return null;
             }
