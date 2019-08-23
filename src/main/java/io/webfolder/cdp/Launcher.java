@@ -175,6 +175,8 @@ public class Launcher {
 
         if (WebSocket.equals(options.getConnectionType())) {
             list.add("--remote-debugging-port=0");
+        } else {
+            list.add("--remote-debugging-pipe");
         }
 
         if (options.getUserDataDir() == null) {

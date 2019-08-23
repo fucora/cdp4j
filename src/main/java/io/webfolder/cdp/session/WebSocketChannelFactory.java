@@ -22,12 +22,15 @@ import java.io.IOException;
 
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketFactory;
+import com.neovisionaries.ws.client.ZeroMasker;
 
 import io.webfolder.cdp.exception.CdpException;
 
 class WebSocketChannelFactory implements ChannelFactory {
 
     private final WebSocketFactory factory = new WebSocketFactory();
+
+    private final ZeroMasker zeroMasker = new ZeroMasker();
 
     @Override
     public void setConnectionTimeout(int timeout) {
@@ -37,7 +40,9 @@ class WebSocketChannelFactory implements ChannelFactory {
     @Override
     public Channel createChannel(String webSocketDebuggerUrl, MessageHandler handler) {
         try {
-            return new WebSocketChannel(factory.createSocket(webSocketDebuggerUrl));
+            WebSocket webSocket = factory.createSocket(webSocketDebuggerUrl);
+            webSocket.setPayloadMask(zeroMasker);
+            return new WebSocketChannel(webSocket);
         } catch (IOException e) {
             throw new CdpException(e);
         }
