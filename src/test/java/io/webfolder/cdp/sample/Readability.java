@@ -18,13 +18,14 @@
  */
 package io.webfolder.cdp.sample;
 
+import static io.webfolder.cdp.logger.CdpLoggerType.Null;
 import static io.webfolder.cdp.session.WaitUntil.DomReady;
 import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Paths.get;
 
 import io.webfolder.cdp.Launcher;
+import io.webfolder.cdp.Options;
 import io.webfolder.cdp.command.Page;
-import io.webfolder.cdp.logger.CdpLoggerType;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
@@ -33,9 +34,13 @@ import io.webfolder.cdp.session.SessionFactory;
 public class Readability {
 
     public static void main(String[] args) throws Exception {
-        Launcher launcher = new Launcher(CdpLoggerType.Null);
+        Options options = new Options.Builder()
+                .loggerType(Null)
+            .build();
 
-        try (SessionFactory factory = launcher.launch();
+        Launcher launcher = new Launcher();
+
+        try (SessionFactory factory = launcher.launch(options);
                             Session session = factory.create()) {
 
             Page page = session.getCommand().getPage();

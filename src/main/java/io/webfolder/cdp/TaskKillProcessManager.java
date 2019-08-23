@@ -26,12 +26,6 @@ import java.lang.reflect.Field;
 
 import io.webfolder.cdp.exception.CdpException;
 
-/**
- * Alternative implmentation of {@link WindowsProcessManager}.
- * 
- * This class is not compatible with Java 9+.
- * It should be used only for Java 8.
- */
 public class TaskKillProcessManager extends ProcessManager {
 
     private CdpProcess cdpProcess;

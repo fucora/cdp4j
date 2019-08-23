@@ -22,6 +22,7 @@ import static java.util.Arrays.asList;
 
 import io.webfolder.cdp.AdaptiveProcessManager;
 import io.webfolder.cdp.Launcher;
+import io.webfolder.cdp.Options;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
@@ -33,7 +34,11 @@ public class IncognitoBrowsing {
         Launcher launcher = new Launcher();
         launcher.setProcessManager(new AdaptiveProcessManager());
 
-        try (SessionFactory factory = launcher.launch(asList("--headless", "--disable-gpu"))) {
+        Options options = new Options.Builder()
+                .arguments(asList("--disable-gpu", "--headless"))
+            .build();
+
+        try (SessionFactory factory = launcher.launch(options)) {
 
             String firstContext = null;
 

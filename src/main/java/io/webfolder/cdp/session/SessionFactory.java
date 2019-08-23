@@ -20,21 +20,11 @@ package io.webfolder.cdp.session;
 
 import static io.webfolder.cdp.event.Events.RuntimeExecutionContextCreated;
 import static io.webfolder.cdp.event.Events.RuntimeExecutionContextDestroyed;
-import static io.webfolder.cdp.logger.CdpLoggerType.Slf4j;
 import static java.lang.Boolean.TRUE;
-import static java.lang.String.format;
 import static java.lang.Thread.sleep;
 import static java.util.Locale.ENGLISH;
-import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.ConnectException;
-import java.net.HttpURLConnection;
-import java.net.Proxy;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,6 +35,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import io.webfolder.cdp.Options;
 import io.webfolder.cdp.command.Target;
 import io.webfolder.cdp.event.runtime.ExecutionContextCreated;
 import io.webfolder.cdp.event.runtime.ExecutionContextDestroyed;
@@ -57,23 +48,13 @@ import io.webfolder.cdp.type.target.TargetInfo;
 
 public class SessionFactory implements AutoCloseable {
 
-    public final static String DEFAULT_HOST = "localhost";
-
-    public final static int DEFAULT_PORT = 9222;
-
-    private final String host;
-
-    private final int port;
-
-    private final int connectionTimeout;
-
     private final ChannelFactory channelFactory;
 
     private final Gson gson;
 
     private final LoggerFactory loggerFactory;
 
-    private static final int DEFAULT_CONNECTION_TIMEOUT = 60 * 1000; // 60 seconds
+    private final Options options;
 
     private static final Integer DEFAULT_SCREEN_WIDTH = 1366; // WXGA width
 
@@ -103,102 +84,18 @@ public class SessionFactory implements AutoCloseable {
 
     private volatile int majorVersion;
 
-    private Proxy httpClientProxy;
-
-    public SessionFactory() {
-        this(DEFAULT_HOST,
-                DEFAULT_PORT,
-                DEFAULT_CONNECTION_TIMEOUT,
-                Slf4j,
-                newCachedThreadPool(new CdpThreadFactory()));
-    }
-
-    public SessionFactory(CdpLoggerType loggerType) {
-        this(DEFAULT_HOST,
-                DEFAULT_PORT,
-                DEFAULT_CONNECTION_TIMEOUT,
-                loggerType,
-                newCachedThreadPool(new CdpThreadFactory()));
-    }
-
-    public SessionFactory(final int port) {
-        this(DEFAULT_HOST,
-                port,
-                DEFAULT_CONNECTION_TIMEOUT,
-                Slf4j,
-                newCachedThreadPool(new CdpThreadFactory()));
-    }
-
-    public SessionFactory(final int port, CdpLoggerType loggerType) {
-        this(DEFAULT_HOST,
-                port,
-                DEFAULT_CONNECTION_TIMEOUT,
-                loggerType,
-                newCachedThreadPool(new CdpThreadFactory()));
-    }
-
-    public SessionFactory(final String host, final int port) {
-        this(host,
-                port,
-                DEFAULT_CONNECTION_TIMEOUT,
-                Slf4j,
-                newCachedThreadPool(new CdpThreadFactory()));
-    }
-
-    public SessionFactory(
-                final String host,
-                final int port,
-                final CdpLoggerType loggerType,
-                final ExecutorService threadPool) {
-        this(host,
-                port,
-                DEFAULT_CONNECTION_TIMEOUT,
-                loggerType,
-                threadPool);
-    }
-
-    public SessionFactory(
-            final String host,
-            final int port,
-            final int connectionTimeout,
-            final CdpLoggerType loggerType,
-            final ExecutorService threadPool) {
-        this(host,
-                port,
-                DEFAULT_CONNECTION_TIMEOUT,
-                loggerType,
-                threadPool,
-                new WebSocketChannelFactory());
-    }
-
-    public SessionFactory(
-                    final String host,
-                    final int port,
-                    final int connectionTimeout,
-                    final CdpLoggerType loggerType,
-                    final ExecutorService threadPool,
-                    final ChannelFactory channelFactory) {
-        this.host              = host;
-        this.port              = port;
-        this.connectionTimeout = connectionTimeout;
-        this.channelFactory    = channelFactory;
-        this.loggerFactory     = createLoggerFactory(loggerType);
-        this.threadPool        = threadPool;
+    public SessionFactory(Options options) {
+        this.options           = options;
+        this.channelFactory    = new WebSocketChannelFactory();
+        this.loggerFactory     = createLoggerFactory(options.getLoggerType());
+        this.threadPool        = options.getThreadPool();
         this.gson              = new GsonBuilder()
                                     .disableHtmlEscaping()
                                     .create();
-        this.channelFactory.setConnectionTimeout(this.connectionTimeout);
+        this.channelFactory.setConnectionTimeout(options.getConnectionTimeout());
         if (ThreadPoolExecutor.class.isAssignableFrom(threadPool.getClass())) {
             ((ThreadPoolExecutor) threadPool).setKeepAliveTime(5, SECONDS);
         }
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public String getHost() {
-        return host;
     }
 
     public Session create() {
@@ -323,23 +220,18 @@ public class SessionFactory implements AutoCloseable {
     }
 
     private synchronized Session getBrowserSession() {
-        String webSocketDebuggerUrl = null;
         if (browserSession == null) {
-            if (channelFactory instanceof WebSocketChannelFactory) {
-                Map<String, Object> version = getVersion();
-                webSocketDebuggerUrl = (String) version.get("webSocketDebuggerUrl");
-            }
             Map<Integer, AdapterContext> adapterContexts = new ConcurrentHashMap<>();
             List<EventListener> eventlisteners = new CopyOnWriteArrayList<>();
             MessageHandler handler = new MessageHandler(gson, adapterContexts,
                                                         eventlisteners, threadPool,
                                                         loggerFactory.getLogger("cdp4j.ws.response"));
-            channel = channelFactory.createChannel(webSocketDebuggerUrl, handler);
+            channel = channelFactory.createChannel(options.getWebSocketDebuggerUrl(), handler);
             MessageAdapter<?> adapter = channelFactory.createAdapter(handler);
             channel.addListener(adapter);
             channel.connect();
-            browserSession = new Session(gson, webSocketDebuggerUrl,
-                                         webSocketDebuggerUrl, null,
+            browserSession = new Session(gson, options.getWebSocketDebuggerUrl(),
+                                         options.getWebSocketDebuggerUrl(), null,
                                          channel, adapterContexts,
                                          this, eventlisteners,
                                          loggerFactory, true,
@@ -428,58 +320,6 @@ public class SessionFactory implements AutoCloseable {
         return headless.booleanValue();
     }
 
-    private Map<String, Object> getVersion() {
-        String sessions = format("http://%s:%d/json/version", host, port);
-        URL    url      = null;
-        Reader reader   = null;
-        try {
-            url = new URL(sessions);
-            HttpURLConnection conn = httpClientProxy != null ?
-                            (HttpURLConnection) url.openConnection(httpClientProxy) :
-                            (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(connectionTimeout);
-            reader = new InputStreamReader(conn.getInputStream());
-            @SuppressWarnings("unchecked")
-            Map<String, Object> map = gson.fromJson(reader, Map.class);
-            return map;
-        } catch (ConnectException e) {
-            throw new CdpException(format("Unable to connect [%s:%d]", host, port));
-        } catch (IOException e) {
-            throw new CdpException(e);
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    // ignore
-                }
-            }
-        }
-    }
-
-    public boolean ping() {
-        String sessions = format("http://%s:%d/json/version",
-                                        host,
-                                        port);
-        try {
-            URL url = new URL(sessions);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            final int timeout = 500;
-            conn.setConnectTimeout(timeout);
-            conn.setReadTimeout(timeout);
-            try (Reader reader = new InputStreamReader(conn.getInputStream())) {
-                while ( reader.read() != -1 ) {
-                    // no op
-                }
-            }
-            return conn.getResponseCode() == 200;
-        } catch (ConnectException e) {
-            return false;
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
     public String createBrowserContext() {
         String browserContextId = getBrowserSession()
                                     .getCommand()
@@ -519,16 +359,12 @@ public class SessionFactory implements AutoCloseable {
         return channelFactory;
     }
 
-    public void setHttpClientProxy(Proxy proxy) {
-        this.httpClientProxy = proxy;
-    }
-
     public boolean closed() {
         return closed;
     }
 
     @Override
     public String toString() {
-        return "SessionFactory [host=" + host + ", port=" + port + ", sessions=" + sessions + "]";
+        return "SessionFactory [sessions=" + sessions + "]";
     }
 }

@@ -18,31 +18,29 @@
  */
 package io.webfolder.cdp.sample;
 
-import static io.webfolder.cdp.session.SessionFactory.DEFAULT_PORT;
+import static java.lang.System.getProperty;
+import static java.nio.file.Paths.get;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.nio.file.Path;
 import java.util.Random;
 
-import static java.lang.System.getProperty;
-import static java.nio.file.Paths.get;
-import static java.util.Arrays.asList;
 import io.webfolder.cdp.Launcher;
+import io.webfolder.cdp.Options;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
 public class MultiProcess {
 
-    // port number and user-data-dir must be different for each chrome process
-    // As an alternative @see IncognitoBrowsing.java for incognito mode (private browsing).
     public static void main(String[] args) {
         new Thread() {
 
             public void run() {
-                Launcher launcher = new Launcher(getFreePort(DEFAULT_PORT));
                 Path remoteProfileData = get(getProperty("java.io.tmpdir")).resolve("remote-profile-" + new Random().nextInt());
-                SessionFactory factory = launcher.launch(asList("--user-data-dir=" + remoteProfileData.toString()));
+                Options options = new Options.Builder().setUserDataDir(remoteProfileData).build();
+                Launcher launcher = new Launcher();
+                SessionFactory factory = launcher.launch(options);
 
                 try (SessionFactory sf = factory) {
                     try (Session session = sf.create()) {
@@ -57,9 +55,10 @@ public class MultiProcess {
         new Thread() {
 
             public void run() {
-                Launcher launcher = new Launcher(getFreePort(DEFAULT_PORT));
                 Path remoteProfileData = get(getProperty("java.io.tmpdir")).resolve("remote-profile-" + new Random().nextInt());
-                SessionFactory factory = launcher.launch(asList("--user-data-dir=" + remoteProfileData.toString()));
+                Options options = new Options.Builder().setUserDataDir(remoteProfileData).build();
+                Launcher launcher = new Launcher();
+                SessionFactory factory = launcher.launch(options);
 
                 try (SessionFactory sf = factory) {
                     try (Session session = sf.create()) {

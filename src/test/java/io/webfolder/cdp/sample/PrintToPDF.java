@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import io.webfolder.cdp.Launcher;
+import io.webfolder.cdp.Options;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
@@ -40,7 +41,11 @@ public class PrintToPDF {
 
         Path file = createTempFile("cdp4j", ".pdf");
 
-        try (SessionFactory factory = launcher.launch(asList("--disable-gpu", "--headless"))) {
+        Options options = new Options.Builder()
+                .arguments(asList("--disable-gpu", "--headless"))
+            .build();
+
+        try (SessionFactory factory = launcher.launch(options)) {
 
             String context = factory.createBrowserContext();
             try (Session session = factory.create(context)) {
