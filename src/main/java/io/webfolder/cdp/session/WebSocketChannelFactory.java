@@ -25,7 +25,7 @@ import com.neovisionaries.ws.client.WebSocketFactory;
 
 import io.webfolder.cdp.exception.CdpException;
 
-public class WebSocketChannelFactory implements ChannelFactory {
+class WebSocketChannelFactory implements ChannelFactory {
 
     private final WebSocketFactory factory = new WebSocketFactory();
 

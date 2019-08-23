@@ -20,7 +20,6 @@ package io.webfolder.cdp.sample;
 
 import static java.util.Arrays.asList;
 
-import io.webfolder.cdp.AdaptiveProcessManager;
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.Options;
 import io.webfolder.cdp.session.Session;
@@ -31,14 +30,14 @@ public class IncognitoBrowsing {
     // Requires Headless Chrome
     // https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md
     public static void main(String[] args) {
-        Launcher launcher = new Launcher();
-        launcher.setProcessManager(new AdaptiveProcessManager());
 
-        Options options = new Options.Builder()
-                .arguments(asList("--disable-gpu", "--headless"))
-            .build();
+        Options options = Options.builder()
+                                .arguments(asList("--disable-gpu", "--headless"))
+                            .build();
 
-        try (SessionFactory factory = launcher.launch(options)) {
+        Launcher launcher = new Launcher(options);
+
+        try (SessionFactory factory = launcher.launch()) {
 
             String firstContext = null;
 
@@ -72,8 +71,6 @@ public class IncognitoBrowsing {
 
             // Dispose second context
             factory.disposeBrowserContext(secondContext);
-
-            launcher.getProcessManager().kill();
         } finally {
             launcher.kill();
         }

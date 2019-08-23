@@ -38,9 +38,10 @@ public class MultiProcess {
 
             public void run() {
                 Path remoteProfileData = get(getProperty("java.io.tmpdir")).resolve("remote-profile-" + new Random().nextInt());
-                Options options = new Options.Builder().setUserDataDir(remoteProfileData).build();
-                Launcher launcher = new Launcher();
-                SessionFactory factory = launcher.launch(options);
+                Options options = Options.builder().setUserDataDir(remoteProfileData).build();
+                Launcher launcher = new Launcher(options);
+
+                SessionFactory factory = launcher.launch();
 
                 try (SessionFactory sf = factory) {
                     try (Session session = sf.create()) {
@@ -56,9 +57,10 @@ public class MultiProcess {
 
             public void run() {
                 Path remoteProfileData = get(getProperty("java.io.tmpdir")).resolve("remote-profile-" + new Random().nextInt());
-                Options options = new Options.Builder().setUserDataDir(remoteProfileData).build();
-                Launcher launcher = new Launcher();
-                SessionFactory factory = launcher.launch(options);
+                Options options = Options.builder().setUserDataDir(remoteProfileData).build();
+                Launcher launcher = new Launcher(options);
+
+                SessionFactory factory = launcher.launch();
 
                 try (SessionFactory sf = factory) {
                     try (Session session = sf.create()) {

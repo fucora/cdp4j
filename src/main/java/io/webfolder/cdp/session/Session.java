@@ -60,6 +60,7 @@ import java.util.function.Predicate;
 import com.google.gson.Gson;
 
 import io.webfolder.cdp.JsFunction;
+import io.webfolder.cdp.Options;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
 import io.webfolder.cdp.command.CSS;
@@ -142,6 +143,7 @@ public class Session implements AutoCloseable,
                                                     withInitial(() -> { return TRUE; });
 
     Session(
+            final Options options,
             final Gson gson,
             final String sessionId,
             final String targetId,
@@ -165,7 +167,7 @@ public class Session implements AutoCloseable,
                                                         browserSession,
                                                         sessionId,
                                                         targetId,
-                                                        sessionFactory.getReadTimeout());
+                                                        options.getReadTimeout());
         this.targetId         = targetId; 
         this.sesessionFactory = sessionFactory;
         this.listeners        = eventListeners;

@@ -42,41 +42,32 @@ import io.webfolder.cdp.session.SessionFactory;
 
 public class Launcher {
 
-    private static final String OS = getProperty("os.name").toLowerCase(ENGLISH);
+    private static final String  OS_NAME = getProperty("os.name").toLowerCase(ENGLISH);
 
-    private static final boolean WINDOWS = OS.startsWith("windows");
+    private static final boolean WINDOWS = OS_NAME.startsWith("windows");
 
-    private static final boolean OSX = OS.startsWith("mac");
+    private static final boolean OSX     = OS_NAME.startsWith("mac");
 
-    private ProcessManager processManager = new AdaptiveProcessManager();
+    private final Options options;
 
-    private String getCustomChromeBinary() {
-        String chromeBinary = getProperty("chrome_binary");
-        if ( chromeBinary != null ) {
-            File chromeExecutable = new File(chromeBinary);
-            if (chromeExecutable.exists() && chromeExecutable.canExecute()) {
-                return chromeExecutable.getAbsolutePath();
-            }
-        }
-        return null;
+    public Launcher(Options options) {
+        this.options = options;
     }
 
-    public String findChrome() {
-        String chromeExecutablePath = null;
-        chromeExecutablePath = getCustomChromeBinary();
-        if (chromeExecutablePath == null && WINDOWS) {
-            chromeExecutablePath = findChromeWinPath();
-        }
-        if (chromeExecutablePath == null && OSX) {
-            chromeExecutablePath = findChromeOsxPath();
-        }
-        if (chromeExecutablePath == null && !WINDOWS) {
-            chromeExecutablePath = "google-chrome";
-        }
-        return chromeExecutablePath;
+    public Launcher() {
+        this(Options.builder().build());
     }
 
-    public String findChromeWinPath() {
+    protected String findChrome() {
+        if (WINDOWS) {
+            return findChromeWinPath();
+        } else if (OSX) {
+            return findChromeOsxPath();
+        }
+        return "google-chrome";
+    }
+
+    protected String findChromeWinPath() {
         try {
             for (String path : getChromeWinPaths()) {
                 final Process process = getRuntime().exec(new String[]{
@@ -124,7 +115,7 @@ public class Launcher {
         return installations;
     }
 
-    public String findChromeOsxPath() {
+    protected String findChromeOsxPath() {
         for (String path : getChromeOsxPaths()) {
             final File chrome = new File(path);
             if (chrome.exists() && chrome.canExecute()) {
@@ -141,11 +132,45 @@ public class Launcher {
         );
     }
 
-    public SessionFactory launch() {
-        return launch(new Options.Builder().build());
+    protected List<String> getCommonParameters(String chromeExecutablePath, List<String> arguments) {
+        List<String> list = new ArrayList<>();
+        list.add(chromeExecutablePath);
+        // Disable built-in Google Translate service
+        list.add("--disable-features=TranslateUI");
+        // Disable all chrome extensions entirely
+        list.add("--disable-extensions");
+        // Disable various background network services, including extension updating,
+        // safe browsing service, upgrade detector, translate, UMA
+        list.add("--disable-background-networking");
+        // Disable fetching safebrowsing lists, likely redundant due to disable-background-networking
+        list.add("--safebrowsing-disable-auto-update");
+        // Disable syncing to a Google account
+        list.add("--disable-sync");
+        // Disable reporting to UMA, but allows for collection
+        list.add("--metrics-recording-only");
+        // Disable installation of default apps on first run
+        list.add("--disable-default-apps");
+        // Mute any audio
+        list.add("--mute-audio");
+        // Skip first run wizards
+        list.add("--no-first-run");
+        list.add("--no-default-browser-check");
+        list.add("--disable-plugin-power-saver");
+        list.add("--disable-popup-blocking");
+        if ( ! arguments.isEmpty() ) {
+            list.addAll(arguments);
+        }
+        return list;
     }
 
-    public SessionFactory launch(Options options) {
+    protected String toString(InputStream is) {
+        try (Scanner scanner = new Scanner(is)) {
+            scanner.useDelimiter("\\A");
+            return scanner.hasNext() ? scanner.next() : "";
+        }
+    }
+
+    public SessionFactory launch() {
         List<String> list = getCommonParameters(findChrome(), options.getArguments());
 
         if (WebSocket.equals(options.getConnectionType())) {
@@ -191,7 +216,7 @@ public class Launcher {
                 throw new CdpException("No process: the chrome process is not alive.");
             }
 
-            processManager.setProcess(new CdpProcess(process, cdp4jId));
+            options.getProcessManager().setProcess(new CdpProcess(process, cdp4jId));
         } catch (IOException e) {
             throw new CdpException(e);
         }
@@ -200,53 +225,11 @@ public class Launcher {
         return factory;
     }
 
-    protected List<String> getCommonParameters(String chromeExecutablePath, List<String> arguments) {
-        List<String> list = new ArrayList<>();
-        list.add(chromeExecutablePath);
-        // Disable built-in Google Translate service
-        list.add("--disable-features=TranslateUI");
-        // Disable all chrome extensions entirely
-        list.add("--disable-extensions");
-        // Disable various background network services, including extension updating,
-        // safe browsing service, upgrade detector, translate, UMA
-        list.add("--disable-background-networking");
-        // Disable fetching safebrowsing lists, likely redundant due to disable-background-networking
-        list.add("--safebrowsing-disable-auto-update");
-        // Disable syncing to a Google account
-        list.add("--disable-sync");
-        // Disable reporting to UMA, but allows for collection
-        list.add("--metrics-recording-only");
-        // Disable installation of default apps on first run
-        list.add("--disable-default-apps");
-        // Mute any audio
-        list.add("--mute-audio");
-        // Skip first run wizards
-        list.add("--no-first-run");
-        list.add("--no-default-browser-check");
-        list.add("--disable-plugin-power-saver");
-        list.add("--disable-popup-blocking");
-        if ( ! arguments.isEmpty() ) {
-            list.addAll(arguments);
-        }
-        return list;
-    }
-
-    protected String toString(InputStream is) {
-        try (Scanner scanner = new Scanner(is)) {
-            scanner.useDelimiter("\\A");
-            return scanner.hasNext() ? scanner.next() : "";
-        }
-    }
-
-    public void setProcessManager(ProcessManager processManager) {
-        this.processManager = processManager;
-    }
-
-    public ProcessManager getProcessManager() {
-        return processManager;
-    }
-
     public boolean kill() {
-        return getProcessManager().kill();
+        return options.getProcessManager().kill();
+    }
+
+    public Options getOptions() {
+        return options;
     }
 }

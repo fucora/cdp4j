@@ -60,8 +60,6 @@ public class SessionFactory implements AutoCloseable {
 
     private static final Integer DEFAULT_SCREEN_HEIGHT = 768; // WXGA height
 
-    private static final int DEFAULT_WS_READ_TIMEOUT = 60 * 1000; // 60 seconds
-
     private final Map<String, Session> sessions = new ConcurrentHashMap<>();
 
     private final Map<String, MessageAdapter<?>> adapters = new ConcurrentHashMap<>();
@@ -79,8 +77,6 @@ public class SessionFactory implements AutoCloseable {
     private volatile boolean closed;
 
     private volatile Boolean headless;
-
-    private volatile int readTimeout = DEFAULT_WS_READ_TIMEOUT;
 
     private volatile int majorVersion;
 
@@ -179,7 +175,7 @@ public class SessionFactory implements AutoCloseable {
         Map<Integer, AdapterContext> adapterContexts = new ConcurrentHashMap<>();
         List<EventListener> eventListeners = new CopyOnWriteArrayList<>();
 
-        Session session = new Session(gson, sessionId,
+        Session session = new Session(options, gson, sessionId,
                                       targetId, browserContextId,
                                       channel, adapterContexts,
                                       this, eventListeners,
@@ -230,7 +226,7 @@ public class SessionFactory implements AutoCloseable {
             MessageAdapter<?> adapter = channelFactory.createAdapter(handler);
             channel.addListener(adapter);
             channel.connect();
-            browserSession = new Session(gson, options.getWebSocketDebuggerUrl(),
+            browserSession = new Session(options, gson, options.getWebSocketDebuggerUrl(),
                                          options.getWebSocketDebuggerUrl(), null,
                                          channel, adapterContexts,
                                          this, eventlisteners,
@@ -345,18 +341,6 @@ public class SessionFactory implements AutoCloseable {
 
     protected LoggerFactory createLoggerFactory(CdpLoggerType loggerType) {
         return new CdpLoggerFactory(loggerType);
-    }
-
-    public int getReadTimeout() {
-        return readTimeout;
-    }
-
-    public void setReadTimeout(int readTimeout) {
-        this.readTimeout = readTimeout;
-    }
-
-    public ChannelFactory getChannelFactory() {
-        return channelFactory;
     }
 
     public boolean closed() {

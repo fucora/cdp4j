@@ -37,15 +37,16 @@ public class PrintToPDF {
     // Requires Headless Chrome
     // https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md
     public static void main(String[] args) throws IOException {
-        Launcher launcher = new Launcher();
 
         Path file = createTempFile("cdp4j", ".pdf");
 
-        Options options = new Options.Builder()
+        Options options = Options.builder()
                 .arguments(asList("--disable-gpu", "--headless"))
             .build();
 
-        try (SessionFactory factory = launcher.launch(options)) {
+        Launcher launcher = new Launcher(options);
+
+        try (SessionFactory factory = launcher.launch()) {
 
             String context = factory.createBrowserContext();
             try (Session session = factory.create(context)) {
@@ -64,6 +65,6 @@ public class PrintToPDF {
             getDesktop().open(file.toFile());
         }
 
-        launcher.getProcessManager().kill();
+        launcher.kill();
     }
 }

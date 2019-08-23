@@ -34,11 +34,15 @@ public class Options {
     
     private static final int DEFAULT_CONNECTION_TIMEOUT = 60 * 1000; // 60 seconds
 
+    private static final int DEFAULT_WS_READ_TIMEOUT = 60 * 1000; // 60 seconds
+
     private CdpLoggerType loggerType;
 
     private ExecutorService threadPool;
 
     private Integer connectionTimeout;
+
+    private Integer readTimeout;
 
     private String webSocketDebuggerUrl;
 
@@ -48,13 +52,23 @@ public class Options {
 
     private Path userDataDir;
 
+    private ProcessManager processManager;
+
     private Options() {
         // no op
+    }
+
+    public static Builder builder() {
+        return new Options.Builder();
     }
 
     public static class Builder {
         
         private Options options = new Options();
+
+        private Builder() {
+            // no op
+        }
 
         public Builder setWebSocketDebuggerUrl(String webSocketDebuggerUrl) {
             options.webSocketDebuggerUrl = webSocketDebuggerUrl;
@@ -107,6 +121,12 @@ public class Options {
             if (options.arguments == null) {
                 options.arguments = emptyList();
             }
+            if (options.readTimeout == null) {
+                options.readTimeout = DEFAULT_WS_READ_TIMEOUT;
+            }
+            if (options.processManager == null) {
+                options.processManager = new AdaptiveProcessManager();
+            }
             return options;
         }
     }
@@ -139,14 +159,23 @@ public class Options {
         return userDataDir;
     }
 
+    public Integer getReadTimeout() {
+        return readTimeout;
+    }
+
     void setWebSocketDebuggerUrl(String webSocketDebuggerUrl) {
         this.webSocketDebuggerUrl = webSocketDebuggerUrl;
+    }
+
+    public ProcessManager getProcessManager() {
+        return processManager;
     }
 
     @Override
     public String toString() {
         return "Options [loggerType=" + loggerType + ", threadPool=" + threadPool + ", connectionTimeout="
-                + connectionTimeout + ", webSocketDebuggerUrl=" + webSocketDebuggerUrl + ", connectionType="
-                + connectionType + ", arguments=" + arguments + ", userDataDir=" + userDataDir + "]";
+                + connectionTimeout + ", readTimeout=" + readTimeout + ", webSocketDebuggerUrl=" + webSocketDebuggerUrl
+                + ", connectionType=" + connectionType + ", arguments=" + arguments + ", userDataDir=" + userDataDir
+                + ", processManager=" + processManager + "]";
     }
 }

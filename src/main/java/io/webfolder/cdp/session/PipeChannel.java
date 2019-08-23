@@ -25,7 +25,7 @@ import java.io.IOException;
 
 import io.webfolder.cdp.exception.CdpException;
 
-public class PipeChannel implements Channel {
+class PipeChannel implements Channel {
 
 	private static final char MESSAGE_SEPERATOR = '\0';
 

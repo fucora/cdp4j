@@ -34,13 +34,13 @@ import io.webfolder.cdp.session.SessionFactory;
 public class Readability {
 
     public static void main(String[] args) throws Exception {
-        Options options = new Options.Builder()
+        Options options = Options.builder()
                 .loggerType(Null)
             .build();
 
-        Launcher launcher = new Launcher();
+        Launcher launcher = new Launcher(options);
 
-        try (SessionFactory factory = launcher.launch(options);
+        try (SessionFactory factory = launcher.launch();
                             Session session = factory.create()) {
 
             Page page = session.getCommand().getPage();

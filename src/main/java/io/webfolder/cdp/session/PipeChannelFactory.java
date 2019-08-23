@@ -18,7 +18,7 @@
  */
 package io.webfolder.cdp.session;
 
-public class PipeChannelFactory implements ChannelFactory {
+class PipeChannelFactory implements ChannelFactory {
 
     private final PipeChannel pipe;
 

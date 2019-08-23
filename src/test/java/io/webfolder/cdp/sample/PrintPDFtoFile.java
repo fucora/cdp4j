@@ -26,7 +26,6 @@ import static java.util.Arrays.asList;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import io.webfolder.cdp.AdaptiveProcessManager;
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.Options;
 import io.webfolder.cdp.session.Session;
@@ -37,16 +36,15 @@ public class PrintPDFtoFile {
     // Requires Headless Chrome
     // https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md
     public static void main(String[] args) throws IOException {
-        Launcher launcher = new Launcher();
-        launcher.setProcessManager(new AdaptiveProcessManager());
-
         Path file = createTempFile("cdp4j", ".pdf");
 
-        Options options = new Options.Builder()
+        Options options = Options.builder()
                                     .arguments(asList("--disable-gpu", "--headless"))
                                 .build();
 
-        try (SessionFactory factory = launcher.launch(options)) {
+        Launcher launcher = new Launcher(options);
+
+        try (SessionFactory factory = launcher.launch()) {
 
             String context = factory.createBrowserContext();
             try (Session session = factory.create(context)) {
@@ -63,6 +61,6 @@ public class PrintPDFtoFile {
             getDesktop().open(file.toFile());
         }
 
-        launcher.getProcessManager().kill();
+        launcher.kill();
     }
 }
