@@ -374,6 +374,9 @@ public interface Selector {
             RemoteObject docObjectId = null;
             if (contextId == null) {
                 Node document = dom.getDocument();
+                if (document == null) {
+                    return null;
+                }
                 docObjectId = dom.resolveNode(document.getNodeId(), null, null, getThis().getExecutionContextId());
             }
 
@@ -425,7 +428,11 @@ public interface Selector {
             String objectId = result.getResult().getObjectId();
             return ex == null ? objectId : null;
         } else {
-            Integer rootNodeId = dom.getDocument().getNodeId();
+            Node document = dom.getDocument();
+            if (document == null) {
+                return null;
+            }
+            Integer rootNodeId = document.getNodeId();
             if (rootNodeId == null) {
                 return null;
             }

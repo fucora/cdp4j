@@ -69,7 +69,7 @@ public class Launcher extends AbstractLauncher {
 
     private String getCustomChromeBinary() {
         String chromeBinary = getProperty("chrome_binary");
-        if (chromeBinary != null) {
+        if ( chromeBinary != null ) {
             File chromeExecutable = new File(chromeBinary);
             if (chromeExecutable.exists() && chromeExecutable.canExecute()) {
                 return chromeExecutable.getAbsolutePath();
@@ -171,12 +171,12 @@ public class Launcher extends AbstractLauncher {
     protected void internalLaunch(List<String> list, List<String> arguments) {
         boolean foundUserDataDir = arguments.stream().anyMatch(arg -> arg.startsWith("--user-data-dir="));
 
-        if (!foundUserDataDir) {
+        if ( ! foundUserDataDir ) {
             Path remoteProfileData = get(getProperty("java.io.tmpdir")).resolve("remote-profile");
             list.add(format("--user-data-dir=%s", remoteProfileData.toString()));
         }
 
-        if (!DEFAULT_HOST.equals(factory.getHost())) {
+        if ( ! DEFAULT_HOST.equals(factory.getHost()) ) {
             list.add(format("--remote-debugging-address=%s", factory.getHost()));
         }
 
@@ -191,7 +191,7 @@ public class Launcher extends AbstractLauncher {
             process.getInputStream().close();
             process.getErrorStream().close();
 
-            if (!process.isAlive()) {
+            if ( ! process.isAlive() ) {
                 throw new CdpException("No process: the chrome process is not alive.");
             }
 

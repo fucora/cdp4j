@@ -27,7 +27,7 @@ import com.google.gson.JsonElement;
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.exception.CommandException;
 
-class WSContext {
+class AdapterContext {
 
     private CountDownLatch latch = new CountDownLatch(1);
 

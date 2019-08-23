@@ -34,16 +34,16 @@ class TargetListener implements EventListener {
 
     private Map<String, Session> sessions;
 
-    private Map<String, WSAdapter> wsAdapters;
+    private Map<String, MessageAdapter<?>> adapters;
 
     private List<TabInfo> tabs;
 
     TargetListener(
         Map<String, Session> sessions,
-        Map<String, WSAdapter> wsAdapters,
+        Map<String, MessageAdapter<?>> adapters,
         List<TabInfo> tabs) {
         this.sessions = sessions;
-        this.wsAdapters = wsAdapters;
+        this.adapters = adapters;
         this.tabs = tabs;
     }
 
@@ -54,10 +54,10 @@ class TargetListener implements EventListener {
                 ReceivedMessageFromTarget receivedMessage = (ReceivedMessageFromTarget) value;
                 Session session = sessions.get(receivedMessage.getSessionId());
                 if ( session != null ) {
-                    WSAdapter wsAdapter = wsAdapters.get(session.getId());
-                    if ( wsAdapter != null ) {
+                    MessageAdapter<?> adapter = adapters.get(session.getId());
+                    if ( adapter != null ) {
                         try {
-                            wsAdapter.getAdapter().processSync(receivedMessage.getMessage());
+                            adapter.getMessageHandler().processSync(receivedMessage.getMessage());
                         } catch (Exception e) {
                             throw new CdpException(e);
                         }
@@ -83,7 +83,7 @@ class TargetListener implements EventListener {
                 for (Session next : sessions.values()) {
                     if (destroyed.getTargetId().equals(next.getTargetId())) {
                         if ( sessions.remove(next.getId()) != null ) {
-                            wsAdapters.remove(next.getId());
+                            adapters.remove(next.getId());
                             next.dispose();
                             next.terminate("Target.targetDestroyed");
                         }
@@ -99,7 +99,7 @@ class TargetListener implements EventListener {
                 DetachedFromTarget detached = (DetachedFromTarget) value;
                 Session removed = null;
                 if ( ( removed = sessions.remove(detached.getSessionId()) ) != null ) {
-                    wsAdapters.remove(removed.getId());
+                    adapters.remove(removed.getId());
                     removed.dispose();
                     removed.terminate("Target.detachedFromTarget");
                 }

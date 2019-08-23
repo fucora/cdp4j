@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.session;
 
-import static com.neovisionaries.ws.client.WebSocketCloseCode.NORMAL;
 import static io.webfolder.cdp.event.Events.LogEntryAdded;
 import static io.webfolder.cdp.event.Events.NetworkResponseReceived;
 import static io.webfolder.cdp.event.Events.PageLifecycleEvent;
@@ -36,6 +35,7 @@ import static java.lang.String.format;
 import static java.lang.String.valueOf;
 import static java.lang.ThreadLocal.withInitial;
 import static java.lang.reflect.Proxy.newProxyInstance;
+import static java.nio.file.StandardOpenOption.APPEND;
 import static java.util.Arrays.asList;
 import static java.util.Base64.getDecoder;
 import static java.util.Locale.ENGLISH;
@@ -47,7 +47,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import static java.nio.file.StandardOpenOption.*;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -59,7 +58,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
 
 import com.google.gson.Gson;
-import com.neovisionaries.ws.client.WebSocket;
 
 import io.webfolder.cdp.JsFunction;
 import io.webfolder.cdp.annotation.Experimental;
@@ -112,7 +110,7 @@ public class Session implements AutoCloseable,
 
     private final String sessionId;
 
-    private final WebSocket webSocket;
+    private final Channel channel;
 
     private final CdpLogger log;
 
@@ -148,8 +146,8 @@ public class Session implements AutoCloseable,
             final String sessionId,
             final String targetId,
             final String browserContextId,
-            final WebSocket webSocket,
-            final Map<Integer, WSContext> contextList,
+            final Channel channel,
+            final Map<Integer, AdapterContext> contexts,
             final SessionFactory sessionFactory,
             final List<EventListener> eventListeners,
             final LoggerFactory loggerFactory,
@@ -160,18 +158,18 @@ public class Session implements AutoCloseable,
         this.browserContextId = browserContextId;
         this.invocationHandler = new SessionInvocationHandler(
                                                         gson,
-                                                        webSocket,
-                                                        contextList,
+                                                        channel,
+                                                        contexts,
                                                         session == null ? this : session,
                                                         loggerFactory.getLogger("cdp4j.ws.request"),
                                                         browserSession,
                                                         sessionId,
                                                         targetId,
-                                                        sessionFactory.getWebSocketReadTimeout());
+                                                        sessionFactory.getReadTimeout());
         this.targetId         = targetId; 
         this.sesessionFactory = sessionFactory;
         this.listeners        = eventListeners;
-        this.webSocket        = webSocket;
+        this.channel          = channel;
         this.log              = loggerFactory.getLogger("cdp4j.session");
         this.logFlow          = loggerFactory.getLogger("cdp4j.flow");
         this.gson             = gson;
@@ -193,7 +191,7 @@ public class Session implements AutoCloseable,
         logEntry("close");
         if (connected.get()) {
             connected.set(false);
-            if (webSocket.isOpen()) {
+            if (channel.isOpen()) {
                 try {
                     sesessionFactory.close(this);
                 } finally {
@@ -647,7 +645,7 @@ public class Session implements AutoCloseable,
                 }
                 condition.await(timeout, MILLISECONDS);
             } catch (InterruptedException e) {
-                if (webSocket.isOpen() && connected.get()) {
+                if (channel.isOpen() && connected.get()) {
                     throw new CdpException(e);
                 }
             } finally {
@@ -700,12 +698,8 @@ public class Session implements AutoCloseable,
         listeners.clear();
         jsFunctions.clear();
         invocationHandler.dispose();
-        if (browserSession && webSocket.isOpen()) {
-            try {
-                webSocket.disconnect(NORMAL, null, 1000); // max wait time to close: 1 seconds
-            } catch (Throwable t) {
-                // ignore
-            }
+        if (browserSession && channel.isOpen()) {
+            channel.disconnect();
         }
     }
 
@@ -796,7 +790,7 @@ public class Session implements AutoCloseable,
         ENABLE_ENTRY_EXIT_LOG.set(TRUE);
     }
 
-    WSContext getContext(int id) {
+    AdapterContext getContext(int id) {
         return invocationHandler.getContext(id);
     }
 

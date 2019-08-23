@@ -34,7 +34,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.neovisionaries.ws.client.WebSocket;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Returns;
@@ -47,9 +46,9 @@ class SessionInvocationHandler implements InvocationHandler {
 
     private final Gson gson;
 
-    private final WebSocket webSocket;
+    private final Channel channel;
 
-    private final Map<Integer, WSContext> contexts;
+    private final Map<Integer, AdapterContext> contexts;
 
     private final List<String> enabledDomains = new CopyOnWriteArrayList<>();
 
@@ -67,23 +66,23 @@ class SessionInvocationHandler implements InvocationHandler {
 
     SessionInvocationHandler(
                     final Gson gson,
-                    final WebSocket webSocket,
-                    final Map<Integer, WSContext> contexts,
+                    final Channel channel,
+                    final Map<Integer, AdapterContext> contexts,
                     final Session session,
                     final CdpLogger log,
                     final boolean browserSession,
                     final String sessionId,
                     final String targetId,
-                    final int webSocketReadTimeout) {
+                    final int readTimeOut) {
         this.gson           = gson;
-        this.webSocket      = webSocket;
+        this.channel        = channel;
         this.contexts       = contexts;
         this.session        = session;
         this.log            = log;
         this.browserSession = browserSession;
         this.sessionId      = sessionId;
         this.targetId       = targetId;
-        this.timeout        = webSocketReadTimeout;
+        this.timeout        = readTimeOut;
     }
 
     @Override
@@ -130,13 +129,13 @@ class SessionInvocationHandler implements InvocationHandler {
 
         log.debug("--> {}", json);
 
-        WSContext context = null;
+        AdapterContext context = null;
 
         if (session.isConnected()) {
-            context = new WSContext();
+            context = new AdapterContext();
             contexts.put(id, context);
             if (browserSession) {
-                webSocket.sendText(json);
+                channel.sendText(json);
             } else {
                 session.getCommand()
                         .getTarget()
@@ -227,7 +226,7 @@ class SessionInvocationHandler implements InvocationHandler {
 
     void dispose() {
         enabledDomains.clear();
-        for (WSContext context : contexts.values()) {
+        for (AdapterContext context : contexts.values()) {
             try {
                 context.setData(null);
             } catch (Throwable t) {
@@ -236,7 +235,7 @@ class SessionInvocationHandler implements InvocationHandler {
         }
     }
 
-    WSContext getContext(int id) {
+    AdapterContext getContext(int id) {
         return contexts.get(id);
     }
 }

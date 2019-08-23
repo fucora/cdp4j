@@ -20,36 +20,22 @@ package io.webfolder.cdp.session;
 
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketAdapter;
-import com.neovisionaries.ws.client.WebSocketFrame;
 
-class WSAdapter extends WebSocketAdapter {
+class WebSocketMessageAdapter<T> extends WebSocketAdapter implements MessageAdapter<WebSocket> {
 
-    private final MessageAdapter adapter;
+    private final MessageHandler handler;
 
-    private final Session session;
-
-    WSAdapter(MessageAdapter adapter, Session session) {
-        this.adapter = adapter;
-        this.session = session;
+    WebSocketMessageAdapter(MessageHandler handler) {
+        this.handler = handler;
     }
 
     @Override
     public void onTextMessage(WebSocket websocket, byte[] data) throws Exception {
-        adapter.processAsync(data);
+        handler.processAsync(data);
     }
 
     @Override
-    public void onDisconnected(
-                WebSocket      websocket,
-                WebSocketFrame serverCloseFrame,
-                WebSocketFrame clientCloseFrame,
-                boolean        closedByServer) throws Exception {
-        if (closedByServer) {
-            session.close();
-        }
-    }
-
-    public MessageAdapter getAdapter() {
-        return adapter;
+    public MessageHandler getMessageHandler() {
+        return handler;
     }
 }
