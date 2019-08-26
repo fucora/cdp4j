@@ -18,6 +18,7 @@
  */
 package io.webfolder.cdp.session;
 
+import static io.webfolder.cdp.ConnectionType.WebSocket;
 import static io.webfolder.cdp.event.Events.RuntimeExecutionContextCreated;
 import static io.webfolder.cdp.event.Events.RuntimeExecutionContextDestroyed;
 import static java.lang.Boolean.TRUE;
@@ -56,6 +57,8 @@ public class SessionFactory implements AutoCloseable {
 
     private final Options options;
 
+    private final Connection connection;
+
     private static final Integer DEFAULT_SCREEN_WIDTH = 1366; // WXGA width
 
     private static final Integer DEFAULT_SCREEN_HEIGHT = 768; // WXGA height
@@ -80,9 +83,10 @@ public class SessionFactory implements AutoCloseable {
 
     private volatile int majorVersion;
 
-    public SessionFactory(Options options) {
+    public SessionFactory(Options options, Connection connection) {
+        this.connection        = connection;
         this.options           = options;
-        this.channelFactory    = new WebSocketChannelFactory();
+        this.channelFactory    = WebSocket.equals(options.getConnectionType()) ? new WebSocketChannelFactory() : new PipeChannelFactory();
         this.loggerFactory     = createLoggerFactory(options.getLoggerType());
         this.threadPool        = options.getThreadPool();
         this.gson              = new GsonBuilder()
@@ -222,12 +226,12 @@ public class SessionFactory implements AutoCloseable {
             MessageHandler handler = new MessageHandler(gson, adapterContexts,
                                                         eventlisteners, threadPool,
                                                         loggerFactory.getLogger("cdp4j.ws.response"));
-            channel = channelFactory.createChannel(options.getWebSocketDebuggerUrl(), handler);
+            channel = channelFactory.createChannel(connection, handler);
             MessageAdapter<?> adapter = channelFactory.createAdapter(handler);
             channel.addListener(adapter);
             channel.connect();
-            browserSession = new Session(options, gson, options.getWebSocketDebuggerUrl(),
-                                         options.getWebSocketDebuggerUrl(), null,
+            browserSession = new Session(options, gson, null,
+                                         null, null,
                                          channel, adapterContexts,
                                          this, eventlisteners,
                                          loggerFactory, true,

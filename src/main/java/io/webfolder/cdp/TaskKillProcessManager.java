@@ -28,25 +28,25 @@ import io.webfolder.cdp.exception.CdpException;
 
 public class TaskKillProcessManager extends ProcessManager {
 
-    private CdpProcess cdpProcess;
+    private CdpProcess process;
 
     @Override
     void setProcess(CdpProcess process) {
-        this.cdpProcess = process;
+        this.process = process;
     }
 
     @Override
     public boolean kill() {
         Field handleField;
         try {
-            handleField = cdpProcess.getProcess().getClass().getDeclaredField("handle");
+            handleField = process.getProcess().getClass().getDeclaredField("handle");
         } catch (NoSuchFieldException | SecurityException e) {
             throw new CdpException(e);
         }
         handleField.setAccessible(true);
         Object pid;
         try {
-            pid = handleField.get(cdpProcess);
+            pid = handleField.get(process);
         } catch (IllegalArgumentException | IllegalAccessException e) {
             throw new CdpException(e);
         }

@@ -19,6 +19,5 @@
 package io.webfolder.cdp;
 
 public enum ConnectionType {
-    WebSocket,
-    Pipe
+    WebSocket
 }

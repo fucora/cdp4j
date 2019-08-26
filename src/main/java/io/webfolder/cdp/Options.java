@@ -32,9 +32,9 @@ import io.webfolder.cdp.logger.CdpLoggerType;
 
 public class Options {
     
-    private static final int DEFAULT_CONNECTION_TIMEOUT = 60 * 1000; // 60 seconds
+    private static final int DEFAULT_CONNECTION_TIMEOUT = 3 * 1000; // 60 seconds
 
-    private static final int DEFAULT_WS_READ_TIMEOUT = 60 * 1000; // 60 seconds
+    private static final int DEFAULT_WS_READ_TIMEOUT = 3 * 1000; // 60 seconds
 
     private CdpLoggerType loggerType;
 
@@ -43,8 +43,6 @@ public class Options {
     private Integer connectionTimeout;
 
     private Integer readTimeout;
-
-    private String webSocketDebuggerUrl;
 
     private ConnectionType connectionType;
 
@@ -68,11 +66,6 @@ public class Options {
 
         private Builder() {
             // no op
-        }
-
-        public Builder setWebSocketDebuggerUrl(String webSocketDebuggerUrl) {
-            options.webSocketDebuggerUrl = webSocketDebuggerUrl;
-            return this;
         }
 
         public Builder loggerType(CdpLoggerType loggerType) {
@@ -131,10 +124,6 @@ public class Options {
         }
     }
 
-    public String getWebSocketDebuggerUrl() {
-        return webSocketDebuggerUrl;
-    }
-
     public CdpLoggerType getLoggerType() {
         return loggerType;
     }
@@ -163,19 +152,7 @@ public class Options {
         return readTimeout;
     }
 
-    void setWebSocketDebuggerUrl(String webSocketDebuggerUrl) {
-        this.webSocketDebuggerUrl = webSocketDebuggerUrl;
-    }
-
     public ProcessManager getProcessManager() {
         return processManager;
-    }
-
-    @Override
-    public String toString() {
-        return "Options [loggerType=" + loggerType + ", threadPool=" + threadPool + ", connectionTimeout="
-                + connectionTimeout + ", readTimeout=" + readTimeout + ", webSocketDebuggerUrl=" + webSocketDebuggerUrl
-                + ", connectionType=" + connectionType + ", arguments=" + arguments + ", userDataDir=" + userDataDir
-                + ", processManager=" + processManager + "]";
     }
 }

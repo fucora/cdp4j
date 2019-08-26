@@ -38,7 +38,9 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import io.webfolder.cdp.exception.CdpException;
+import io.webfolder.cdp.session.Connection;
 import io.webfolder.cdp.session.SessionFactory;
+import io.webfolder.cdp.session.WebSocketConnection;
 
 public class Launcher {
 
@@ -186,12 +188,11 @@ public class Launcher {
             list.add(format("--user-data-dir=%s", options.getUserDataDir()));
         }
 
-        try {
-            String cdp4jId = toHexString(current().nextLong());
-            list.add("--cdp4jId=" + cdp4jId);
-            ProcessBuilder builder = new ProcessBuilder(list);
+        Connection connection = null;
+        ProcessBuilder builder = new ProcessBuilder(list);
 
-            builder.environment().put("CDP4J_ID", cdp4jId);
+        String cdp4jId = toHexString(current().nextLong());
+        try {
             Process process = builder.start();
 
             if (WebSocket.equals(options.getConnectionType())) {
@@ -203,15 +204,14 @@ public class Launcher {
                         }
                         if (line.toLowerCase(Locale.ENGLISH).startsWith("devtools listening on")) {
                             int start = line.indexOf("ws://");
-                            options.setWebSocketDebuggerUrl(line.substring(start, line.length()));
+                            connection = new WebSocketConnection(line.substring(start, line.length()));
                             break;
                         }
                     }
+                    if (connection == null) {
+                        throw new CdpException("WebSocket connection url is required!");
+                    }
                 }
-            }
-
-            if (options.getWebSocketDebuggerUrl() == null) {
-                throw new CdpException("WebSocket connection url is required!");
             }
 
             if ( ! process.isAlive() ) {
@@ -223,7 +223,7 @@ public class Launcher {
             throw new CdpException(e);
         }
 
-        SessionFactory factory = new SessionFactory(options);
+        SessionFactory factory = new SessionFactory(options, connection);
         return factory;
     }
 

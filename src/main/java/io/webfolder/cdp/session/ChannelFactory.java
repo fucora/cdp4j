@@ -22,7 +22,7 @@ interface ChannelFactory {
 
     void setConnectionTimeout(int timeout);
 
-    Channel createChannel(String webSocketDebuggerUrl, MessageHandler handler);
+    Channel createChannel(Connection connection, MessageHandler handler);
 
     MessageAdapter<?> createAdapter(MessageHandler handler);
 }

@@ -22,20 +22,32 @@ import static java.lang.System.arraycopy;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import io.webfolder.cdp.exception.CdpException;
 
-class PipeChannel implements Channel {
+class PipeChannel implements Channel, Runnable {
 
 	private static final char MESSAGE_SEPERATOR = '\0';
+
+    private final InputStream is;
+
+    private final OutputStream os;
 
 	private byte[] remaining;
 
 	private MessageHandler handler;
 
-    private SessionFactory factory;
+	public PipeChannel(PipeConnection connection) {
+	    this.is = connection.getInput();
+	    this.os = connection.getOutput();
+	    Thread thread = new Thread(this);
+	    thread.setDaemon(true);
+	    thread.start();
+    }
 
-	protected void onResponse(byte[] data) {
+    protected void onResponse(byte[] data) {
 		int start = 0;
 		int end   = 0;
 		while (end < data.length) {
@@ -75,19 +87,17 @@ class PipeChannel implements Channel {
 	}
 
 	protected void onMessage(ByteArrayInputStream bs) {
-		if ( ! factory.closed() ) {
-		      byte[] b = new byte[bs.available()];
-		        try {
-		            bs.read(b);
-		        } catch (IOException e) {
-		            // ignore
-		        }
-		    try {
-		        this.handler.processAsync(b);
-		    } catch (Exception e) {
-		        throw new CdpException(e);
-		    }
-		}
+      byte[] b = new byte[bs.available()];
+        try {
+            bs.read(b);
+        } catch (IOException e) {
+            // ignore
+        }
+        try {
+            this.handler.processAsync(b);
+        } catch (Exception e) {
+            throw new CdpException(e);
+        }
 	}
 
 	void setHandler(MessageHandler handler) {
@@ -106,7 +116,12 @@ class PipeChannel implements Channel {
 
     @Override
     public void sendText(String message) {
-        // ignore
+        try {
+            this.os.write((message).getBytes());
+            this.os.write(0);
+        } catch (IOException e) {
+            throw new CdpException(e);
+        }
     }
 
     @Override
@@ -117,5 +132,23 @@ class PipeChannel implements Channel {
     @Override
     public void addListener(MessageAdapter<?> adapter) {
         // ignore
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            try {
+                while (true) {
+                    int available = is.available();
+                    if (available > 0) {
+                        byte[] content = new byte[available];
+                        is.read(content);
+                        onResponse(content);
+                    }
+                }
+            } catch (IOException e) {
+                throw new CdpException(e);
+            }
+        }
     }
 }

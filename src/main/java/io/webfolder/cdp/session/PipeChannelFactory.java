@@ -20,11 +20,7 @@ package io.webfolder.cdp.session;
 
 class PipeChannelFactory implements ChannelFactory {
 
-    private final PipeChannel pipe;
-
-    public PipeChannelFactory(PipeChannel pipe) {
-        this.pipe = pipe;
-    }
+    private PipeChannel pipe;
 
     @Override
     public void setConnectionTimeout(int timeout) {
@@ -32,7 +28,8 @@ class PipeChannelFactory implements ChannelFactory {
     }
 
     @Override
-    public Channel createChannel(String webSocketDebuggerUrl, MessageHandler handler) {
+    public Channel createChannel(Connection connection, MessageHandler handler) {
+        pipe = new PipeChannel((PipeConnection) connection);
         pipe.setHandler(handler);
         return pipe;
     }

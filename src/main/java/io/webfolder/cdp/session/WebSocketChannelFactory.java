@@ -38,9 +38,9 @@ class WebSocketChannelFactory implements ChannelFactory {
     }
 
     @Override
-    public Channel createChannel(String webSocketDebuggerUrl, MessageHandler handler) {
+    public Channel createChannel(Connection connection, MessageHandler handler) {
         try {
-            WebSocket webSocket = factory.createSocket(webSocketDebuggerUrl);
+            WebSocket webSocket = factory.createSocket(((WebSocketConnection) connection).getWebSocketDebuggerUrl());
             webSocket.setPayloadMask(zeroMasker);
             return new WebSocketChannel(webSocket);
         } catch (IOException e) {
