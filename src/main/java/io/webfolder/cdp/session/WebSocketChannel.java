@@ -33,7 +33,6 @@ class WebSocketChannel implements Channel {
     public WebSocketChannel(WebSocket webSocket) {
         this.webSocket = webSocket;
         this.webSocket.setDirectTextMessage(true);
-        //this.webSocket.setPayloadMask(new ZeroMasker());
         this.webSocket.setAutoFlush(true);
     }
 
@@ -63,10 +62,5 @@ class WebSocketChannel implements Channel {
         } catch (WebSocketException e) {
             throw new CdpException(e);
         }
-    }
-
-    @Override
-    public void addListener(MessageAdapter<?> adapter) {
-        webSocket.addListener((WebSocketMessageAdapter<?>) adapter);
     }
 }

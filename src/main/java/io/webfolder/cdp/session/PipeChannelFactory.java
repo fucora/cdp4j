@@ -20,7 +20,14 @@ package io.webfolder.cdp.session;
 
 class PipeChannelFactory implements ChannelFactory {
 
+    @SuppressWarnings("unused")
+    private final SessionFactory sessionFactory;
+
     private PipeChannel pipe;
+
+    public PipeChannelFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public void setConnectionTimeout(int timeout) {
@@ -32,10 +39,5 @@ class PipeChannelFactory implements ChannelFactory {
         pipe = new PipeChannel((PipeConnection) connection);
         pipe.setHandler(handler);
         return pipe;
-    }
-
-    @Override
-    public MessageAdapter<?> createAdapter(MessageHandler handler) {
-        return new PipeMessageAdapter(handler);
     }
 }

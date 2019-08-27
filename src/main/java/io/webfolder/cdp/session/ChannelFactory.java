@@ -23,6 +23,4 @@ interface ChannelFactory {
     void setConnectionTimeout(int timeout);
 
     Channel createChannel(Connection connection, MessageHandler handler);
-
-    MessageAdapter<?> createAdapter(MessageHandler handler);
 }

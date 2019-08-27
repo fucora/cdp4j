@@ -18,22 +18,46 @@
  */
 package io.webfolder.cdp.session;
 
-class TabInfo {
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-    private String targetId;
+import java.util.concurrent.CountDownLatch;
 
-    private String browserContextId;
+import com.google.gson.JsonElement;
 
-    TabInfo(String targetId, String browserContextId) {
-        this.targetId = targetId;
-        this.browserContextId = browserContextId;
+import io.webfolder.cdp.exception.CdpException;
+import io.webfolder.cdp.exception.CommandException;
+
+class Context {
+
+    private CountDownLatch latch = new CountDownLatch(1);
+
+    private JsonElement data;
+
+    private CommandException error;
+
+    void await(final int timeout) {
+        try {
+            latch.await(timeout, MILLISECONDS);
+        } catch (InterruptedException e) {
+            throw new CdpException(e);
+        }
     }
 
-    public String getTargetId() {
-        return targetId;
+    void setData(final JsonElement data) {
+        this.data = data;
+        latch.countDown();
     }
 
-    public String getBrowserContextId() {
-        return browserContextId;
+    JsonElement getData() {
+        return data;
+    }
+
+    void setError(CommandException error) {
+        this.error = error;
+        latch.countDown();
+    }
+
+    CommandException getError() {
+        return error;
     }
 }

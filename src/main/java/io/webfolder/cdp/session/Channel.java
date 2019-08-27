@@ -27,6 +27,4 @@ interface Channel {
     void sendText(String message);
 
     void connect();
-
-    void addListener(MessageAdapter<?> adapter);
 }

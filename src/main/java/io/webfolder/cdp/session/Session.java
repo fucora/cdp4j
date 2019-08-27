@@ -75,8 +75,6 @@ import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.exception.DestinationUnreachableException;
 import io.webfolder.cdp.exception.LoadTimeoutException;
 import io.webfolder.cdp.listener.EventListener;
-import io.webfolder.cdp.listener.TerminateEvent;
-import io.webfolder.cdp.listener.TerminateListener;
 import io.webfolder.cdp.logger.CdpLogger;
 import io.webfolder.cdp.logger.LoggerFactory;
 import io.webfolder.cdp.type.constant.ImageFormat;
@@ -109,8 +107,6 @@ public class Session implements AutoCloseable,
 
     private final SessionFactory sesessionFactory;
 
-    private final String sessionId;
-
     private final Channel channel;
 
     private final CdpLogger log;
@@ -121,9 +117,7 @@ public class Session implements AutoCloseable,
 
     private final String targetId;
 
-    private final boolean browserSession;
-
-    private volatile TerminateListener terminateListener;
+    private final String sessionId;
 
     private String frameId;
 
@@ -135,9 +129,9 @@ public class Session implements AutoCloseable,
 
     private volatile Integer executionContextId;
 
-    private final int majorVersion;
-
     private final Map<Class<?>, Object> jsFunctions;
+
+    private final Map<Integer, Context> contexts;
 
     private static final ThreadLocal<Boolean> ENABLE_ENTRY_EXIT_LOG = 
                                                     withInitial(() -> { return TRUE; });
@@ -149,24 +143,20 @@ public class Session implements AutoCloseable,
             final String targetId,
             final String browserContextId,
             final Channel channel,
-            final Map<Integer, AdapterContext> contexts,
+            final Map<Integer, Context> contexts,
             final SessionFactory sessionFactory,
             final List<EventListener> eventListeners,
-            final LoggerFactory loggerFactory,
-            final boolean browserSession,
-            final Session session,
-            final int majorVersion) {
-        this.sessionId = sessionId;
-        this.browserContextId = browserContextId;
+            final LoggerFactory loggerFactory) {
+        this.sessionId         = sessionId;
+        this.browserContextId  = browserContextId;
+        this.contexts          = contexts;
         this.invocationHandler = new SessionInvocationHandler(
                                                         gson,
                                                         channel,
                                                         contexts,
-                                                        session == null ? this : session,
+                                                        this,
                                                         loggerFactory.getLogger("cdp4j.ws.request"),
-                                                        browserSession,
                                                         sessionId,
-                                                        targetId,
                                                         options.getReadTimeout());
         this.targetId         = targetId; 
         this.sesessionFactory = sessionFactory;
@@ -175,8 +165,6 @@ public class Session implements AutoCloseable,
         this.log              = loggerFactory.getLogger("cdp4j.session");
         this.logFlow          = loggerFactory.getLogger("cdp4j.flow");
         this.gson             = gson;
-        this.browserSession   = browserSession;
-        this.majorVersion     = majorVersion;
         this.jsFunctions      = new ConcurrentHashMap<>();
         this.command          = new Command(this);
     }
@@ -192,12 +180,11 @@ public class Session implements AutoCloseable,
     public void close() {
         logEntry("close");
         if (connected.get()) {
-            connected.set(false);
             if (channel.isOpen()) {
                 try {
                     sesessionFactory.close(this);
                 } finally {
-                    terminate("closed");
+                    connected.set(false);
                 }
             } else {
                 dispose();
@@ -661,11 +648,6 @@ public class Session implements AutoCloseable,
         return getThis();
     }
 
-    public void onTerminate(TerminateListener terminateListener) {
-        this.terminateListener = terminateListener;
-    }
-
-
     public Command getCommand() {
         return command;
     }
@@ -694,26 +676,16 @@ public class Session implements AutoCloseable,
             return false;
         return true;
     }
-
+    
     void dispose() {
         proxies.clear();
         listeners.clear();
         jsFunctions.clear();
         invocationHandler.dispose();
-        if (browserSession && channel.isOpen()) {
-            channel.disconnect();
-        }
     }
 
     Gson getGson() {
         return gson;
-    }
-
-    void terminate(String message) {
-        if ( terminateListener != null ) {
-            terminateListener.onTerminate(new TerminateEvent(message));
-            terminateListener = null;
-        }
     }
 
     void info(
@@ -792,8 +764,12 @@ public class Session implements AutoCloseable,
         ENABLE_ENTRY_EXIT_LOG.set(TRUE);
     }
 
-    AdapterContext getContext(int id) {
-        return invocationHandler.getContext(id);
+    Context getContext(int id) {
+        return contexts.get(id);
+    }
+
+    List<EventListener> getListeners() {
+        return listeners;
     }
 
     @SuppressWarnings("unchecked")
@@ -891,10 +867,6 @@ public class Session implements AutoCloseable,
             return true;
         }
         return false;
-    }
-
-    public int getMajorVersion() {
-        return majorVersion;
     }
 
     public String getTargetId() {

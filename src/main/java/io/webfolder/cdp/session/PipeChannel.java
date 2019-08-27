@@ -94,7 +94,7 @@ class PipeChannel implements Channel, Runnable {
             // ignore
         }
         try {
-            this.handler.processAsync(b);
+            this.handler.process(b);
         } catch (Exception e) {
             throw new CdpException(e);
         }
@@ -126,11 +126,6 @@ class PipeChannel implements Channel, Runnable {
 
     @Override
     public void connect() {
-        // ignore
-    }
-
-    @Override
-    public void addListener(MessageAdapter<?> adapter) {
         // ignore
     }
 

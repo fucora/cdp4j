@@ -36,122 +36,99 @@ import io.webfolder.cdp.exception.CommandException;
 import io.webfolder.cdp.listener.EventListener;
 import io.webfolder.cdp.logger.CdpLogger;
 
-public class MessageHandler {
+class MessageHandler {
 
     private final Map<String, Events> events = listEvents();
 
     private final Gson gson;
 
-    private final Map<Integer, AdapterContext> adapterContexts;
+    private final Executor workerThreadPool;
 
-    private final List<EventListener> listeners;
-
-    private final Executor executor;
+    private final Executor eventHandlerThreadPool;
 
     private final CdpLogger log;
 
-    private Session session;
-
-    private static class TerminateSession implements Runnable {
-
-        private final Session session;
-
-        private final JsonObject object;
-
-        public TerminateSession(final Session session, final JsonObject object) {
-            this.session = session;
-            this.object = object;
-        }
-
-        @Override
-        public void run() {
-            if ( session != null && session.isConnected() ) {
-                session.close();
-                session.terminate(
-                        object.get("params")
-                        .getAsJsonObject()
-                        .get("reason").getAsString());
-            }
-        }
-    }
+    private SessionFactory factory;
 
     MessageHandler(
             final Gson gson,
-            final Map<Integer, AdapterContext> contexts,
-            final List<EventListener> listeners,
-            final Executor executor,
+            final SessionFactory factory,
+            final Executor workerThreadPool,
+            final Executor eventHandlerThreadPool,
             final CdpLogger log) {
-        this.gson            = gson;
-        this.adapterContexts = contexts;
-        this.listeners       = listeners;
-        this.executor        = executor;
-        this.log             = log; 
+        this.gson                   = gson;
+        this.factory                = factory;
+        this.workerThreadPool       = workerThreadPool;
+        this.eventHandlerThreadPool = eventHandlerThreadPool;
+        this.log                    = log; 
     }
 
-    public void processSync(final String content) throws Exception {
-        Runnable task = getTask(content, null);
-        task.run();
-    }
-
-    public void processAsync(final byte[] data) throws Exception {
-        Runnable task = getTask(null, data);
-        executor.execute(task);
-    }
-
-    Runnable getTask(String str, byte[] byteArray) {
+    @SuppressWarnings("resource")
+    public void process(final byte[] data) throws Exception {
         Runnable runnable = () -> {
-            String content = byteArray != null ? new String(byteArray, 0, byteArray.length, UTF_8) : str;
+            String content = new String(data, 0, data.length, UTF_8);
             log.debug("<-- {}", content);
             JsonElement json = gson.fromJson(content, JsonElement.class);
             JsonObject  object = json.getAsJsonObject();
             JsonElement idElement = object.get("id");
             if ( idElement != null ) {
+                // Process command response
                 String id = idElement.getAsString();
-                if ( id != null ) {
-                    int valId = parseInt(id);
-                    AdapterContext context = adapterContexts.remove(valId);
-                    if ( context != null ) {
-                        JsonObject error = object.getAsJsonObject("error");
-                        if ( error != null ) {
-                            int code = (int) error.getAsJsonPrimitive("code").getAsDouble();
-                            String message = error.getAsJsonPrimitive("message").getAsString();
-                            JsonElement messageData = error.get("data");
-                            context.setError(new CommandException(code, message +
-                                                        (messageData != null && messageData.isJsonPrimitive() ? ". " +
-                                                        messageData.getAsString() : "")));
-                        } else {
-                            context.setData(json);
-                        }
-                    }
+                if (id == null) {
+                    return;
+                }
+                int valId = parseInt(id);
+                JsonElement sid = object.get("sessionId");
+                String sessionId = sid == null ? null : sid.getAsString();
+                Session session = sessionId == null ? factory.getBrowserSession() : factory.getSession(sessionId);
+                if (session == null) {
+                    return;
+                }
+                Context context = session.getContext(valId);
+                if (context == null) {
+                    return;
+                }
+                JsonObject error = object.getAsJsonObject("error");
+                if (error == null) {
+                    context.setData(json);
+                } else {
+                    int code = (int) error.getAsJsonPrimitive("code").getAsDouble();
+                    String message = error.getAsJsonPrimitive("message").getAsString();
+                    JsonElement messageData = error.get("data");
+                    context.setError(new CommandException(code, message +
+                                                (messageData != null && messageData.isJsonPrimitive() ? ". " +
+                                                messageData.getAsString() : "")));
                 }
             } else {
+                // Process event response
                 JsonElement method = object.get("method");
-                if ( method != null && method.isJsonPrimitive() ) {
-                    String eventName = method.getAsString();
-                    if ( "Inspector.detached".equals(eventName) && session != null ) {
-                        if ( session != null && session.isConnected() ) {
-                            Thread thread = new Thread(new TerminateSession(session, object));
-                            thread.setName("cdp4j-terminate");
-                            thread.setDaemon(true);
-                            thread.start();
-                            session = null;
-                        }
-                    } else {
-                        Events event = events.get(eventName);
-                        if ( event != null ) {
-                            JsonElement params = object.get("params");
-                            Object value = gson.fromJson(params, event.klass);
-                            for (EventListener next : listeners) {
-                                executor.execute(() -> {
-                                    next.onEvent(event, value);
-                                });
-                            }
-                        }
-                    }
+                if ( method == null || ! method.isJsonPrimitive() ) {
                 }
+                String eventName = method.getAsString();
+                Events event = events.get(eventName);
+                if (event == null) {
+                    return;
+                }
+                JsonElement params = object.get("params");
+                Object value = gson.fromJson(params, event.klass);
+                JsonElement sid = object.get("sessionId");
+                String sessionId = sid == null ? null : sid.getAsString();
+                Session session = sessionId == null ? factory.getBrowserSession() : factory.getSession(sessionId);
+                if (session == null) {
+                    return;
+                }
+                List<EventListener> listeners = session.getListeners();
+                if (listeners == null) {
+                    return;
+                }
+                eventHandlerThreadPool.execute(() -> {
+                    for (EventListener next : listeners) {
+                        next.onEvent(event, value);
+                    }
+                });
             }
         };
-        return runnable;
+        workerThreadPool.execute(runnable);
     }
 
     Map<String, Events> listEvents() {
@@ -161,9 +138,5 @@ public class MessageHandler {
             map.put(next.domain + "." + next.name, next);
         }
         return unmodifiableMap(map);
-    }
-
-    void setSession(final Session session) {
-        this.session = session;
     }
 }

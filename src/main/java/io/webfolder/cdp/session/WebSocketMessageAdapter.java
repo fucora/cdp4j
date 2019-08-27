@@ -18,24 +18,39 @@
  */
 package io.webfolder.cdp.session;
 
+import com.neovisionaries.ws.client.ThreadType;
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketAdapter;
+import com.neovisionaries.ws.client.WebSocketFrame;
 
-class WebSocketMessageAdapter<T> extends WebSocketAdapter implements MessageAdapter<WebSocket> {
+class WebSocketMessageAdapter extends WebSocketAdapter {
+
+    private final SessionFactory factory;
 
     private final MessageHandler handler;
 
-    WebSocketMessageAdapter(MessageHandler handler) {
+    WebSocketMessageAdapter(SessionFactory factory, MessageHandler handler) {
+        this.factory = factory;
         this.handler = handler;
     }
 
     @Override
     public void onTextMessage(WebSocket websocket, byte[] data) throws Exception {
-        handler.processAsync(data);
+        handler.process(data);
     }
 
     @Override
-    public MessageHandler getMessageHandler() {
-        return handler;
+    public void onDisconnected(WebSocket websocket,
+                               WebSocketFrame serverCloseFrame,
+                               WebSocketFrame clientCloseFrame,
+                               boolean closedByServer) throws Exception {
+        factory.close();
+    }
+
+    @Override
+    public void onThreadCreated(WebSocket websocket,
+                                ThreadType threadType,
+                                Thread thread) throws Exception {
+        thread.setName("cdp4j-WebSocket-" + thread.getName());
     }
 }

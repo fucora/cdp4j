@@ -48,7 +48,7 @@ class SessionInvocationHandler implements InvocationHandler {
 
     private final Channel channel;
 
-    private final Map<Integer, AdapterContext> contexts;
+    private final Map<Integer, Context> contexts;
 
     private final List<String> enabledDomains = new CopyOnWriteArrayList<>();
 
@@ -56,33 +56,25 @@ class SessionInvocationHandler implements InvocationHandler {
 
     private final Session session;
 
-    private final boolean browserSession;
-
     private final String sessionId;
 
-    private final String targetId;
-
-    private final int timeout;
+    private final int readTimeout;
 
     SessionInvocationHandler(
                     final Gson gson,
                     final Channel channel,
-                    final Map<Integer, AdapterContext> contexts,
+                    final Map<Integer, Context> contexts,
                     final Session session,
                     final CdpLogger log,
-                    final boolean browserSession,
                     final String sessionId,
-                    final String targetId,
                     final int readTimeOut) {
-        this.gson           = gson;
-        this.channel        = channel;
-        this.contexts       = contexts;
-        this.session        = session;
-        this.log            = log;
-        this.browserSession = browserSession;
-        this.sessionId      = sessionId;
-        this.targetId       = targetId;
-        this.timeout        = readTimeOut;
+        this.gson        = gson;
+        this.channel     = channel;
+        this.contexts    = contexts;
+        this.session     = session;
+        this.log         = log;
+        this.sessionId   = sessionId;
+        this.readTimeout = readTimeOut;
     }
 
     @Override
@@ -120,6 +112,7 @@ class SessionInvocationHandler implements InvocationHandler {
         int id = counter.incrementAndGet();
         Map<String, Object> map = new HashMap<>(3);
         map.put("id"    , id);
+        map.put("sessionId", sessionId);
         map.put("method", domain + "." + command);
         if (hasArgs) {
             map.put("params", params);
@@ -129,19 +122,13 @@ class SessionInvocationHandler implements InvocationHandler {
 
         log.debug("--> {}", json);
 
-        AdapterContext context = null;
+        Context context = null;
 
         if (session.isConnected()) {
-            context = new AdapterContext();
+            context = new Context();
             contexts.put(id, context);
-            if (browserSession) {
-                channel.sendText(json);
-            } else {
-                session.getCommand()
-                        .getTarget()
-                        .sendMessageToTarget(json, sessionId, targetId);
-            }
-            context.await(timeout);
+            channel.sendText(json);
+            context.await(readTimeout);
         } else {
             throw new CdpException("WebSocket connection is not alive. id: " + id);
         }
@@ -226,16 +213,12 @@ class SessionInvocationHandler implements InvocationHandler {
 
     void dispose() {
         enabledDomains.clear();
-        for (AdapterContext context : contexts.values()) {
+        for (Context context : contexts.values()) {
             try {
                 context.setData(null);
             } catch (Throwable t) {
                 // ignore
             }
         }
-    }
-
-    AdapterContext getContext(int id) {
-        return contexts.get(id);
     }
 }

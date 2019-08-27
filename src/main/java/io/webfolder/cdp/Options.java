@@ -18,11 +18,11 @@
  */
 package io.webfolder.cdp;
 
-import static java.util.Collections.emptyList;
 import static io.webfolder.cdp.ConnectionType.WebSocket;
 import static io.webfolder.cdp.logger.CdpLoggerType.Null;
 import static java.lang.Integer.valueOf;
-import static java.util.concurrent.Executors.newCachedThreadPool;
+import static java.util.Collections.emptyList;
+import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -31,14 +31,16 @@ import java.util.concurrent.ExecutorService;
 import io.webfolder.cdp.logger.CdpLoggerType;
 
 public class Options {
-    
+
     private static final int DEFAULT_CONNECTION_TIMEOUT = 3 * 1000; // 60 seconds
 
     private static final int DEFAULT_WS_READ_TIMEOUT = 3 * 1000; // 60 seconds
 
     private CdpLoggerType loggerType;
 
-    private ExecutorService threadPool;
+    private ExecutorService workerThreadPool;
+
+    private ExecutorService eventHandlerThreadPool;
 
     private Integer connectionTimeout;
 
@@ -73,8 +75,13 @@ public class Options {
             return this;
         }
 
-        public Builder threadPool(ExecutorService threadPool) {
-            options.threadPool = threadPool;
+        public Builder workerThreadPool(ExecutorService workerThreadPool) {
+            options.workerThreadPool = workerThreadPool;
+            return this;
+        }
+
+        public Builder eventHandlerThreadPool(ExecutorService eventHandlerThreadPool) {
+            options.eventHandlerThreadPool = eventHandlerThreadPool;
             return this;
         }
 
@@ -102,8 +109,11 @@ public class Options {
             if (options.loggerType == null) {
                 options.loggerType = Null;
             }
-            if (options.threadPool == null) {
-                options.threadPool = newCachedThreadPool(new CdpThreadFactory());
+            if (options.workerThreadPool == null) {
+                options.workerThreadPool = newSingleThreadExecutor(new CdpThreadFactory("cdp4j-WorkerThread"));
+            }
+            if (options.eventHandlerThreadPool == null) {
+                options.eventHandlerThreadPool = newSingleThreadExecutor(new CdpThreadFactory("cdp4j-EventHandlerThread"));
             }
             if (options.connectionTimeout == null) {
                 options.connectionTimeout = valueOf(DEFAULT_CONNECTION_TIMEOUT);
@@ -128,8 +138,12 @@ public class Options {
         return loggerType;
     }
 
-    public ExecutorService getThreadPool() {
-        return threadPool;
+    public ExecutorService getWorkerThreadPool() {
+        return workerThreadPool;
+    }
+
+    public ExecutorService getEventHandlerThreadPool() {
+        return eventHandlerThreadPool;
     }
 
     public int getConnectionTimeout() {

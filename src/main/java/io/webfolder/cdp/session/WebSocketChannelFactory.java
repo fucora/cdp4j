@@ -32,6 +32,12 @@ class WebSocketChannelFactory implements ChannelFactory {
 
     private final ZeroMasker zeroMasker = new ZeroMasker();
 
+    private final SessionFactory sessionFactory;
+
+    public WebSocketChannelFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     @Override
     public void setConnectionTimeout(int timeout) {
         factory.setConnectionTimeout(timeout);
@@ -42,18 +48,15 @@ class WebSocketChannelFactory implements ChannelFactory {
         try {
             WebSocket webSocket = factory.createSocket(((WebSocketConnection) connection).getWebSocketDebuggerUrl());
             webSocket.setPayloadMask(zeroMasker);
+            webSocket.addListener(new WebSocketMessageAdapter(sessionFactory, handler));
             return new WebSocketChannel(webSocket);
         } catch (IOException e) {
             throw new CdpException(e);
         }
     }
 
-    @Override
-    public MessageAdapter<WebSocket> createAdapter(MessageHandler handler) {
-        return new WebSocketMessageAdapter<WebSocket>(handler);
-    }
-
     public WebSocketFactory getWebSocketFactory() {
         return factory;
+        
     }
 }

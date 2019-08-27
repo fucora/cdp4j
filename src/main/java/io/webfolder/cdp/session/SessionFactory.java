@@ -22,16 +22,14 @@ import static io.webfolder.cdp.ConnectionType.WebSocket;
 import static io.webfolder.cdp.event.Events.RuntimeExecutionContextCreated;
 import static io.webfolder.cdp.event.Events.RuntimeExecutionContextDestroyed;
 import static java.lang.Boolean.TRUE;
-import static java.lang.Thread.sleep;
 import static java.util.Locale.ENGLISH;
-import static java.util.concurrent.TimeUnit.SECONDS;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,15 +47,11 @@ import io.webfolder.cdp.type.target.TargetInfo;
 
 public class SessionFactory implements AutoCloseable {
 
-    private final ChannelFactory channelFactory;
-
     private final Gson gson;
 
     private final LoggerFactory loggerFactory;
 
     private final Options options;
-
-    private final Connection connection;
 
     private static final Integer DEFAULT_SCREEN_WIDTH = 1366; // WXGA width
 
@@ -65,37 +59,36 @@ public class SessionFactory implements AutoCloseable {
 
     private final Map<String, Session> sessions = new ConcurrentHashMap<>();
 
-    private final Map<String, MessageAdapter<?>> adapters = new ConcurrentHashMap<>();
-
     private final List<String> browserContexts = new CopyOnWriteArrayList<>();
 
-    private final List<TabInfo> tabs = new CopyOnWriteArrayList<>();
+    private final String browserTargetId;
 
-    private final ExecutorService threadPool;
-
-    private Channel channel;
+    private final Channel channel;
 
     private volatile Session browserSession;
 
-    private volatile boolean closed;
+    private AtomicBoolean closed = new AtomicBoolean(false);
 
     private volatile Boolean headless;
 
     private volatile int majorVersion;
 
     public SessionFactory(Options options, Connection connection) {
-        this.connection        = connection;
         this.options           = options;
-        this.channelFactory    = WebSocket.equals(options.getConnectionType()) ? new WebSocketChannelFactory() : new PipeChannelFactory();
         this.loggerFactory     = createLoggerFactory(options.getLoggerType());
-        this.threadPool        = options.getThreadPool();
         this.gson              = new GsonBuilder()
                                     .disableHtmlEscaping()
                                     .create();
-        this.channelFactory.setConnectionTimeout(options.getConnectionTimeout());
-        if (ThreadPoolExecutor.class.isAssignableFrom(threadPool.getClass())) {
-            ((ThreadPoolExecutor) threadPool).setKeepAliveTime(5, SECONDS);
-        }
+        ChannelFactory channelFactory = WebSocket.equals(options.getConnectionType()) ?
+                                                            new WebSocketChannelFactory(this) :
+                                                            new PipeChannelFactory(this);
+        channelFactory.setConnectionTimeout(options.getConnectionTimeout());
+        MessageHandler handler = new MessageHandler(gson, this,
+                                                    options.getWorkerThreadPool(), options.getEventHandlerThreadPool(),
+                                                    loggerFactory.getLogger("cdp4j.ws.response"));
+        channel = channelFactory.createChannel(connection, handler);
+        channel.connect();
+        this.browserTargetId = initBrowserSession();
     }
 
     public Session create() {
@@ -103,57 +96,45 @@ public class SessionFactory implements AutoCloseable {
     }
 
     public Session create(String browserContextId) {
-        boolean initialized = browserSession == null ? false : true;
-
         Session browserSession = getBrowserSession();
         Target target = browserSession.getCommand().getTarget();
-
-        TabInfo tab = null;
-
-        if ( ! initialized ) {
-            for (int i = 0; i < 500 && tabs.isEmpty(); i++) {
-                try {
-                    sleep(10);
-                } catch (InterruptedException e) {
-                    throw new CdpException(e);
+        // Try to use blank page on first launch
+        if (sessions.isEmpty() && browserContextId == null) {
+            TargetInfo blankPage = null;
+            List<TargetInfo> targets = target.getTargets();
+            for (TargetInfo next : targets) {
+                if (isEmptyTarget(next)) {
+                    blankPage = next;
+                    break;
                 }
             }
-            if ( ! tabs.isEmpty() ) {
-                tab = tabs.remove(0);
+            if ( blankPage != null ) {
+                return connect(blankPage.getTargetId(), blankPage.getBrowserContextId());
             }
         }
-
-        if (tab == null) {
-            String targetId = target.createTarget("about:blank",
-                                                    DEFAULT_SCREEN_WIDTH,
-                                                    DEFAULT_SCREEN_HEIGHT,
-                                                    browserContextId, false, null, null);
-            boolean found = false;
-            for (int i = 0; i < 500 && ! found; i++) {
-                for (TabInfo info : tabs) {
-                    if (info.getTargetId().equals(targetId)) {
-                        found = true;
-                        tabs.remove(info);
-                        break;
-                    }
-                }
-                if ( ! found ) {
-                    try {
-                        sleep(10);
-                    } catch (InterruptedException e) {
-                        throw new CdpException(e);
-                    }
-                }
-            }
-
-            tab = new TabInfo(targetId, browserContextId);
-        }
-
-        return connect(tab.getTargetId(), tab.getBrowserContextId());
+        String targetId = target.createTarget("about:blank",
+                                              DEFAULT_SCREEN_WIDTH,
+                                              DEFAULT_SCREEN_HEIGHT,
+                                              browserContextId, false, null, null);
+        return connect(targetId, browserContextId);
     }
 
     public Session connect(String targetId) {
         return connect(targetId, null);
+    }
+
+    private boolean isEmptyTarget(TargetInfo targetInfo) {
+        String url = targetInfo.getUrl();
+        String type = targetInfo.getType();
+        if ("page".equals(type) &&
+                (url.isEmpty()                      ||
+                    "about:blank".equals(url)       ||
+                    "chrome://welcome/".equals(url) ||
+                    "chrome://newtab/".equals(url)  ||
+                    url.startsWith("chrome://welcome-win10"))) {
+            return true;
+        }
+        return false;
     }
 
     Session connect(String targetId, String browserContextId) {
@@ -174,23 +155,16 @@ public class SessionFactory implements AutoCloseable {
         }
 
         Target target = bs.getCommand().getTarget();
-        String sessionId = target.attachToTarget(targetId);
+        String sessionId = target.attachToTarget(targetId, TRUE);
 
-        Map<Integer, AdapterContext> adapterContexts = new ConcurrentHashMap<>();
+        Map<Integer, Context> contexts = new ConcurrentHashMap<>();
         List<EventListener> eventListeners = new CopyOnWriteArrayList<>();
 
         Session session = new Session(options, gson, sessionId,
                                       targetId, browserContextId,
-                                      channel, adapterContexts,
+                                      channel, contexts,
                                       this, eventListeners,
-                                      loggerFactory, false,
-                                      browserSession, getMajorVersion());
-        MessageHandler handler = new MessageHandler(gson, adapterContexts,
-                                                    eventListeners, threadPool,
-                                                    loggerFactory.getLogger("cdp4j.ws.response"));
-        handler.setSession(session);
-        MessageAdapter<?> adapter = channelFactory.createAdapter(handler);
-        adapters.put(sessionId, adapter);
+                                      loggerFactory);
         sessions.put(sessionId, session);
 
         session.getCommand().getRuntime().enable();
@@ -219,44 +193,42 @@ public class SessionFactory implements AutoCloseable {
         return session;
     }
 
-    private synchronized Session getBrowserSession() {
-        if (browserSession == null) {
-            Map<Integer, AdapterContext> adapterContexts = new ConcurrentHashMap<>();
-            List<EventListener> eventlisteners = new CopyOnWriteArrayList<>();
-            MessageHandler handler = new MessageHandler(gson, adapterContexts,
-                                                        eventlisteners, threadPool,
-                                                        loggerFactory.getLogger("cdp4j.ws.response"));
-            channel = channelFactory.createChannel(connection, handler);
-            MessageAdapter<?> adapter = channelFactory.createAdapter(handler);
-            channel.addListener(adapter);
-            channel.connect();
-            browserSession = new Session(options, gson, null,
-                                         null, null,
-                                         channel, adapterContexts,
-                                         this, eventlisteners,
-                                         loggerFactory, true,
-                                         null, 0);
-            handler.setSession(browserSession);
-            browserSession.addEventListener(new TargetListener(sessions, adapters, tabs));
-            Target target = browserSession.getCommand().getTarget();
-            target.setDiscoverTargets(TRUE);
-            browserSession.onTerminate(event -> close());
-        }
+    private String initBrowserSession() {
+        Map<Integer, Context> contexts = new ConcurrentHashMap<>();
+        List<EventListener> eventlisteners = new CopyOnWriteArrayList<>();
+        browserSession = new Session(options, gson, null,
+                                     null, null,
+                                     channel, contexts,
+                                     this, eventlisteners,
+                                     loggerFactory);
+        browserSession.addEventListener(new TargetListener(sessions));        
+        Target target = browserSession.getCommand().getTarget();
+        target.setDiscoverTargets(TRUE);
+        TargetInfo info = target.getTargetInfo();
+        String targetId = info.getTargetId();
+        return targetId;
+    }
+
+    Session getBrowserSession() {
         return browserSession;
     }
 
+    Session getSession(String sessionId) {
+        return sessions.get(sessionId);
+    }
+
     void close(Session session) {
-        if (browserSession.isConnected()) {
-            session.getCommand()
-                   .getPage()
-                   .close();
-        }
+        session.getCommand()
+               .getPage()
+               .close();
+        session.getCommand()
+               .getTarget()
+               .closeTarget(session.getTargetId());
         session.dispose();
-        adapters.remove(session.getId());
         sessions.remove(session.getId());
     }
 
-    private int getMajorVersion() {
+    public int getMajorVersion() {
         if (majorVersion == 0) {
             String[] product = browserSession
                                         .getCommand()
@@ -276,34 +248,31 @@ public class SessionFactory implements AutoCloseable {
 
     @Override
     public void close() {
-        if (closed) {
-            return;
+        if (closed.compareAndSet(false, true)) {
+            Target target = browserSession.getCommand().getTarget();
+            for (String next : browserContexts) {
+                target.disposeBrowserContext(next);
+            }
+            if ( browserSession != null ) {
+                target.closeTarget(browserTargetId);
+                browserSession.dispose();
+            }
+            channel.disconnect();
+            sessions.clear();
+            browserContexts.clear();
+            options.getWorkerThreadPool().shutdownNow();
+            options.getEventHandlerThreadPool().shutdownNow();
+            browserSession = null;
         }
-        closed = true;
-        if ( browserSession != null ) {
-            browserSession.dispose();
-        }
-        sessions.clear();
-        adapters.clear();
-        browserContexts.clear();
-        tabs.clear();
-        threadPool.shutdownNow();
-        browserSession = null;
     }
 
     public void activate(String sessionId) {
-        Session session = null;
-        for (Session next : sessions.values()) {
-            if (next.getId().equals(sessionId)) {
-                session = next;
-                break;
-            }
-        }
+        Session session = sessions.get(sessionId);
         if ( session != null ) {
                 browserSession
-                        .getCommand()
-                        .getTarget()
-                        .activateTarget(session.getTargetId());
+                    .getCommand()
+                    .getTarget()
+                    .activateTarget(session.getTargetId());
         }
     }
 
@@ -339,16 +308,16 @@ public class SessionFactory implements AutoCloseable {
         }
     }
 
+    public boolean closed() {
+        return closed.get();
+    }
+
     ExecutorService getThreadPool() {
-        return threadPool;
+        return options.getEventHandlerThreadPool();
     }
 
     protected LoggerFactory createLoggerFactory(CdpLoggerType loggerType) {
         return new CdpLoggerFactory(loggerType);
-    }
-
-    public boolean closed() {
-        return closed;
     }
 
     @Override
