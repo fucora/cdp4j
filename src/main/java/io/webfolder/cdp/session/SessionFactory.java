@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp.session;
 
-import static io.webfolder.cdp.ConnectionType.WebSocket;
 import static io.webfolder.cdp.event.Events.RuntimeExecutionContextCreated;
 import static io.webfolder.cdp.event.Events.RuntimeExecutionContextDestroyed;
 import static java.lang.Boolean.TRUE;
@@ -79,9 +78,7 @@ public class SessionFactory implements AutoCloseable {
         this.gson              = new GsonBuilder()
                                     .disableHtmlEscaping()
                                     .create();
-        ChannelFactory channelFactory = WebSocket.equals(options.getConnectionType()) ?
-                                                            new WebSocketChannelFactory(this) :
-                                                            new PipeChannelFactory(this);
+        ChannelFactory channelFactory = new WebSocketChannelFactory(this);
         channelFactory.setConnectionTimeout(options.getConnectionTimeout());
         MessageHandler handler = new MessageHandler(gson, this,
                                                     options.getWorkerThreadPool(), options.getEventHandlerThreadPool(),

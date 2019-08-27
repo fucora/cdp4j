@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp;
 
-import static io.webfolder.cdp.ConnectionType.WebSocket;
 import static java.lang.Long.toHexString;
 import static java.lang.Runtime.getRuntime;
 import static java.lang.String.format;
@@ -173,44 +172,36 @@ public class Launcher {
     }
 
     public SessionFactory launch() {
-        List<String> list = getCommonParameters(findChrome(), options.getArguments());
-
-        if (WebSocket.equals(options.getConnectionType())) {
-            list.add("--remote-debugging-port=0");
-        } else {
-            list.add("--remote-debugging-pipe");
-        }
+        List<String> arguments = getCommonParameters(findChrome(), options.getArguments());
+        arguments.add("--remote-debugging-port=0");
 
         if (options.getUserDataDir() == null) {
             Path remoteProfileData = get(getProperty("java.io.tmpdir")).resolve("remote-profile");
-            list.add(format("--user-data-dir=%s", remoteProfileData.toString()));
+            arguments.add(format("--user-data-dir=%s", remoteProfileData.toString()));
         } else {
-            list.add(format("--user-data-dir=%s", options.getUserDataDir()));
+            arguments.add(format("--user-data-dir=%s", options.getUserDataDir()));
         }
 
         Connection connection = null;
-        ProcessBuilder builder = new ProcessBuilder(list);
+        ProcessBuilder builder = new ProcessBuilder(arguments);
 
         String cdp4jId = toHexString(current().nextLong());
         try {
             Process process = builder.start();
-
-            if (WebSocket.equals(options.getConnectionType())) {
-                try (Scanner scanner = new Scanner(process.getErrorStream())) {
-                    while (scanner.hasNext()) {
-                        String line = scanner.nextLine().trim();
-                        if (line.isEmpty()) {
-                            continue;
-                        }
-                        if (line.toLowerCase(Locale.ENGLISH).startsWith("devtools listening on")) {
-                            int start = line.indexOf("ws://");
-                            connection = new WebSocketConnection(line.substring(start, line.length()));
-                            break;
-                        }
+            try (Scanner scanner = new Scanner(process.getErrorStream())) {
+                while (scanner.hasNext()) {
+                    String line = scanner.nextLine().trim();
+                    if (line.isEmpty()) {
+                        continue;
                     }
-                    if (connection == null) {
-                        throw new CdpException("WebSocket connection url is required!");
+                    if (line.toLowerCase(Locale.ENGLISH).startsWith("devtools listening on")) {
+                        int start = line.indexOf("ws://");
+                        connection = new WebSocketConnection(line.substring(start, line.length()));
+                        break;
                     }
+                }
+                if (connection == null) {
+                    throw new CdpException("WebSocket connection url is required!");
                 }
             }
 

@@ -18,7 +18,6 @@
  */
 package io.webfolder.cdp;
 
-import static io.webfolder.cdp.ConnectionType.WebSocket;
 import static io.webfolder.cdp.logger.CdpLoggerType.Null;
 import static java.lang.Integer.valueOf;
 import static java.util.Collections.emptyList;
@@ -45,8 +44,6 @@ public class Options {
     private Integer connectionTimeout;
 
     private Integer readTimeout;
-
-    private ConnectionType connectionType;
 
     private List<String> arguments;
 
@@ -90,11 +87,6 @@ public class Options {
             return this;
         }
 
-        public Builder connectionType(ConnectionType connectionType) {
-            options.connectionType = connectionType;
-            return this;
-        }
-
         public Builder arguments(List<String> arguments) {
             options.arguments = arguments;
             return this;
@@ -117,9 +109,6 @@ public class Options {
             }
             if (options.connectionTimeout == null) {
                 options.connectionTimeout = valueOf(DEFAULT_CONNECTION_TIMEOUT);
-            }
-            if (options.connectionType == null) {
-                options.connectionType = WebSocket;
             }
             if (options.arguments == null) {
                 options.arguments = emptyList();
@@ -148,10 +137,6 @@ public class Options {
 
     public int getConnectionTimeout() {
         return connectionTimeout.intValue();
-    }
-
-    public ConnectionType getConnectionType() {
-        return connectionType;
     }
 
     public List<String> getArguments() {
