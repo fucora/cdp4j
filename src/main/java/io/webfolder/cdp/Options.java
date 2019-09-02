@@ -129,7 +129,7 @@ public class Options {
                 options.workerThreadPool = newSingleThreadExecutor(new CdpThreadFactory("cdp4j-WorkerThread"));
             }
             if (options.eventHandlerThreadPool == null) {
-                options.eventHandlerThreadPool = options.workerThreadPool;
+                options.eventHandlerThreadPool = newSingleThreadExecutor(new CdpThreadFactory("cdp4j-EventHandlerThread"));
             }
             if (options.connectionTimeout == null) {
                 options.connectionTimeout = valueOf(DEFAULT_CONNECTION_TIMEOUT);

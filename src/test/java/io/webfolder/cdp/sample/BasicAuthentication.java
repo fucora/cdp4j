@@ -22,6 +22,7 @@ import static io.webfolder.cdp.event.Events.NetworkRequestIntercepted;
 import static java.util.Arrays.asList;
 
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 import com.google.gson.Gson;
 
@@ -56,6 +57,8 @@ public class BasicAuthentication {
             // https://github.com/GoogleChrome/puppeteer/pull/1154
             network.setCacheDisabled(Boolean.TRUE);
 
+            CountDownLatch latch = new CountDownLatch(1);
+
             session.addEventListener((e, v) -> {
                 
                 if (NetworkRequestIntercepted.equals(e)) {
@@ -69,6 +72,7 @@ public class BasicAuthentication {
                                                            null, null,
                                                            null, null,
                                                            null,  acr);
+                        latch.countDown();
                     } else {
                         network.continueInterceptedRequest(ri.getInterceptionId());
                     }
@@ -76,8 +80,12 @@ public class BasicAuthentication {
             });
 
             session.navigate("https://httpbin.org/basic-auth/user/password");
-            session.wait(1000);
-
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            session.waitDocumentReady();
             String content = (String) session.evaluate("window.document.body.textContent");
             System.out.println(content);
             Map<String, Object> map = new Gson().fromJson(content, Map.class);
