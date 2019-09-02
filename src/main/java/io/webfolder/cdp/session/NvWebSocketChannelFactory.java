@@ -18,10 +18,10 @@
  */
 package io.webfolder.cdp.session;
 
+import static com.neovisionaries.ws.client.DualStackMode.IPV4_ONLY;
+
 import java.io.IOException;
 
-import static com.neovisionaries.ws.client.DualStackMode.*;
-import com.neovisionaries.ws.client.DualStackMode;
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketFactory;
 import com.neovisionaries.ws.client.ZeroMasker;
