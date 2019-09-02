@@ -51,6 +51,8 @@ public class Options {
 
     private ProcessManager processManager;
 
+    private boolean headless;
+
     private Options() {
         // no op
     }
@@ -92,8 +94,13 @@ public class Options {
             return this;
         }
 
-        public Builder setUserDataDir(Path userDataDir) {
+        public Builder userDataDir(Path userDataDir) {
             options.userDataDir = userDataDir;
+            return this;
+        }
+
+        public Builder headless(boolean headless) {
+            options.headless = headless;
             return this;
         }
 
@@ -153,5 +160,9 @@ public class Options {
 
     public ProcessManager getProcessManager() {
         return processManager;
+    }
+
+    public boolean headless() {
+        return headless;
     }
 }

@@ -183,6 +183,10 @@ public class Launcher {
             arguments.add(format("--user-data-dir=%s", options.getUserDataDir()));
         }
 
+        if (options.headless()) {
+            arguments.add("--headless");
+        }
+
         Connection connection = null;
         ProcessBuilder builder = new ProcessBuilder(arguments);
 

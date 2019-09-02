@@ -21,7 +21,6 @@ package io.webfolder.cdp.sample;
 import static java.awt.Desktop.getDesktop;
 import static java.awt.Desktop.isDesktopSupported;
 import static java.nio.file.Files.createTempFile;
-import static java.util.Arrays.asList;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -33,13 +32,11 @@ import io.webfolder.cdp.session.SessionFactory;
 
 public class PrintPDFtoFile {
 
-    // Requires Headless Chrome
-    // https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md
     public static void main(String[] args) throws IOException {
         Path file = createTempFile("cdp4j", ".pdf");
 
         Options options = Options.builder()
-                                    .arguments(asList("--disable-gpu", "--headless"))
+                                    .headless(true)
                                 .build();
 
         Launcher launcher = new Launcher(options);
@@ -49,7 +46,7 @@ public class PrintPDFtoFile {
             String context = factory.createBrowserContext();
             try (Session session = factory.create(context)) {
 
-                session.navigate("https://docs.jboss.org/resteasy/docs/4.0.0.Final/userguide/html_single/index.html");
+                session.navigate("https://news.ycombinator.com");
                 session.waitDocumentReady();
                 session.printToPDF(file);
             }

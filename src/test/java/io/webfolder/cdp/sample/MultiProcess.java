@@ -38,7 +38,7 @@ public class MultiProcess {
 
             public void run() {
                 Path remoteProfileData = get(getProperty("java.io.tmpdir")).resolve("remote-profile-" + new Random().nextInt());
-                Options options = Options.builder().setUserDataDir(remoteProfileData).build();
+                Options options = Options.builder().userDataDir(remoteProfileData).build();
                 Launcher launcher = new Launcher(options);
 
                 SessionFactory factory = launcher.launch();
@@ -57,7 +57,7 @@ public class MultiProcess {
 
             public void run() {
                 Path remoteProfileData = get(getProperty("java.io.tmpdir")).resolve("remote-profile-" + new Random().nextInt());
-                Options options = Options.builder().setUserDataDir(remoteProfileData).build();
+                Options options = Options.builder().userDataDir(remoteProfileData).build();
                 Launcher launcher = new Launcher(options);
 
                 SessionFactory factory = launcher.launch();
