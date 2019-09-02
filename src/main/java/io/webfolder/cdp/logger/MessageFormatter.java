@@ -1,8 +1,9 @@
+package io.webfolder.cdp.logger;
+
 /**
- * lines (18 sloc)  1.11 KB
- * Copyright (c) 2004-2017 QOS.ch
+ * Copyright (c) 2004-2011 QOS.ch
  * All rights reserved.
- * 
+ *
  * Permission is hereby granted, free  of charge, to any person obtaining
  * a  copy  of this  software  and  associated  documentation files  (the
  * "Software"), to  deal in  the Software without  restriction, including
@@ -10,10 +11,10 @@
  * distribute,  sublicense, and/or sell  copies of  the Software,  and to
  * permit persons to whom the Software  is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The  above  copyright  notice  and  this permission  notice  shall  be
  * included in all copies or substantial portions of the Software.
- * 
+ *
  * THE  SOFTWARE IS  PROVIDED  "AS  IS", WITHOUT  WARRANTY  OF ANY  KIND,
  * EXPRESS OR  IMPLIED, INCLUDING  BUT NOT LIMITED  TO THE  WARRANTIES OF
  * MERCHANTABILITY,    FITNESS    FOR    A   PARTICULAR    PURPOSE    AND
@@ -21,8 +22,8 @@
  * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  * OF CONTRACT, TORT OR OTHERWISE,  ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
  */
-package io.webfolder.cdp.logger;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -95,7 +96,7 @@ import java.util.Map;
  * @author Ceki G&uuml;lc&uuml;
  * @author Joern Huxhorn
  */
-class MessageFormatter {
+final public class MessageFormatter {
     static final char DELIM_START = '{';
     static final char DELIM_STOP = '}';
     static final String DELIM_STR = "{}";
@@ -152,35 +153,13 @@ class MessageFormatter {
     }
 
 
-    static final Throwable getThrowableCandidate(Object[] argArray) {
-        if (argArray == null || argArray.length == 0) {
-            return null;
-        }
-
-        final Object lastEntry = argArray[argArray.length - 1];
-        if (lastEntry instanceof Throwable) {
-            return (Throwable) lastEntry;
-        }
-        return null;
-    }
-
     final public static FormattingTuple arrayFormat(final String messagePattern, final Object[] argArray) {
-        Throwable throwableCandidate = getThrowableCandidate(argArray);
+        Throwable throwableCandidate = MessageFormatter.getThrowableCandidate(argArray);
         Object[] args = argArray;
         if (throwableCandidate != null) {
-            args = trimmedCopy(argArray);
+            args = MessageFormatter.trimmedCopy(argArray);
         }
         return arrayFormat(messagePattern, args, throwableCandidate);
-    }
-
-    private static Object[] trimmedCopy(Object[] argArray) {
-        if (argArray == null || argArray.length == 0) {
-            throw new IllegalStateException("non-sensical empty or null argument array");
-        }
-        final int trimemdLen = argArray.length - 1;
-        Object[] trimmed = new Object[trimemdLen];
-        System.arraycopy(argArray, 0, trimmed, 0, trimemdLen);
-        return trimmed;
     }
 
     final public static FormattingTuple arrayFormat(final String messagePattern, final Object[] argArray, Throwable throwable) {
@@ -299,8 +278,7 @@ class MessageFormatter {
             String oAsString = o.toString();
             sbuf.append(oAsString);
         } catch (Throwable t) {
-            System.err.println("SLF4J: Failed toString() invocation on an object of type [" + o.getClass().getName() + "]");
-            t.printStackTrace();
+            Util.report("SLF4J: Failed toString() invocation on an object of type [" + o.getClass().getName() + "]", t);
             sbuf.append("[FAILED toString()]");
         }
 
@@ -411,5 +389,50 @@ class MessageFormatter {
         }
         sbuf.append(']');
     }
+
+	/**
+	 * Helper method to determine if an {@link Object} array contains a {@link Throwable} as last element
+	 *
+	 * @param argArray
+	 *          The arguments off which we want to know if it contains a {@link Throwable} as last element
+	 * @return if the last {@link Object} in argArray is a {@link Throwable} this method will return it,
+	 *          otherwise it returns null
+	 */
+	public static Throwable getThrowableCandidate(final Object[] argArray) {
+	    if (argArray == null || argArray.length == 0) {
+	        return null;
+	    }
+	
+	    final Object lastEntry = argArray[argArray.length - 1];
+	    if (lastEntry instanceof Throwable) {
+	        return (Throwable) lastEntry;
+	    }
+	
+	    return null;
+	}
+
+	/**
+	 * Helper method to get all but the last element of an array
+	 *
+	 * @param argArray
+	 *          The arguments from which we want to remove the last element
+	 *
+	 * @return a copy of the array without the last element
+	 */
+	public static Object[] trimmedCopy(final Object[] argArray) {
+	    if (argArray == null || argArray.length == 0) {
+	        throw new IllegalStateException("non-sensical empty or null argument array");
+	    }
+	
+	    final int trimmedLen = argArray.length - 1;
+	
+	    Object[] trimmed = new Object[trimmedLen];
+	
+	    if (trimmedLen > 0) {
+	        System.arraycopy(argArray, 0, trimmed, 0, trimmedLen);
+	    }
+	
+	    return trimmed;
+	}
 
 }
