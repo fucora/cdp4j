@@ -19,7 +19,6 @@
 package io.webfolder.cdp.session;
 
 import static java.lang.Integer.parseInt;
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Collections.unmodifiableMap;
 
 import java.util.HashMap;
@@ -48,7 +47,7 @@ class MessageHandler {
 
     private final CdpLogger log;
 
-    private SessionFactory factory;
+    private final SessionFactory factory;
 
     MessageHandler(
             final Gson gson,
@@ -64,9 +63,8 @@ class MessageHandler {
     }
 
     @SuppressWarnings("resource")
-    public void process(final byte[] data) throws Exception {
+    public void process(final String content)  {
         Runnable runnable = () -> {
-            String content = new String(data, 0, data.length, UTF_8);
             log.debug("<-- {}", content);
             JsonElement json = gson.fromJson(content, JsonElement.class);
             JsonObject  object = json.getAsJsonObject();

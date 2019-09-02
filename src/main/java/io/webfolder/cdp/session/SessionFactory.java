@@ -18,6 +18,7 @@
  */
 package io.webfolder.cdp.session;
 
+import static io.webfolder.cdp.session.ConnectionType.*;
 import static io.webfolder.cdp.event.Events.RuntimeExecutionContextCreated;
 import static io.webfolder.cdp.event.Events.RuntimeExecutionContextDestroyed;
 import static java.lang.Boolean.TRUE;
@@ -74,12 +75,11 @@ public class SessionFactory implements AutoCloseable {
         this.gson              = new GsonBuilder()
                                     .disableHtmlEscaping()
                                     .create();
-        ChannelFactory channelFactory = new WebSocketChannelFactory(this);
-        channelFactory.setConnectionTimeout(options.getConnectionTimeout());
+        ChannelFactory channelFactory = JreWebSocket.equals(options.getConnectionType()) ? new JreWebSocketChannelFactory(this) : new NvWebSocketChannelFactory(this);
         MessageHandler handler = new MessageHandler(gson, this,
                                                     options.getWorkerThreadPool(), options.getEventHandlerThreadPool(),
                                                     loggerFactory.getLogger("cdp4j.ws.response"));
-        channel = channelFactory.createChannel(connection, handler);
+        channel = channelFactory.createChannel(connection, options.getConnectionTimeout(), handler);
         channel.connect();
         this.browserTargetId = initBrowserSession();
     }
@@ -253,8 +253,12 @@ public class SessionFactory implements AutoCloseable {
             channel.disconnect();
             sessions.clear();
             browserContexts.clear();
-            options.getWorkerThreadPool().shutdownNow();
-            options.getEventHandlerThreadPool().shutdownNow();
+            if ( ! options.getWorkerThreadPool().isShutdown() ) {
+                options.getWorkerThreadPool().shutdownNow();
+            }
+            if ( ! options.getEventHandlerThreadPool().isShutdown() ) {
+                options.getEventHandlerThreadPool().shutdownNow();
+            }
             browserSession = null;
         }
     }
@@ -305,8 +309,8 @@ public class SessionFactory implements AutoCloseable {
         return closed.get();
     }
 
-    ExecutorService getThreadPool() {
-        return options.getEventHandlerThreadPool();
+    ExecutorService getWorkerThreadPool() {
+        return options.getWorkerThreadPool();
     }
 
     protected LoggerFactory createLoggerFactory(CdpLoggerType loggerType) {

@@ -22,21 +22,22 @@ import com.neovisionaries.ws.client.ThreadType;
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketAdapter;
 import com.neovisionaries.ws.client.WebSocketFrame;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
-class WebSocketMessageAdapter extends WebSocketAdapter {
+class NvWebSocketMessageAdapter extends WebSocketAdapter {
 
     private final SessionFactory factory;
 
     private final MessageHandler handler;
 
-    WebSocketMessageAdapter(SessionFactory factory, MessageHandler handler) {
+    NvWebSocketMessageAdapter(SessionFactory factory, MessageHandler handler) {
         this.factory = factory;
         this.handler = handler;
     }
 
     @Override
     public void onTextMessage(WebSocket websocket, byte[] data) throws Exception {
-        handler.process(data);
+        handler.process(new String(data, 0, data.length, UTF_8));
     }
 
     @Override

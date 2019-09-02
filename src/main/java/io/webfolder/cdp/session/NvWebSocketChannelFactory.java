@@ -26,7 +26,7 @@ import com.neovisionaries.ws.client.ZeroMasker;
 
 import io.webfolder.cdp.exception.CdpException;
 
-class WebSocketChannelFactory implements ChannelFactory {
+class NvWebSocketChannelFactory implements ChannelFactory {
 
     private final WebSocketFactory factory = new WebSocketFactory();
 
@@ -34,22 +34,18 @@ class WebSocketChannelFactory implements ChannelFactory {
 
     private final SessionFactory sessionFactory;
 
-    public WebSocketChannelFactory(SessionFactory sessionFactory) {
+    NvWebSocketChannelFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
     @Override
-    public void setConnectionTimeout(int timeout) {
-        factory.setConnectionTimeout(timeout);
-    }
-
-    @Override
-    public Channel createChannel(Connection connection, MessageHandler handler) {
+    public Channel createChannel(Connection connection, int connectionTimeout, MessageHandler handler) {
         try {
+            factory.setConnectionTimeout(connectionTimeout);
             WebSocket webSocket = factory.createSocket(((WebSocketConnection) connection).getWebSocketDebuggerUrl());
             webSocket.setPayloadMask(zeroMasker);
-            webSocket.addListener(new WebSocketMessageAdapter(sessionFactory, handler));
-            return new WebSocketChannel(webSocket);
+            webSocket.addListener(new NvWebSocketMessageAdapter(sessionFactory, handler));
+            return new NvWebSocketChannel(webSocket);
         } catch (IOException e) {
             throw new CdpException(e);
         }

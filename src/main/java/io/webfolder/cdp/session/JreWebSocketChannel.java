@@ -18,9 +18,37 @@
  */
 package io.webfolder.cdp.session;
 
-interface ChannelFactory {
+import java.net.http.WebSocket;
+import java.util.concurrent.CompletableFuture;
 
-    Channel createChannel(Connection     connection,
-                          int            connectionTimeout,
-                          MessageHandler handler);
+class JreWebSocketChannel implements Channel {
+
+    private final CompletableFuture<WebSocket> future;
+
+    private WebSocket webSocket;
+
+    JreWebSocketChannel(CompletableFuture<WebSocket> future) {
+        this.future = future;
+    }
+
+    @Override
+    public boolean isOpen() {
+        return ! webSocket.isInputClosed() &&
+               ! webSocket.isOutputClosed();
+    }
+
+    @Override
+    public void disconnect() {
+        webSocket.abort();
+    }
+
+    @Override
+    public void sendText(String message) {
+        webSocket.sendText(message, true);
+    }
+
+    @Override
+    public void connect() {
+        webSocket = future.join();
+    }
 }

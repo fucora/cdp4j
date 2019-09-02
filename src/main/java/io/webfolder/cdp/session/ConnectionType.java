@@ -18,9 +18,19 @@
  */
 package io.webfolder.cdp.session;
 
-interface ChannelFactory {
-
-    Channel createChannel(Connection     connection,
-                          int            connectionTimeout,
-                          MessageHandler handler);
+public enum ConnectionType {
+    /**
+     * Use nv-websocket-client
+     * 
+     * @see https://github.com/TakahikoKawasaki/nv-websocket-client
+     */
+    NvWebSocket,
+    /**
+     * Use java.net.http.WebSocket implementation
+     * 
+     * @see https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/WebSocket.html
+     * 
+     * Requires Java 11+
+     */
+    JreWebSocket
 }

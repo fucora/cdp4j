@@ -26,11 +26,11 @@ import com.neovisionaries.ws.client.WebSocketException;
 
 import io.webfolder.cdp.exception.CdpException;
 
-class WebSocketChannel implements Channel {
+class NvWebSocketChannel implements Channel {
 
     private final WebSocket webSocket;
 
-    public WebSocketChannel(WebSocket webSocket) {
+    NvWebSocketChannel(WebSocket webSocket) {
         this.webSocket = webSocket;
         this.webSocket.setDirectTextMessage(true);
         this.webSocket.setAutoFlush(true);

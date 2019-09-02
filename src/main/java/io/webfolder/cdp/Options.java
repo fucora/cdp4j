@@ -19,6 +19,7 @@
 package io.webfolder.cdp;
 
 import static io.webfolder.cdp.logger.CdpLoggerType.Null;
+import static io.webfolder.cdp.session.ConnectionType.NvWebSocket;
 import static java.lang.Integer.valueOf;
 import static java.util.Collections.emptyList;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 import io.webfolder.cdp.logger.CdpLoggerType;
+import io.webfolder.cdp.session.ConnectionType;
 
 public class Options {
 
@@ -60,6 +62,8 @@ public class Options {
     private Integer screenWidth;
 
     private Integer screenHeight;
+
+    private ConnectionType connectionType;
 
     private Options() {
         // no op
@@ -112,6 +116,11 @@ public class Options {
             return this;
         }
 
+        public Builder connectionType(ConnectionType connectionType) {
+            options.connectionType = connectionType;
+            return this;
+        }
+
         public Options build() {
             if (options.loggerType == null) {
                 options.loggerType = Null;
@@ -120,7 +129,7 @@ public class Options {
                 options.workerThreadPool = newSingleThreadExecutor(new CdpThreadFactory("cdp4j-WorkerThread"));
             }
             if (options.eventHandlerThreadPool == null) {
-                options.eventHandlerThreadPool = newSingleThreadExecutor(new CdpThreadFactory("cdp4j-EventHandlerThread"));
+                options.eventHandlerThreadPool = options.workerThreadPool;
             }
             if (options.connectionTimeout == null) {
                 options.connectionTimeout = valueOf(DEFAULT_CONNECTION_TIMEOUT);
@@ -139,6 +148,9 @@ public class Options {
             }
             if (options.screenWidth == null) {
                 options.screenWidth = DEFAULT_SCREEN_WIDTH;
+            }
+            if (options.connectionType == null) {
+                options.connectionType = NvWebSocket;
             }
             return options;
         }
@@ -186,5 +198,9 @@ public class Options {
 
     public Integer getScreenHeight() {
         return screenHeight;
+    }
+
+    public ConnectionType getConnectionType() {
+        return connectionType;
     }
 }
