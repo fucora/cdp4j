@@ -52,10 +52,6 @@ public class SessionFactory implements AutoCloseable {
 
     private final Options options;
 
-    private static final Integer DEFAULT_SCREEN_WIDTH = 1366; // WXGA width
-
-    private static final Integer DEFAULT_SCREEN_HEIGHT = 768; // WXGA height
-
     private final Map<String, Session> sessions = new ConcurrentHashMap<>();
 
     private final List<String> browserContexts = new CopyOnWriteArrayList<>();
@@ -66,11 +62,11 @@ public class SessionFactory implements AutoCloseable {
 
     private volatile Session browserSession;
 
-    private AtomicBoolean closed = new AtomicBoolean(false);
-
     private volatile Boolean headless;
 
     private volatile int majorVersion;
+
+    private AtomicBoolean closed = new AtomicBoolean(false);
 
     public SessionFactory(Options options, Connection connection) {
         this.options           = options;
@@ -110,8 +106,8 @@ public class SessionFactory implements AutoCloseable {
             }
         }
         String targetId = target.createTarget("about:blank",
-                                              DEFAULT_SCREEN_WIDTH,
-                                              DEFAULT_SCREEN_HEIGHT,
+                                              options.getScreenWidth(),
+                                              options.getScreenHeight(),
                                               browserContextId, false, null, null);
         return connect(targetId, browserContextId);
     }

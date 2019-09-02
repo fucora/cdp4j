@@ -31,9 +31,13 @@ import io.webfolder.cdp.logger.CdpLoggerType;
 
 public class Options {
 
-    private static final int DEFAULT_CONNECTION_TIMEOUT = 3 * 1000; // 60 seconds
+    private static final int     DEFAULT_CONNECTION_TIMEOUT = 3 * 1000; // 60 seconds
 
-    private static final int DEFAULT_WS_READ_TIMEOUT = 3 * 1000; // 60 seconds
+    private static final int     DEFAULT_WS_READ_TIMEOUT    = 3 * 1000; // 60 seconds
+
+    private static final Integer DEFAULT_SCREEN_WIDTH       = 1366    ; // WXGA width
+
+    private static final Integer DEFAULT_SCREEN_HEIGHT      = 768     ; // WXGA height
 
     private CdpLoggerType loggerType;
 
@@ -52,6 +56,10 @@ public class Options {
     private ProcessManager processManager;
 
     private boolean headless;
+
+    private Integer screenWidth;
+
+    private Integer screenHeight;
 
     private Options() {
         // no op
@@ -126,6 +134,12 @@ public class Options {
             if (options.processManager == null) {
                 options.processManager = new AdaptiveProcessManager();
             }
+            if (options.screenHeight == null) {
+                options.screenHeight = DEFAULT_SCREEN_HEIGHT;
+            }
+            if (options.screenWidth == null) {
+                options.screenWidth = DEFAULT_SCREEN_WIDTH;
+            }
             return options;
         }
     }
@@ -162,7 +176,15 @@ public class Options {
         return processManager;
     }
 
-    public boolean headless() {
+    public boolean isHeadless() {
         return headless;
+    }
+
+    public Integer getScreenWidth() {
+        return screenWidth;
+    }
+
+    public Integer getScreenHeight() {
+        return screenHeight;
     }
 }

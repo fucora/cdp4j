@@ -183,7 +183,7 @@ public class Launcher {
             arguments.add(format("--user-data-dir=%s", options.getUserDataDir()));
         }
 
-        if (options.headless()) {
+        if (options.isHeadless()) {
             arguments.add("--headless");
         }
 
