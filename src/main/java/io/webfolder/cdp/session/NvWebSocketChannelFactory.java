@@ -20,6 +20,8 @@ package io.webfolder.cdp.session;
 
 import java.io.IOException;
 
+import static com.neovisionaries.ws.client.DualStackMode.*;
+import com.neovisionaries.ws.client.DualStackMode;
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketFactory;
 import com.neovisionaries.ws.client.ZeroMasker;
@@ -42,6 +44,8 @@ class NvWebSocketChannelFactory implements ChannelFactory {
     public Channel createChannel(Connection connection, int connectionTimeout, MessageHandler handler) {
         try {
             factory.setConnectionTimeout(connectionTimeout);
+            factory.setDualStackMode(IPV4_ONLY);
+            factory.setVerifyHostname(false);
             WebSocket webSocket = factory.createSocket(((WebSocketConnection) connection).getWebSocketDebuggerUrl());
             webSocket.setPayloadMask(zeroMasker);
             webSocket.addListener(new NvWebSocketMessageAdapter(sessionFactory, handler));
