@@ -71,7 +71,7 @@ public class Launcher {
     protected String findChromeWinPath() {
         try {
             for (String path : getChromeWinPaths()) {
-                final Process process = getRuntime().exec(new String[]{
+                final Process process = getRuntime().exec(new String[] {
                         "cmd", "/c", "echo", path
                 });
                 final int exitCode = process.waitFor();

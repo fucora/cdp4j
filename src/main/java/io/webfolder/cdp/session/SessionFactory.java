@@ -181,7 +181,6 @@ public class SessionFactory implements AutoCloseable {
 
         Command command = session.getCommand();
 
-        command.getInspector().enable();
         command.getPage().enable();
         command.getPage().setLifecycleEventsEnabled(true);
  
@@ -245,11 +244,15 @@ public class SessionFactory implements AutoCloseable {
     public void close() {
         if (closed.compareAndSet(false, true)) {
             Target target = browserSession.getCommand().getTarget();
-            for (String next : browserContexts) {
-                target.disposeBrowserContext(next);
+            if (channel.isOpen()) {
+                for (String next : browserContexts) {
+                    target.disposeBrowserContext(next);
+                }
             }
             if ( browserSession != null ) {
-                target.closeTarget(browserTargetId);
+                if (channel.isOpen()) {
+                    target.closeTarget(browserTargetId);
+                }
                 browserSession.dispose();
             }
             channel.disconnect();
