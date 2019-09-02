@@ -52,12 +52,12 @@ public class CloseSessionOnRedirect {
                         session.stop();
                         session.close();
 
-                        System.out.println("");
+                        System.out.println("------------------------------------------------------------------------");
                         System.out.println("Redirect URL          : " + rws.getRequest().getUrl());
                         System.out.println("Redirect URL Fragment : " + rws.getRequest().getUrlFragment());
                         System.out.println("Redirect Status Code  : " + rr.getStatus());
                         System.out.println("Redirect Header       : " + rws.getRedirectResponse().getHeaders());
-                        System.out.println("");
+                        System.out.println("------------------------------------------------------------------------");
                     }
                 }
             });
