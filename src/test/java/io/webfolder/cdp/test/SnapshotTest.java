@@ -21,7 +21,7 @@ package io.webfolder.cdp.test;
 import static java.nio.file.Paths.get;
 import static org.junit.Assert.assertEquals;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -44,7 +44,7 @@ public class SnapshotTest {
             session.navigate(url);
             DOMSnapshot snapshot = session.getCommand().getDOMSnapshot();
             snapshot.enable();
-            CaptureSnapshotResult result = snapshot.captureSnapshot(Collections.emptyList());
+            CaptureSnapshotResult result = snapshot.captureSnapshot(new ArrayList<String>());
             assertEquals(1, result.getDocuments().size());
             List<List<Double>> textBoxBounds = result.getDocuments().get(0).getTextBoxes().getBounds();
             assertEquals(1, textBoxBounds.size());
