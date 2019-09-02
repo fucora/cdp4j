@@ -155,15 +155,15 @@ public class Session implements AutoCloseable,
                                                         channel,
                                                         contexts,
                                                         this,
-                                                        loggerFactory.getLogger("cdp4j.ws.request"),
+                                                        loggerFactory.getLogger("cdp4j.ws.request", options.getLoggerLevel()),
                                                         sessionId,
                                                         options.getReadTimeout());
         this.targetId         = targetId; 
         this.sesessionFactory = sessionFactory;
         this.listeners        = eventListeners;
         this.channel          = channel;
-        this.log              = loggerFactory.getLogger("cdp4j.session");
-        this.logFlow          = loggerFactory.getLogger("cdp4j.flow");
+        this.log              = loggerFactory.getLogger("cdp4j.session", options.getLoggerLevel());
+        this.logFlow          = loggerFactory.getLogger("cdp4j.flow", options.getLoggerLevel());
         this.gson             = gson;
         this.jsFunctions      = new ConcurrentHashMap<>();
         this.command          = new Command(this);

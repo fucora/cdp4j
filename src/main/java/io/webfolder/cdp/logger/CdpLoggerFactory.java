@@ -52,11 +52,11 @@ public class CdpLoggerFactory implements LoggerFactory {
     }
 
     @Override
-    public CdpLogger getLogger(String name) {
+    public CdpLogger getLogger(String name, CdpLogggerLevel loggerLevel) {
         try {
             switch (loggerType) {
                 case Slf4j  : return new CdpSlf4jLogger(name);
-                case Console: return new CdpConsoleLogger();
+                case Console: return new CdpConsoleLogger(loggerLevel);
                 case Log4j  : return new CdpLog4jLogger(name);
                 default     : return NULL_LOGGER;
             }

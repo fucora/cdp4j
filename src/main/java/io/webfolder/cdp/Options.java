@@ -28,6 +28,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
+import io.webfolder.cdp.logger.CdpLogggerLevel;
 import io.webfolder.cdp.logger.CdpLoggerType;
 import io.webfolder.cdp.session.ConnectionType;
 
@@ -64,6 +65,8 @@ public class Options {
     private Integer screenHeight;
 
     private ConnectionType connectionType;
+
+    private CdpLogggerLevel loggerLevel;
 
     private Options() {
         // no op
@@ -118,6 +121,12 @@ public class Options {
 
         public Builder connectionType(ConnectionType connectionType) {
             options.connectionType = connectionType;
+            return this;
+        }
+
+
+        public Builder loggerLevel(CdpLogggerLevel loggerLevel) {
+            options.loggerLevel = loggerLevel;
             return this;
         }
 
@@ -202,5 +211,9 @@ public class Options {
 
     public ConnectionType getConnectionType() {
         return connectionType;
+    }
+
+    public CdpLogggerLevel getLoggerLevel() {
+        return loggerLevel;
     }
 }

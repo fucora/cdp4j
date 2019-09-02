@@ -80,7 +80,7 @@ public class SessionFactory implements AutoCloseable {
                                                 new NvWebSocketChannelFactory(this)  ;
         MessageHandler handler = new MessageHandler(gson, this,
                                                     options.getWorkerThreadPool(), options.getEventHandlerThreadPool(),
-                                                    loggerFactory.getLogger("cdp4j.ws.response"));
+                                                    loggerFactory.getLogger("cdp4j.ws.response", options.getLoggerLevel()));
         channel = channelFactory.createChannel(connection, options.getConnectionTimeout(), handler);
         channel.connect();
         this.browserTargetId = initBrowserSession();
