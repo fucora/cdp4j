@@ -105,8 +105,9 @@ public class Launcher {
                                        "%programfiles%",
                                        "%programfiles(x86)%");
         List<String> suffixes = asList(
-                "\\Google\\Chrome SxS\\Application\\chrome.exe",
-                "\\Google\\Chrome\\Application\\chrome.exe");
+                "\\Google\\Chrome Dev\\Application\\chrome.exe", // Chrome Dev
+                "\\Google\\Chrome SxS\\Application\\chrome.exe", // Chrome Canary
+                "\\Google\\Chrome\\Application\\chrome.exe");    // Chrome
         List<String> installations = new ArrayList<String>(prefixes.size() * suffixes.size());
         for (String prefix : prefixes) {
             for (String suffix : suffixes) {
