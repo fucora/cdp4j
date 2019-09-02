@@ -130,6 +130,11 @@ public class Options {
             return this;
         }
 
+        public Builder readTimeout(int readTimeout) {
+            options.readTimeout = readTimeout;
+            return this;
+        }
+
         public Options build() {
             if (options.loggerType == null) {
                 options.loggerType = Null;
