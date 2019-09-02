@@ -237,59 +237,7 @@ public class Session implements AutoCloseable,
      * @return this
      */
     public Session waitDocumentReady(final int timeout) {
-        if ( ! isConnected() ) {
-            return this;
-        }
-        long start = System.currentTimeMillis();
-        logEntry("waitDocumentReady", format("[timeout=%d]", timeout));
-        if (isDomReady()) {
-            return getThis();
-        }
-        CountDownLatch latch  = new CountDownLatch(2);
-        AtomicBoolean  loaded = new AtomicBoolean(false);
-        AtomicBoolean  ready  = new AtomicBoolean(false);
-        if (isConnected()) {
-            EventListener loadListener = (e, d) -> {
-                if (PageLifecycleEvent.equals(e) &&
-                        "load".equalsIgnoreCase(((LifecycleEvent) d).getName())) {
-                    latch.countDown();
-                    loaded.set(true);
-                    if (isDomReady()) {
-                        ready.set(true);
-                    }
-                }
-            };
-            addEventListener(loadListener);
-            sesessionFactory.getThreadPool().execute(() -> {
-                try {
-                    waitUntil(s -> ! isConnected() || s.isDomReady() || ready.get(), timeout, false);
-                } finally {
-                    latch.countDown();
-                    if ( ! loaded.get() ) {
-                        latch.countDown();
-                    }
-                    if ( ! ready.get() && isConnected() && isDomReady() ) {
-                        ready.set(true);
-                    }
-                }
-            });
-            try {
-                latch.await(timeout, MILLISECONDS);
-            } catch (InterruptedException e) {
-                throw new LoadTimeoutException(e);
-            } finally {
-                removeEventEventListener(loadListener);
-            }
-            long elapsed = System.currentTimeMillis() - start;
-            if ( elapsed > timeout && isConnected() && ! isDomReady() ) {
-                throw new LoadTimeoutException("Page not loaded within " + timeout + " ms");
-            }
-        }
-        return this;
-    }
-
-    private boolean waitUntil(Predicate<Session> predicate, int timeout, boolean log) {
-        return waitUntil(predicate, timeout, WAIT_PERIOD, log);
+        return navigateAndWait(null, DomReady, timeout);
     }
 
     public boolean waitUntil(final Predicate<Session> predicate) {
@@ -352,15 +300,15 @@ public class Session implements AutoCloseable,
         final WaitUntil waitUntil =
                             DomReady.equals(condition) ? Load : condition;
 
-        logEntry("navigateAndWait",
-                            format("[url=%s, waitUntil=%s, timeout=%d]", url, condition.name(), timeout));
-
-        NavigateResult navigate = command.getPage().navigate(url);
-        if (navigate == null) {
-            throw new DestinationUnreachableException(url);
+        if ( url != null ) {
+            logEntry("navigateAndWait",
+                                format("[url=%s, waitUntil=%s, timeout=%d]", url, condition.name(), timeout));
+            NavigateResult navigate = command.getPage().navigate(url);
+            if (navigate == null) {
+                throw new DestinationUnreachableException(url);
+            }
+            this.frameId = navigate.getFrameId();
         }
-
-        this.frameId = navigate.getFrameId();
 
         CountDownLatch latch = new CountDownLatch(1);
 
