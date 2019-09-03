@@ -29,11 +29,13 @@ import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.session.MessageHandler;
 import io.webfolder.cdp.session.SessionFactory;
 
-public class NvWebSocketFactory implements ChannelFactory {
+public class NvWebSocketFactory implements ChannelFactory, AutoCloseable {
 
     private static final int CONNECTION_TIMEOUT = 10_000; // 10 seconds
 
     private final WebSocketFactory factory = new WebSocketFactory();
+
+    private WebSocket webSocket;
 
     public NvWebSocketFactory() {
         this(CONNECTION_TIMEOUT);
@@ -47,8 +49,10 @@ public class NvWebSocketFactory implements ChannelFactory {
 
     @Override
     public Channel createChannel(Connection connection, SessionFactory factory, MessageHandler handler) {
+        if ( webSocket != null ) {
+            throw new IllegalStateException();
+        }
         String url = ((WebSocketConnection) connection).getUrl();
-        WebSocket webSocket = null;
         try {
             webSocket = this.factory.createSocket(url);
         } catch (IOException e) {
@@ -56,5 +60,12 @@ public class NvWebSocketFactory implements ChannelFactory {
         }
         webSocket.addListener(new NvWebSocketListener(factory, handler));
         return new NvWebSocketChannel(webSocket);
+    }
+
+    @Override
+    public void close() {
+        if ( webSocket != null && webSocket.isOpen() ) {
+            webSocket.disconnect();
+        }
     }
 }
