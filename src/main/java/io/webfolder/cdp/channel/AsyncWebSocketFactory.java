@@ -32,21 +32,21 @@ import org.asynchttpclient.ws.WebSocketUpgradeHandler;
 import io.webfolder.cdp.session.MessageHandler;
 import io.webfolder.cdp.session.SessionFactory;
 
-public class AsyncWebSocketChannelFactory implements ChannelFactory, AutoCloseable {
+public class AsyncWebSocketFactory implements ChannelFactory, AutoCloseable {
 
     private static final int CONNECTION_TIMEOUT = 10_000; // 10 seconds
 
     private final AsyncHttpClient client;
 
-    public AsyncWebSocketChannelFactory() {
+    public AsyncWebSocketFactory() {
         this(CONNECTION_TIMEOUT);
     }
 
-    public AsyncWebSocketChannelFactory(int connectionTimeout) {
+    public AsyncWebSocketFactory(int connectionTimeout) {
         this(connectionTimeout, 1, "cdp4j-netty");
     }
 
-    public AsyncWebSocketChannelFactory(int connectionTimeout,
+    public AsyncWebSocketFactory(int connectionTimeout,
                                         int ioThreadsCount,
                                         String threadPoolName) {
         DefaultAsyncHttpClientConfig config = new DefaultAsyncHttpClientConfig.Builder()
@@ -58,7 +58,7 @@ public class AsyncWebSocketChannelFactory implements ChannelFactory, AutoCloseab
         client = asyncHttpClient(config);
     }
 
-    public AsyncWebSocketChannelFactory(AsyncHttpClient client) {
+    public AsyncWebSocketFactory(AsyncHttpClient client) {
         this.client = client;
     }
 

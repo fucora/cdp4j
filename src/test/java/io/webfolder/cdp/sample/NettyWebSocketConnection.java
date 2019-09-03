@@ -19,14 +19,14 @@
 package io.webfolder.cdp.sample;
 
 import io.webfolder.cdp.Launcher;
-import io.webfolder.cdp.channel.AsyncWebSocketChannelFactory;
+import io.webfolder.cdp.channel.AsyncWebSocketFactory;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
 public class NettyWebSocketConnection {
 
     public static void main(String[] args) {
-        AsyncWebSocketChannelFactory asyncWebSocketFactory = new AsyncWebSocketChannelFactory();
+        AsyncWebSocketFactory asyncWebSocketFactory = new AsyncWebSocketFactory();
 
         Launcher launcher = new Launcher(asyncWebSocketFactory);
 

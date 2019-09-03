@@ -38,7 +38,7 @@ import java.util.Scanner;
 
 import io.webfolder.cdp.channel.ChannelFactory;
 import io.webfolder.cdp.channel.Connection;
-import io.webfolder.cdp.channel.NvWebSocketChannelFactory;
+import io.webfolder.cdp.channel.NvWebSocketFactory;
 import io.webfolder.cdp.channel.WebSocketConnection;
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.session.SessionFactory;
@@ -67,12 +67,12 @@ public class Launcher {
     }
 
     public Launcher(Options options) {
-        this(options, new NvWebSocketChannelFactory(CONNECTION_TIMEOUT));
+        this(options, new NvWebSocketFactory(CONNECTION_TIMEOUT));
     }
 
     public Launcher() {
         this(Options.builder().build(),
-                new NvWebSocketChannelFactory(CONNECTION_TIMEOUT));
+                new NvWebSocketFactory(CONNECTION_TIMEOUT));
     }
 
     protected String findChrome() {

@@ -19,16 +19,16 @@
 package io.webfolder.cdp.sample;
 
 import io.webfolder.cdp.Launcher;
-import io.webfolder.cdp.channel.JettyWebSocketChannelFactory;
+import io.webfolder.cdp.channel.JettyWebSocketFactory;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
 public class JettyWebSocketConnection {
 
     public static void main(String[] args) {
-        JettyWebSocketChannelFactory jettyWebSocketChannelFactory = new JettyWebSocketChannelFactory();
+        JettyWebSocketFactory jettyWebSocketFactory = new JettyWebSocketFactory();
 
-        Launcher launcher = new Launcher(jettyWebSocketChannelFactory);
+        Launcher launcher = new Launcher(jettyWebSocketFactory);
 
         try (SessionFactory factory = launcher.launch();
                             Session session = factory.create()) {
@@ -37,7 +37,7 @@ public class JettyWebSocketConnection {
             String content = session.getContent();
             System.out.println(content);
         } finally {
-            jettyWebSocketChannelFactory.close();
+            jettyWebSocketFactory.close();
             launcher.kill();
         }
     }

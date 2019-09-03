@@ -31,21 +31,21 @@ import java.util.concurrent.ExecutorService;
 import io.webfolder.cdp.session.MessageHandler;
 import io.webfolder.cdp.session.SessionFactory;
 
-public class JreWebSocketChannelFactory implements ChannelFactory {
+public class JreWebSocketFactory implements ChannelFactory {
 
     private static final int CONNECTION_TIMEOUT = 10_000; // 10 seconds
 
     private final HttpClient client;
 
-    public JreWebSocketChannelFactory() {
+    public JreWebSocketFactory() {
         this(null);
     }
 
-    public JreWebSocketChannelFactory(ExecutorService executor) {
+    public JreWebSocketFactory(ExecutorService executor) {
         this(executor, CONNECTION_TIMEOUT);
     }
 
-    public JreWebSocketChannelFactory(ExecutorService executor, int connectionTimeout) {
+    public JreWebSocketFactory(ExecutorService executor, int connectionTimeout) {
         Builder builder = newBuilder();
         if ( executor != null ) {
             builder.executor(executor);

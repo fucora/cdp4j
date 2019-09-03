@@ -19,14 +19,14 @@
 package io.webfolder.cdp.sample;
 
 import io.webfolder.cdp.Launcher;
-import io.webfolder.cdp.channel.JreWebSocketChannelFactory;
+import io.webfolder.cdp.channel.JreWebSocketFactory;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
 public class JreWebSocketConnection {
 
     public static void main(String[] args) {
-        JreWebSocketChannelFactory jreWebSocketFactory = new JreWebSocketChannelFactory();
+        JreWebSocketFactory jreWebSocketFactory = new JreWebSocketFactory();
 
         Launcher launcher = new Launcher(jreWebSocketFactory);
 

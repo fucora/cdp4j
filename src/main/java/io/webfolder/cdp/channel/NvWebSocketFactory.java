@@ -30,7 +30,7 @@ import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.session.MessageHandler;
 import io.webfolder.cdp.session.SessionFactory;
 
-public class NvWebSocketChannelFactory implements ChannelFactory {
+public class NvWebSocketFactory implements ChannelFactory {
 
     private static final int CONNECTION_TIMEOUT = 10_000; // 10 seconds
 
@@ -38,11 +38,11 @@ public class NvWebSocketChannelFactory implements ChannelFactory {
 
     private final ZeroMasker zeroMasker = new ZeroMasker();
 
-    public NvWebSocketChannelFactory() {
+    public NvWebSocketFactory() {
         this(CONNECTION_TIMEOUT);
     }
 
-    public NvWebSocketChannelFactory(int connectionTimeout) {
+    public NvWebSocketFactory(int connectionTimeout) {
         factory.setConnectionTimeout(connectionTimeout);
         factory.setDualStackMode(IPV4_ONLY);
         factory.setVerifyHostname(false);

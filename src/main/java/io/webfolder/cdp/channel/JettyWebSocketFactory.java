@@ -30,11 +30,11 @@ import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.session.MessageHandler;
 import io.webfolder.cdp.session.SessionFactory;
 
-public class JettyWebSocketChannelFactory implements ChannelFactory, AutoCloseable {
+public class JettyWebSocketFactory implements ChannelFactory, AutoCloseable {
 
     private final WebSocketClient client;
 
-    public JettyWebSocketChannelFactory() {
+    public JettyWebSocketFactory() {
         client = new WebSocketClient();
         try {
             client.start();
@@ -43,7 +43,7 @@ public class JettyWebSocketChannelFactory implements ChannelFactory, AutoCloseab
         }
     }
 
-    public JettyWebSocketChannelFactory(WebSocketClient client) {
+    public JettyWebSocketFactory(WebSocketClient client) {
         this.client = client;
     }
 
