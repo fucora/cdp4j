@@ -32,14 +32,14 @@ import io.webfolder.cdp.session.SessionFactory;
 
 public class StandardWebSocketFactory implements ChannelFactory {
 
-	private final WebSocketContainer webSocketContainer;
+    private final WebSocketContainer webSocketContainer;
 
-	public StandardWebSocketFactory(WebSocketContainer webSocketContainer) {
-		this.webSocketContainer = webSocketContainer;
-	}
+    public StandardWebSocketFactory(WebSocketContainer webSocketContainer) {
+        this.webSocketContainer = webSocketContainer;
+    }
 
-	@Override
-	public Channel createChannel(Connection connection, SessionFactory factory, MessageHandler handler) {
+    @Override
+    public Channel createChannel(Connection connection, SessionFactory factory, MessageHandler handler) {
         String url = ((WebSocketConnection) connection).getUrl();
         URI uri;
         try {
@@ -47,12 +47,13 @@ public class StandardWebSocketFactory implements ChannelFactory {
         } catch (URISyntaxException e) {
             throw new CdpException(e);
         }
-		try {
-			StandardWebSocketListener listener = new StandardWebSocketListener(factory, handler);
-			Session session = webSocketContainer.connectToServer(listener, uri);
-			return new StandardWebSocketChannel(session);
-		} catch (DeploymentException | IOException e) {
-			throw new CdpException(e);
-		}
-	}
+        try {
+            StandardWebSocketListener listener = new StandardWebSocketListener(factory, handler);
+            Session session = webSocketContainer.connectToServer(listener, uri);
+            session.addMessageHandler(listener);
+            return new StandardWebSocketChannel(session);
+        } catch (DeploymentException | IOException e) {
+            throw new CdpException(e);
+        }
+    }
 }

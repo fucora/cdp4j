@@ -21,14 +21,13 @@ package io.webfolder.cdp.channel;
 import javax.websocket.ClientEndpoint;
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
 import javax.websocket.Session;
 
 import io.webfolder.cdp.session.MessageHandler;
 import io.webfolder.cdp.session.SessionFactory;
 
 @ClientEndpoint
-public class StandardWebSocketListener {
+public class StandardWebSocketListener implements javax.websocket.MessageHandler.Partial<String> {
 
     private final SessionFactory factory;
 
@@ -41,8 +40,8 @@ public class StandardWebSocketListener {
         this.handler = handler;
     }
 
-    @OnMessage
-    public void onMessage(String data, boolean last, Session session) {
+    @Override
+    public void onMessage(String data, boolean last) {
         if (buffer.length() > 0 && last) {
             buffer.append(data);
             String message = buffer.toString();
