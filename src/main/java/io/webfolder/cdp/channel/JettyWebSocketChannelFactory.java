@@ -34,7 +34,7 @@ public class JettyWebSocketChannelFactory implements ChannelFactory, AutoCloseab
         String url = ((WebSocketConnection) connection).getUrl();
         Future<Session> future = null;
         try {
-			future = client.connect(new JettyWebSocketMessageAdapter(factory, handler), new URI(url));
+			future = client.connect(new JettyWebSocketListener(factory, handler), new URI(url));
 		} catch (IOException | URISyntaxException e) {
 			throw new CdpException(e);
 		}

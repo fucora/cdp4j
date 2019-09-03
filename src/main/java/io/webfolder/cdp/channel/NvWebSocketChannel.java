@@ -26,7 +26,7 @@ import com.neovisionaries.ws.client.WebSocketException;
 
 import io.webfolder.cdp.exception.CdpException;
 
-class NvWebSocketChannel implements Channel {
+public class NvWebSocketChannel implements Channel {
 
     private final WebSocket webSocket;
 

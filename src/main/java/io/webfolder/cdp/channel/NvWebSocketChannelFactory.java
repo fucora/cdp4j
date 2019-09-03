@@ -58,7 +58,7 @@ public class NvWebSocketChannelFactory implements ChannelFactory {
             throw new CdpException(e);
         }
         webSocket.setPayloadMask(zeroMasker);
-        webSocket.addListener(new NvWebSocketMessageAdapter(factory, handler));
+        webSocket.addListener(new NvWebSocketListener(factory, handler));
         return new NvWebSocketChannel(webSocket);
     }
 }

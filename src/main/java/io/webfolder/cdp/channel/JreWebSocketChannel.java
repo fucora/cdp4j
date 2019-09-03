@@ -21,13 +21,13 @@ package io.webfolder.cdp.channel;
 import java.net.http.WebSocket;
 import java.util.concurrent.CompletableFuture;
 
-class JreWebSocketChannel implements Channel {
+public class JreWebSocketChannel implements Channel {
 
     private final CompletableFuture<WebSocket> future;
 
     private WebSocket webSocket;
 
-    JreWebSocketChannel(CompletableFuture<WebSocket> future) {
+    public JreWebSocketChannel(CompletableFuture<WebSocket> future) {
         this.future = future;
     }
 

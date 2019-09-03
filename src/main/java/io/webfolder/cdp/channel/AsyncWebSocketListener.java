@@ -18,44 +18,40 @@
  */
 package io.webfolder.cdp.channel;
 
-import com.neovisionaries.ws.client.ThreadType;
-import com.neovisionaries.ws.client.WebSocket;
-import com.neovisionaries.ws.client.WebSocketAdapter;
-import com.neovisionaries.ws.client.WebSocketFrame;
+import org.asynchttpclient.ws.WebSocket;
+import org.asynchttpclient.ws.WebSocketListener;
 
 import io.webfolder.cdp.session.MessageHandler;
 import io.webfolder.cdp.session.SessionFactory;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
-class NvWebSocketMessageAdapter extends WebSocketAdapter {
+public class AsyncWebSocketListener implements WebSocketListener {
 
     private final SessionFactory factory;
 
     private final MessageHandler handler;
 
-    NvWebSocketMessageAdapter(SessionFactory factory, MessageHandler handler) {
+    public AsyncWebSocketListener(SessionFactory factory, MessageHandler handler) {
         this.factory = factory;
         this.handler = handler;
     }
 
     @Override
-    public void onTextMessage(WebSocket websocket, byte[] data) throws Exception {
-        handler.process(new String(data, 0, data.length, UTF_8));
+    public void onTextFrame(String payload, boolean finalFragment, int rsv) {
+        handler.process(payload);
     }
 
     @Override
-    public void onDisconnected(WebSocket websocket,
-                               WebSocketFrame serverCloseFrame,
-                               WebSocketFrame clientCloseFrame,
-                               boolean closedByServer) throws Exception {
+    public void onOpen(WebSocket websocket) {
+        // ignore
+    }
+
+    @Override
+    public void onClose(WebSocket websocket, int code, String reason) {
         factory.close();
     }
 
     @Override
-    public void onThreadCreated(WebSocket websocket,
-                                ThreadType threadType,
-                                Thread thread) throws Exception {
-        thread.setName("cdp4j-WebSocket-" + thread.getName());
+    public void onError(Throwable t) {
+        // ignore
     }
 }

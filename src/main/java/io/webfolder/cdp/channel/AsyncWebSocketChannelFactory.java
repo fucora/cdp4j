@@ -58,10 +58,14 @@ public class AsyncWebSocketChannelFactory implements ChannelFactory, AutoCloseab
         client = asyncHttpClient(config);
     }
 
+    public AsyncWebSocketChannelFactory(AsyncHttpClient client) {
+    	this.client = client;
+    }
+
     @Override
     public Channel createChannel(Connection connection, SessionFactory factory, MessageHandler messageHandler) {
         String url = ((WebSocketConnection) connection).getUrl();
-        AsyncWebSocketMessageAdapter messageAdapter = new AsyncWebSocketMessageAdapter(factory, messageHandler);
+        AsyncWebSocketListener messageAdapter = new AsyncWebSocketListener(factory, messageHandler);
         WebSocketUpgradeHandler upgradeHandler = new WebSocketUpgradeHandler.Builder()
                                                                             .addWebSocketListener(messageAdapter)
                                                                             .build();
@@ -74,7 +78,7 @@ public class AsyncWebSocketChannelFactory implements ChannelFactory, AutoCloseab
 
     @Override
     public void close() {
-        if ( ! client.isClosed() ) {
+        if ( client != null && ! client.isClosed() ) {
             try {
                 client.close();
             } catch (IOException e) {

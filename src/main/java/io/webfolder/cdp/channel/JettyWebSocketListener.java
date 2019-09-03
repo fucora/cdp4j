@@ -10,13 +10,13 @@ import io.webfolder.cdp.session.MessageHandler;
 import io.webfolder.cdp.session.SessionFactory;
 
 @WebSocket(maxTextMessageSize = MAX_VALUE)
-public class JettyWebSocketMessageAdapter {
+public class JettyWebSocketListener {
 
     private final SessionFactory factory;
 
     private final MessageHandler handler;
 
-    public JettyWebSocketMessageAdapter(SessionFactory factory, MessageHandler handler) {
+    public JettyWebSocketListener(SessionFactory factory, MessageHandler handler) {
         this.factory = factory;
         this.handler = handler;
     }

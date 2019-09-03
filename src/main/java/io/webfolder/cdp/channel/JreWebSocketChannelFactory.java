@@ -60,7 +60,7 @@ public class JreWebSocketChannelFactory implements ChannelFactory {
         CompletableFuture<WebSocket> future = client
                                                 .newWebSocketBuilder()
                                                 .buildAsync(create(url),
-                                                        new JreWebSocketMessageAdapter(factory, handler));
+                                                        new JreWebSocketListener(factory, handler));
         JreWebSocketChannel channel = new JreWebSocketChannel(future);
         return channel;
     }

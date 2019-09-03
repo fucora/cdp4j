@@ -18,40 +18,44 @@
  */
 package io.webfolder.cdp.channel;
 
-import org.asynchttpclient.ws.WebSocket;
-import org.asynchttpclient.ws.WebSocketListener;
+import com.neovisionaries.ws.client.ThreadType;
+import com.neovisionaries.ws.client.WebSocket;
+import com.neovisionaries.ws.client.WebSocketAdapter;
+import com.neovisionaries.ws.client.WebSocketFrame;
 
 import io.webfolder.cdp.session.MessageHandler;
 import io.webfolder.cdp.session.SessionFactory;
 
-class AsyncWebSocketMessageAdapter implements WebSocketListener {
+import static java.nio.charset.StandardCharsets.UTF_8;
+
+public class NvWebSocketListener extends WebSocketAdapter {
 
     private final SessionFactory factory;
 
     private final MessageHandler handler;
 
-    AsyncWebSocketMessageAdapter(SessionFactory factory, MessageHandler handler) {
+    public NvWebSocketListener(SessionFactory factory, MessageHandler handler) {
         this.factory = factory;
         this.handler = handler;
     }
 
     @Override
-    public void onTextFrame(String payload, boolean finalFragment, int rsv) {
-        handler.process(payload);
+    public void onTextMessage(WebSocket websocket, byte[] data) throws Exception {
+        handler.process(new String(data, 0, data.length, UTF_8));
     }
 
     @Override
-    public void onOpen(WebSocket websocket) {
-        // ignore
-    }
-
-    @Override
-    public void onClose(WebSocket websocket, int code, String reason) {
+    public void onDisconnected(WebSocket websocket,
+                               WebSocketFrame serverCloseFrame,
+                               WebSocketFrame clientCloseFrame,
+                               boolean closedByServer) throws Exception {
         factory.close();
     }
 
     @Override
-    public void onError(Throwable t) {
-        // ignore
+    public void onThreadCreated(WebSocket websocket,
+                                ThreadType threadType,
+                                Thread thread) throws Exception {
+        thread.setName("cdp4j-WebSocket-" + thread.getName());
     }
 }

@@ -25,7 +25,7 @@ import java.util.concurrent.CompletionStage;
 import io.webfolder.cdp.session.MessageHandler;
 import io.webfolder.cdp.session.SessionFactory;
 
-class JreWebSocketMessageAdapter implements Listener {
+public class JreWebSocketListener implements Listener {
 
     private final SessionFactory factory;
 
@@ -33,7 +33,7 @@ class JreWebSocketMessageAdapter implements Listener {
 
     private final StringBuilder buffer = new StringBuilder(0);
 
-    JreWebSocketMessageAdapter(SessionFactory factory, MessageHandler handler) {
+    public JreWebSocketListener(SessionFactory factory, MessageHandler handler) {
         this.factory = factory;
         this.handler = handler;
     }
