@@ -16,7 +16,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.session;
+package io.webfolder.cdp.channel;
 
 import static com.neovisionaries.ws.client.DualStackMode.IPV4_ONLY;
 
@@ -27,6 +27,8 @@ import com.neovisionaries.ws.client.WebSocketFactory;
 import com.neovisionaries.ws.client.ZeroMasker;
 
 import io.webfolder.cdp.exception.CdpException;
+import io.webfolder.cdp.session.MessageHandler;
+import io.webfolder.cdp.session.SessionFactory;
 
 public class NvWebSocketChannelFactory implements ChannelFactory {
 

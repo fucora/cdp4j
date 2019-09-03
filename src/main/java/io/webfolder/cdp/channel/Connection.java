@@ -16,19 +16,8 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.session;
+package io.webfolder.cdp.channel;
 
-interface Channel {
+public interface Connection {
 
-    public static final int CLOSE_STATUS_CODE = 1000;
-
-    public static final String CLOSE_REASON_TEXT = "done";
-
-    boolean isOpen();
-
-    void disconnect();
-
-    void sendText(String message);
-
-    void connect();
 }

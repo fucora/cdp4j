@@ -16,11 +16,14 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.session;
+package io.webfolder.cdp.channel;
 
 import java.net.http.WebSocket;
 import java.net.http.WebSocket.Listener;
 import java.util.concurrent.CompletionStage;
+
+import io.webfolder.cdp.session.MessageHandler;
+import io.webfolder.cdp.session.SessionFactory;
 
 class JreWebSocketMessageAdapter implements Listener {
 

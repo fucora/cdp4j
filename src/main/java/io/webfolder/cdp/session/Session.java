@@ -63,6 +63,7 @@ import io.webfolder.cdp.JsFunction;
 import io.webfolder.cdp.Options;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
+import io.webfolder.cdp.channel.Channel;
 import io.webfolder.cdp.command.CSS;
 import io.webfolder.cdp.command.Emulation;
 import io.webfolder.cdp.command.IO;

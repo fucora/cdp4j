@@ -37,6 +37,7 @@ import com.google.gson.JsonObject;
 
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Returns;
+import io.webfolder.cdp.channel.Channel;
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.logger.CdpLogger;
 

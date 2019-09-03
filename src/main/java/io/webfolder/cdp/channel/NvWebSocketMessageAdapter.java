@@ -16,12 +16,16 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.session;
+package io.webfolder.cdp.channel;
 
 import com.neovisionaries.ws.client.ThreadType;
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketAdapter;
 import com.neovisionaries.ws.client.WebSocketFrame;
+
+import io.webfolder.cdp.session.MessageHandler;
+import io.webfolder.cdp.session.SessionFactory;
+
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 class NvWebSocketMessageAdapter extends WebSocketAdapter {

@@ -16,7 +16,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.session;
+package io.webfolder.cdp.channel;
 
 import static java.net.URI.create;
 import static java.net.http.HttpClient.newBuilder;
@@ -27,6 +27,9 @@ import java.net.http.HttpClient.Builder;
 import java.net.http.WebSocket;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
+
+import io.webfolder.cdp.session.MessageHandler;
+import io.webfolder.cdp.session.SessionFactory;
 
 public class JreWebSocketChannelFactory implements ChannelFactory {
 

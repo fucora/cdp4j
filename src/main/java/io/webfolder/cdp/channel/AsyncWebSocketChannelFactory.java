@@ -16,7 +16,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.session;
+package io.webfolder.cdp.channel;
 
 import static java.lang.Integer.MAX_VALUE;
 import static org.asynchttpclient.Dsl.asyncHttpClient;
@@ -28,6 +28,9 @@ import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.DefaultAsyncHttpClientConfig;
 import org.asynchttpclient.netty.ws.NettyWebSocket;
 import org.asynchttpclient.ws.WebSocketUpgradeHandler;
+
+import io.webfolder.cdp.session.MessageHandler;
+import io.webfolder.cdp.session.SessionFactory;
 
 public class AsyncWebSocketChannelFactory implements ChannelFactory, AutoCloseable {
 

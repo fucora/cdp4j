@@ -34,6 +34,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import io.webfolder.cdp.Options;
+import io.webfolder.cdp.channel.Channel;
+import io.webfolder.cdp.channel.ChannelFactory;
+import io.webfolder.cdp.channel.Connection;
 import io.webfolder.cdp.command.Target;
 import io.webfolder.cdp.event.runtime.ExecutionContextCreated;
 import io.webfolder.cdp.event.runtime.ExecutionContextDestroyed;

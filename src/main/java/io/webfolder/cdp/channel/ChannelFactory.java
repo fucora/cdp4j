@@ -16,46 +16,14 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.session;
+package io.webfolder.cdp.channel;
 
-import java.net.http.WebSocket;
-import java.util.concurrent.CompletableFuture;
+import io.webfolder.cdp.session.MessageHandler;
+import io.webfolder.cdp.session.SessionFactory;
 
-class JreWebSocketChannel implements Channel {
+public interface ChannelFactory {
 
-    private final CompletableFuture<WebSocket> future;
-
-    private WebSocket webSocket;
-
-    JreWebSocketChannel(CompletableFuture<WebSocket> future) {
-        this.future = future;
-    }
-
-    @Override
-    public boolean isOpen() {
-        return ! webSocket.isInputClosed() &&
-               ! webSocket.isOutputClosed();
-    }
-
-    @Override
-    public void disconnect() {
-        if (isOpen()) {
-            webSocket.sendClose(CLOSE_STATUS_CODE, CLOSE_REASON_TEXT).join();
-            webSocket.abort();
-        }
-    }
-
-    @Override
-    public void sendText(String message) {
-        webSocket.sendText(message, true);
-    }
-
-    @Override
-    public void connect() {
-        webSocket = future.join();
-    }
-
-    WebSocket getWebSocket() {
-        return webSocket;
-    }
+    Channel createChannel(Connection     connection,
+                          SessionFactory factory,
+                          MessageHandler handler);
 }

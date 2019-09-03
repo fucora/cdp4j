@@ -16,10 +16,13 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.session;
+package io.webfolder.cdp.channel;
 
 import org.asynchttpclient.ws.WebSocket;
 import org.asynchttpclient.ws.WebSocketListener;
+
+import io.webfolder.cdp.session.MessageHandler;
+import io.webfolder.cdp.session.SessionFactory;
 
 class AsyncWebSocketMessageAdapter implements WebSocketListener {
 
@@ -27,7 +30,7 @@ class AsyncWebSocketMessageAdapter implements WebSocketListener {
 
     private final MessageHandler handler;
 
-    public AsyncWebSocketMessageAdapter(SessionFactory factory, MessageHandler handler) {
+    AsyncWebSocketMessageAdapter(SessionFactory factory, MessageHandler handler) {
         this.factory = factory;
         this.handler = handler;
     }

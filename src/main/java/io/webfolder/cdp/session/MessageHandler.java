@@ -35,7 +35,7 @@ import io.webfolder.cdp.exception.CommandException;
 import io.webfolder.cdp.listener.EventListener;
 import io.webfolder.cdp.logger.CdpLogger;
 
-class MessageHandler {
+public final class MessageHandler {
 
     private final Map<String, Events> events = listEvents();
 

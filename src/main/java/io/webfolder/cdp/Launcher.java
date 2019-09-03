@@ -36,12 +36,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
+import io.webfolder.cdp.channel.ChannelFactory;
+import io.webfolder.cdp.channel.Connection;
+import io.webfolder.cdp.channel.NvWebSocketChannelFactory;
+import io.webfolder.cdp.channel.WebSocketConnection;
 import io.webfolder.cdp.exception.CdpException;
-import io.webfolder.cdp.session.ChannelFactory;
-import io.webfolder.cdp.session.Connection;
-import io.webfolder.cdp.session.NvWebSocketChannelFactory;
 import io.webfolder.cdp.session.SessionFactory;
-import io.webfolder.cdp.session.WebSocketConnection;
 
 public class Launcher {
 

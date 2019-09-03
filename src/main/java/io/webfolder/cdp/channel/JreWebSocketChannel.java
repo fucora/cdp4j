@@ -16,52 +16,46 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.session;
+package io.webfolder.cdp.channel;
 
-import static com.neovisionaries.ws.client.WebSocketCloseCode.NORMAL;
+import java.net.http.WebSocket;
+import java.util.concurrent.CompletableFuture;
 
-import com.neovisionaries.ws.client.WebSocket;
-import com.neovisionaries.ws.client.WebSocketException;
-//import com.neovisionaries.ws.client.ZeroMasker;
+class JreWebSocketChannel implements Channel {
 
-import io.webfolder.cdp.exception.CdpException;
+    private final CompletableFuture<WebSocket> future;
 
-class NvWebSocketChannel implements Channel {
+    private WebSocket webSocket;
 
-    private final WebSocket webSocket;
-
-    NvWebSocketChannel(WebSocket webSocket) {
-        this.webSocket = webSocket;
-        this.webSocket.setDirectTextMessage(true);
-        this.webSocket.setAutoFlush(true);
+    JreWebSocketChannel(CompletableFuture<WebSocket> future) {
+        this.future = future;
     }
 
     @Override
     public boolean isOpen() {
-        return webSocket.isOpen();
+        return ! webSocket.isInputClosed() &&
+               ! webSocket.isOutputClosed();
     }
 
     @Override
     public void disconnect() {
-        try {
-            webSocket.sendClose(CLOSE_STATUS_CODE, CLOSE_REASON_TEXT);
-            webSocket.disconnect(NORMAL, null, 1000); // max wait time to close: 1 seconds
-        } catch (Throwable t) {
-            // ignore
+        if (isOpen()) {
+            webSocket.sendClose(CLOSE_STATUS_CODE, CLOSE_REASON_TEXT).join();
+            webSocket.abort();
         }
     }
 
     @Override
     public void sendText(String message) {
-        webSocket.sendText(message);
+        webSocket.sendText(message, true);
     }
 
     @Override
     public void connect() {
-        try {
-            webSocket.connect();
-        } catch (WebSocketException e) {
-            throw new CdpException(e);
-        }
+        webSocket = future.join();
+    }
+
+    WebSocket getWebSocket() {
+        return webSocket;
     }
 }

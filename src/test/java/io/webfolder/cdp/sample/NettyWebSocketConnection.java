@@ -19,7 +19,7 @@
 package io.webfolder.cdp.sample;
 
 import io.webfolder.cdp.Launcher;
-import io.webfolder.cdp.session.AsyncWebSocketChannelFactory;
+import io.webfolder.cdp.channel.AsyncWebSocketChannelFactory;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
