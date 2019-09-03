@@ -18,9 +18,9 @@
  */
 package io.webfolder.cdp;
 
-import static java.lang.Boolean.TRUE;
 import static io.webfolder.cdp.logger.CdpLoggerType.Null;
 import static io.webfolder.cdp.session.ConnectionType.NvWebSocket;
+import static java.lang.Boolean.TRUE;
 import static java.util.Collections.emptyList;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
@@ -130,6 +130,11 @@ public class Options {
             return this;
         }
 
+        public Builder shutdownThreadPoolOnClose(boolean shutdownThreadPoolOnClose) {
+            options.shutdownThreadPoolOnClose = shutdownThreadPoolOnClose;
+            return this;
+        }
+
         public Options build() {
             if (options.loggerType == null) {
                 options.loggerType = Null;
@@ -159,7 +164,7 @@ public class Options {
                 options.connectionType = NvWebSocket;
             }
             if (options.shutdownThreadPoolOnClose == null) {
-            	options.shutdownThreadPoolOnClose = TRUE;
+                options.shutdownThreadPoolOnClose = TRUE;
             }
             return options;
         }
@@ -213,11 +218,11 @@ public class Options {
         return loggerLevel;
     }
 
-	public boolean closeWebSocketClient() {
-		return closeWebSocketClient.booleanValue();
-	}
+    public boolean closeWebSocketClient() {
+        return closeWebSocketClient.booleanValue();
+    }
 
-	public boolean shutdownThreadPoolOnClose() {
-		return shutdownThreadPoolOnClose.booleanValue();
-	}
+    public boolean shutdownThreadPoolOnClose() {
+        return shutdownThreadPoolOnClose.booleanValue();
+    }
 }

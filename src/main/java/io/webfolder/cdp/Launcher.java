@@ -55,20 +55,24 @@ public class Launcher {
 
     private final Options options;
 
-	private final ChannelFactory channelFactory;
+    private final ChannelFactory channelFactory;
 
     public Launcher(Options options, ChannelFactory channelFactory) {
         this.options = options;
         this.channelFactory = channelFactory;
     }
 
+    public Launcher(ChannelFactory channelFactory) {
+        this(Options.builder().build(), channelFactory);
+    }
+
     public Launcher(Options options) {
-    	this(options, new NvWebSocketChannelFactory(CONNECTION_TIMEOUT));
+        this(options, new NvWebSocketChannelFactory(CONNECTION_TIMEOUT));
     }
 
     public Launcher() {
         this(Options.builder().build(),
-				new NvWebSocketChannelFactory(CONNECTION_TIMEOUT));
+                new NvWebSocketChannelFactory(CONNECTION_TIMEOUT));
     }
 
     protected String findChrome() {
@@ -232,8 +236,8 @@ public class Launcher {
         }
 
         SessionFactory factory = new SessionFactory(options,
-        											channelFactory,
-        											connection);
+                                                    channelFactory,
+                                                    connection);
         return factory;
     }
 

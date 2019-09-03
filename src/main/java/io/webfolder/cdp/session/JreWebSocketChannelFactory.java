@@ -23,9 +23,10 @@ import static java.net.http.HttpClient.newBuilder;
 import static java.time.Duration.ofMillis;
 
 import java.net.http.HttpClient;
+import java.net.http.HttpClient.Builder;
 import java.net.http.WebSocket;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 public class JreWebSocketChannelFactory implements ChannelFactory {
 
@@ -33,22 +34,29 @@ public class JreWebSocketChannelFactory implements ChannelFactory {
 
     private final HttpClient client;
 
-    public JreWebSocketChannelFactory(Executor executor) {
+    public JreWebSocketChannelFactory() {
+        this(null);
+    }
+
+    public JreWebSocketChannelFactory(ExecutorService executor) {
         this(executor, CONNECTION_TIMEOUT);
     }
 
-    public JreWebSocketChannelFactory(Executor executor, int connectionTimeout) {
-        client = newBuilder()
-                    .executor(executor)
-                    .connectTimeout(ofMillis(connectionTimeout))
-                    .build();
+    public JreWebSocketChannelFactory(ExecutorService executor, int connectionTimeout) {
+        Builder builder = newBuilder();
+        if ( executor != null ) {
+            builder.executor(executor);
+        }
+        client = builder.connectTimeout(ofMillis(connectionTimeout))
+                        .build();
     }
 
     @Override
     public Channel createChannel(Connection connection, SessionFactory factory, MessageHandler handler) {
+        String url = ((WebSocketConnection) connection).getUrl();
         CompletableFuture<WebSocket> future = client
                                                 .newWebSocketBuilder()
-                                                .buildAsync(create(((WebSocketConnection) connection).getUrl()),
+                                                .buildAsync(create(url),
                                                         new JreWebSocketMessageAdapter(factory, handler));
         JreWebSocketChannel channel = new JreWebSocketChannel(future);
         return channel;

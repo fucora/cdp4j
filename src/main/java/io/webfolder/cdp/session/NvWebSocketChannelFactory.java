@@ -48,9 +48,10 @@ public class NvWebSocketChannelFactory implements ChannelFactory {
 
     @Override
     public Channel createChannel(Connection connection, SessionFactory factory, MessageHandler handler) {
+        String url = ((WebSocketConnection) connection).getUrl();
         WebSocket webSocket = null;
         try {
-            webSocket = this.factory.createSocket(((WebSocketConnection) connection).getUrl());
+            webSocket = this.factory.createSocket(url);
         } catch (IOException e) {
             throw new CdpException(e);
         }
