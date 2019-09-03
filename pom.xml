@@ -71,16 +71,6 @@
         </executions>
         <configuration>
           <createSourcesJar>true</createSourcesJar>
-          <filters>
-            <filter>
-              <artifact>com.neovisionaries:nv-websocket-client</artifact>
-              <excludes>
-                <exclude>com/neovisionaries/ws/client/WebSocketOutputStream.class</exclude>
-                <exclude>com/neovisionaries/ws/client/WebSocketInputStream.class</exclude>
-                <exclude>com/neovisionaries/ws/client/WebSocket.class</exclude>
-              </excludes>
-            </filter>
-          </filters>
           <transformers>
             <transformer
               implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
@@ -129,14 +119,9 @@
             <exclude>src/main/resources/**</exclude>
             <exclude>appveyor.yml</exclude>
             <exclude>.codacy.yml</exclude>
-            <exclude>src/main/java/com/neovisionaries/ws/client/WebSocketInputStream.java</exclude>
-            <exclude>src/main/java/com/neovisionaries/ws/client/WebSocketOutputStream.java</exclude>
-            <exclude>src/main/java/com/neovisionaries/ws/client/DefaultMasker.java</exclude>
-            <exclude>src/main/java/com/neovisionaries/ws/client/Masker.java</exclude>
-            <exclude>src/main/java/com/neovisionaries/ws/client/WebSocket.java</exclude>
-            <exclude>src/main/java/com/neovisionaries/ws/client/ZeroMasker.java</exclude>
             <exclude>src/main/java/io/webfolder/cdp/logger/FormattingTuple.java</exclude>
             <exclude>src/main/java/io/webfolder/cdp/logger/MessageFormatter.java</exclude>
+            <exclude>src/main/java/io/webfolder/cdp/logger/Util.java</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -204,6 +189,7 @@
       <groupId>com.neovisionaries</groupId>
       <artifactId>nv-websocket-client</artifactId>
       <version>2.9</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>

@@ -24,7 +24,6 @@ import java.io.IOException;
 
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketFactory;
-import com.neovisionaries.ws.client.ZeroMasker;
 
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.session.MessageHandler;
@@ -35,8 +34,6 @@ public class NvWebSocketFactory implements ChannelFactory {
     private static final int CONNECTION_TIMEOUT = 10_000; // 10 seconds
 
     private final WebSocketFactory factory = new WebSocketFactory();
-
-    private final ZeroMasker zeroMasker = new ZeroMasker();
 
     public NvWebSocketFactory() {
         this(CONNECTION_TIMEOUT);
@@ -57,7 +54,6 @@ public class NvWebSocketFactory implements ChannelFactory {
         } catch (IOException e) {
             throw new CdpException(e);
         }
-        webSocket.setPayloadMask(zeroMasker);
         webSocket.addListener(new NvWebSocketListener(factory, handler));
         return new NvWebSocketChannel(webSocket);
     }
