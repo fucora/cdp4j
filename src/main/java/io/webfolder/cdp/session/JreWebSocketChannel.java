@@ -39,7 +39,10 @@ class JreWebSocketChannel implements Channel {
 
     @Override
     public void disconnect() {
-        webSocket.abort();
+        if (isOpen()) {
+            webSocket.sendClose(CLOSE_STATUS_CODE, CLOSE_REASON_TEXT).join();
+            webSocket.abort();
+        }
     }
 
     @Override
@@ -50,5 +53,9 @@ class JreWebSocketChannel implements Channel {
     @Override
     public void connect() {
         webSocket = future.join();
+    }
+
+    WebSocket getWebSocket() {
+        return webSocket;
     }
 }

@@ -20,7 +20,6 @@ package io.webfolder.cdp.session;
 
 import static io.webfolder.cdp.event.Events.RuntimeExecutionContextCreated;
 import static io.webfolder.cdp.event.Events.RuntimeExecutionContextDestroyed;
-import static io.webfolder.cdp.session.ConnectionType.JreWebSocket;
 import static java.lang.Boolean.TRUE;
 import static java.util.Locale.ENGLISH;
 
@@ -69,19 +68,16 @@ public class SessionFactory implements AutoCloseable {
 
     private AtomicBoolean closed = new AtomicBoolean(false);
 
-    public SessionFactory(Options options, Connection connection) {
+    public SessionFactory(Options options, ChannelFactory channelFactory, Connection connection) {
         this.options           = options;
         this.loggerFactory     = createLoggerFactory(options.getLoggerType());
         this.gson              = new GsonBuilder()
                                     .disableHtmlEscaping()
                                     .create();
-        ChannelFactory channelFactory = JreWebSocket.equals(options.getConnectionType()) ?
-                                                new JreWebSocketChannelFactory(this) :
-                                                new NvWebSocketChannelFactory(this)  ;
         MessageHandler handler = new MessageHandler(gson, this,
                                                     options.getWorkerThreadPool(), options.getEventHandlerThreadPool(),
                                                     loggerFactory.getLogger("cdp4j.ws.response", options.getLoggerLevel()));
-        channel = channelFactory.createChannel(connection, options.getConnectionTimeout(), handler);
+        channel = channelFactory.createChannel(connection, this, handler);
         channel.connect();
         this.browserTargetId = initBrowserSession();
     }
@@ -258,11 +254,13 @@ public class SessionFactory implements AutoCloseable {
             channel.disconnect();
             sessions.clear();
             browserContexts.clear();
-            if ( ! options.getWorkerThreadPool().isShutdown() ) {
-                options.getWorkerThreadPool().shutdownNow();
-            }
-            if ( ! options.getEventHandlerThreadPool().isShutdown() ) {
-                options.getEventHandlerThreadPool().shutdownNow();
+            if (options.shutdownThreadPoolOnClose()) {
+                if ( ! options.getWorkerThreadPool().isShutdown() ) {
+                    options.getWorkerThreadPool().shutdownNow();
+                }
+                if ( ! options.getEventHandlerThreadPool().isShutdown() ) {
+                    options.getEventHandlerThreadPool().shutdownNow();
+                }
             }
             browserSession = null;
         }

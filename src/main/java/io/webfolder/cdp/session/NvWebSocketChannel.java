@@ -44,6 +44,7 @@ class NvWebSocketChannel implements Channel {
     @Override
     public void disconnect() {
         try {
+            webSocket.sendClose(CLOSE_STATUS_CODE, CLOSE_REASON_TEXT);
             webSocket.disconnect(NORMAL, null, 1000); // max wait time to close: 1 seconds
         } catch (Throwable t) {
             // ignore

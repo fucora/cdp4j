@@ -22,26 +22,35 @@ import static java.net.URI.create;
 import static java.net.http.HttpClient.newBuilder;
 import static java.time.Duration.ofMillis;
 
+import java.net.http.HttpClient;
 import java.net.http.WebSocket;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
-class JreWebSocketChannelFactory implements ChannelFactory {
+public class JreWebSocketChannelFactory implements ChannelFactory {
 
-    private final SessionFactory factory;
+    private static final int CONNECTION_TIMEOUT = 10_000; // 10 seconds
 
-    JreWebSocketChannelFactory(SessionFactory factory) {
-        this.factory = factory;
+    private final HttpClient client;
+
+    public JreWebSocketChannelFactory(Executor executor) {
+        this(executor, CONNECTION_TIMEOUT);
+    }
+
+    public JreWebSocketChannelFactory(Executor executor, int connectionTimeout) {
+        client = newBuilder()
+                    .executor(executor)
+                    .connectTimeout(ofMillis(connectionTimeout))
+                    .build();
     }
 
     @Override
-    public Channel createChannel(Connection connection, int connectionTimeout, MessageHandler handler) {
-        CompletableFuture<WebSocket> future = newBuilder()
-                                                .executor(factory.getWorkerThreadPool())
-                                                .connectTimeout(ofMillis(connectionTimeout))
-                                                .build()
+    public Channel createChannel(Connection connection, SessionFactory factory, MessageHandler handler) {
+        CompletableFuture<WebSocket> future = client
                                                 .newWebSocketBuilder()
-                                                .buildAsync(create(((WebSocketConnection) connection).getWebSocketDebuggerUrl()),
+                                                .buildAsync(create(((WebSocketConnection) connection).getUrl()),
                                                         new JreWebSocketMessageAdapter(factory, handler));
-        return new JreWebSocketChannel(future);
+        JreWebSocketChannel channel = new JreWebSocketChannel(future);
+        return channel;
     }
 }

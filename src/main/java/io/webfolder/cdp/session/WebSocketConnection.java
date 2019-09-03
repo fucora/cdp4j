@@ -20,13 +20,18 @@ package io.webfolder.cdp.session;
 
 public class WebSocketConnection implements Connection {
 
-    private final String webSocketDebuggerUrl;
+    private final String url;
 
-    public WebSocketConnection(String webSocketDebuggerUrl) {
-        this.webSocketDebuggerUrl = webSocketDebuggerUrl;
+    public WebSocketConnection(String url) {
+        this.url = url;
     }
 
-    String getWebSocketDebuggerUrl() {
-        return webSocketDebuggerUrl;
+    public String getUrl() {
+        return url;
     }
+
+    @Override
+    public String toString() {
+        return "WebSocketConnection [url=" + url + "]";
+    }    
 }

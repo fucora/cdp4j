@@ -1,0 +1,82 @@
+/**
+ * cdp4j Commercial License
+ *
+ * Copyright 2017, 2019 WebFolder OÜ
+ *
+ * Permission  is hereby  granted,  to "____" obtaining  a  copy of  this software  and
+ * associated  documentation files  (the "Software"), to deal in  the Software  without
+ * restriction, including without limitation  the rights  to use, copy, modify,  merge,
+ * publish, distribute  and sublicense  of the Software,  and to permit persons to whom
+ * the Software is furnished to do so, subject to the following conditions:
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR  IMPLIED,
+ * INCLUDING  BUT NOT  LIMITED  TO THE  WARRANTIES  OF  MERCHANTABILITY, FITNESS  FOR A
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL  THE AUTHORS  OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package io.webfolder.cdp.session;
+
+import static java.lang.Integer.MAX_VALUE;
+import static org.asynchttpclient.Dsl.asyncHttpClient;
+
+import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
+
+import org.asynchttpclient.AsyncHttpClient;
+import org.asynchttpclient.DefaultAsyncHttpClientConfig;
+import org.asynchttpclient.netty.ws.NettyWebSocket;
+import org.asynchttpclient.ws.WebSocketUpgradeHandler;
+
+public class AsyncWebSocketChannelFactory implements ChannelFactory, AutoCloseable {
+
+    private static final int CONNECTION_TIMEOUT = 10_000; // 10 seconds
+
+    private final AsyncHttpClient client;
+
+    public AsyncWebSocketChannelFactory() {
+        this(CONNECTION_TIMEOUT);
+    }
+
+    public AsyncWebSocketChannelFactory(int connectionTimeout) {
+        this(connectionTimeout, 1, "cdp4j-nio");
+    }
+
+    public AsyncWebSocketChannelFactory(int connectionTimeout,
+                                        int ioThreadsCount,
+                                        String threadPoolName) {
+        DefaultAsyncHttpClientConfig config = new DefaultAsyncHttpClientConfig.Builder()
+                                                    .setWebSocketMaxFrameSize(MAX_VALUE)
+                                                    .setConnectTimeout(connectionTimeout)
+                                                    .setThreadPoolName(threadPoolName)
+                                                    .setIoThreadsCount(ioThreadsCount)
+                                                .build();
+        client = asyncHttpClient(config);
+    }
+
+    @Override
+    public Channel createChannel(Connection connection, SessionFactory factory, MessageHandler messageHandler) {
+        String url = ((WebSocketConnection) connection).getUrl();
+        AsyncWebSocketMessageAdapter messageAdapter = new AsyncWebSocketMessageAdapter(factory, messageHandler);
+        WebSocketUpgradeHandler upgradeHandler = new WebSocketUpgradeHandler.Builder()
+                                                                            .addWebSocketListener(messageAdapter)
+                                                                            .build();
+        CompletableFuture<NettyWebSocket> future = client.prepareGet(url)
+                                                         .execute(upgradeHandler)
+                                                         .toCompletableFuture();
+        AsyncWebSocketChannel channel = new AsyncWebSocketChannel(future);
+        return channel;
+    }
+
+    @Override
+    public void close() {
+        if ( ! client.isClosed() ) {
+            try {
+                client.close();
+            } catch (IOException e) {
+                // ignore
+            }
+        }
+    }
+}

@@ -28,35 +28,34 @@ import com.neovisionaries.ws.client.ZeroMasker;
 
 import io.webfolder.cdp.exception.CdpException;
 
-class NvWebSocketChannelFactory implements ChannelFactory {
+public class NvWebSocketChannelFactory implements ChannelFactory {
+
+    private static final int CONNECTION_TIMEOUT = 10_000; // 10 seconds
 
     private final WebSocketFactory factory = new WebSocketFactory();
 
     private final ZeroMasker zeroMasker = new ZeroMasker();
 
-    private final SessionFactory sessionFactory;
+    public NvWebSocketChannelFactory() {
+        this(CONNECTION_TIMEOUT);
+    }
 
-    NvWebSocketChannelFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public NvWebSocketChannelFactory(int connectionTimeout) {
+        factory.setConnectionTimeout(connectionTimeout);
+        factory.setDualStackMode(IPV4_ONLY);
+        factory.setVerifyHostname(false);
     }
 
     @Override
-    public Channel createChannel(Connection connection, int connectionTimeout, MessageHandler handler) {
+    public Channel createChannel(Connection connection, SessionFactory factory, MessageHandler handler) {
+        WebSocket webSocket = null;
         try {
-            factory.setConnectionTimeout(connectionTimeout);
-            factory.setDualStackMode(IPV4_ONLY);
-            factory.setVerifyHostname(false);
-            WebSocket webSocket = factory.createSocket(((WebSocketConnection) connection).getWebSocketDebuggerUrl());
-            webSocket.setPayloadMask(zeroMasker);
-            webSocket.addListener(new NvWebSocketMessageAdapter(sessionFactory, handler));
-            return new NvWebSocketChannel(webSocket);
+            webSocket = this.factory.createSocket(((WebSocketConnection) connection).getUrl());
         } catch (IOException e) {
             throw new CdpException(e);
         }
-    }
-
-    public WebSocketFactory getWebSocketFactory() {
-        return factory;
-        
+        webSocket.setPayloadMask(zeroMasker);
+        webSocket.addListener(new NvWebSocketMessageAdapter(factory, handler));
+        return new NvWebSocketChannel(webSocket);
     }
 }

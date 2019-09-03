@@ -18,9 +18,9 @@
  */
 package io.webfolder.cdp;
 
+import static java.lang.Boolean.TRUE;
 import static io.webfolder.cdp.logger.CdpLoggerType.Null;
 import static io.webfolder.cdp.session.ConnectionType.NvWebSocket;
-import static java.lang.Integer.valueOf;
 import static java.util.Collections.emptyList;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
@@ -28,13 +28,11 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
-import io.webfolder.cdp.logger.CdpLogggerLevel;
 import io.webfolder.cdp.logger.CdpLoggerType;
+import io.webfolder.cdp.logger.CdpLogggerLevel;
 import io.webfolder.cdp.session.ConnectionType;
 
 public class Options {
-
-    private static final int DEFAULT_CONNECTION_TIMEOUT = 10 * 1000; // 10 seconds
 
     private static final int DEFAULT_READ_TIMEOUT       = 10 * 1000; // 10 seconds
 
@@ -47,8 +45,6 @@ public class Options {
     private ExecutorService workerThreadPool;
 
     private ExecutorService eventHandlerThreadPool;
-
-    private Integer connectionTimeout;
 
     private Integer readTimeout;
 
@@ -67,6 +63,10 @@ public class Options {
     private ConnectionType connectionType;
 
     private CdpLogggerLevel loggerLevel;
+
+    private Boolean closeWebSocketClient;
+
+    private Boolean shutdownThreadPoolOnClose;
 
     private Options() {
         // no op
@@ -96,11 +96,6 @@ public class Options {
 
         public Builder eventHandlerThreadPool(ExecutorService eventHandlerThreadPool) {
             options.eventHandlerThreadPool = eventHandlerThreadPool;
-            return this;
-        }
-
-        public Builder connectionTimeout(int connectionTimeout) {
-            options.connectionTimeout = connectionTimeout;
             return this;
         }
 
@@ -145,9 +140,6 @@ public class Options {
             if (options.eventHandlerThreadPool == null) {
                 options.eventHandlerThreadPool = newSingleThreadExecutor(new CdpThreadFactory("cdp4j-EventHandlerThread"));
             }
-            if (options.connectionTimeout == null) {
-                options.connectionTimeout = valueOf(DEFAULT_CONNECTION_TIMEOUT);
-            }
             if (options.arguments == null) {
                 options.arguments = emptyList();
             }
@@ -166,6 +158,9 @@ public class Options {
             if (options.connectionType == null) {
                 options.connectionType = NvWebSocket;
             }
+            if (options.shutdownThreadPoolOnClose == null) {
+            	options.shutdownThreadPoolOnClose = TRUE;
+            }
             return options;
         }
     }
@@ -180,10 +175,6 @@ public class Options {
 
     public ExecutorService getEventHandlerThreadPool() {
         return eventHandlerThreadPool;
-    }
-
-    public int getConnectionTimeout() {
-        return connectionTimeout.intValue();
     }
 
     public List<String> getArguments() {
@@ -221,4 +212,12 @@ public class Options {
     public CdpLogggerLevel getLoggerLevel() {
         return loggerLevel;
     }
+
+	public boolean closeWebSocketClient() {
+		return closeWebSocketClient.booleanValue();
+	}
+
+	public boolean shutdownThreadPoolOnClose() {
+		return shutdownThreadPoolOnClose.booleanValue();
+	}
 }

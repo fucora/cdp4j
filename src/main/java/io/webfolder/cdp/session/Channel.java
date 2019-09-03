@@ -20,6 +20,10 @@ package io.webfolder.cdp.session;
 
 interface Channel {
 
+    public static int CLOSE_STATUS_CODE = 1000;
+
+    public static String CLOSE_REASON_TEXT = "done";
+
     boolean isOpen();
 
     void disconnect();

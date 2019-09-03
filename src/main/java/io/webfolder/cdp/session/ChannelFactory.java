@@ -18,9 +18,9 @@
  */
 package io.webfolder.cdp.session;
 
-interface ChannelFactory {
+public interface ChannelFactory {
 
     Channel createChannel(Connection     connection,
-                          int            connectionTimeout,
+                          SessionFactory factory,
                           MessageHandler handler);
 }

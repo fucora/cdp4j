@@ -37,26 +37,38 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import io.webfolder.cdp.exception.CdpException;
+import io.webfolder.cdp.session.ChannelFactory;
 import io.webfolder.cdp.session.Connection;
+import io.webfolder.cdp.session.NvWebSocketChannelFactory;
 import io.webfolder.cdp.session.SessionFactory;
 import io.webfolder.cdp.session.WebSocketConnection;
 
 public class Launcher {
 
-    private static final String  OS_NAME = getProperty("os.name").toLowerCase(ENGLISH);
+    private static final String  OS_NAME        = getProperty("os.name").toLowerCase(ENGLISH);
 
-    private static final boolean WINDOWS = OS_NAME.startsWith("windows");
+    private static final boolean WINDOWS        = OS_NAME.startsWith("windows");
 
-    private static final boolean OSX     = OS_NAME.startsWith("mac");
+    private static final boolean OSX            = OS_NAME.startsWith("mac");
+
+    private static final int CONNECTION_TIMEOUT = 10_000; // 10 seconds
 
     private final Options options;
 
-    public Launcher(Options options) {
+	private final ChannelFactory channelFactory;
+
+    public Launcher(Options options, ChannelFactory channelFactory) {
         this.options = options;
+        this.channelFactory = channelFactory;
+    }
+
+    public Launcher(Options options) {
+    	this(options, new NvWebSocketChannelFactory(CONNECTION_TIMEOUT));
     }
 
     public Launcher() {
-        this(Options.builder().build());
+        this(Options.builder().build(),
+				new NvWebSocketChannelFactory(CONNECTION_TIMEOUT));
     }
 
     protected String findChrome() {
@@ -219,7 +231,9 @@ public class Launcher {
             throw new CdpException(e);
         }
 
-        SessionFactory factory = new SessionFactory(options, connection);
+        SessionFactory factory = new SessionFactory(options,
+        											channelFactory,
+        											connection);
         return factory;
     }
 
