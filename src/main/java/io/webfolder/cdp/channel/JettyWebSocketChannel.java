@@ -44,7 +44,7 @@ public class JettyWebSocketChannel implements Channel {
     @Override
     public void disconnect() {
         if (webSocket.isOpen()) {
-            webSocket.close();
+            webSocket.close(CLOSE_STATUS_CODE, CLOSE_REASON_TEXT);
             try {
                 webSocket.disconnect();
             } catch (IOException e) {
