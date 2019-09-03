@@ -26,7 +26,7 @@ import io.webfolder.cdp.session.SessionFactory;
 public class JettyWebSocketConnection {
 
     public static void main(String[] args) {
-    	JettyWebSocketChannelFactory jettyWebSocketChannelFactory = new JettyWebSocketChannelFactory();
+        JettyWebSocketChannelFactory jettyWebSocketChannelFactory = new JettyWebSocketChannelFactory();
 
         Launcher launcher = new Launcher(jettyWebSocketChannelFactory);
 

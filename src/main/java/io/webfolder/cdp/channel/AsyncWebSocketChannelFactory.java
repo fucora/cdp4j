@@ -59,7 +59,7 @@ public class AsyncWebSocketChannelFactory implements ChannelFactory, AutoCloseab
     }
 
     public AsyncWebSocketChannelFactory(AsyncHttpClient client) {
-    	this.client = client;
+        this.client = client;
     }
 
     @Override
