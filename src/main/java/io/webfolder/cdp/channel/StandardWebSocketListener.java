@@ -30,19 +30,19 @@ import io.webfolder.cdp.session.SessionFactory;
 @ClientEndpoint
 public class StandardWebSocketListener {
 
-	private final SessionFactory factory;
+    private final SessionFactory factory;
 
-	private final MessageHandler handler;
+    private final MessageHandler handler;
 
     private final StringBuilder buffer = new StringBuilder(0);
 
-	public StandardWebSocketListener(SessionFactory factory, MessageHandler handler) {
-		this.factory = factory;
-		this.handler = handler;
-	}
+    public StandardWebSocketListener(SessionFactory factory, MessageHandler handler) {
+        this.factory = factory;
+        this.handler = handler;
+    }
 
-	@OnMessage
-	public void onMessage(String data, boolean last, Session session) {
+    @OnMessage
+    public void onMessage(String data, boolean last, Session session) {
         if (buffer.length() > 0 && last) {
             buffer.append(data);
             String message = buffer.toString();
@@ -53,10 +53,11 @@ public class StandardWebSocketListener {
         } else {
             handler.process(data.toString());
         }
-	}
+    }
 
-	@OnClose
-	public void onClose(Session session, CloseReason closeReason) {
-		factory.close();
-	}
+    @OnClose
+    public void onClose(Session session, CloseReason closeReason) {
+        factory.close();
+        buffer.setLength(0);
+    }
 }

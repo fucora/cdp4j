@@ -56,6 +56,7 @@ public class JreWebSocketListener implements Listener {
     @Override
     public CompletionStage<?> onClose(WebSocket webSocket, int statusCode, String reason) {
         factory.close();
+        buffer.setLength(0);
         return Listener.super.onClose(webSocket, statusCode, reason);
     }
 }
