@@ -51,8 +51,6 @@ public class Launcher {
 
     private static final boolean OSX            = OS_NAME.startsWith("mac");
 
-    private static final int CONNECTION_TIMEOUT = 10_000; // 10 seconds
-
     private final Options options;
 
     private final ChannelFactory channelFactory;
