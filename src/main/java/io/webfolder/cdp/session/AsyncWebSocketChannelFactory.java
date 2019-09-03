@@ -40,7 +40,7 @@ public class AsyncWebSocketChannelFactory implements ChannelFactory, AutoCloseab
     }
 
     public AsyncWebSocketChannelFactory(int connectionTimeout) {
-        this(connectionTimeout, 1, "cdp4j-nio");
+        this(connectionTimeout, 1, "cdp4j-netty");
     }
 
     public AsyncWebSocketChannelFactory(int connectionTimeout,
