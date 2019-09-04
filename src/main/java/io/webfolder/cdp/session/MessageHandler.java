@@ -89,6 +89,7 @@ public final class MessageHandler {
                 JsonObject error = object.getAsJsonObject("error");
                 if (error == null) {
                     context.setData(json);
+                    context.release();
                 } else {
                     int code = (int) error.getAsJsonPrimitive("code").getAsDouble();
                     String message = error.getAsJsonPrimitive("message").getAsString();
@@ -96,6 +97,7 @@ public final class MessageHandler {
                     context.setError(new CommandException(code, message +
                                                 (messageData != null && messageData.isJsonPrimitive() ? ". " +
                                                 messageData.getAsString() : "")));
+                    context.release();
                 }
             } else {
                 // Process event response

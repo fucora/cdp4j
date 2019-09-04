@@ -230,7 +230,7 @@ class SessionInvocationHandler implements InvocationHandler {
         enabledDomains.clear();
         for (Context context : contexts.values()) {
             try {
-                context.dispose();
+                context.release();
             } catch (Throwable t) {
                 // ignore
             }

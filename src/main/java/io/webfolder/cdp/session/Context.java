@@ -26,6 +26,8 @@ interface Context {
 
     void await(int timeout);
 
+    void release();
+
     void setData(JsonElement data);
 
     JsonElement getData();
@@ -33,6 +35,4 @@ interface Context {
     void setError(CommandException error);
 
     CommandException getError();
-
-    void dispose();
 }

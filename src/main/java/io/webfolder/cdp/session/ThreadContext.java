@@ -47,7 +47,6 @@ class ThreadContext implements Context {
     @Override
     public void setData(final JsonElement data) {
         this.data = data;
-        unpark(thread);
     }
 
     @Override
@@ -58,7 +57,6 @@ class ThreadContext implements Context {
     @Override
     public void setError(final CommandException error) {
         this.error = error;
-        unpark(thread);
     }
 
     @Override
@@ -67,7 +65,7 @@ class ThreadContext implements Context {
     }
 
     @Override
-    public void dispose() {
+    public void release() {
         unpark(thread);
     }
 }

@@ -46,7 +46,6 @@ class SemaphoreContext implements Context {
     @Override
     public void setData(final JsonElement data) {
         this.data = data;
-        semaphore.release();
     }
 
     @Override
@@ -57,7 +56,6 @@ class SemaphoreContext implements Context {
     @Override
     public void setError(final CommandException error) {
         this.error = error;
-        semaphore.release();
     }
 
     @Override
@@ -66,7 +64,7 @@ class SemaphoreContext implements Context {
     }
 
     @Override
-    public void dispose() {
+    public void release() {
         semaphore.release();
     }
 }
