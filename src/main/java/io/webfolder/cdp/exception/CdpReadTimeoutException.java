@@ -16,42 +16,13 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.webfolder.cdp.channel;
+package io.webfolder.cdp.exception;
 
-import java.net.http.WebSocket;
-import java.util.concurrent.CompletableFuture;
+public class CdpReadTimeoutException extends CdpException {
 
-public class JreWebSocketChannel implements Channel {
+    private static final long serialVersionUID = -7581526063885886708L;
 
-    private final CompletableFuture<WebSocket> future;
-
-    private WebSocket webSocket;
-
-    public JreWebSocketChannel(CompletableFuture<WebSocket> future) {
-        this.future = future;
-    }
-
-    @Override
-    public boolean isOpen() {
-        return ! webSocket.isInputClosed() &&
-               ! webSocket.isOutputClosed();
-    }
-
-    @Override
-    public void disconnect() {
-        if (isOpen()) {
-            webSocket.sendClose(CLOSE_STATUS_CODE, CLOSE_REASON_TEXT);
-            webSocket.abort();
-        }
-    }
-
-    @Override
-    public void sendText(String message) {
-        webSocket.sendText(message, true);
-    }
-
-    @Override
-    public void connect() {
-        webSocket = future.join();
+    public CdpReadTimeoutException(String message) {
+        super(message);
     }
 }

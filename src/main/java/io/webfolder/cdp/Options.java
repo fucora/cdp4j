@@ -20,6 +20,7 @@ package io.webfolder.cdp;
 
 import static io.webfolder.cdp.logger.CdpLoggerType.Null;
 import static io.webfolder.cdp.session.ConnectionType.NvWebSocket;
+import static io.webfolder.cdp.session.ContextLockType.LockInvocation;
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.emptyList;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
@@ -31,6 +32,7 @@ import java.util.concurrent.ExecutorService;
 import io.webfolder.cdp.logger.CdpLoggerType;
 import io.webfolder.cdp.logger.CdpLogggerLevel;
 import io.webfolder.cdp.session.ConnectionType;
+import io.webfolder.cdp.session.ContextLockType;
 
 public class Options {
 
@@ -67,6 +69,8 @@ public class Options {
     private Boolean closeWebSocketClient;
 
     private Boolean shutdownThreadPoolOnClose;
+
+    private ContextLockType contextLockType;
 
     private Options() {
         // no op
@@ -166,7 +170,15 @@ public class Options {
             if (options.shutdownThreadPoolOnClose == null) {
                 options.shutdownThreadPoolOnClose = TRUE;
             }
+            if (options.connectionType == null) {
+                options.contextLockType = LockInvocation;
+            }
             return options;
+        }
+
+        public Builder contextType(ContextLockType contextLockType) {
+            options.contextLockType = contextLockType;
+            return this;
         }
     }
 
@@ -224,5 +236,9 @@ public class Options {
 
     public boolean shutdownThreadPoolOnClose() {
         return shutdownThreadPoolOnClose.booleanValue();
+    }
+
+    public ContextLockType contextLockType() {
+        return contextLockType;
     }
 }

@@ -18,21 +18,56 @@
  */
 package io.webfolder.cdp.session;
 
+import static java.lang.System.currentTimeMillis;
+import static java.lang.Thread.currentThread;
+import static java.util.concurrent.locks.LockSupport.parkUntil;
+import static java.util.concurrent.locks.LockSupport.unpark;
+
 import com.google.gson.JsonElement;
 
 import io.webfolder.cdp.exception.CommandException;
 
-interface Context {
+class ThreadContext implements Context {
 
-    void await(int timeout);
+    private final Thread thread;
 
-    void setData(JsonElement data);
+    private JsonElement data;
 
-    JsonElement getData();
+    private CommandException error;
 
-    void setError(CommandException error);
+    public ThreadContext() {
+        thread = currentThread();
+    }
 
-    CommandException getError();
+    @Override
+    public void await(final int timeout) {
+        parkUntil(currentTimeMillis() + timeout);
+    }
 
-    void dispose();
+    @Override
+    public void setData(final JsonElement data) {
+        this.data = data;
+        unpark(thread);
+    }
+
+    @Override
+    public JsonElement getData() {
+        return data;
+    }
+
+    @Override
+    public void setError(final CommandException error) {
+        this.error = error;
+        unpark(thread);
+    }
+
+    @Override
+    public CommandException getError() {
+        return error;
+    }
+
+    @Override
+    public void dispose() {
+        unpark(thread);
+    }
 }

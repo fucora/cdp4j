@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.session;
 
+import static io.webfolder.cdp.session.ContextLockType.LockInvocation;
+import static java.lang.System.currentTimeMillis;
 import static java.util.Base64.getDecoder;
 
 import java.lang.reflect.InvocationHandler;
@@ -39,6 +41,7 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.channel.Channel;
 import io.webfolder.cdp.exception.CdpException;
+import io.webfolder.cdp.exception.CdpReadTimeoutException;
 import io.webfolder.cdp.logger.CdpLogger;
 
 class SessionInvocationHandler implements InvocationHandler {
@@ -61,6 +64,8 @@ class SessionInvocationHandler implements InvocationHandler {
 
     private final int readTimeout;
 
+    private ContextLockType contextLockType;
+
     SessionInvocationHandler(
                     final Gson gson,
                     final Channel channel,
@@ -68,14 +73,16 @@ class SessionInvocationHandler implements InvocationHandler {
                     final Session session,
                     final CdpLogger log,
                     final String sessionId,
-                    final int readTimeOut) {
-        this.gson        = gson;
-        this.channel     = channel;
-        this.contexts    = contexts;
-        this.session     = session;
-        this.log         = log;
-        this.sessionId   = sessionId;
-        this.readTimeout = readTimeOut;
+                    final int readTimeOut,
+                    final ContextLockType contextLockType) {
+        this.gson            = gson;
+        this.channel         = channel;
+        this.contexts        = contexts;
+        this.session         = session;
+        this.log             = log;
+        this.sessionId       = sessionId;
+        this.readTimeout     = readTimeOut;
+        this.contextLockType = contextLockType;
     }
 
     @Override
@@ -125,13 +132,20 @@ class SessionInvocationHandler implements InvocationHandler {
 
         Context context = null;
 
+        final long start = currentTimeMillis();
+
         if (session.isConnected()) {
-            context = new Context();
+            context = LockInvocation.equals(contextLockType) ? new SemaphoreContext() : new ThreadContext();
             contexts.put(id, context);
             channel.sendText(json);
             context.await(readTimeout);
         } else {
             throw new CdpException("WebSocket connection is not alive. id: " + id);
+        }
+
+        if ( (context.getData() == null && context.getError() == null) &&
+                   (currentTimeMillis() - start) >= readTimeout ) {
+            throw new CdpReadTimeoutException(readTimeout + "ms");
         }
 
         if ( context.getError() != null ) {
@@ -216,7 +230,7 @@ class SessionInvocationHandler implements InvocationHandler {
         enabledDomains.clear();
         for (Context context : contexts.values()) {
             try {
-                context.setData(null);
+                context.dispose();
             } catch (Throwable t) {
                 // ignore
             }

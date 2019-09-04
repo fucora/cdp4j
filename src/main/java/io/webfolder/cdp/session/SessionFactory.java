@@ -110,6 +110,9 @@ public class SessionFactory implements AutoCloseable {
                                               options.getScreenWidth(),
                                               options.getScreenHeight(),
                                               browserContextId, false, null, null);
+        if (targetId == null) {
+            throw new CdpException("Couldn't create a new session");
+        }
         return connect(targetId, browserContextId);
     }
 
