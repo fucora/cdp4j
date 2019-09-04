@@ -176,7 +176,7 @@ public class Options {
             return options;
         }
 
-        public Builder contextType(ContextLockType contextLockType) {
+        public Builder contextLockType(ContextLockType contextLockType) {
             options.contextLockType = contextLockType;
             return this;
         }
