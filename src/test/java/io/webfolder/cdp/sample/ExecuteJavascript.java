@@ -30,6 +30,7 @@ public class ExecuteJavascript {
         try (SessionFactory factory = launcher.launch();
                             Session session = factory.create()) {
 
+            session.navigate("about:blank");
             session.waitDocumentReady();
             Double result = (Double) session.evaluate("var foo = function() { return 2 + 2; }; foo();");
             System.out.println(result);
