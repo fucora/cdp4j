@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -261,11 +262,19 @@ public class SessionFactory implements AutoCloseable {
             sessions.clear();
             browserContexts.clear();
             if (options.shutdownThreadPoolOnClose()) {
-                if ( ! options.getWorkerThreadPool().isShutdown() ) {
-                    options.getWorkerThreadPool().shutdownNow();
+                Executor wp = options.getWorkerThreadPool();
+                if (wp instanceof ExecutorService) {
+                    ExecutorService wps = (ExecutorService) wp;
+                    if ( ! wps.isShutdown() ) {
+                        wps.shutdownNow();
+                    }
                 }
-                if ( ! options.getEventHandlerThreadPool().isShutdown() ) {
-                    options.getEventHandlerThreadPool().shutdownNow();
+                Executor ep = options.getEventHandlerThreadPool();
+                if (ep instanceof ExecutorService) {
+                    ExecutorService eps = (ExecutorService) ep;
+                    if ( ! eps.isShutdown() ) {
+                        eps.shutdownNow();
+                    }
                 }
             }
             browserSession = null;
@@ -316,10 +325,6 @@ public class SessionFactory implements AutoCloseable {
 
     public boolean closed() {
         return closed.get();
-    }
-
-    ExecutorService getWorkerThreadPool() {
-        return options.getWorkerThreadPool();
     }
 
     protected LoggerFactory createLoggerFactory(CdpLoggerType loggerType) {

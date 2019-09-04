@@ -27,6 +27,7 @@ import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
 import io.webfolder.cdp.logger.CdpLoggerType;
@@ -44,9 +45,9 @@ public class Options {
 
     private CdpLoggerType loggerType;
 
-    private ExecutorService workerThreadPool;
+    private Executor workerThreadPool;
 
-    private ExecutorService eventHandlerThreadPool;
+    private Executor eventHandlerThreadPool;
 
     private Integer readTimeout;
 
@@ -186,11 +187,11 @@ public class Options {
         return loggerType;
     }
 
-    public ExecutorService getWorkerThreadPool() {
+    public Executor getWorkerThreadPool() {
         return workerThreadPool;
     }
 
-    public ExecutorService getEventHandlerThreadPool() {
+    public Executor getEventHandlerThreadPool() {
         return eventHandlerThreadPool;
     }
 

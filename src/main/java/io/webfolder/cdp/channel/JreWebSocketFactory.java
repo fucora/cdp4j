@@ -26,7 +26,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpClient.Builder;
 import java.net.http.WebSocket;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executor;
 
 import io.webfolder.cdp.session.MessageHandler;
 import io.webfolder.cdp.session.SessionFactory;
@@ -41,11 +41,11 @@ public class JreWebSocketFactory implements ChannelFactory {
         this(null);
     }
 
-    public JreWebSocketFactory(ExecutorService executor) {
+    public JreWebSocketFactory(Executor executor) {
         this(executor, CONNECTION_TIMEOUT);
     }
 
-    public JreWebSocketFactory(ExecutorService executor, int connectionTimeout) {
+    public JreWebSocketFactory(Executor executor, int connectionTimeout) {
         Builder builder = newBuilder();
         if ( executor != null ) {
             builder.executor(executor);
