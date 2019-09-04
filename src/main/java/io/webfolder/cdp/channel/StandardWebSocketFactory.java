@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.channel;
 
+import static javax.websocket.ClientEndpointConfig.Builder.create;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -49,7 +51,9 @@ public class StandardWebSocketFactory implements ChannelFactory {
         }
         try {
             StandardWebSocketListener listener = new StandardWebSocketListener(factory, handler);
-            Session session = webSocketContainer.connectToServer(listener, uri);
+            Session session = webSocketContainer.connectToServer(listener,
+                                                                 create().build(),
+                                                                 uri);
             session.addMessageHandler(listener);
             return new StandardWebSocketChannel(session);
         } catch (DeploymentException | IOException e) {

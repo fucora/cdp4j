@@ -20,14 +20,15 @@ package io.webfolder.cdp.channel;
 
 import javax.websocket.ClientEndpoint;
 import javax.websocket.CloseReason;
-import javax.websocket.OnClose;
+import javax.websocket.Endpoint;
+import javax.websocket.EndpointConfig;
 import javax.websocket.Session;
 
 import io.webfolder.cdp.session.MessageHandler;
 import io.webfolder.cdp.session.SessionFactory;
 
 @ClientEndpoint
-public class StandardWebSocketListener implements javax.websocket.MessageHandler.Partial<String> {
+public class StandardWebSocketListener extends Endpoint implements javax.websocket.MessageHandler.Partial<String> {
 
     private final SessionFactory factory;
 
@@ -54,9 +55,14 @@ public class StandardWebSocketListener implements javax.websocket.MessageHandler
         }
     }
 
-    @OnClose
+    @Override
     public void onClose(Session session, CloseReason closeReason) {
         factory.close();
         buffer.setLength(0);
+    }
+
+    @Override
+    public void onOpen(Session session, EndpointConfig config) {
+        // ignore
     }
 }
