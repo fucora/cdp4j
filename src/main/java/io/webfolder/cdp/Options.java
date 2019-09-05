@@ -171,7 +171,7 @@ public class Options {
             if (options.shutdownThreadPoolOnClose == null) {
                 options.shutdownThreadPoolOnClose = TRUE;
             }
-            if (options.connectionType == null) {
+            if (options.contextLockType == null) {
                 options.contextLockType = LockInvocation;
             }
             return options;
