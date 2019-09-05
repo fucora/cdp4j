@@ -18,7 +18,7 @@
  */
 package io.webfolder.cdp.logger;
 
-public enum CdpLogggerLevel {
+public enum CdpConsoleLogggerLevel {
     Info,
     Debug,
     Warn,

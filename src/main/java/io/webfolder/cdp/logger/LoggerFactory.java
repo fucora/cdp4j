@@ -20,5 +20,5 @@ package io.webfolder.cdp.logger;
 
 public interface LoggerFactory {
 
-    CdpLogger getLogger(String name, CdpLogggerLevel level);
+    CdpLogger getLogger(String name, CdpConsoleLogggerLevel level);
 }

@@ -18,21 +18,21 @@
  */
 package io.webfolder.cdp.logger;
 
-import static io.webfolder.cdp.logger.CdpLogggerLevel.Debug;
-import static io.webfolder.cdp.logger.CdpLogggerLevel.Error;
-import static io.webfolder.cdp.logger.CdpLogggerLevel.Info;
-import static io.webfolder.cdp.logger.CdpLogggerLevel.Warn;
+import static io.webfolder.cdp.logger.CdpConsoleLogggerLevel.Debug;
+import static io.webfolder.cdp.logger.CdpConsoleLogggerLevel.Error;
+import static io.webfolder.cdp.logger.CdpConsoleLogggerLevel.Info;
+import static io.webfolder.cdp.logger.CdpConsoleLogggerLevel.Warn;
 import static io.webfolder.cdp.logger.MessageFormatter.arrayFormat;
 
 public class CdpConsoleLogger implements CdpLogger {
 
-    private final CdpLogggerLevel loggerLevel;
+    private final CdpConsoleLogggerLevel loggerLevel;
 
     public CdpConsoleLogger() {
         this(Info);
     }
 
-    public CdpConsoleLogger(final CdpLogggerLevel loggerLevel) {
+    public CdpConsoleLogger(final CdpConsoleLogggerLevel loggerLevel) {
         this.loggerLevel = loggerLevel;
     }
 

@@ -80,7 +80,7 @@ public class SessionFactory implements AutoCloseable {
                                     .create();
         MessageHandler handler = new MessageHandler(gson, this,
                                                     options.getWorkerThreadPool(), options.getEventHandlerThreadPool(),
-                                                    loggerFactory.getLogger("cdp4j.ws.response", options.getLoggerLevel()));
+                                                    loggerFactory.getLogger("cdp4j.ws.response", options.consoleLoggerLevel()));
         channel = channelFactory.createChannel(connection, this, handler);
         channel.connect();
         this.browserTargetId = initBrowserSession();

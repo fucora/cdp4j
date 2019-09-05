@@ -19,7 +19,7 @@
 package io.webfolder.cdp.sample;
 
 import static io.webfolder.cdp.logger.CdpLoggerType.Console;
-import static io.webfolder.cdp.logger.CdpLogggerLevel.Info;
+import static io.webfolder.cdp.logger.CdpConsoleLogggerLevel.Info;
 
 import java.net.URL;
 
@@ -33,7 +33,7 @@ public class EvaluateOnNewDocument {
 
     public static void main(String[] args) {
         Launcher launcher = new Launcher(Options.builder()
-                                            .loggerLevel(Info)
+                                            .consoleLoggerLevel(Info)
                                             .loggerType(Console)
                                            .build());
 

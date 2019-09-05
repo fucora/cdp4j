@@ -19,7 +19,7 @@
 package io.webfolder.cdp.sample;
 
 import static io.webfolder.cdp.logger.CdpLoggerType.Console;
-import static io.webfolder.cdp.logger.CdpLogggerLevel.Info;
+import static io.webfolder.cdp.logger.CdpConsoleLogggerLevel.Info;
 
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.Options;
@@ -30,7 +30,7 @@ public class Logging {
 
     public static void main(String[] args) {
         Launcher launcher = new Launcher(Options.builder()
-                                            .loggerLevel(Info)
+                                            .consoleLoggerLevel(Info)
                                             .loggerType(Console)
                                            .build());
 

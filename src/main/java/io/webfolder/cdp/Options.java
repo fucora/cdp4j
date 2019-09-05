@@ -31,7 +31,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
 import io.webfolder.cdp.logger.CdpLoggerType;
-import io.webfolder.cdp.logger.CdpLogggerLevel;
+import io.webfolder.cdp.logger.CdpConsoleLogggerLevel;
 import io.webfolder.cdp.session.ConnectionType;
 import io.webfolder.cdp.session.ContextLockType;
 
@@ -65,7 +65,7 @@ public class Options {
 
     private ConnectionType connectionType;
 
-    private CdpLogggerLevel loggerLevel;
+    private CdpConsoleLogggerLevel consoleLoggerLevel;
 
     private Boolean closeWebSocketClient;
 
@@ -125,8 +125,8 @@ public class Options {
         }
 
 
-        public Builder loggerLevel(CdpLogggerLevel loggerLevel) {
-            options.loggerLevel = loggerLevel;
+        public Builder consoleLoggerLevel(CdpConsoleLogggerLevel consoleLoggerLevel) {
+            options.consoleLoggerLevel = consoleLoggerLevel;
             return this;
         }
 
@@ -223,12 +223,12 @@ public class Options {
         return screenHeight;
     }
 
-    public ConnectionType getConnectionType() {
+    public ConnectionType connectionType() {
         return connectionType;
     }
 
-    public CdpLogggerLevel getLoggerLevel() {
-        return loggerLevel;
+    public CdpConsoleLogggerLevel consoleLoggerLevel() {
+        return consoleLoggerLevel;
     }
 
     public boolean closeWebSocketClient() {
