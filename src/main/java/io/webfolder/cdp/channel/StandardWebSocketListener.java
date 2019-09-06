@@ -43,18 +43,18 @@ public class StandardWebSocketListener extends Endpoint implements javax.websock
 
     @Override
     public void onMessage(String data, boolean last) {
-    	if (last) {
-    		if (buffer.length() == 0) {
-    			handler.process(data.toString());    		
-    		} else {
+        if (last) {
+            if (buffer.length() == 0) {
+                handler.process(data.toString());            
+            } else {
                 buffer.append(data);
                 String message = buffer.toString();
                 buffer.setLength(0);
                 handler.process(message);
-    		}
-    	} else {
+            }
+        } else {
             buffer.append(data);
-    	}
+        }
     }
 
     @Override

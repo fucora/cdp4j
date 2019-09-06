@@ -40,18 +40,18 @@ public class JreWebSocketListener implements Listener {
 
     @Override
     public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
-    	if (last) {
-    		if (buffer.length() == 0) {
-    			handler.process(data.toString());    		
-    		} else {
+        if (last) {
+            if (buffer.length() == 0) {
+                handler.process(data.toString());            
+            } else {
                 buffer.append(data);
                 String message = buffer.toString();
                 buffer.setLength(0);
                 handler.process(message);
-    		}
-    	} else {
+            }
+        } else {
             buffer.append(data);
-    	}
+        }
         webSocket.request(1);
         return null;
     }
