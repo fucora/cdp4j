@@ -19,6 +19,8 @@
 package io.webfolder.cdp.session;
 
 import static io.webfolder.cdp.session.ContextLockType.LockInvocation;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static java.lang.Integer.valueOf;
 import static java.lang.System.currentTimeMillis;
 import static java.util.Base64.getDecoder;
@@ -42,25 +44,25 @@ import io.webfolder.cdp.logger.CdpLogger;
 
 public class SessionInvocationHandler {
 
-    private final AtomicInteger counter = new AtomicInteger(0);
-
-    private final Gson gson;
-
-    private final Channel channel;
-
-    private final Map<Integer, Context> contexts;
+    private final AtomicInteger counter       = new AtomicInteger(0);
 
     private final List<String> enabledDomains = new CopyOnWriteArrayList<>();
 
-    private final CdpLogger log;
+    private final Gson                  gson;
 
-    private final Session session;
+    private final Channel               channel;
 
-    private final String sessionId;
+    private final Map<Integer, Context> contexts;
 
-    private final int readTimeout;
+    private final CdpLogger             log;
 
-    private ContextLockType contextLockType;
+    private final Session               session;
+
+    private final String                sessionId;
+
+    private final int                   readTimeout;
+
+    private final ContextLockType       contextLockType;
 
     SessionInvocationHandler(
                     final Gson                  gson,
@@ -126,13 +128,15 @@ public class SessionInvocationHandler {
 
         final Context context = LockInvocation.equals(contextLockType) ? new SemaphoreContext() : new ThreadContext();
         contexts.put(id, context);
-        channel.sendText(json);
-        context.await(readTimeout);
 
         final long start = currentTimeMillis();
 
-        if ( (context.getData() == null && context.getError() == null) &&
-                   (currentTimeMillis() - start) >= readTimeout ) {
+        channel.sendText(json);
+
+        context.await(readTimeout);
+
+        if ((context.getData() == null && context.getError() == null) &&
+                   (currentTimeMillis() - start) >= readTimeout) {
             throw new CdpReadTimeoutException(readTimeout + "ms");
         }
 
@@ -150,65 +154,67 @@ public class SessionInvocationHandler {
             return null;
         }
 
-        JsonElement data = context.getData();
+        return toJson(returns, returnType, typeArgument, context);
+    }
+
+    Object toJson(
+    		final String  returns,
+    		final Type    returnType,
+    		final Type    typeArgument,
+    		final Context context) {
+
+    	final JsonElement data = context.getData();
         if (data == null) {
             return null;
         }
 
         if ( ! data.isJsonObject() ) {
-            throw new CdpException("invalid response");
+            throw new CdpException("Invalid response");
         }
 
-        JsonObject object = data.getAsJsonObject();
-        JsonElement result = object.get("result");
+        final JsonObject object  = data.getAsJsonObject();
+        final JsonElement result = object.get("result");
 
         if ( result == null || ! result.isJsonObject() ) {
-            throw new CdpException("invalid result");   
+            throw new CdpException("Invalid result");   
         }
 
-        JsonObject resultObject = result.getAsJsonObject();
+        final JsonObject resultObject = result.getAsJsonObject();
 
-        Object ret = null;
-        Type genericReturnType = typeArgument;
-
-        if (returns != null) {
-
+        if ( returns != null ) {
             JsonElement jsonElement = resultObject.get(returns);
-
-            if ( jsonElement != null && jsonElement.isJsonPrimitive() ) {
-                if (String.class.equals(returnType)) {
-                    return resultObject.get(returns).getAsString();
-                } else if (Boolean.class.equals(returnType)) {
-                    return resultObject.get(returns).getAsBoolean() ? Boolean.TRUE : Boolean.FALSE;
-                } else if (Integer.class.equals(returnType)) {
-                    return resultObject.get(returns).getAsInt();
-                } else if (Double.class.equals(returnType)) {
-                    return resultObject.get(returns).getAsDouble();
-                }
-            }
-
-            if ( jsonElement != null && byte[].class.equals(returnType) ) {
-                String encoded = gson.fromJson(jsonElement, String.class);
-                if (encoded == null || encoded.trim().isEmpty()) {
-                    return null;
-                } else {
-                    return getDecoder().decode(encoded);
+            if ( jsonElement != null ) {
+                if (jsonElement.isJsonPrimitive()) {
+                    if (String.class.equals(returnType)) {
+                        return resultObject.get(returns).getAsString();
+                    } else if (Boolean.class.equals(returnType)) {
+                        return resultObject.get(returns).getAsBoolean() ? TRUE : FALSE;
+                    } else if (Integer.class.equals(returnType)) {
+                        return resultObject.get(returns).getAsInt();
+                    } else if (Double.class.equals(returnType)) {
+                        return resultObject.get(returns).getAsDouble();
+                    }
+                } else if (byte[].class.equals(returnType)) {
+                    String encoded = gson.fromJson(jsonElement, String.class);
+                    if (encoded == null || encoded.trim().isEmpty()) {
+                        return null;
+                    } else {
+                        return getDecoder().decode(encoded);
+                    }
                 }
             }
             if (List.class.equals(returnType)) {
                 JsonArray jsonArray = jsonElement.getAsJsonArray();
-                ret = gson.fromJson(jsonArray, typeArgument);
+                return gson.fromJson(jsonArray, typeArgument);
             } else {
-                ret = gson.fromJson(jsonElement, genericReturnType == null ? returnType : typeArgument);
+            	return gson.fromJson(jsonElement, returnType);
             }
         } else {
-            ret = gson.fromJson(resultObject, returnType);
+            return gson.fromJson(resultObject, returnType);
         }
+	}
 
-        return ret;
-    }
-
-    void dispose() {
+	void dispose() {
         enabledDomains.clear();
         for (Context context : contexts.values()) {
             try {
