@@ -19,14 +19,11 @@
 package io.webfolder.cdp.session;
 
 import static io.webfolder.cdp.session.ContextLockType.LockInvocation;
+import static java.lang.Integer.valueOf;
 import static java.lang.System.currentTimeMillis;
 import static java.util.Base64.getDecoder;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -36,15 +33,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
-import io.webfolder.cdp.annotation.Domain;
-import io.webfolder.cdp.annotation.Returns;
 import io.webfolder.cdp.channel.Channel;
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.exception.CdpReadTimeoutException;
 import io.webfolder.cdp.logger.CdpLogger;
 
-class SessionInvocationHandler implements InvocationHandler {
+public class SessionInvocationHandler {
 
     private final AtomicInteger counter = new AtomicInteger(0);
 
@@ -67,14 +63,14 @@ class SessionInvocationHandler implements InvocationHandler {
     private ContextLockType contextLockType;
 
     SessionInvocationHandler(
-                    final Gson gson,
-                    final Channel channel,
+                    final Gson                  gson,
+                    final Channel               channel,
                     final Map<Integer, Context> contexts,
-                    final Session session,
-                    final CdpLogger log,
-                    final String sessionId,
-                    final int readTimeOut,
-                    final ContextLockType contextLockType) {
+                    final Session               session,
+                    final CdpLogger             log,
+                    final String                sessionId,
+                    final int                   readTimeOut,
+                    final ContextLockType       contextLockType) {
         this.gson            = gson;
         this.channel         = channel;
         this.contexts        = contexts;
@@ -85,63 +81,55 @@ class SessionInvocationHandler implements InvocationHandler {
         this.contextLockType = contextLockType;
     }
 
-    @Override
     public Object invoke(
-                final Object proxy,
-                final Method method,
-                final Object[] args) throws Throwable {
+                    final String   domain,
+                    final String   command,
+                    final String   method,
+                    final String   returns,
+                    final Type     returnType,
+                    final Type     typeArgument,
+                    final boolean  voidMethod,
+                    final boolean  enable,
+                    final boolean  disable,
+                    final String[] parameters,
+                    final Object[] args) {
 
-        final Class<?> klass = method.getDeclaringClass();
-        final String  domain = klass.getAnnotation(Domain.class).value();
-        final String command = method.getName();
-
-        final boolean hasArgs = args != null && args.length > 0;
-        final boolean isVoid  = void.class.equals(method.getReturnType());
-
-        // it's unnecessary to call enable command more than once.
-        boolean enable = isVoid && command.equals("enable");
-        if (enable && enabledDomains.contains(domain)) {
-            return null;
+        if ( ! session.isConnected() ) {
+            throw new CdpException("WebSocket connection is not alive.");
         }
 
-        boolean disable = isVoid && "disable".equals(command);
+        final boolean hasArgs = args.length > 0;
 
-        Map<String, Object> params = hasArgs ? new HashMap<>(args.length) : null;
+        final JsonObject params = new JsonObject();
 
         if (hasArgs) {
-            int argIndex = 0;
-            Parameter[] parameters = method.getParameters();
-            for (Object argValue : args) {
-                String argName = parameters[argIndex++].getName();
-                params.put(argName, argValue);
+            for (int i = 0; i < args.length; i++) {
+                params.add(parameters[i], gson.toJsonTree(args[i]));
             }
         }
 
-        int id = counter.incrementAndGet();
-        Map<String, Object> map = new HashMap<>(3);
-        map.put("id"    , id);
-        map.put("sessionId", sessionId);
-        map.put("method", domain + "." + command);
+        final int id = counter.incrementAndGet();
+
+        final JsonObject payload = new JsonObject();
+        payload.add("id", new JsonPrimitive(valueOf(id)));
+        if ( sessionId != null ) {
+            payload.add("sessionId", new JsonPrimitive(sessionId));
+        }
+        payload.add("method", new JsonPrimitive(method));
         if (hasArgs) {
-            map.put("params", params);
+            payload.add("params", gson.toJsonTree(params));
         }
 
-        String json = gson.toJson(map);
+        final String json = gson.toJson(payload);
 
         log.debug("--> {}", json);
 
-        Context context = null;
+        final Context context = LockInvocation.equals(contextLockType) ? new SemaphoreContext() : new ThreadContext();
+        contexts.put(id, context);
+        channel.sendText(json);
+        context.await(readTimeout);
 
         final long start = currentTimeMillis();
-
-        if (session.isConnected()) {
-            context = LockInvocation.equals(contextLockType) ? new SemaphoreContext() : new ThreadContext();
-            contexts.put(id, context);
-            channel.sendText(json);
-            context.await(readTimeout);
-        } else {
-            throw new CdpException("WebSocket connection is not alive. id: " + id);
-        }
 
         if ( (context.getData() == null && context.getError() == null) &&
                    (currentTimeMillis() - start) >= readTimeout ) {
@@ -158,7 +146,7 @@ class SessionInvocationHandler implements InvocationHandler {
             enabledDomains.remove(domain);
         }
 
-        if (isVoid) {
+        if (voidMethod) {
             return null;
         }
 
@@ -166,9 +154,6 @@ class SessionInvocationHandler implements InvocationHandler {
         if (data == null) {
             return null;
         }
-
-        String returns = method.isAnnotationPresent(Returns.class) ?
-                             method.getAnnotation(Returns.class).value() : null;
 
         if ( ! data.isJsonObject() ) {
             throw new CdpException("invalid response");
@@ -184,27 +169,25 @@ class SessionInvocationHandler implements InvocationHandler {
         JsonObject resultObject = result.getAsJsonObject();
 
         Object ret = null;
-        Type genericReturnType = method.getGenericReturnType();
+        Type genericReturnType = typeArgument;
 
         if (returns != null) {
 
             JsonElement jsonElement = resultObject.get(returns);
 
-            Class<?> retType = method.getReturnType();
-
             if ( jsonElement != null && jsonElement.isJsonPrimitive() ) {
-                if (String.class.equals(retType)) {
+                if (String.class.equals(returnType)) {
                     return resultObject.get(returns).getAsString();
-                } else if (Boolean.class.equals(retType)) {
+                } else if (Boolean.class.equals(returnType)) {
                     return resultObject.get(returns).getAsBoolean() ? Boolean.TRUE : Boolean.FALSE;
-                } else if (Integer.class.equals(retType)) {
+                } else if (Integer.class.equals(returnType)) {
                     return resultObject.get(returns).getAsInt();
-                } else if (Double.class.equals(retType)) {
+                } else if (Double.class.equals(returnType)) {
                     return resultObject.get(returns).getAsDouble();
                 }
             }
 
-            if ( jsonElement != null && byte[].class.equals(genericReturnType) ) {
+            if ( jsonElement != null && byte[].class.equals(returnType) ) {
                 String encoded = gson.fromJson(jsonElement, String.class);
                 if (encoded == null || encoded.trim().isEmpty()) {
                     return null;
@@ -212,15 +195,14 @@ class SessionInvocationHandler implements InvocationHandler {
                     return getDecoder().decode(encoded);
                 }
             }
-
-            if (List.class.equals(retType)) {
+            if (List.class.equals(returnType)) {
                 JsonArray jsonArray = jsonElement.getAsJsonArray();
-                ret = gson.fromJson(jsonArray, genericReturnType);
+                ret = gson.fromJson(jsonArray, typeArgument);
             } else {
-                ret = gson.fromJson(jsonElement, genericReturnType);
+                ret = gson.fromJson(jsonElement, genericReturnType == null ? returnType : typeArgument);
             }
         } else {
-            ret = gson.fromJson(resultObject, genericReturnType);
+            ret = gson.fromJson(resultObject, returnType);
         }
 
         return ret;

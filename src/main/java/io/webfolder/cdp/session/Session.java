@@ -42,7 +42,9 @@ import static java.util.Locale.ENGLISH;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.nio.file.Files;
@@ -98,7 +100,7 @@ public class Session implements AutoCloseable,
                                 JavaScript   ,
                                 Dom          {
 
-    private final Map<Class<?>, Object> proxies = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Object> commands = new ConcurrentHashMap<>();
 
     private AtomicBoolean connected = new AtomicBoolean(true);
 
@@ -628,7 +630,7 @@ public class Session implements AutoCloseable,
     }
     
     void dispose() {
-        proxies.clear();
+        commands.clear();
         listeners.clear();
         jsFunctions.clear();
         invocationHandler.dispose();
@@ -692,15 +694,22 @@ public class Session implements AutoCloseable,
 
     @SuppressWarnings("unchecked")
     <T> T getProxy(Class<T> klass) {
-        T proxy = (T) proxies.get(klass);
+        T proxy = (T) commands.get(klass);
         if (proxy != null) {
             return (T) proxy;
         }
-        ClassLoader classLoader = getClass().getClassLoader();
-        Class<T>[] interfaces = new Class[] { klass };
-        proxy = (T) newProxyInstance(classLoader, interfaces, invocationHandler);
-        Object existing = proxies.putIfAbsent(klass, proxy);
-        if (existing != null) {
+        Class<T> implKlass = null;
+        try {
+            implKlass = (Class<T>) getClass().getClassLoader().loadClass(klass.getName() + "Impl");
+            Constructor<T> constructor = implKlass.getConstructor(SessionInvocationHandler.class);
+            proxy = constructor.newInstance(invocationHandler);
+        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException |
+                 InstantiationException | IllegalAccessException | IllegalArgumentException |
+                 InvocationTargetException e) {
+            throw new CdpException(e);
+        }
+        Object existing = commands.putIfAbsent(klass, proxy);
+        if ( existing != null ) {
             return (T) existing;
         }
         return proxy;
