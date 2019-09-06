@@ -95,35 +95,13 @@ public class SessionInvocationHandler {
                     final boolean  disable,
                     final String[] parameters,
                     final Object[] args) {
-
         if ( ! session.isConnected() ) {
             throw new CdpException("WebSocket connection is not alive.");
         }
 
-        final boolean hasArgs = args.length > 0;
-
-        final JsonObject params = new JsonObject();
-
-        if (hasArgs) {
-            for (int i = 0; i < args.length; i++) {
-                params.add(parameters[i], gson.toJsonTree(args[i]));
-            }
-        }
-
         final int id = counter.incrementAndGet();
 
-        final JsonObject payload = new JsonObject();
-        payload.add("id", new JsonPrimitive(valueOf(id)));
-        if ( sessionId != null ) {
-            payload.add("sessionId", new JsonPrimitive(sessionId));
-        }
-        payload.add("method", new JsonPrimitive(method));
-        if (hasArgs) {
-            payload.add("params", gson.toJsonTree(params));
-        }
-
-        final String json = gson.toJson(payload);
-
+        String json = toJson(method, id, parameters, args);
         log.debug("--> {}", json);
 
         final Context context = LockInvocation.equals(contextLockType) ? new SemaphoreContext() : new ThreadContext();
@@ -154,15 +132,37 @@ public class SessionInvocationHandler {
             return null;
         }
 
-        return toJson(returns, returnType, typeArgument, context);
+        return fromJson(returns, returnType, typeArgument, context);
     }
 
-    Object toJson(
+    String toJson(final String   method,
+    			  final int      id,
+    			  final String[] parameters,
+    			  final Object[] args) {
+    	final JsonObject params = new JsonObject();
+        final boolean hasArgs = args.length > 0;
+        if (hasArgs) {
+            for (int i = 0; i < args.length; i++) {
+                params.add(parameters[i], gson.toJsonTree(args[i]));
+            }
+        }
+        final JsonObject payload = new JsonObject();
+        payload.add("id", new JsonPrimitive(valueOf(id)));
+        if ( sessionId != null ) {
+            payload.add("sessionId", new JsonPrimitive(sessionId));
+        }
+        payload.add("method", new JsonPrimitive(method));
+        if (hasArgs) {
+            payload.add("params", gson.toJsonTree(params));
+        }
+        return gson.toJson(payload);
+    }
+
+    Object fromJson(
     		final String  returns,
     		final Type    returnType,
     		final Type    typeArgument,
     		final Context context) {
-
     	final JsonElement data = context.getData();
         if (data == null) {
             return null;
