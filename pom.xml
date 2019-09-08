@@ -9,7 +9,7 @@
   <licenses>
     <license>
       <name>cdp4j Commercial License</name>
-      <url>https://github.com/webfolderio/cdp4j/blob/master/LICENSE</url>
+      <url>https://webfolder.io/license.html</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -90,12 +90,8 @@
             <exclude>COPYING.md</exclude>
             <exclude>LICENSE</exclude>
             <exclude>pom.xml</exclude>
-            <exclude>circle.yml</exclude>
-            <exclude>_config.yml</exclude>
             <exclude>src/test/resources/**</exclude>
             <exclude>src/main/resources/**</exclude>
-            <exclude>appveyor.yml</exclude>
-            <exclude>.codacy.yml</exclude>
             <exclude>src/main/java/io/webfolder/cdp/logger/FormattingTuple.java</exclude>
             <exclude>src/main/java/io/webfolder/cdp/logger/MessageFormatter.java</exclude>
             <exclude>src/main/java/io/webfolder/cdp/logger/Util.java</exclude>
@@ -123,13 +119,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>3.1.0</version>
         <executions>
           <execution>
-            <id>generate-sources-for-shade-plugin</id>
-            <phase>package</phase>
+            <id>attach-sources</id>
             <goals>
-              <goal>jar-no-fork</goal>
+              <goal>jar</goal>
             </goals>
           </execution>
         </executions>
@@ -154,20 +149,14 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.8</version>
-        <extensions>true</extensions>
-        <configuration>
-          <serverId>ossrh</serverId>
-          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-          <autoReleaseAfterClose>true</autoReleaseAfterClose>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
   <dependencies>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.5</version>
+    </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -187,24 +176,6 @@
       <artifactId>nv-websocket-client</artifactId>
       <version>2.9</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>2.8.5</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>1.2.3</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.asynchttpclient</groupId>
