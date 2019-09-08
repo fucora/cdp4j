@@ -77,7 +77,7 @@ public class SessionFactory implements AutoCloseable {
     public SessionFactory(Options options, ChannelFactory channelFactory, Connection connection) {
         this.options            = options;
         this.loggerFactory      = createLoggerFactory(options.getLoggerType());
-        this.typeAdapterFactory = new CdpTypeAdapterFactory();
+        this.typeAdapterFactory = options.useCustomTypeAdapter() ? new CdpTypeAdapterFactory() : null;
         GsonBuilder builder     = new GsonBuilder().disableHtmlEscaping();
         if (options.useCustomTypeAdapter()) {
             this.gson = builder.registerTypeAdapterFactory(typeAdapterFactory)
@@ -284,7 +284,9 @@ public class SessionFactory implements AutoCloseable {
                     }
                 }
             }
-            typeAdapterFactory.dispose();
+            if (options.useCustomTypeAdapter()) {
+                typeAdapterFactory.dispose();
+            }
             browserSession = null;
         }
     }

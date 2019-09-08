@@ -21,6 +21,7 @@ package io.webfolder.cdp;
 import static io.webfolder.cdp.logger.CdpLoggerType.Null;
 import static io.webfolder.cdp.session.ConnectionType.NvWebSocket;
 import static io.webfolder.cdp.session.ContextLockType.LockInvocation;
+import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.emptyList;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
@@ -30,8 +31,8 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
-import io.webfolder.cdp.logger.CdpLoggerType;
 import io.webfolder.cdp.logger.CdpConsoleLogggerLevel;
+import io.webfolder.cdp.logger.CdpLoggerType;
 import io.webfolder.cdp.session.ConnectionType;
 import io.webfolder.cdp.session.ContextLockType;
 
@@ -182,7 +183,7 @@ public class Options {
                 options.contextLockType = LockInvocation;
             }
             if (options.useCustomTypeAdapter == null) {
-            	options.useCustomTypeAdapter = TRUE;
+            	options.useCustomTypeAdapter = FALSE;
             }
             return options;
         }
