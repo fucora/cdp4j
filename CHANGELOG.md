@@ -1,6 +1,33 @@
 cdp4j Release Notes
 -------------------------------------------------------------------------------
 
+### 4.1.0 - November 1, 2019
+
+* Add [GraalVM](https://www.graalvm.org/) support [#116](https://github.com/webfolderio/cdp4j/issues/116)
+
+### 4.0.0 - October 1, 2019
+
+:new: Added __non-blocking__ WebSocket support
+
+List of supported WebSocket clients:
+
+1. [async-http-client](https://github.com/AsyncHttpClient/async-http-client) (Netty based)
+2. [Eclipse Jetty](https://github.com/eclipse/jetty.project)
+3. [JRE WebSocket Client](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/WebSocket.html) (requires Java 11, **default WebSocket client** of cdp4j 4.x)
+4. [JSR-356](https://www.oracle.com/technetwork/articles/java/jsr356-1937161.html) WebSocket Client ([Tomcat WebSocket Client](https://tomcat.apache.org/tomcat-8.5-doc/web-socket-howto.html) & [Tyrus](https://tyrus-project.github.io/) is supported)
+5. [TooTallNate](https://github.com/TooTallNate/Java-WebSocket) WebSocket client
+6. [Undertow](http://undertow.io/) WebSocket client
+
+> Beside these WebSocket clients implementations we still supports [nv-websocket-client](https://github.com/TakahikoKawasaki/nv-websocket-client) which is default WebSocket client of cdp4j 3.x. We highly recommended to use a non-blocking WebSocket client implemntation instead of nv-websocket-client. nv-websocket-client use _java.net.Socket_ which blocks reading & writing threads.
+
+non-blocking WebSocket client examples: [Netty](https://github.com/webfolderio/cdp4j/blob/master/src/test/java/io/webfolder/cdp/sample/NettyWebSocketConnection.java), [Jetty](https://github.com/webfolderio/cdp4j/blob/master/src/main/java/io/webfolder/cdp/channel/JettyWebSocketFactory.java), [JRE WebSocket Client](https://github.com/webfolderio/cdp4j/blob/master/src/main/java/io/webfolder/cdp/channel/JreWebSocketFactory.java), [JSR-356 WebSocketClient](https://github.com/webfolderio/cdp4j/blob/master/src/main/java/io/webfolder/cdp/channel/StandardWebSocketFactory.java), [TooTallNateWebSocketFactory](https://github.com/webfolderio/cdp4j/blob/master/src/main/java/io/webfolder/cdp/channel/TooTallNateWebSocketFactory.java), [Undertow WebSocket Client](https://github.com/webfolderio/cdp4j/blob/master/src/main/java/io/webfolder/cdp/channel/UndertowWebSocketFactory.java)
+
+:new: Replaced [dynamic proxy](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/reflect/Proxy.html) based `io.webfolder.cdp.command` classes with [concrete class](https://github.com/webfolderio/cdp4j/blob/master/src/main/java/io/webfolder/cdp/command/PageImpl.java) implementations.
+
+:new: Added custom gson type adapter to improve json serialization & deserialization performance. cdp4j 4.x use [stag-java](https://medium.com/vimeo-engineering-blog/boosting-app-performance-with-reflectionless-de-serialization-486179edeb29) to generate [TypeAdapter](https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/TypeAdapter.html) classes. Default option still use reflection based TypeAdapter. Invoke `Options.useCustomTypeAdapter(true)` to use __reflectionless__ (de)serialization.
+
+:new: Move to flatten cdp protocol. DevTools protocol is dropping nested targets and switching to flatten protocol. cdp4j 4.x will be incompatible with Chromium below version 72
+
 ### 3.0.12 - June 25, 2019
 
 * Added Launcher.isChromeInstalled() method
