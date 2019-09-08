@@ -18,11 +18,14 @@
  */
 package io.webfolder.cdp.type.overlay;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.dom.RGBA;
 
 /**
  * Configuration data for the highlighting of page elements
  */
+@UseStag
 public class HighlightConfig {
     private Boolean showInfo;
 

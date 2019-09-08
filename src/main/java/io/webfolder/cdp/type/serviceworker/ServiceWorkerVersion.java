@@ -20,9 +20,12 @@ package io.webfolder.cdp.type.serviceworker;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * ServiceWorker version
  */
+@UseStag
 public class ServiceWorkerVersion {
     private String versionId;
 

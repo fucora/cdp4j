@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.animation;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Keyframe Style
  */
+@UseStag
 public class KeyframeStyle {
     private String offset;
 

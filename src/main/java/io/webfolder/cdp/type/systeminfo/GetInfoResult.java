@@ -18,6 +18,9 @@
  */
 package io.webfolder.cdp.type.systeminfo;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class GetInfoResult {
     private GPUInfo gpu;
 
@@ -41,5 +44,21 @@ public class GetInfoResult {
 
     public String getCommandLine() {
         return commandLine;
+    }
+
+    public void setGpu(GPUInfo gpu) {
+        this.gpu = gpu;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    public void setModelVersion(String modelVersion) {
+        this.modelVersion = modelVersion;
+    }
+
+    public void setCommandLine(String commandLine) {
+        this.commandLine = commandLine;
     }
 }

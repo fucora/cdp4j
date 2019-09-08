@@ -18,6 +18,9 @@
  */
 package io.webfolder.cdp.type.accessibility;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class AXProperty {
     private AXPropertyName name;
 

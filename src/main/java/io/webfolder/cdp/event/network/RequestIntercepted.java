@@ -20,6 +20,8 @@ package io.webfolder.cdp.event.network;
 
 import java.util.Map;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
@@ -35,6 +37,7 @@ import io.webfolder.cdp.type.network.ResourceType;
 @Experimental
 @Domain("Network")
 @EventName("requestIntercepted")
+@UseStag
 public class RequestIntercepted {
     private String interceptionId;
 
@@ -117,7 +120,7 @@ public class RequestIntercepted {
     /**
      * Whether this is a navigation request, which can abort the navigation completely.
      */
-    public Boolean isIsNavigationRequest() {
+    public Boolean getIsNavigationRequest() {
         return isNavigationRequest;
     }
 
@@ -132,7 +135,7 @@ public class RequestIntercepted {
      * Set if the request is a navigation that will result in a download.
      * Only present after response is received from the server (i.e. HeadersReceived stage).
      */
-    public Boolean isIsDownload() {
+    public Boolean getIsDownload() {
         return isDownload;
     }
 

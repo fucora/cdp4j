@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.page;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 
@@ -27,6 +29,7 @@ import io.webfolder.cdp.annotation.EventName;
  */
 @Domain("Page")
 @EventName("navigationRequested")
+@UseStag
 public class NavigationRequested {
     private Boolean isInMainFrame;
 
@@ -39,7 +42,7 @@ public class NavigationRequested {
     /**
      * Whether the navigation is taking place in the main frame or in a subframe.
      */
-    public Boolean isIsInMainFrame() {
+    public Boolean getIsInMainFrame() {
         return isInMainFrame;
     }
 
@@ -53,7 +56,7 @@ public class NavigationRequested {
     /**
      * Whether the navigation has encountered a server redirect or not.
      */
-    public Boolean isIsRedirect() {
+    public Boolean getIsRedirect() {
         return isRedirect;
     }
 

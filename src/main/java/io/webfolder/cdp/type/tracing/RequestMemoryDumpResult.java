@@ -18,6 +18,9 @@
  */
 package io.webfolder.cdp.type.tracing;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class RequestMemoryDumpResult {
     private String dumpGuid;
 
@@ -29,5 +32,13 @@ public class RequestMemoryDumpResult {
 
     public Boolean getSuccess() {
         return success;
+    }
+
+    public void setDumpGuid(String dumpGuid) {
+        this.dumpGuid = dumpGuid;
+    }
+
+    public void setSuccess(Boolean success) {
+        this.success = success;
     }
 }

@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.runtime;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.runtime.ExecutionContextDescription;
@@ -27,6 +29,7 @@ import io.webfolder.cdp.type.runtime.ExecutionContextDescription;
  */
 @Domain("Runtime")
 @EventName("executionContextCreated")
+@UseStag
 public class ExecutionContextCreated {
     private ExecutionContextDescription context;
 

@@ -20,9 +20,12 @@ package io.webfolder.cdp.type.network;
 
 import java.io.Serializable;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Cookie object
  */
+@UseStag
 public class Cookie implements Serializable {
 
     private static final long serialVersionUID = 3780035664493989002L;

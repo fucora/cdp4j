@@ -20,6 +20,9 @@ package io.webfolder.cdp.type.page;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class GetAppManifestResult {
     private String url;
 
@@ -37,5 +40,17 @@ public class GetAppManifestResult {
 
     public String getData() {
         return data;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setErrors(List<AppManifestError> errors) {
+        this.errors = errors;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 }

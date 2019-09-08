@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.dom;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Backend node with a friendly name
  */
+@UseStag
 public class BackendNode {
     private Integer nodeType;
 

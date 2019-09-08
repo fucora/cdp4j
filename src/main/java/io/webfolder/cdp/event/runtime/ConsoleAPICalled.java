@@ -20,6 +20,8 @@ package io.webfolder.cdp.event.runtime;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.constant.ConsoleApiCallType;
@@ -31,6 +33,7 @@ import io.webfolder.cdp.type.runtime.StackTrace;
  */
 @Domain("Runtime")
 @EventName("consoleAPICalled")
+@UseStag
 public class ConsoleAPICalled {
     private ConsoleApiCallType type;
 

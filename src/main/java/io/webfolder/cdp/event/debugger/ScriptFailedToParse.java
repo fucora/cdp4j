@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.debugger;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.runtime.StackTrace;
@@ -27,6 +29,7 @@ import io.webfolder.cdp.type.runtime.StackTrace;
  */
 @Domain("Debugger")
 @EventName("scriptFailedToParse")
+@UseStag
 public class ScriptFailedToParse {
     private String scriptId;
 
@@ -199,7 +202,7 @@ public class ScriptFailedToParse {
     /**
      * True, if this script has sourceURL.
      */
-    public Boolean isHasSourceURL() {
+    public Boolean getHasSourceURL() {
         return hasSourceURL;
     }
 
@@ -213,7 +216,7 @@ public class ScriptFailedToParse {
     /**
      * True, if this script is ES6 module.
      */
-    public Boolean isIsModule() {
+    public Boolean getIsModule() {
         return isModule;
     }
 

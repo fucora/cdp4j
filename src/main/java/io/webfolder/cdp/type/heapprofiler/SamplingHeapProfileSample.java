@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.heapprofiler;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * A single sample from a sampling profile
  */
+@UseStag
 public class SamplingHeapProfileSample {
     private Double size;
 

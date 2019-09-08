@@ -18,6 +18,9 @@
  */
 package io.webfolder.cdp.type.webauthn;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class Credential {
     private String credentialId;
 

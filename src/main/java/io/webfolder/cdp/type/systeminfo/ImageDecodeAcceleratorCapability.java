@@ -20,10 +20,13 @@ package io.webfolder.cdp.type.systeminfo;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Describes a supported image decoding profile with its associated minimum and
  * maximum resolutions and subsampling
  */
+@UseStag
 public class ImageDecodeAcceleratorCapability {
     private String imageType;
 

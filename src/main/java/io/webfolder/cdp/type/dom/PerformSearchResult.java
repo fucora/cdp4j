@@ -18,6 +18,9 @@
  */
 package io.webfolder.cdp.type.dom;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class PerformSearchResult {
     private String searchId;
 
@@ -29,5 +32,13 @@ public class PerformSearchResult {
 
     public Integer getResultCount() {
         return resultCount;
+    }
+
+    public void setSearchId(String searchId) {
+        this.searchId = searchId;
+    }
+
+    public void setResultCount(Integer resultCount) {
+        this.resultCount = resultCount;
     }
 }

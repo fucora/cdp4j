@@ -18,6 +18,9 @@
  */
 package io.webfolder.cdp.type.page;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class NavigateResult {
     private String frameId;
 
@@ -35,5 +38,17 @@ public class NavigateResult {
 
     public String getErrorText() {
         return errorText;
+    }
+
+    public void setFrameId(String frameId) {
+        this.frameId = frameId;
+    }
+
+    public void setLoaderId(String loaderId) {
+        this.loaderId = loaderId;
+    }
+
+    public void setErrorText(String errorText) {
+        this.errorText = errorText;
     }
 }

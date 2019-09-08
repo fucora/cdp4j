@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.performance;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Run-time execution metric
  */
+@UseStag
 public class Metric {
     private String name;
 

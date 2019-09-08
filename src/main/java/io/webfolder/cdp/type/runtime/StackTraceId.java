@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.type.runtime;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Experimental;
 
 /**
@@ -26,6 +28,7 @@ import io.webfolder.cdp.annotation.Experimental;
  * See <code>Runtime.StackTrace</code> and <code>Debugger.paused</code> for usages.
  */
 @Experimental
+@UseStag
 public class StackTraceId {
     private String id;
 

@@ -18,6 +18,9 @@
  */
 package io.webfolder.cdp.type.runtime;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class AwaitPromiseResult {
     private RemoteObject result;
 
@@ -29,5 +32,13 @@ public class AwaitPromiseResult {
 
     public ExceptionDetails getExceptionDetails() {
         return exceptionDetails;
+    }
+
+    public void setResult(RemoteObject result) {
+        this.result = result;
+    }
+
+    public void setExceptionDetails(ExceptionDetails exceptionDetails) {
+        this.exceptionDetails = exceptionDetails;
     }
 }

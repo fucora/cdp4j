@@ -20,6 +20,9 @@ package io.webfolder.cdp.type.storage;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class GetUsageAndQuotaResult {
     private Double usage;
 
@@ -37,5 +40,17 @@ public class GetUsageAndQuotaResult {
 
     public List<UsageForType> getUsageBreakdown() {
         return usageBreakdown;
+    }
+
+    public void setUsage(Double usage) {
+        this.usage = usage;
+    }
+
+    public void setQuota(Double quota) {
+        this.quota = quota;
+    }
+
+    public void setUsageBreakdown(List<UsageForType> usageBreakdown) {
+        this.usageBreakdown = usageBreakdown;
     }
 }

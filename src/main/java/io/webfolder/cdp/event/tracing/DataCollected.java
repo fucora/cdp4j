@@ -21,6 +21,8 @@ package io.webfolder.cdp.event.tracing;
 import java.util.List;
 import java.util.Map;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 
@@ -31,6 +33,7 @@ import io.webfolder.cdp.annotation.EventName;
  */
 @Domain("Tracing")
 @EventName("dataCollected")
+@UseStag
 public class DataCollected {
 
     private List<Map<String, Object>> value;

@@ -20,6 +20,8 @@ package io.webfolder.cdp.event.dom;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
@@ -30,6 +32,7 @@ import io.webfolder.cdp.annotation.Experimental;
 @Experimental
 @Domain("DOM")
 @EventName("inlineStyleInvalidated")
+@UseStag
 public class InlineStyleInvalidated {
     private List<Integer> nodeIds;
 

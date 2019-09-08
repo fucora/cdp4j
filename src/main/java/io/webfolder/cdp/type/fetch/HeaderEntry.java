@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.fetch;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Response HTTP header entry
  */
+@UseStag
 public class HeaderEntry {
     private String name;
 

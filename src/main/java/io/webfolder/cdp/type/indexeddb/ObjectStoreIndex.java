@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.indexeddb;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Object store index
  */
+@UseStag
 public class ObjectStoreIndex {
     private String name;
 

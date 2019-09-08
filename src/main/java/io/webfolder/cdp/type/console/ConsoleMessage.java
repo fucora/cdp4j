@@ -18,12 +18,15 @@
  */
 package io.webfolder.cdp.type.console;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.constant.MessageSeverity;
 import io.webfolder.cdp.type.constant.MessageSource;
 
 /**
  * Console message
  */
+@UseStag
 public class ConsoleMessage {
     private MessageSource source;
 

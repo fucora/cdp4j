@@ -18,6 +18,9 @@
  */
 package io.webfolder.cdp.type.indexeddb;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class GetMetadataResult {
     private Double entriesCount;
 
@@ -29,5 +32,13 @@ public class GetMetadataResult {
 
     public Double getKeyGeneratorValue() {
         return keyGeneratorValue;
+    }
+
+    public void setEntriesCount(Double entriesCount) {
+        this.entriesCount = entriesCount;
+    }
+
+    public void setKeyGeneratorValue(Double keyGeneratorValue) {
+        this.keyGeneratorValue = keyGeneratorValue;
     }
 }

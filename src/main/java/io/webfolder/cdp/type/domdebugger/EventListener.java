@@ -18,11 +18,14 @@
  */
 package io.webfolder.cdp.type.domdebugger;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.runtime.RemoteObject;
 
 /**
  * Object event listener
  */
+@UseStag
 public class EventListener {
     private String type;
 

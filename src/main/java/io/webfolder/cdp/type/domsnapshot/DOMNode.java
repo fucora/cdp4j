@@ -20,6 +20,8 @@ package io.webfolder.cdp.type.domsnapshot;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.dom.PseudoType;
 import io.webfolder.cdp.type.dom.ShadowRootType;
 import io.webfolder.cdp.type.domdebugger.EventListener;
@@ -27,6 +29,7 @@ import io.webfolder.cdp.type.domdebugger.EventListener;
 /**
  * A Node in the DOM tree
  */
+@UseStag
 public class DOMNode {
     private Integer nodeType;
 
@@ -480,5 +483,17 @@ public class DOMNode {
 
     public void setScrollOffsetY(Double scrollOffsetY) {
         this.scrollOffsetY = scrollOffsetY;
+    }
+
+    public Boolean getInputChecked() {
+        return inputChecked;
+    }
+
+    public Boolean getOptionSelected() {
+        return optionSelected;
+    }
+
+    public Boolean getIsClickable() {
+        return isClickable;
     }
 }

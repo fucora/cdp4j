@@ -20,6 +20,9 @@ package io.webfolder.cdp.type.domsnapshot;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class GetSnapshotResult {
     private List<DOMNode> domNodes;
 
@@ -37,5 +40,17 @@ public class GetSnapshotResult {
 
     public List<ComputedStyle> getComputedStyles() {
         return computedStyles;
+    }
+
+    public void setDomNodes(List<DOMNode> domNodes) {
+        this.domNodes = domNodes;
+    }
+
+    public void setLayoutTreeNodes(List<LayoutTreeNode> layoutTreeNodes) {
+        this.layoutTreeNodes = layoutTreeNodes;
+    }
+
+    public void setComputedStyles(List<ComputedStyle> computedStyles) {
+        this.computedStyles = computedStyles;
     }
 }

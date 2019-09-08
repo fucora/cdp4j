@@ -19,6 +19,7 @@
 package io.webfolder.cdp.type.network;
 
 import com.google.gson.annotations.SerializedName;
+import com.vimeo.stag.UseStag;
 
 /**
  * Represents the cookie's 'SameSite' status:
@@ -26,6 +27,7 @@ import com.google.gson.annotations.SerializedName;
  * ietf
  * org/html/draft-west-first-party-cookies
  */
+@UseStag
 public enum CookieSameSite {
     @SerializedName("Strict")
     Strict("Strict"),

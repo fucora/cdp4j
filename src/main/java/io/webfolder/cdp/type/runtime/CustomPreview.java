@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.runtime;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Experimental;
 
 @Experimental
+@UseStag
 public class CustomPreview {
     private String header;
 

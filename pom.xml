@@ -33,60 +33,47 @@
       <organizationUrl>https://webfolder.io</organizationUrl>
     </developer>
   </developers>
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-    </repository>
-  </distributionManagement>
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
+        <version>3.8.1</version>
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+          <annotationProcessorPaths>
+            <annotationProcessorPath>
+              <groupId>com.vimeo.stag</groupId>
+              <artifactId>stag-library-compiler</artifactId>
+              <version>2.6.0</version>
+            </annotationProcessorPath>
+          </annotationProcessorPaths>
+          <annotationProcessors>
+            <annotationProcessor>com.vimeo.stag.processor.StagProcessor</annotationProcessor>
+          </annotationProcessors>
           <compilerArgs>
             <arg>-parameters</arg>
           </compilerArgs>
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
         <version>3.0.0</version>
         <executions>
           <execution>
-            <phase>package</phase>
+            <phase>generate-sources</phase>
             <goals>
-              <goal>shade</goal>
+              <goal>add-source</goal>
             </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-sources/annotations</source>
+              </sources>
+            </configuration>
           </execution>
         </executions>
-        <configuration>
-          <createSourcesJar>true</createSourcesJar>
-          <transformers>
-            <transformer
-              implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-            <transformer
-              implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-              <manifestEntries>
-                <Automatic-Module-Name>io.webfolder.cdp4j</Automatic-Module-Name>
-                <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
-                <Bundle-Name>${project.name}</Bundle-Name>
-                <Bundle-Description>cdp4j - Chrome DevTools Protocol for Java</Bundle-Description>
-                <Bundle-Version>${project.version}</Bundle-Version>
-                <Built-By>WebFolder OÜ</Built-By>
-              </manifestEntries>
-            </transformer>
-          </transformers>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>com.mycila</groupId>
@@ -117,6 +104,24 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.2</version>
+        <configuration>
+          <archive>
+            <index>true</index>
+            <manifestEntries>
+              <Implementation-Title>cdp4j</Implementation-Title>
+              <Implementation-Version>4.0.0-SNAPSHOT</Implementation-Version>
+              <Automatic-Module-Name>io.webfolder.cdp4j</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
+          <excludes>
+            <exclude>com/**</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <version>3.0.1</version>
         <executions>
@@ -132,7 +137,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>3.1.1</version>
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -143,6 +148,8 @@
               <failOnError>false</failOnError>
               <doclint>none</doclint>
               <additionalparam>-Xdoclint:none</additionalparam>
+              <author>WebFolder OÜ</author>
+              <quiet>true</quiet>
             </configuration>
           </execution>
         </executions>
@@ -158,23 +165,23 @@
           <autoReleaseAfterClose>true</autoReleaseAfterClose>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <version>1.6</version>
-        <executions>
-          <execution>
-            <id>sign-artifacts</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
   <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.28</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.vimeo.stag</groupId>
+      <artifactId>stag-library</artifactId>
+      <version>2.6.0</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
     <dependency>
       <groupId>com.neovisionaries</groupId>
       <artifactId>nv-websocket-client</artifactId>
@@ -185,12 +192,6 @@
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>2.8.5</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.25</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -210,12 +211,18 @@
       <artifactId>async-http-client</artifactId>
       <version>2.10.1</version>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty.websocket</groupId>
       <artifactId>websocket-client</artifactId>
       <version>9.4.20.v20190813</version>
-    <scope>provided</scope>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.undertow</groupId>
@@ -246,6 +253,12 @@
       <artifactId>Java-WebSocket</artifactId>
       <version>1.4.0</version>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

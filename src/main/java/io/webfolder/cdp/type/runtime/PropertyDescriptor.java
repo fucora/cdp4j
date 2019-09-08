@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.runtime;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Object property descriptor
  */
+@UseStag
 public class PropertyDescriptor {
     private String name;
 
@@ -188,5 +191,25 @@ public class PropertyDescriptor {
      */
     public void setSymbol(RemoteObject symbol) {
         this.symbol = symbol;
+    }
+
+    public Boolean getWritable() {
+        return writable;
+    }
+
+    public Boolean getConfigurable() {
+        return configurable;
+    }
+
+    public Boolean getEnumerable() {
+        return enumerable;
+    }
+
+    public Boolean getWasThrown() {
+        return wasThrown;
+    }
+
+    public Boolean getIsOwn() {
+        return isOwn;
     }
 }

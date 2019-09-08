@@ -20,9 +20,12 @@ package io.webfolder.cdp.type.domsnapshot;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * A subset of the full ComputedStyle as defined by the request whitelist
  */
+@UseStag
 public class ComputedStyle {
     private List<NameValue> properties;
 

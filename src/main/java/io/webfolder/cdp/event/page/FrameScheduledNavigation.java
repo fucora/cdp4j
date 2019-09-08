@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.page;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.constant.ClientNavigationReason;
@@ -27,6 +29,7 @@ import io.webfolder.cdp.type.constant.ClientNavigationReason;
  */
 @Domain("Page")
 @EventName("frameScheduledNavigation")
+@UseStag
 public class FrameScheduledNavigation {
     private String frameId;
 

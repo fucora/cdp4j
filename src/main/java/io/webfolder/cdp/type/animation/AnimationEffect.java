@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.animation;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * AnimationEffect instance
  */
+@UseStag
 public class AnimationEffect {
     private Double delay;
 

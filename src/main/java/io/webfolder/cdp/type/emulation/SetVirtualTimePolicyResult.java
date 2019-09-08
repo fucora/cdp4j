@@ -18,6 +18,9 @@
  */
 package io.webfolder.cdp.type.emulation;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class SetVirtualTimePolicyResult {
     private Double virtualTimeBase;
 
@@ -29,5 +32,13 @@ public class SetVirtualTimePolicyResult {
 
     public Double getVirtualTimeTicksBase() {
         return virtualTimeTicksBase;
+    }
+
+    public void setVirtualTimeBase(Double virtualTimeBase) {
+        this.virtualTimeBase = virtualTimeBase;
+    }
+
+    public void setVirtualTimeTicksBase(Double virtualTimeTicksBase) {
+        this.virtualTimeTicksBase = virtualTimeTicksBase;
     }
 }

@@ -22,6 +22,8 @@ import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Fired when a new window is going to be opened, via window
  * open(), link click, form submission,
@@ -29,6 +31,7 @@ import java.util.List;
  */
 @Domain("Page")
 @EventName("windowOpen")
+@UseStag
 public class WindowOpen {
     private String url;
 

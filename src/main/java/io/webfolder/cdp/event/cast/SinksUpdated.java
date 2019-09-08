@@ -20,6 +20,8 @@ package io.webfolder.cdp.event.cast;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.cast.Sink;
@@ -31,6 +33,7 @@ import io.webfolder.cdp.type.cast.Sink;
  */
 @Domain("Cast")
 @EventName("sinksUpdated")
+@UseStag
 public class SinksUpdated {
     private List<Sink> sinks;
 

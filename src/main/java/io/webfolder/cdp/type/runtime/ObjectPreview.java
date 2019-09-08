@@ -20,6 +20,8 @@ package io.webfolder.cdp.type.runtime;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.type.constant.ObjectSubtypeHint;
 import io.webfolder.cdp.type.constant.ObjectType;
@@ -28,6 +30,7 @@ import io.webfolder.cdp.type.constant.ObjectType;
  * Object containing abbreviated remote object value
  */
 @Experimental
+@UseStag
 public class ObjectPreview {
     private ObjectType type;
 

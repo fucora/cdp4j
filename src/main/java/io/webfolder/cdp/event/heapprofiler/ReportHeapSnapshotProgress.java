@@ -18,11 +18,14 @@
  */
 package io.webfolder.cdp.event.heapprofiler;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 
 @Domain("HeapProfiler")
 @EventName("reportHeapSnapshotProgress")
+@UseStag
 public class ReportHeapSnapshotProgress {
     private Integer done;
 

@@ -18,6 +18,9 @@
  */
 package io.webfolder.cdp.type.css;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class ShorthandEntry {
     private String name;
 

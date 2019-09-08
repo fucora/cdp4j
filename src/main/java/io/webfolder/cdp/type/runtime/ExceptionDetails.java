@@ -18,10 +18,13 @@
  */
 package io.webfolder.cdp.type.runtime;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Detailed information about exception (or error) that was thrown during script compilation or
  * execution
  */
+@UseStag
 public class ExceptionDetails {
     private Integer exceptionId;
 

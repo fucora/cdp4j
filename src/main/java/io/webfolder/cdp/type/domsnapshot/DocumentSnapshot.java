@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.domsnapshot;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Document snapshot
  */
+@UseStag
 public class DocumentSnapshot {
     private Integer documentURL;
 

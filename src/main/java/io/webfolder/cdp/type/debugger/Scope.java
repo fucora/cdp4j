@@ -18,12 +18,15 @@
  */
 package io.webfolder.cdp.type.debugger;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.constant.ScopeType;
 import io.webfolder.cdp.type.runtime.RemoteObject;
 
 /**
  * Scope description
  */
+@UseStag
 public class Scope {
     private ScopeType type;
 

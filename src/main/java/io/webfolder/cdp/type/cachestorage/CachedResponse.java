@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.cachestorage;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Cached response
  */
+@UseStag
 public class CachedResponse {
     private String body;
 

@@ -18,11 +18,14 @@
  */
 package io.webfolder.cdp.type.runtime;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.type.constant.ObjectSubtypeHint;
 import io.webfolder.cdp.type.constant.PropertyPreviewType;
 
 @Experimental
+@UseStag
 public class PropertyPreview {
     private String name;
 

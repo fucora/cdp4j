@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.page;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Viewport for capturing screenshot
  */
+@UseStag
 public class Viewport {
     private Double x;
 

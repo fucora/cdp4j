@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.overlay;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 
@@ -28,6 +30,7 @@ import io.webfolder.cdp.annotation.EventName;
  */
 @Domain("Overlay")
 @EventName("inspectNodeRequested")
+@UseStag
 public class InspectNodeRequested {
     private Integer backendNodeId;
 

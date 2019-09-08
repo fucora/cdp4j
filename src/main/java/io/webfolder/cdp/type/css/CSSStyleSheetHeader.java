@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.css;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * CSS stylesheet metainformation
  */
+@UseStag
 public class CSSStyleSheetHeader {
     private String styleSheetId;
 
@@ -230,5 +233,17 @@ public class CSSStyleSheetHeader {
      */
     public void setLength(Double length) {
         this.length = length;
+    }
+
+    public Boolean getDisabled() {
+        return disabled;
+    }
+
+    public Boolean getHasSourceURL() {
+        return hasSourceURL;
+    }
+
+    public Boolean getIsInline() {
+        return isInline;
     }
 }

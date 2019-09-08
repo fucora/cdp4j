@@ -20,9 +20,12 @@ package io.webfolder.cdp.type.heapprofiler;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Sampling profile
  */
+@UseStag
 public class SamplingHeapProfile {
     private SamplingHeapProfileNode head;
 

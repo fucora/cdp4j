@@ -73,6 +73,8 @@ public class Options {
 
     private ContextLockType contextLockType;
 
+    private Boolean useCustomTypeAdapter;
+
     private Options() {
         // no op
     }
@@ -140,6 +142,11 @@ public class Options {
             return this;
         }
 
+        public Builder useCustomTypeAdapter(boolean useCustomTypeAdapter) {
+        	options.useCustomTypeAdapter = useCustomTypeAdapter;
+        	return this;
+        }
+
         public Options build() {
             if (options.loggerType == null) {
                 options.loggerType = Null;
@@ -173,6 +180,9 @@ public class Options {
             }
             if (options.contextLockType == null) {
                 options.contextLockType = LockInvocation;
+            }
+            if (options.useCustomTypeAdapter == null) {
+            	options.useCustomTypeAdapter = TRUE;
             }
             return options;
         }
@@ -242,4 +252,8 @@ public class Options {
     public ContextLockType contextLockType() {
         return contextLockType;
     }
+
+	public Boolean useCustomTypeAdapter() {
+		return useCustomTypeAdapter;
+	}
 }

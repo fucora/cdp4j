@@ -18,11 +18,14 @@
  */
 package io.webfolder.cdp.type.headlessexperimental;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.constant.ImageFormat;
 
 /**
  * Encoding options for a screenshot
  */
+@UseStag
 public class ScreenshotParams {
     private ImageFormat format;
 

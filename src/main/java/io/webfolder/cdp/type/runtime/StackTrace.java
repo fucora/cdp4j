@@ -20,9 +20,12 @@ package io.webfolder.cdp.type.runtime;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Call frames for assertions or error messages
  */
+@UseStag
 public class StackTrace {
     private String description;
 

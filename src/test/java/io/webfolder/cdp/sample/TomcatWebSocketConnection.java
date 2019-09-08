@@ -28,9 +28,9 @@ import io.webfolder.cdp.session.SessionFactory;
 public class TomcatWebSocketConnection {
 
     public static void main(String[] args) {
-    	WsWebSocketContainer container = new WsWebSocketContainer();
+        WsWebSocketContainer container = new WsWebSocketContainer();
 
-    	StandardWebSocketFactory standardWebSocketFactory = new StandardWebSocketFactory(container);
+        StandardWebSocketFactory standardWebSocketFactory = new StandardWebSocketFactory(container);
 
         Launcher launcher = new Launcher(standardWebSocketFactory);
 
@@ -41,7 +41,7 @@ public class TomcatWebSocketConnection {
             String content = session.getContent();
             System.out.println(content);
         } finally {
-        	container.destroy();
+            container.destroy();
             launcher.kill();
         }
     }

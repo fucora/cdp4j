@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.network;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.network.ResourceType;
@@ -28,6 +30,7 @@ import io.webfolder.cdp.type.network.Response;
  */
 @Domain("Network")
 @EventName("responseReceived")
+@UseStag
 public class ResponseReceived {
     private String requestId;
 

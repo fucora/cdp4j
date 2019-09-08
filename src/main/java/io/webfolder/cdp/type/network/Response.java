@@ -20,11 +20,14 @@ package io.webfolder.cdp.type.network;
 
 import java.util.Map;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.security.SecurityState;
 
 /**
  * HTTP response data
  */
+@UseStag
 public class Response {
     private String url;
 

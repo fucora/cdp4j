@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.profiler;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Specifies a number of samples attributed to a certain source position
  */
+@UseStag
 public class PositionTickInfo {
     private Integer line;
 

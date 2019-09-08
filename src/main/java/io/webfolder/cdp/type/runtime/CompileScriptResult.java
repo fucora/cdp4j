@@ -18,6 +18,9 @@
  */
 package io.webfolder.cdp.type.runtime;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class CompileScriptResult {
     private String scriptId;
 
@@ -29,5 +32,13 @@ public class CompileScriptResult {
 
     public ExceptionDetails getExceptionDetails() {
         return exceptionDetails;
+    }
+
+    public void setScriptId(String scriptId) {
+        this.scriptId = scriptId;
+    }
+
+    public void setExceptionDetails(ExceptionDetails exceptionDetails) {
+        this.exceptionDetails = exceptionDetails;
     }
 }

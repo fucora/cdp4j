@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.database;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Database object
  */
+@UseStag
 public class Database {
     private String id;
 

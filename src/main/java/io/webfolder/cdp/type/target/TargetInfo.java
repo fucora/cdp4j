@@ -1,5 +1,8 @@
 package io.webfolder.cdp.type.target;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class TargetInfo {
     private String targetId;
 

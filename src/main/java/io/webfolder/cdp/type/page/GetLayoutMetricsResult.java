@@ -18,8 +18,11 @@
  */
 package io.webfolder.cdp.type.page;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.dom.Rect;
 
+@UseStag
 public class GetLayoutMetricsResult {
     private LayoutViewport layoutViewport;
 
@@ -37,5 +40,17 @@ public class GetLayoutMetricsResult {
 
     public Rect getContentSize() {
         return contentSize;
+    }
+
+    public void setLayoutViewport(LayoutViewport layoutViewport) {
+        this.layoutViewport = layoutViewport;
+    }
+
+    public void setVisualViewport(VisualViewport visualViewport) {
+        this.visualViewport = visualViewport;
+    }
+
+    public void setContentSize(Rect contentSize) {
+        this.contentSize = contentSize;
     }
 }

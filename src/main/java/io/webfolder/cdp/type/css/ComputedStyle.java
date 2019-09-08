@@ -20,12 +20,15 @@ package io.webfolder.cdp.type.css;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Experimental;
 
 /**
  * A subset of the full ComputedStyle as defined by the request whitelist
  */
 @Experimental
+@UseStag
 public class ComputedStyle {
     private List<CSSComputedStyleProperty> properties;
 

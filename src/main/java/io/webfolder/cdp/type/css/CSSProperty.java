@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.css;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * CSS property declaration data
  */
+@UseStag
 public class CSSProperty {
     private String name;
 

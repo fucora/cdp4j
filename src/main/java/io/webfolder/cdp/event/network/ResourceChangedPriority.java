@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.network;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
@@ -29,6 +31,7 @@ import io.webfolder.cdp.type.network.ResourcePriority;
 @Experimental
 @Domain("Network")
 @EventName("resourceChangedPriority")
+@UseStag
 public class ResourceChangedPriority {
     private String requestId;
 

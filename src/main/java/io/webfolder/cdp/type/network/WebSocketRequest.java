@@ -20,9 +20,12 @@ package io.webfolder.cdp.type.network;
 
 import java.util.Map;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * WebSocket request data
  */
+@UseStag
 public class WebSocketRequest {
     private Map<String, Object> headers;
 

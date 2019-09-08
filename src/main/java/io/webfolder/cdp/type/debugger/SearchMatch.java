@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.debugger;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Search match for resource
  */
+@UseStag
 public class SearchMatch {
     private Double lineNumber;
 

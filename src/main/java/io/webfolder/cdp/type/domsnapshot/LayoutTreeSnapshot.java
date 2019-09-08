@@ -20,9 +20,12 @@ package io.webfolder.cdp.type.domsnapshot;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Table of details of an element in the DOM tree with a LayoutObject
  */
+@UseStag
 public class LayoutTreeSnapshot {
     private List<Integer> nodeIndex;
 

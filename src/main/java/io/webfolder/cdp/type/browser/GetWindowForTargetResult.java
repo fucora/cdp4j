@@ -18,6 +18,9 @@
  */
 package io.webfolder.cdp.type.browser;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class GetWindowForTargetResult {
     private Integer windowId;
 
@@ -29,5 +32,13 @@ public class GetWindowForTargetResult {
 
     public Bounds getBounds() {
         return bounds;
+    }
+
+    public void setWindowId(Integer windowId) {
+        this.windowId = windowId;
+    }
+
+    public void setBounds(Bounds bounds) {
+        this.bounds = bounds;
     }
 }

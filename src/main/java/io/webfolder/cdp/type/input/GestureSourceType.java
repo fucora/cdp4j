@@ -19,7 +19,9 @@
 package io.webfolder.cdp.type.input;
 
 import com.google.gson.annotations.SerializedName;
+import com.vimeo.stag.UseStag;
 
+@UseStag
 public enum GestureSourceType {
     @SerializedName("default")
     Default("default"),

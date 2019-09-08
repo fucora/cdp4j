@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.cachestorage;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Cache identifier
  */
+@UseStag
 public class Cache {
     private String cacheId;
 

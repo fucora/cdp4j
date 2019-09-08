@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.security;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Information about insecure content on the page
  */
+@UseStag
 public class InsecureContentStatus {
     private Boolean ranMixedContent;
 

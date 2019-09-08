@@ -21,6 +21,8 @@ package io.webfolder.cdp.type.network;
 import java.util.List;
 import java.util.Map;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Experimental;
 
 /**
@@ -31,6 +33,7 @@ import io.webfolder.cdp.annotation.Experimental;
  * html#cbor-representation
  */
 @Experimental
+@UseStag
 public class SignedExchangeHeader {
     private String requestUrl;
 

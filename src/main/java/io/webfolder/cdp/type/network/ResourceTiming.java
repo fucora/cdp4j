@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.network;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Timing information for the request
  */
+@UseStag
 public class ResourceTiming {
     private Double requestTime;
 

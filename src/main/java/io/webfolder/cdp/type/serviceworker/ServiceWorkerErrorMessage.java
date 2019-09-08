@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.serviceworker;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * ServiceWorker error message
  */
+@UseStag
 public class ServiceWorkerErrorMessage {
     private String errorMessage;
 

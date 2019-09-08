@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.css;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * CSS keyframe rule representation
  */
+@UseStag
 public class CSSKeyframeRule {
     private String styleSheetId;
 

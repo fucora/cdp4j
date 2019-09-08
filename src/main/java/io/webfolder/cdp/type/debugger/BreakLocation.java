@@ -18,8 +18,11 @@
  */
 package io.webfolder.cdp.type.debugger;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.constant.BreakLocationType;
 
+@UseStag
 public class BreakLocation {
     private String scriptId;
 

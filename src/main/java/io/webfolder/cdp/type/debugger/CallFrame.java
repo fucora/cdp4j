@@ -21,6 +21,7 @@ package io.webfolder.cdp.type.debugger;
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
+import com.vimeo.stag.UseStag;
 
 import io.webfolder.cdp.type.runtime.RemoteObject;
 
@@ -28,6 +29,7 @@ import io.webfolder.cdp.type.runtime.RemoteObject;
  * JavaScript call frame
  * Array of call frames form the call stack
  */
+@UseStag
 public class CallFrame {
     private String callFrameId;
 

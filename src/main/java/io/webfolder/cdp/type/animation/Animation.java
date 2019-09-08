@@ -18,11 +18,14 @@
  */
 package io.webfolder.cdp.type.animation;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.constant.AnimationType;
 
 /**
  * Animation instance
  */
+@UseStag
 public class Animation {
     private String id;
 

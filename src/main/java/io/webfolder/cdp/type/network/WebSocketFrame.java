@@ -18,10 +18,13 @@
  */
 package io.webfolder.cdp.type.network;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * WebSocket message data
  * This represents an entire WebSocket message, not just a fragmented frame as the name suggests
  */
+@UseStag
 public class WebSocketFrame {
     private Double opcode;
 

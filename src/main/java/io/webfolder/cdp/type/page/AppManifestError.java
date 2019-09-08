@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.page;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Error while paring app manifest
  */
+@UseStag
 public class AppManifestError {
     private String message;
 

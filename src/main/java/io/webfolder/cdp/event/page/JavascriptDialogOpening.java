@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.page;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.page.DialogType;
@@ -28,6 +30,7 @@ import io.webfolder.cdp.type.page.DialogType;
  */
 @Domain("Page")
 @EventName("javascriptDialogOpening")
+@UseStag
 public class JavascriptDialogOpening {
     private String url;
 

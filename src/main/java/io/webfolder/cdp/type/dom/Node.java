@@ -20,10 +20,13 @@ package io.webfolder.cdp.type.dom;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * DOM interaction is implemented in terms of mirror objects that represent the actual DOM nodes
  * DOMNode is a base node mirror type
  */
+@UseStag
 public class Node {
     private Integer nodeId;
 
@@ -475,5 +478,9 @@ public class Node {
      */
     public void setIsSVG(Boolean isSVG) {
         this.isSVG = isSVG;
+    }
+
+    public Boolean getIsSVG() {
+        return isSVG;
     }
 }

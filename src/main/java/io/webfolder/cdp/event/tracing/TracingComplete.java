@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.tracing;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.tracing.StreamCompression;
@@ -29,6 +31,7 @@ import io.webfolder.cdp.type.tracing.StreamFormat;
  */
 @Domain("Tracing")
 @EventName("tracingComplete")
+@UseStag
 public class TracingComplete {
     private Boolean dataLossOccurred;
 

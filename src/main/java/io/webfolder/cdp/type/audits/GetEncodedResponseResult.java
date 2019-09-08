@@ -18,6 +18,9 @@
  */
 package io.webfolder.cdp.type.audits;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class GetEncodedResponseResult {
     private String body;
 
@@ -35,5 +38,17 @@ public class GetEncodedResponseResult {
 
     public Integer getEncodedSize() {
         return encodedSize;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public void setOriginalSize(Integer originalSize) {
+        this.originalSize = originalSize;
+    }
+
+    public void setEncodedSize(Integer encodedSize) {
+        this.encodedSize = encodedSize;
     }
 }

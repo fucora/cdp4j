@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.headlessexperimental;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 
@@ -26,6 +28,7 @@ import io.webfolder.cdp.annotation.EventName;
  */
 @Domain("HeadlessExperimental")
 @EventName("needsBeginFramesChanged")
+@UseStag
 public class NeedsBeginFramesChanged {
     private Boolean needsBeginFrames;
 

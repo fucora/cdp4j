@@ -18,6 +18,9 @@
  */
 package io.webfolder.cdp.type.tracing;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class MemoryDumpConfig {
 
 }

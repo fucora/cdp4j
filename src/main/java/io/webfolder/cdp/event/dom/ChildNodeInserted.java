@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.dom;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.dom.Node;
@@ -27,6 +29,7 @@ import io.webfolder.cdp.type.dom.Node;
  */
 @Domain("DOM")
 @EventName("childNodeInserted")
+@UseStag
 public class ChildNodeInserted {
     private Integer parentNodeId;
 

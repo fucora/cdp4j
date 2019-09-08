@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.debugger;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 
@@ -26,5 +28,6 @@ import io.webfolder.cdp.annotation.EventName;
  */
 @Domain("Debugger")
 @EventName("resumed")
+@UseStag
 public class Resumed {
 }

@@ -20,6 +20,8 @@ package io.webfolder.cdp.event.security;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.security.InsecureContentStatus;
@@ -31,6 +33,7 @@ import io.webfolder.cdp.type.security.SecurityStateExplanation;
  */
 @Domain("Security")
 @EventName("securityStateChanged")
+@UseStag
 public class SecurityStateChanged {
     private SecurityState securityState;
 

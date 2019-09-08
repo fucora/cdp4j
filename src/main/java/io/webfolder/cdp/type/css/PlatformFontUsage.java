@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.css;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Information about amount of glyphs that were rendered with given font
  */
+@UseStag
 public class PlatformFontUsage {
     private String familyName;
 
@@ -68,5 +71,9 @@ public class PlatformFontUsage {
      */
     public void setGlyphCount(Double glyphCount) {
         this.glyphCount = glyphCount;
+    }
+
+    public Boolean getIsCustomFont() {
+        return isCustomFont;
     }
 }

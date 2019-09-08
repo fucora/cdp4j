@@ -28,9 +28,9 @@ import io.webfolder.cdp.session.SessionFactory;
 public class TyrusWebSocketConnection {
 
     public static void main(String[] args) {
-    	ClientManager client = ClientManager.createClient();
+        ClientManager client = ClientManager.createClient();
 
-    	StandardWebSocketFactory standardWebSocketFactory = new StandardWebSocketFactory(client);
+        StandardWebSocketFactory standardWebSocketFactory = new StandardWebSocketFactory(client);
 
         Launcher launcher = new Launcher(standardWebSocketFactory);
 
@@ -41,7 +41,7 @@ public class TyrusWebSocketConnection {
             String content = session.getContent();
             System.out.println(content);
         } finally {
-        	client.shutdown();
+            client.shutdown();
             launcher.kill();
         }
     }

@@ -18,12 +18,15 @@
  */
 package io.webfolder.cdp.type.runtime;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.constant.ObjectSubtypeHint;
 import io.webfolder.cdp.type.constant.ObjectType;
 
 /**
  * Mirror object referencing original JavaScript object
  */
+@UseStag
 public class RemoteObject {
     private ObjectType type;
 

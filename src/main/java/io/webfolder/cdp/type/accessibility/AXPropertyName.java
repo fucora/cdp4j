@@ -19,6 +19,7 @@
 package io.webfolder.cdp.type.accessibility;
 
 import com.google.gson.annotations.SerializedName;
+import com.vimeo.stag.UseStag;
 
 /**
  * Values of AXProperty name:
@@ -28,6 +29,7 @@ import com.google.gson.annotations.SerializedName;
  * - from 'checked' to 'selected': states which apply to widgets
  * - from 'activedescendant' to 'owns' - relationships between elements other than parent/child/sibling
  */
+@UseStag
 public enum AXPropertyName {
     @SerializedName("busy")
     Busy("busy"),

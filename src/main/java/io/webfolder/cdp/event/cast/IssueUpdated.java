@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.cast;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 
@@ -27,6 +29,7 @@ import io.webfolder.cdp.annotation.EventName;
  */
 @Domain("Cast")
 @EventName("issueUpdated")
+@UseStag
 public class IssueUpdated {
     private String issueMessage;
 

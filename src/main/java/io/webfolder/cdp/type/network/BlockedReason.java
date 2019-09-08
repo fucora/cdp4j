@@ -19,10 +19,12 @@
 package io.webfolder.cdp.type.network;
 
 import com.google.gson.annotations.SerializedName;
+import com.vimeo.stag.UseStag;
 
 /**
  * The reason why request was blocked
  */
+@UseStag
 public enum BlockedReason {
     @SerializedName("other")
     Other("other"),

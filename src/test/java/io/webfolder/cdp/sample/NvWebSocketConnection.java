@@ -37,7 +37,7 @@ public class NvWebSocketConnection {
             String content = session.getContent();
             System.out.println(content);
         } finally {
-        	nvWebSocketFactory.close();
+            nvWebSocketFactory.close();
             launcher.kill();
         }
     }

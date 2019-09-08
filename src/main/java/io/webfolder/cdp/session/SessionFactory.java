@@ -72,12 +72,19 @@ public class SessionFactory implements AutoCloseable {
 
     private AtomicBoolean closed = new AtomicBoolean(false);
 
+    private CdpTypeAdapterFactory typeAdapterFactory;
+
     public SessionFactory(Options options, ChannelFactory channelFactory, Connection connection) {
-        this.options           = options;
-        this.loggerFactory     = createLoggerFactory(options.getLoggerType());
-        this.gson              = new GsonBuilder()
-                                    .disableHtmlEscaping()
-                                    .create();
+        this.options            = options;
+        this.loggerFactory      = createLoggerFactory(options.getLoggerType());
+        this.typeAdapterFactory = new CdpTypeAdapterFactory();
+        GsonBuilder builder     = new GsonBuilder().disableHtmlEscaping();
+        if (options.useCustomTypeAdapter()) {
+            this.gson = builder.registerTypeAdapterFactory(typeAdapterFactory)
+                               .create();
+        } else {
+            this.gson = builder.create();
+        }
         MessageHandler handler = new MessageHandler(gson, this,
                                                     options.getWorkerThreadPool(), options.getEventHandlerThreadPool(),
                                                     loggerFactory.getLogger("cdp4j.ws.response", options.consoleLoggerLevel()));
@@ -277,6 +284,7 @@ public class SessionFactory implements AutoCloseable {
                     }
                 }
             }
+            typeAdapterFactory.dispose();
             browserSession = null;
         }
     }

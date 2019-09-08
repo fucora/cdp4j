@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.inspector;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 
@@ -27,6 +29,7 @@ import io.webfolder.cdp.annotation.EventName;
  */
 @Domain("Inspector")
 @EventName("detached")
+@UseStag
 public class Detached {
     private String reason;
 

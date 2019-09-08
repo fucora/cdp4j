@@ -20,11 +20,14 @@ package io.webfolder.cdp.type.css;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.constant.CSSMediaSource;
 
 /**
  * CSS media rule descriptor
  */
+@UseStag
 public class CSSMedia {
     private String text;
 

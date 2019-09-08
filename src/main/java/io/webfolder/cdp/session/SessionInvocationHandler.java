@@ -136,10 +136,10 @@ public class SessionInvocationHandler {
     }
 
     String toJson(final String   method,
-    			  final int      id,
-    			  final String[] parameters,
-    			  final Object[] args) {
-    	final JsonObject params = new JsonObject();
+                  final int      id,
+                  final String[] parameters,
+                  final Object[] args) {
+        final JsonObject params = new JsonObject();
         final boolean hasArgs = args.length > 0;
         if (hasArgs) {
             for (int i = 0; i < args.length; i++) {
@@ -159,11 +159,11 @@ public class SessionInvocationHandler {
     }
 
     Object fromJson(
-    		final String  returns,
-    		final Type    returnType,
-    		final Type    typeArgument,
-    		final Context context) {
-    	final JsonElement data = context.getData();
+            final String  returns,
+            final Type    returnType,
+            final Type    typeArgument,
+            final Context context) {
+        final JsonElement data = context.getData();
         if (data == null) {
             return null;
         }
@@ -194,7 +194,8 @@ public class SessionInvocationHandler {
                     } else if (Double.class.equals(returnType)) {
                         return resultObject.get(returns).getAsDouble();
                     }
-                } else if (byte[].class.equals(returnType)) {
+                }
+                if (byte[].class.equals(returnType)) {
                     String encoded = gson.fromJson(jsonElement, String.class);
                     if (encoded == null || encoded.trim().isEmpty()) {
                         return null;
@@ -207,14 +208,14 @@ public class SessionInvocationHandler {
                 JsonArray jsonArray = jsonElement.getAsJsonArray();
                 return gson.fromJson(jsonArray, typeArgument);
             } else {
-            	return gson.fromJson(jsonElement, returnType);
+                return gson.fromJson(jsonElement, returnType);
             }
         } else {
             return gson.fromJson(resultObject, returnType);
         }
-	}
+    }
 
-	void dispose() {
+    void dispose() {
         enabledDomains.clear();
         for (Context context : contexts.values()) {
             try {

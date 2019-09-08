@@ -20,11 +20,14 @@ package io.webfolder.cdp.type.indexeddb;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.constant.KeyType;
 
 /**
  * Key
  */
+@UseStag
 public class Key {
     private KeyType type;
 

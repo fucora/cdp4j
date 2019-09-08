@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.page;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Information about the Frame on the page
  */
+@UseStag
 public class Frame {
     private String id;
 

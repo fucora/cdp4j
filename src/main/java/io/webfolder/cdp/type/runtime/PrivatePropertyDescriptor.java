@@ -18,12 +18,15 @@
  */
 package io.webfolder.cdp.type.runtime;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Experimental;
 
 /**
  * Object private field descriptor
  */
 @Experimental
+@UseStag
 public class PrivatePropertyDescriptor {
     private String name;
 

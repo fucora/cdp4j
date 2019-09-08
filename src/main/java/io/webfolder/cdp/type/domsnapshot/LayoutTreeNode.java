@@ -20,11 +20,14 @@ package io.webfolder.cdp.type.domsnapshot;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.dom.Rect;
 
 /**
  * Details of an element in the DOM tree with a LayoutObject
  */
+@UseStag
 public class LayoutTreeNode {
     private Integer domNodeIndex;
 
@@ -140,5 +143,9 @@ public class LayoutTreeNode {
      */
     public void setIsStackingContext(Boolean isStackingContext) {
         this.isStackingContext = isStackingContext;
+    }
+
+    public Boolean getIsStackingContext() {
+        return isStackingContext;
     }
 }

@@ -20,9 +20,12 @@ package io.webfolder.cdp.type.css;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * CSS style representation
  */
+@UseStag
 public class CSSStyle {
     private String styleSheetId;
 

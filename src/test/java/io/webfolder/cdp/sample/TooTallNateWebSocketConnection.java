@@ -37,7 +37,7 @@ public class TooTallNateWebSocketConnection {
             String content = session.getContent();
             System.out.println(content);
         } finally {
-        	tooTallNateWebSocketFactory.close();
+            tooTallNateWebSocketFactory.close();
             launcher.kill();
         }
     }

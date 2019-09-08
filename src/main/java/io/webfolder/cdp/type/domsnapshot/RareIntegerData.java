@@ -20,6 +20,9 @@ package io.webfolder.cdp.type.domsnapshot;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class RareIntegerData {
     private List<Integer> index;
 

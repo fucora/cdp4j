@@ -18,11 +18,18 @@
  */
 package io.webfolder.cdp.type.util;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class Point {
 
     public double x;
 
     public double y;
+
+    public Point() {
+        this(0, 0);
+    }
 
     public Point(double x, double y) {
         this.x = x;

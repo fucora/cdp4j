@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.security;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 
@@ -32,6 +34,7 @@ import io.webfolder.cdp.annotation.EventName;
  */
 @Domain("Security")
 @EventName("certificateError")
+@UseStag
 public class CertificateError {
     private Integer eventId;
 

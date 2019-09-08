@@ -1,5 +1,7 @@
 package io.webfolder.cdp.event.target;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
@@ -11,6 +13,7 @@ import io.webfolder.cdp.type.target.TargetInfo;
 @Experimental
 @Domain("Target")
 @EventName("attachedToTarget")
+@UseStag
 public class AttachedToTarget {
     private String sessionId;
 

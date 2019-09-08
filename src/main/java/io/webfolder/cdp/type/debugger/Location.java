@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.debugger;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Location in the source code
  */
+@UseStag
 public class Location {
     private String scriptId;
 

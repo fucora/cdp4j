@@ -19,6 +19,7 @@
 package io.webfolder.cdp.type.network;
 
 import com.google.gson.annotations.SerializedName;
+import com.vimeo.stag.UseStag;
 
 /**
  * Stages of the interception to begin intercepting
@@ -26,6 +27,7 @@ import com.google.gson.annotations.SerializedName;
  * sent
  * Response will intercept after the response is received
  */
+@UseStag
 public enum InterceptionStage {
     @SerializedName("Request")
     Request("Request"),

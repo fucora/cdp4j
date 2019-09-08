@@ -18,6 +18,9 @@
  */
 package io.webfolder.cdp.type.page;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class PrintToPDFResult {
     private String data;
 
@@ -29,5 +32,13 @@ public class PrintToPDFResult {
 
     public String getStream() {
         return stream;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public void setStream(String stream) {
+        this.stream = stream;
     }
 }

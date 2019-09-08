@@ -20,6 +20,8 @@ package io.webfolder.cdp.event.fetch;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.fetch.HeaderEntry;
@@ -38,6 +40,7 @@ import io.webfolder.cdp.type.network.ResourceType;
  */
 @Domain("Fetch")
 @EventName("requestPaused")
+@UseStag
 public class RequestPaused {
     private String requestId;
 

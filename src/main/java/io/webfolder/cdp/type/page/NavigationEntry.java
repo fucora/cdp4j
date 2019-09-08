@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.page;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Navigation history entry
  */
+@UseStag
 public class NavigationEntry {
     private Integer id;
 

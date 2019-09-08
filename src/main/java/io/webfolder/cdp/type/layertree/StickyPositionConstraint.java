@@ -18,11 +18,14 @@
  */
 package io.webfolder.cdp.type.layertree;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.dom.Rect;
 
 /**
  * Sticky position constraints
  */
+@UseStag
 public class StickyPositionConstraint {
     private Rect stickyBoxRect;
 

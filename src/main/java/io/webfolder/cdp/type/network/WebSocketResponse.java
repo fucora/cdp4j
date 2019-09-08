@@ -20,9 +20,12 @@ package io.webfolder.cdp.type.network;
 
 import java.util.Map;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * WebSocket response data
  */
+@UseStag
 public class WebSocketResponse {
     private Integer status;
 

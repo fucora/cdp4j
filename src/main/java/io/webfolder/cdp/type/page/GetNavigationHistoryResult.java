@@ -20,6 +20,9 @@ package io.webfolder.cdp.type.page;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class GetNavigationHistoryResult {
     private Integer currentIndex;
 
@@ -31,5 +34,13 @@ public class GetNavigationHistoryResult {
 
     public List<NavigationEntry> getEntries() {
         return entries;
+    }
+
+    public void setCurrentIndex(Integer currentIndex) {
+        this.currentIndex = currentIndex;
+    }
+
+    public void setEntries(List<NavigationEntry> entries) {
+        this.entries = entries;
     }
 }

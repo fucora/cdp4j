@@ -20,12 +20,15 @@ package io.webfolder.cdp.type.network;
 
 import java.util.Map;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.constant.ReferrerPolicy;
 import io.webfolder.cdp.type.security.MixedContentType;
 
 /**
  * HTTP request data
  */
+@UseStag
 public class Request {
     private String url;
 
@@ -185,5 +188,13 @@ public class Request {
      */
     public void setIsLinkPreload(Boolean isLinkPreload) {
         this.isLinkPreload = isLinkPreload;
+    }
+
+    public Boolean getHasPostData() {
+        return hasPostData;
+    }
+
+    public Boolean getIsLinkPreload() {
+        return isLinkPreload;
     }
 }

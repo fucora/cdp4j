@@ -18,11 +18,14 @@
  */
 package io.webfolder.cdp.type.emulation;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.constant.PortraitType;
 
 /**
  * Screen orientation
  */
+@UseStag
 public class ScreenOrientation {
     private PortraitType type;
 

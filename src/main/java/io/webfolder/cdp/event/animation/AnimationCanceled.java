@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.animation;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 
@@ -26,6 +28,7 @@ import io.webfolder.cdp.annotation.EventName;
  */
 @Domain("Animation")
 @EventName("animationCanceled")
+@UseStag
 public class AnimationCanceled {
     private String id;
 

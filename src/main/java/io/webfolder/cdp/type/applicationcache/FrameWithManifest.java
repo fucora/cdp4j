@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.applicationcache;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Frame identifier - manifest URL pair
  */
+@UseStag
 public class FrameWithManifest {
     private String frameId;
 

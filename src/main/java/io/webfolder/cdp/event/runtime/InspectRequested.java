@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.runtime;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.runtime.RemoteObject;
@@ -28,6 +30,7 @@ import io.webfolder.cdp.type.runtime.RemoteObject;
  */
 @Domain("Runtime")
 @EventName("inspectRequested")
+@UseStag
 public class InspectRequested {
     private RemoteObject object;
 

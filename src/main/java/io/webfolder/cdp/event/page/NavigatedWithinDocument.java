@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.page;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.annotation.Experimental;
@@ -29,6 +31,7 @@ import io.webfolder.cdp.annotation.Experimental;
 @Experimental
 @Domain("Page")
 @EventName("navigatedWithinDocument")
+@UseStag
 public class NavigatedWithinDocument {
     private String frameId;
 

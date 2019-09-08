@@ -1,8 +1,11 @@
 package io.webfolder.cdp.type.target;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Experimental;
 
 @Experimental
+@UseStag
 public class RemoteLocation {
     private String host;
 

@@ -20,6 +20,9 @@ package io.webfolder.cdp.type.debugger;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
+@UseStag
 public class SetBreakpointByUrlResult {
     private String breakpointId;
 
@@ -31,5 +34,13 @@ public class SetBreakpointByUrlResult {
 
     public List<Location> getLocations() {
         return locations;
+    }
+
+    public void setBreakpointId(String breakpointId) {
+        this.breakpointId = breakpointId;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
     }
 }

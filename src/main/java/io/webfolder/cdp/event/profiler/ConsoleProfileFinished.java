@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.event.profiler;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.annotation.Domain;
 import io.webfolder.cdp.annotation.EventName;
 import io.webfolder.cdp.type.debugger.Location;
@@ -25,6 +27,7 @@ import io.webfolder.cdp.type.profiler.Profile;
 
 @Domain("Profiler")
 @EventName("consoleProfileFinished")
+@UseStag
 public class ConsoleProfileFinished {
     private String id;
 

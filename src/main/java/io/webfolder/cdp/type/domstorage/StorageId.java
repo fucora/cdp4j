@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.domstorage;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * DOM Storage identifier
  */
+@UseStag
 public class StorageId {
     private String securityOrigin;
 
@@ -52,5 +55,9 @@ public class StorageId {
      */
     public void setIsLocalStorage(Boolean isLocalStorage) {
         this.isLocalStorage = isLocalStorage;
+    }
+
+    public Boolean getIsLocalStorage() {
+        return isLocalStorage;
     }
 }

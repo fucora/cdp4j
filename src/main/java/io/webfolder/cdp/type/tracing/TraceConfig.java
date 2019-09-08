@@ -20,8 +20,11 @@ package io.webfolder.cdp.type.tracing;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.constant.TraceRecordMode;
 
+@UseStag
 public class TraceConfig {
     private TraceRecordMode recordMode;
 

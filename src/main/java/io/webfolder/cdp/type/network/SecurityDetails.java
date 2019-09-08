@@ -20,9 +20,12 @@ package io.webfolder.cdp.type.network;
 
 import java.util.List;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Security details about a request
  */
+@UseStag
 public class SecurityDetails {
     private String protocol;
 

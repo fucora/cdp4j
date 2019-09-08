@@ -18,6 +18,8 @@
  */
 package io.webfolder.cdp.type.domsnapshot;
 
+import com.vimeo.stag.UseStag;
+
 import io.webfolder.cdp.type.dom.Rect;
 
 /**
@@ -25,6 +27,7 @@ import io.webfolder.cdp.type.dom.Rect;
  * The exact layout should not be regarded as
  * stable and may change between versions
  */
+@UseStag
 public class InlineTextBox {
     private Rect boundingBox;
 

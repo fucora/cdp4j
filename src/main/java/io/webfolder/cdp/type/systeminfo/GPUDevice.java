@@ -18,9 +18,12 @@
  */
 package io.webfolder.cdp.type.systeminfo;
 
+import com.vimeo.stag.UseStag;
+
 /**
  * Describes a single graphics processor (GPU)
  */
+@UseStag
 public class GPUDevice {
     private Double vendorId;
 
