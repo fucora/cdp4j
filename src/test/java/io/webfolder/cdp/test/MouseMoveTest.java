@@ -48,6 +48,8 @@ public class MouseMoveTest {
             session.move(23, 23);
             List<Double> positionsX = session.getVariable("positionsX", List.class);
             List<Double> positionsY = session.getVariable("positionsY", List.class);
+            System.out.println(positionsX);
+            System.out.println(positionsY);
             assertTrue(positionsX.size() >= 4);
             assertTrue(positionsY.size() >= 4);
         } finally {
