@@ -27,6 +27,7 @@ import java.util.List;
 import org.junit.Test;
 
 import io.webfolder.cdp.Launcher;
+import io.webfolder.cdp.Options;
 import io.webfolder.cdp.command.DOMSnapshot;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
@@ -38,7 +39,7 @@ public class SnapshotTest {
     public void test() {
         String url = get("src/test/resources/snapshot.html").toAbsolutePath().toUri().toString();
 
-        Launcher launcher = new Launcher();
+        Launcher launcher = new Launcher(Options.builder().headless(true).build());
         
         try (SessionFactory factory = launcher.launch(); Session session = factory.create()) {
             session.navigate(url);

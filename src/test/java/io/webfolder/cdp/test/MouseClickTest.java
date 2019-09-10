@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import io.webfolder.cdp.Launcher;
+import io.webfolder.cdp.Options;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 import io.webfolder.cdp.session.WaitUntil;
@@ -34,7 +35,7 @@ public class MouseClickTest {
     public void testMouseMove() throws Exception {
         String uri = get("src/test/resources/mouse-click.html").toAbsolutePath().toUri().toString();
 
-        Launcher launcher = new Launcher();
+        Launcher launcher = new Launcher(Options.builder().headless(true).build());
 
         try (SessionFactory factory = launcher.launch(); Session session = factory.create()) {
             session.navigateAndWait(uri, WaitUntil.DomContentLoad);

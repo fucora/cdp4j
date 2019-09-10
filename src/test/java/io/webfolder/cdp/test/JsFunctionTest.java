@@ -29,6 +29,7 @@ import java.util.List;
 import org.junit.Test;
 
 import io.webfolder.cdp.Launcher;
+import io.webfolder.cdp.Options;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
@@ -37,8 +38,9 @@ public class JsFunctionTest {
     @Test
     public void test() throws Exception {
         String uri = get("src/test/resources/js-function-test.html").toAbsolutePath().toUri().toString();
-        Launcher launcher = new Launcher();
-        
+
+        Launcher launcher = new Launcher(Options.builder().headless(true).build());
+
         try (SessionFactory factory = launcher.launch(); Session session = factory.create()) {
             // Important!
             // Register the JsFunction before the navigate method

@@ -26,6 +26,7 @@ import java.util.List;
 import org.junit.Test;
 
 import io.webfolder.cdp.Launcher;
+import io.webfolder.cdp.Options;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
@@ -36,7 +37,7 @@ public class MouseMoveTest {
     public void testMouseMove() throws Exception {
         String uri = get("src/test/resources/mouse-move.html").toAbsolutePath().toUri().toString();
 
-        Launcher launcher = new Launcher();
+        Launcher launcher = new Launcher(Options.builder().headless(true).build());
 
         try (SessionFactory factory = launcher.launch(); Session session = factory.create()) {
             session.enableConsoleLog();
