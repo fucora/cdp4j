@@ -50,6 +50,8 @@ public class MouseMoveTest {
             List<Double> positionsY = session.getVariable("positionsY", List.class);
             assertTrue(positionsX.size() >= 4);
             assertTrue(positionsY.size() >= 4);
+        } finally {
+            launcher.kill();
         }
     }
 }

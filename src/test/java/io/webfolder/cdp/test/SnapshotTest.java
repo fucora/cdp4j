@@ -50,6 +50,8 @@ public class SnapshotTest {
             List<List<Double>> textBoxBounds = result.getDocuments().get(0).getTextBoxes().getBounds();
             assertEquals(1, textBoxBounds.size());
             assertEquals(4, textBoxBounds.get(0).size());
+        } finally {
+            launcher.kill();
         }
     }
 }

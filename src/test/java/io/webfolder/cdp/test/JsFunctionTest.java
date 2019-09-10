@@ -63,6 +63,8 @@ public class JsFunctionTest {
             assertEquals(valueOf("3"), list.get(2));
             assertEquals(valueOf("4"), list.get(3));
             session.wait(500);
+        } finally {
+            launcher.kill();
         }
     }
 }
