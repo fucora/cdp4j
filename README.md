@@ -1,4 +1,4 @@
-![](https://github.com/webfolderio/cdp4j/workflows/.github/workflows/maven.yml/badge.svg)
+![https://github.com/webfolderio/cdp4j/actions](https://github.com/webfolderio/cdp4j/workflows/.github/workflows/maven.yml/badge.svg)
 
 cdp4j - Chrome DevTools Protocol for Java
 =================================================
