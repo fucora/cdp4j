@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.webfolder</groupId>
   <artifactId>cdp4j</artifactId>
-  <version>4.0.0</version>
+  <version>4.0.1-SNAPSHOT</version>
   <name>cdp4j</name>
   <licenses>
     <license>
@@ -108,7 +108,7 @@
             <index>true</index>
             <manifestEntries>
               <Implementation-Title>cdp4j</Implementation-Title>
-              <Implementation-Version>4.0.0</Implementation-Version>
+              <Implementation-Version>4.0.1-SNAPSHOT</Implementation-Version>
               <Automatic-Module-Name>io.webfolder.cdp4j</Automatic-Module-Name>
             </manifestEntries>
           </archive>

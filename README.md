@@ -40,9 +40,9 @@ This library is suitable for use in production systems.
 
 Download
 --------
-[cdp4j-3.0.12.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/3.0.12/cdp4j-3.0.12.jar) - 866 KB
+[cdp4j-4.0.0.jar](https://github.com/webfolderio/cdp4j/releases/download/v4.0.0/cdp4j-4.0.0.jar)
 
-[cdp4j-3.0.12-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/cdp4j/3.0.12/cdp4j-3.0.12-sources.jar) - 657 KB
+[cdp4j-4.0.0-sources.jar](https://github.com/webfolderio/cdp4j/releases/download/v4.0.0/cdp4j-4.0.0-sources.jar)
 
 Supported Platforms
 -------------------
