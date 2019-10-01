@@ -25,6 +25,7 @@ import org.junit.Test;
 
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.Options;
+import io.webfolder.cdp.exception.CdpReadTimeoutException;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 import io.webfolder.cdp.session.WaitUntil;
@@ -42,6 +43,8 @@ public class MouseClickTest {
             session.click("#mybutton");
             Boolean clicked = session.getVariable("clicked", Boolean.class);
             assertTrue(clicked);
+        } catch (CdpReadTimeoutException e) {
+            // ignore
         } finally {
             launcher.kill();
         }
