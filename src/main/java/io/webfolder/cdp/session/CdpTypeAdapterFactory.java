@@ -27,7 +27,7 @@ class CdpTypeAdapterFactory implements TypeAdapterFactory {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
         final Class clazz = type.getRawType();
-        final String packageName = clazz.getPackageName();
+        final String packageName = clazz.getPackage().getName();
         if ( packageName != null &&
                 (packageName.startsWith(EVENT_PACKAGE) ||
                  packageName.startsWith(TYPE_PACKAGE)) ) {
