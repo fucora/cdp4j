@@ -30,6 +30,8 @@ import static java.util.concurrent.ThreadLocalRandom.current;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -248,9 +250,12 @@ public class Launcher {
             } else {
                 klass = Launcher.class.getClassLoader().loadClass("io.webfolder.cdp.channel.NvWebSocketFactory");
             }
-            return (ChannelFactory) klass.newInstance();
+            Constructor<?> constructor = klass.getConstructor();
+            return (ChannelFactory) constructor.newInstance();
         } catch (ClassNotFoundException |
-                 InstantiationException | IllegalAccessException e) {
+                 InstantiationException | IllegalAccessException |
+                 NoSuchMethodException  | SecurityException |
+                 IllegalArgumentException | InvocationTargetException e) {
             throw new CdpException(e);
         }
     }

@@ -22,6 +22,9 @@ import static java.io.File.pathSeparator;
 import static java.lang.System.getProperty;
 import static java.util.Locale.ENGLISH;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import io.webfolder.cdp.exception.CdpException;
 
 public class AdaptiveProcessManager extends ProcessManager {
@@ -42,11 +45,14 @@ public class AdaptiveProcessManager extends ProcessManager {
         if ( ! JAVA_8 ) {
             try {
                 Class<?> klass = getClass().getClassLoader().loadClass("io.webfolder.cdp.DefaultProcessManager");
-                processManager = (ProcessManager) klass.newInstance();
+                Constructor<?> constructor = klass.getConstructor();
+                processManager = (ProcessManager) constructor.newInstance();
             } catch (ClassNotFoundException |
-                     InstantiationException | IllegalAccessException e) {
-                throw new CdpException(e);
-            }
+                    InstantiationException | IllegalAccessException |
+                    NoSuchMethodException  | SecurityException |
+                    IllegalArgumentException | InvocationTargetException e) {
+               throw new CdpException(e);
+           }
         } else if (WINDOWS) {
             processManager = new TaskKillProcessManager();
         } else if (LINUX) {

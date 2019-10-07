@@ -18,6 +18,9 @@
  */
 package io.webfolder.cdp.sample;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.channel.ChannelFactory;
 import io.webfolder.cdp.exception.CdpException;
@@ -30,11 +33,14 @@ public class JreWebSocketConnection {
         ChannelFactory jreWebSocketFactory = null;
         try {
             Class<?> klass = Launcher.class.getClassLoader().loadClass("io.webfolder.cdp.channel.JreWebSocketFactory");
-            jreWebSocketFactory = (ChannelFactory) klass.newInstance();
+            Constructor<?> constructor = klass.getConstructor();
+            jreWebSocketFactory = (ChannelFactory) constructor.newInstance();
         } catch (ClassNotFoundException |
-                 InstantiationException | IllegalAccessException e) {
-            throw new CdpException(e);
-        }
+                InstantiationException | IllegalAccessException |
+                NoSuchMethodException  | SecurityException |
+                IllegalArgumentException | InvocationTargetException e) {
+           throw new CdpException(e);
+       }
 
         Launcher launcher = new Launcher(jreWebSocketFactory);
 
