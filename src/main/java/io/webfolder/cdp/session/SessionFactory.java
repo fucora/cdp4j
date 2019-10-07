@@ -76,7 +76,7 @@ public class SessionFactory implements AutoCloseable {
 
     public SessionFactory(Options options, ChannelFactory channelFactory, Connection connection) {
         this.options            = options;
-        this.loggerFactory      = createLoggerFactory(options.getLoggerType());
+        this.loggerFactory      = createLoggerFactory(options.loggerType());
         this.typeAdapterFactory = options.useCustomTypeAdapter() ? new CdpTypeAdapterFactory() : null;
         GsonBuilder builder     = new GsonBuilder().disableHtmlEscaping();
         if (options.useCustomTypeAdapter()) {
@@ -86,7 +86,7 @@ public class SessionFactory implements AutoCloseable {
             this.gson = builder.create();
         }
         MessageHandler handler = new MessageHandler(gson, this,
-                                                    options.getWorkerThreadPool(), options.getEventHandlerThreadPool(),
+                                                    options.workerThreadPool(), options.eventHandlerThreadPool(),
                                                     loggerFactory.getLogger("cdp4j.ws.response", options.consoleLoggerLevel()));
         channel = channelFactory.createChannel(connection, this, handler);
         channel.connect();
@@ -115,8 +115,8 @@ public class SessionFactory implements AutoCloseable {
             }
         }
         String targetId = target.createTarget("about:blank",
-                                              options.getScreenWidth(),
-                                              options.getScreenHeight(),
+                                              options.screenWidth(),
+                                              options.screenHeight(),
                                               browserContextId, false, null, null);
         if (targetId == null) {
             throw new CdpException("Couldn't create a new session");
@@ -269,14 +269,14 @@ public class SessionFactory implements AutoCloseable {
             sessions.clear();
             browserContexts.clear();
             if (options.shutdownThreadPoolOnClose()) {
-                Executor wp = options.getWorkerThreadPool();
+                Executor wp = options.workerThreadPool();
                 if (wp instanceof ExecutorService) {
                     ExecutorService wps = (ExecutorService) wp;
                     if ( ! wps.isShutdown() ) {
                         wps.shutdownNow();
                     }
                 }
-                Executor ep = options.getEventHandlerThreadPool();
+                Executor ep = options.eventHandlerThreadPool();
                 if (ep instanceof ExecutorService) {
                     ExecutorService eps = (ExecutorService) ep;
                     if ( ! eps.isShutdown() ) {

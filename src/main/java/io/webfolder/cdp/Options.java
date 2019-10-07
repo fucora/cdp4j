@@ -194,43 +194,43 @@ public class Options {
         }
     }
 
-    public CdpLoggerType getLoggerType() {
+    public CdpLoggerType loggerType() {
         return loggerType;
     }
 
-    public Executor getWorkerThreadPool() {
+    public Executor workerThreadPool() {
         return workerThreadPool;
     }
 
-    public Executor getEventHandlerThreadPool() {
+    public Executor eventHandlerThreadPool() {
         return eventHandlerThreadPool;
     }
 
-    public List<String> getArguments() {
+    public List<String> arguments() {
         return arguments;
     }
 
-    public Path getUserDataDir() {
+    public Path userDataDir() {
         return userDataDir;
     }
 
-    public Integer getReadTimeout() {
+    public Integer readTimeout() {
         return readTimeout;
     }
 
-    public ProcessManager getProcessManager() {
+    public ProcessManager processManager() {
         return processManager;
     }
 
-    public boolean isHeadless() {
+    public boolean headless() {
         return headless;
     }
 
-    public Integer getScreenWidth() {
+    public Integer screenWidth() {
         return screenWidth;
     }
 
-    public Integer getScreenHeight() {
+    public Integer screenHeight() {
         return screenHeight;
     }
 

@@ -187,17 +187,17 @@ public class Launcher {
     }
 
     public SessionFactory launch() {
-        List<String> arguments = getCommonParameters(findChrome(), options.getArguments());
+        List<String> arguments = getCommonParameters(findChrome(), options.arguments());
         arguments.add("--remote-debugging-port=0");
 
-        if (options.getUserDataDir() == null) {
+        if (options.userDataDir() == null) {
             Path remoteProfileData = get(getProperty("java.io.tmpdir")).resolve("remote-profile");
             arguments.add(format("--user-data-dir=%s", remoteProfileData.toString()));
         } else {
-            arguments.add(format("--user-data-dir=%s", options.getUserDataDir()));
+            arguments.add(format("--user-data-dir=%s", options.userDataDir()));
         }
 
-        if (options.isHeadless()) {
+        if (options.headless()) {
             arguments.add("--headless");
         }
 
@@ -228,7 +228,7 @@ public class Launcher {
                 throw new CdpException("No process: the chrome process is not alive.");
             }
 
-            options.getProcessManager().setProcess(new CdpProcess(process, cdp4jId));
+            options.processManager().setProcess(new CdpProcess(process, cdp4jId));
         } catch (IOException e) {
             throw new CdpException(e);
         }
@@ -240,7 +240,7 @@ public class Launcher {
     }
 
     public boolean kill() {
-        return options.getProcessManager().kill();
+        return options.processManager().kill();
     }
 
     public Options getOptions() {
