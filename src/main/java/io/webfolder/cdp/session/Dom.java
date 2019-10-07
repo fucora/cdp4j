@@ -981,17 +981,19 @@ public interface Dom {
      * template contents, and imported documents).
      */
     public default String getDOMSnapshot() {
+        // DOMSnapshot.getSnapshot() returns flatten list.
+        // Convert the flatten list to tree and return the html string.
         DOMSnapshot snapshot = getThis().getCommand().getDOMSnapshot();
         GetSnapshotResult result = snapshot.getSnapshot(new ArrayList<String>(0));
         List<DOMNode> nodes = result.getDomNodes();
         final int size = nodes.size();
-        int[] children = new int[size];
+        int[] childParentIndexes = new int[size];
         for (int parentIndex = 0; parentIndex < size; parentIndex++) {
             DOMNode node = nodes.get(parentIndex);
             List<Integer> childNodeIndexes = node.getChildNodeIndexes();
             if ( childNodeIndexes != null ) {
                 for (Integer childIndex : childNodeIndexes) {
-                    children[childIndex] = parentIndex;
+                    childParentIndexes[childIndex] = parentIndex;
                 }
             }
         }
@@ -999,20 +1001,20 @@ public interface Dom {
         int rootLength = root.getChildNodeIndexes() != null ? root.getChildNodeIndexes().size() : 0;
         TreeNode tree = new TreeNode(root, rootLength);
         for (int i = 1; i < size; i++) {
-            int parentIndex = children[i];
+            int parentIndex = childParentIndexes[i];
             DOMNode node = nodes.get(i);
             List<Integer> childNodeIndexes = node.getChildNodeIndexes();
-            int length = childNodeIndexes == null ? 0 : childNodeIndexes.size();
+            int childLength = childNodeIndexes == null ? 0 : childNodeIndexes.size();
             if ( parentIndex > 0) {
                 DOMNode parent = nodes.get(parentIndex);
                 if ( parent != null ) {
                     TreeNode parentNode = tree.find(parent);
                     if ( parentNode != null ) {
-                        parentNode.add(new TreeNode(node, length));
+                        parentNode.add(new TreeNode(node, childLength));
                     }
                 }
             } else {
-                tree.add(new TreeNode(node, length));
+                tree.add(new TreeNode(node, childLength));
             }
         }
         return tree.toString();
