@@ -76,6 +76,22 @@
           </execution>
         </executions>
       </plugin>
+      <!-- plugin>
+        <groupId>com.oracle.substratevm</groupId>
+        <artifactId>native-image-maven-plugin</artifactId>
+        <version>19.2.0.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>native-image</goal>
+            </goals>
+            <phase>package</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>io.webfolder.cdp.Hello</mainClass>
+        </configuration>
+      </plugin -->
       <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
