@@ -19,14 +19,22 @@
 package io.webfolder.cdp.sample;
 
 import io.webfolder.cdp.Launcher;
-import io.webfolder.cdp.channel.JreWebSocketFactory;
+import io.webfolder.cdp.channel.ChannelFactory;
+import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
 public class JreWebSocketConnection {
 
     public static void main(String[] args) {
-        JreWebSocketFactory jreWebSocketFactory = new JreWebSocketFactory();
+        ChannelFactory jreWebSocketFactory = null;
+        try {
+            Class<?> klass = Launcher.class.getClassLoader().loadClass("io.webfolder.cdp.channel.JreWebSocketFactory");
+            jreWebSocketFactory = (ChannelFactory) klass.newInstance();
+        } catch (ClassNotFoundException |
+                 InstantiationException | IllegalAccessException e) {
+            throw new CdpException(e);
+        }
 
         Launcher launcher = new Launcher(jreWebSocketFactory);
 

@@ -46,7 +46,7 @@ public class TaskKillProcessManager extends ProcessManager {
         handleField.setAccessible(true);
         Object pid;
         try {
-            pid = handleField.get(process);
+            pid = handleField.get(process.getProcess());
         } catch (IllegalArgumentException | IllegalAccessException e) {
             throw new CdpException(e);
         }

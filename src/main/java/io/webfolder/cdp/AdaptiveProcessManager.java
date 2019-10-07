@@ -40,7 +40,13 @@ public class AdaptiveProcessManager extends ProcessManager {
 
     public AdaptiveProcessManager() {
         if ( ! JAVA_8 ) {
-           processManager = new DefaultProcessManager();
+            try {
+                Class<?> klass = getClass().getClassLoader().loadClass("io.webfolder.cdp.DefaultProcessManager");
+                processManager = (ProcessManager) klass.newInstance();
+            } catch (ClassNotFoundException |
+                     InstantiationException | IllegalAccessException e) {
+                throw new CdpException(e);
+            }
         } else if (WINDOWS) {
             processManager = new TaskKillProcessManager();
         } else if (LINUX) {

@@ -38,18 +38,19 @@ import java.util.Scanner;
 
 import io.webfolder.cdp.channel.ChannelFactory;
 import io.webfolder.cdp.channel.Connection;
-import io.webfolder.cdp.channel.JreWebSocketFactory;
 import io.webfolder.cdp.channel.WebSocketConnection;
 import io.webfolder.cdp.exception.CdpException;
 import io.webfolder.cdp.session.SessionFactory;
 
 public class Launcher {
 
-    private static final String  OS_NAME        = getProperty("os.name").toLowerCase(ENGLISH);
+    private static final boolean JAVA_8  = getProperty("java.version").startsWith("1.8.");
 
-    private static final boolean WINDOWS        = OS_NAME.startsWith("windows");
+    private static final String  OS_NAME = getProperty("os.name").toLowerCase(ENGLISH);
 
-    private static final boolean OSX            = OS_NAME.startsWith("mac");
+    private static final boolean WINDOWS = OS_NAME.startsWith("windows");
+
+    private static final boolean OSX     = OS_NAME.startsWith("mac");
 
     private final Options options;
 
@@ -65,12 +66,12 @@ public class Launcher {
     }
 
     public Launcher(Options options) {
-        this(options, new JreWebSocketFactory());
+        this(options, createChannelFactory());
     }
 
     public Launcher() {
         this(Options.builder().build(),
-                new JreWebSocketFactory());
+                createChannelFactory());
     }
 
     protected String findChrome() {
@@ -237,6 +238,21 @@ public class Launcher {
                                                     channelFactory,
                                                     connection);
         return factory;
+    }
+
+    protected static ChannelFactory createChannelFactory() {
+        try {
+            Class<?> klass = null;
+            if ( ! JAVA_8 ) {
+                klass = Launcher.class.getClassLoader().loadClass("io.webfolder.cdp.channel.JreWebSocketFactory");
+            } else {
+                klass = Launcher.class.getClassLoader().loadClass("io.webfolder.cdp.channel.NvWebSocketFactory");
+            }
+            return (ChannelFactory) klass.newInstance();
+        } catch (ClassNotFoundException |
+                 InstantiationException | IllegalAccessException e) {
+            throw new CdpException(e);
+        }
     }
 
     public boolean kill() {
