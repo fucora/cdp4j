@@ -40,8 +40,11 @@ import java.util.function.Function;
 import com.google.gson.Gson;
 
 import io.webfolder.cdp.command.DOM;
+import io.webfolder.cdp.command.DOMSnapshot;
 import io.webfolder.cdp.exception.ElementNotFoundException;
 import io.webfolder.cdp.type.dom.BoxModel;
+import io.webfolder.cdp.type.domsnapshot.DOMNode;
+import io.webfolder.cdp.type.domsnapshot.GetSnapshotResult;
 import io.webfolder.cdp.type.runtime.CallFunctionOnResult;
 import io.webfolder.cdp.type.runtime.ExceptionDetails;
 import io.webfolder.cdp.type.runtime.PropertyDescriptor;
@@ -971,6 +974,48 @@ public interface Dom {
         x = x / 4;
         y = y / 4;
         return new Point(x, y);
+    }
+
+    /**
+     * Returns a document snapshot, including the full DOM tree of the root node (including iframes,
+     * template contents, and imported documents).
+     */
+    public default String getDOMSnapshot() {
+        DOMSnapshot snapshot = getThis().getCommand().getDOMSnapshot();
+        GetSnapshotResult result = snapshot.getSnapshot(new ArrayList<String>(0));
+        List<DOMNode> nodes = result.getDomNodes();
+        final int size = nodes.size();
+        int[] children = new int[size];
+        for (int parentIndex = 0; parentIndex < size; parentIndex++) {
+            DOMNode node = nodes.get(parentIndex);
+            List<Integer> childNodeIndexes = node.getChildNodeIndexes();
+            if ( childNodeIndexes != null ) {
+                for (Integer childIndex : childNodeIndexes) {
+                    children[childIndex] = parentIndex;
+                }
+            }
+        }
+        DOMNode root = nodes.get(0);
+        int rootLength = root.getChildNodeIndexes() != null ? root.getChildNodeIndexes().size() : 0;
+        TreeNode tree = new TreeNode(root, rootLength);
+        for (int i = 1; i < size; i++) {
+            int parentIndex = children[i];
+            DOMNode node = nodes.get(i);
+            List<Integer> childNodeIndexes = node.getChildNodeIndexes();
+            int length = childNodeIndexes == null ? 0 : childNodeIndexes.size();
+            if ( parentIndex > 0) {
+                DOMNode parent = nodes.get(parentIndex);
+                if ( parent != null ) {
+                    TreeNode parentNode = tree.find(parent);
+                    if ( parentNode != null ) {
+                        parentNode.add(new TreeNode(node, length));
+                    }
+                }
+            } else {
+                tree.add(new TreeNode(node, length));
+            }
+        }
+        return tree.toString();
     }
 
     Session getThis();

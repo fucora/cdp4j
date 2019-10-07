@@ -27,6 +27,7 @@ import org.junit.Test;
 
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.Options;
+import io.webfolder.cdp.exception.CdpReadTimeoutException;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
@@ -52,6 +53,8 @@ public class MouseMoveTest {
             System.out.println(positionsY);
             assertTrue(positionsX.size() >= 4);
             assertTrue(positionsY.size() >= 4);
+        } catch (CdpReadTimeoutException e) {
+            // ignore
         } finally {
             launcher.kill();
         }

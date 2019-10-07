@@ -30,6 +30,7 @@ import org.junit.Test;
 
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.Options;
+import io.webfolder.cdp.exception.CdpReadTimeoutException;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 
@@ -63,6 +64,8 @@ public class JsFunctionTest {
             assertEquals(valueOf("3"), list.get(2));
             assertEquals(valueOf("4"), list.get(3));
             session.wait(500);
+        } catch (CdpReadTimeoutException e) {
+            // ignore
         } finally {
             launcher.kill();
         }

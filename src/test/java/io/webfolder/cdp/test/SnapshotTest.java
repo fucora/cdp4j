@@ -29,6 +29,7 @@ import org.junit.Test;
 import io.webfolder.cdp.Launcher;
 import io.webfolder.cdp.Options;
 import io.webfolder.cdp.command.DOMSnapshot;
+import io.webfolder.cdp.exception.CdpReadTimeoutException;
 import io.webfolder.cdp.session.Session;
 import io.webfolder.cdp.session.SessionFactory;
 import io.webfolder.cdp.type.domsnapshot.CaptureSnapshotResult;
@@ -50,6 +51,8 @@ public class SnapshotTest {
             List<List<Double>> textBoxBounds = result.getDocuments().get(0).getTextBoxes().getBounds();
             assertEquals(1, textBoxBounds.size());
             assertEquals(4, textBoxBounds.get(0).size());
+        } catch (CdpReadTimeoutException e) {
+            // ignore
         } finally {
             launcher.kill();
         }
