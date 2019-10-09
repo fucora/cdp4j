@@ -244,6 +244,6 @@ public class Command {
 
     @SuppressWarnings("unchecked")
     private <T> T getProxy(Class<?> klass) {
-        return (T) session.getProxy(klass);
+        return (T) session.getCommand(klass);
     }
 }

@@ -10,7 +10,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 
-class CdpTypeAdapterFactory implements TypeAdapterFactory {
+class CdpTypeAdapterFactory implements TypeAdapterFactory, AutoCloseable {
 
     private final ClassLoader cl = getClass().getClassLoader();
 
@@ -55,7 +55,8 @@ class CdpTypeAdapterFactory implements TypeAdapterFactory {
         return null;
     }
 
-    public void dispose() {
+    @Override
+    public void close() {
         adapters.clear();
     }
 }

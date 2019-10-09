@@ -33,6 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapterFactory;
 
 import io.webfolder.cdp.Options;
 import io.webfolder.cdp.channel.Channel;
@@ -72,12 +73,12 @@ public class SessionFactory implements AutoCloseable {
 
     private AtomicBoolean closed = new AtomicBoolean(false);
 
-    private CdpTypeAdapterFactory typeAdapterFactory;
+    private TypeAdapterFactory typeAdapterFactory;
 
     public SessionFactory(Options options, ChannelFactory channelFactory, Connection connection) {
         this.options            = options;
         this.loggerFactory      = createLoggerFactory(options.loggerType());
-        this.typeAdapterFactory = options.useCustomTypeAdapter() ? new CdpTypeAdapterFactory() : null;
+        this.typeAdapterFactory = options.useCustomTypeAdapter() ? createTypeAdapterFactory() : null;
         GsonBuilder builder     = new GsonBuilder().disableHtmlEscaping();
         if (options.useCustomTypeAdapter()) {
             this.gson = builder.registerTypeAdapterFactory(typeAdapterFactory)
@@ -91,6 +92,10 @@ public class SessionFactory implements AutoCloseable {
         channel = channelFactory.createChannel(connection, this, handler);
         channel.connect();
         this.browserTargetId = initBrowserSession();
+    }
+
+    private TypeAdapterFactory createTypeAdapterFactory() {
+        return new CdpTypeAdapterFactory();
     }
 
     public Session create() {
@@ -284,8 +289,13 @@ public class SessionFactory implements AutoCloseable {
                     }
                 }
             }
-            if (options.useCustomTypeAdapter()) {
-                typeAdapterFactory.dispose();
+            if (options.useCustomTypeAdapter() &&
+                    typeAdapterFactory instanceof AutoCloseable) {
+                try {
+                    ((AutoCloseable) typeAdapterFactory).close();
+                } catch (Exception e) {
+                    // ignore
+                }
             }
             browserSession = null;
         }

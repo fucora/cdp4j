@@ -42,11 +42,15 @@ public class AdaptiveProcessManager extends ProcessManager {
     private static final boolean JAVA_8  = getProperty("java.version").startsWith("1.8.");
 
     public AdaptiveProcessManager() {
+        processManager = init();
+    }
+
+    private ProcessManager init() {
         if ( ! JAVA_8 ) {
             try {
                 Class<?> klass = getClass().getClassLoader().loadClass("io.webfolder.cdp.DefaultProcessManager");
                 Constructor<?> constructor = klass.getConstructor();
-                processManager = (ProcessManager) constructor.newInstance();
+                return (ProcessManager) constructor.newInstance();
             } catch (ClassNotFoundException |
                     InstantiationException | IllegalAccessException |
                     NoSuchMethodException  | SecurityException |
@@ -54,11 +58,11 @@ public class AdaptiveProcessManager extends ProcessManager {
                throw new CdpException(e);
            }
         } else if (WINDOWS) {
-            processManager = new TaskKillProcessManager();
+            return new TaskKillProcessManager();
         } else if (LINUX) {
-            processManager = new LinuxProcessManager();
+            return new LinuxProcessManager();
         } else if (MAC) {
-            processManager = new MacOsProcessManager();            
+            return new MacOsProcessManager();            
         } else {
             throw new CdpException(OS + " is not supported by AdaptiveProcessManager");
         }

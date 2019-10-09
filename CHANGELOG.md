@@ -1,7 +1,7 @@
 cdp4j Release Notes
 -------------------------------------------------------------------------------
 
-### 4.1.0 - December 2, 2019
+### 4.1.0 - November 4, 2019
 
 * Add [GraalVM](https://www.graalvm.org/) support [#116](https://github.com/webfolderio/cdp4j/issues/116)
 

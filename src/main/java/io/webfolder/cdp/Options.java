@@ -144,8 +144,8 @@ public class Options {
         }
 
         public Builder useCustomTypeAdapter(boolean useCustomTypeAdapter) {
-        	options.useCustomTypeAdapter = useCustomTypeAdapter;
-        	return this;
+            options.useCustomTypeAdapter = useCustomTypeAdapter;
+            return this;
         }
 
         public Options build() {
@@ -183,7 +183,7 @@ public class Options {
                 options.contextLockType = LockInvocation;
             }
             if (options.useCustomTypeAdapter == null) {
-            	options.useCustomTypeAdapter = FALSE;
+                options.useCustomTypeAdapter = FALSE;
             }
             return options;
         }
@@ -254,7 +254,7 @@ public class Options {
         return contextLockType;
     }
 
-	public Boolean useCustomTypeAdapter() {
-		return useCustomTypeAdapter;
-	}
+    public Boolean useCustomTypeAdapter() {
+        return useCustomTypeAdapter;
+    }
 }

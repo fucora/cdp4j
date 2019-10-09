@@ -42,9 +42,7 @@ import static java.util.Locale.ENGLISH;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.nio.file.Files;
@@ -66,10 +64,95 @@ import io.webfolder.cdp.Options;
 import io.webfolder.cdp.annotation.Experimental;
 import io.webfolder.cdp.annotation.Optional;
 import io.webfolder.cdp.channel.Channel;
+import io.webfolder.cdp.command.Accessibility;
+import io.webfolder.cdp.command.AccessibilityImpl;
+import io.webfolder.cdp.command.Animation;
+import io.webfolder.cdp.command.AnimationImpl;
+import io.webfolder.cdp.command.ApplicationCache;
+import io.webfolder.cdp.command.ApplicationCacheImpl;
+import io.webfolder.cdp.command.Audits;
+import io.webfolder.cdp.command.AuditsImpl;
+import io.webfolder.cdp.command.BackgroundService;
+import io.webfolder.cdp.command.BackgroundServiceImpl;
+import io.webfolder.cdp.command.Browser;
+import io.webfolder.cdp.command.BrowserImpl;
 import io.webfolder.cdp.command.CSS;
+import io.webfolder.cdp.command.CSSImpl;
+import io.webfolder.cdp.command.CacheStorage;
+import io.webfolder.cdp.command.CacheStorageImpl;
+import io.webfolder.cdp.command.Cast;
+import io.webfolder.cdp.command.CastImpl;
+import io.webfolder.cdp.command.Console;
+import io.webfolder.cdp.command.ConsoleImpl;
+import io.webfolder.cdp.command.DOM;
+import io.webfolder.cdp.command.DOMDebugger;
+import io.webfolder.cdp.command.DOMDebuggerImpl;
+import io.webfolder.cdp.command.DOMImpl;
+import io.webfolder.cdp.command.DOMSnapshot;
+import io.webfolder.cdp.command.DOMSnapshotImpl;
+import io.webfolder.cdp.command.DOMStorage;
+import io.webfolder.cdp.command.DOMStorageImpl;
+import io.webfolder.cdp.command.Database;
+import io.webfolder.cdp.command.DatabaseImpl;
+import io.webfolder.cdp.command.Debugger;
+import io.webfolder.cdp.command.DebuggerImpl;
+import io.webfolder.cdp.command.DeviceOrientation;
+import io.webfolder.cdp.command.DeviceOrientationImpl;
 import io.webfolder.cdp.command.Emulation;
+import io.webfolder.cdp.command.EmulationImpl;
+import io.webfolder.cdp.command.Fetch;
+import io.webfolder.cdp.command.FetchImpl;
+import io.webfolder.cdp.command.HeadlessExperimental;
+import io.webfolder.cdp.command.HeadlessExperimentalImpl;
+import io.webfolder.cdp.command.HeapProfiler;
+import io.webfolder.cdp.command.HeapProfilerImpl;
 import io.webfolder.cdp.command.IO;
+import io.webfolder.cdp.command.IOImpl;
+import io.webfolder.cdp.command.IndexedDB;
+import io.webfolder.cdp.command.IndexedDBImpl;
+import io.webfolder.cdp.command.Input;
+import io.webfolder.cdp.command.InputImpl;
+import io.webfolder.cdp.command.Inspector;
+import io.webfolder.cdp.command.InspectorImpl;
+import io.webfolder.cdp.command.LayerTree;
+import io.webfolder.cdp.command.LayerTreeImpl;
+import io.webfolder.cdp.command.Log;
+import io.webfolder.cdp.command.LogImpl;
+import io.webfolder.cdp.command.Memory;
+import io.webfolder.cdp.command.MemoryImpl;
+import io.webfolder.cdp.command.Network;
+import io.webfolder.cdp.command.NetworkImpl;
+import io.webfolder.cdp.command.Overlay;
+import io.webfolder.cdp.command.OverlayImpl;
 import io.webfolder.cdp.command.Page;
+import io.webfolder.cdp.command.PageImpl;
+import io.webfolder.cdp.command.Performance;
+import io.webfolder.cdp.command.PerformanceImpl;
+import io.webfolder.cdp.command.Profiler;
+import io.webfolder.cdp.command.ProfilerImpl;
+import io.webfolder.cdp.command.RuntimeImpl;
+import io.webfolder.cdp.command.Schema;
+import io.webfolder.cdp.command.SchemaImpl;
+import io.webfolder.cdp.command.Security;
+import io.webfolder.cdp.command.SecurityImpl;
+import io.webfolder.cdp.command.ServiceWorker;
+import io.webfolder.cdp.command.ServiceWorkerImpl;
+import io.webfolder.cdp.command.Storage;
+import io.webfolder.cdp.command.StorageImpl;
+import io.webfolder.cdp.command.SystemInfo;
+import io.webfolder.cdp.command.SystemInfoImpl;
+import io.webfolder.cdp.command.Target;
+import io.webfolder.cdp.command.TargetImpl;
+import io.webfolder.cdp.command.Testing;
+import io.webfolder.cdp.command.TestingImpl;
+import io.webfolder.cdp.command.Tethering;
+import io.webfolder.cdp.command.TetheringImpl;
+import io.webfolder.cdp.command.Tracing;
+import io.webfolder.cdp.command.TracingImpl;
+import io.webfolder.cdp.command.WebAudio;
+import io.webfolder.cdp.command.WebAudioImpl;
+import io.webfolder.cdp.command.WebAuthn;
+import io.webfolder.cdp.command.WebAuthnImpl;
 import io.webfolder.cdp.event.log.EntryAdded;
 import io.webfolder.cdp.event.network.ResponseReceived;
 import io.webfolder.cdp.event.page.LifecycleEvent;
@@ -92,6 +175,7 @@ import io.webfolder.cdp.type.page.PrintToPDFResult;
 import io.webfolder.cdp.type.page.Viewport;
 import io.webfolder.cdp.type.runtime.RemoteObject;
 
+@SuppressWarnings("deprecation")
 public class Session implements AutoCloseable,
                                 Selector     ,
                                 Keyboard     ,
@@ -692,27 +776,110 @@ public class Session implements AutoCloseable,
         });
     }
 
-    @SuppressWarnings("unchecked")
-    <T> T getProxy(Class<T> klass) {
-        T proxy = (T) commands.get(klass);
-        if (proxy != null) {
-            return (T) proxy;
+    @SuppressWarnings({ "unchecked" })
+    <T> T getCommand(Class<T> klass) {
+        T instance = (T) commands.get(klass);
+        if ( instance != null ) {
+            return (T) instance;
         }
-        Class<T> implKlass = null;
-        try {
-            implKlass = (Class<T>) getClass().getClassLoader().loadClass(klass.getName() + "Impl");
-            Constructor<T> constructor = implKlass.getConstructor(SessionInvocationHandler.class);
-            proxy = constructor.newInstance(invocationHandler);
-        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException |
-                 InstantiationException | IllegalAccessException | IllegalArgumentException |
-                 InvocationTargetException e) {
-            throw new CdpException(e);
+        if (klass.equals(Accessibility.class)) {
+            instance = (T) new AccessibilityImpl(invocationHandler);
+        } else if (klass.equals(Animation.class)) {
+            instance = (T) new AnimationImpl(invocationHandler);
+        } else if (klass.equals(ApplicationCache.class)) {
+            instance = (T) new ApplicationCacheImpl(invocationHandler);
+        } else if (klass.equals(Audits.class)) {
+            instance = (T) new AuditsImpl(invocationHandler);
+        } else if (klass.equals(BackgroundService.class)) {
+            instance = (T) new BackgroundServiceImpl(invocationHandler);
+        } else if (klass.equals(Browser.class)) {
+            instance = (T) new BrowserImpl(invocationHandler);
+        } else if (klass.equals(CacheStorage.class)) {
+            instance = (T) new CacheStorageImpl(invocationHandler);
+        } else if (klass.equals(Cast.class)) {
+            instance = (T) new CastImpl(invocationHandler);
+        } else if (klass.equals(Console.class)) {
+            instance = (T) new ConsoleImpl(invocationHandler);
+        } else if (klass.equals(CSS.class)) {
+            instance = (T) new CSSImpl(invocationHandler);
+        } else if (klass.equals(Database.class)) {
+            instance = (T) new DatabaseImpl(invocationHandler);
+        } else if (klass.equals(Debugger.class)) {
+            instance = (T) new DebuggerImpl(invocationHandler);
+        } else if (klass.equals(DeviceOrientation.class)) {
+            instance = (T) new DeviceOrientationImpl(invocationHandler);
+        } else if (klass.equals(DOM.class)) {
+            instance = (T) new DOMImpl(invocationHandler);
+        } else if (klass.equals(DOMDebugger.class)) {
+            instance = (T) new DOMDebuggerImpl(invocationHandler);
+        } else if (klass.equals(DOMSnapshot.class)) {
+            instance = (T) new DOMSnapshotImpl(invocationHandler);
+        } else if (klass.equals(DOMStorage.class)) {
+            instance = (T) new DOMStorageImpl(invocationHandler);
+        } else if (klass.equals(Emulation.class)) {
+            instance = (T) new EmulationImpl(invocationHandler);
+        } else if (klass.equals(Fetch.class)) {
+            instance = (T) new FetchImpl(invocationHandler);
+        } else if (klass.equals(HeadlessExperimental.class)) {
+            instance = (T) new HeadlessExperimentalImpl(invocationHandler);
+        } else if (klass.equals(HeapProfiler.class)) {
+            instance = (T) new HeapProfilerImpl(invocationHandler);
+        } else if (klass.equals(IndexedDB.class)) {
+            instance = (T) new IndexedDBImpl(invocationHandler);
+        } else if (klass.equals(Input.class)) {
+            instance = (T) new InputImpl(invocationHandler);
+        } else if (klass.equals(Inspector.class)) {
+            instance = (T) new InspectorImpl(invocationHandler);
+        } else if (klass.equals(IO.class)) {
+            instance = (T) new IOImpl(invocationHandler);
+        } else if (klass.equals(LayerTree.class)) {
+            instance = (T) new LayerTreeImpl(invocationHandler);
+        } else if (klass.equals(Log.class)) {
+            instance = (T) new LogImpl(invocationHandler);
+        } else if (klass.equals(Memory.class)) {
+            instance = (T) new MemoryImpl(invocationHandler);
+        } else if (klass.equals(Network.class)) {
+            instance = (T) new NetworkImpl(invocationHandler);
+        } else if (klass.equals(Overlay.class)) {
+            instance = (T) new OverlayImpl(invocationHandler);
+        } else if (klass.equals(Page.class)) {
+            instance = (T) new PageImpl(invocationHandler);
+        } else if (klass.equals(Performance.class)) {
+            instance = (T) new PerformanceImpl(invocationHandler);
+        } else if (klass.equals(Profiler.class)) {
+            instance = (T) new ProfilerImpl(invocationHandler);
+        } else if (klass.equals(io.webfolder.cdp.command.Runtime.class)) {
+            instance = (T) new RuntimeImpl(invocationHandler);
+        } else if (klass.equals(Schema.class)) {
+            instance = (T) new SchemaImpl(invocationHandler);
+        } else if (klass.equals(Security.class)) {
+            instance = (T) new SecurityImpl(invocationHandler);
+        } else if (klass.equals(ServiceWorker.class)) {
+            instance = (T) new ServiceWorkerImpl(invocationHandler);
+        } else if (klass.equals(Storage.class)) {
+            instance = (T) new StorageImpl(invocationHandler);
+        } else if (klass.equals(SystemInfo.class)) {
+            instance = (T) new SystemInfoImpl(invocationHandler);
+        } else if (klass.equals(Target.class)) {
+            instance = (T) new TargetImpl(invocationHandler);
+        } else if (klass.equals(Testing.class)) {
+            instance = (T) new TestingImpl(invocationHandler);
+        } else if (klass.equals(Tethering.class)) {
+            instance = (T) new TetheringImpl(invocationHandler);
+        } else if (klass.equals(Tracing.class)) {
+            instance = (T) new TracingImpl(invocationHandler);
+        } else if (klass.equals(WebAudio.class)) {
+            instance = (T) new WebAudioImpl(invocationHandler);
+        } else if (klass.equals(WebAuthn.class)) {
+            instance = (T) new WebAuthnImpl(invocationHandler);
+        } else {
+            throw new IllegalStateException();
         }
-        Object existing = commands.putIfAbsent(klass, proxy);
+        Object existing = commands.putIfAbsent(klass, instance);
         if ( existing != null ) {
             return (T) existing;
         }
-        return proxy;
+        return instance;
     }
 
     void disableFlowLog() {
