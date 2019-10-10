@@ -5,6 +5,14 @@ cdp4j Release Notes
 
 * Add [GraalVM](https://www.graalvm.org/) support [#116](https://github.com/webfolderio/cdp4j/issues/116)
 
+### 4.0.1 - October 10, 2019
+
+:new: Added Session.getDOMSnapshot() method (_Returns a document snapshot, including the full DOM tree of the root node_).
+
+:new: Added initial GraalVM support (_this feature is not ready to use, wait until version 4.1.0_)
+
+__Fixed__ Fixed buggy [TaskKillProcessManager](https://github.com/webfolderio/cdp4j/blob/master/src/main/java/io/webfolder/cdp/TaskKillProcessManager.java) implementation.
+
 ### 4.0.0 - October 1, 2019
 
 :new: Added __non-blocking__ WebSocket support
