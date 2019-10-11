@@ -22,26 +22,34 @@ import static java.lang.String.valueOf;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 import java.io.IOException;
-
-import org.jvnet.winp.WinProcess;
+import java.lang.reflect.Field;
 
 import io.webfolder.cdp.exception.CdpException;
 
-/**
- * Alternative implmentation of {@link WindowsProcessManager}.
- */
 public class TaskKillProcessManager extends ProcessManager {
 
-    private CdpProcess cdpProcess;
+    private CdpProcess process;
 
     @Override
     void setProcess(CdpProcess process) {
-        this.cdpProcess = process;
+        this.process = process;
     }
 
     @Override
     public boolean kill() {
-        WinProcess winProcess = new WinProcess(cdpProcess.getProcess());
+        Field handleField;
+        try {
+            handleField = process.getProcess().getClass().getDeclaredField("handle");
+        } catch (NoSuchFieldException | SecurityException e) {
+            throw new CdpException(e);
+        }
+        handleField.setAccessible(true);
+        Object pid;
+        try {
+            pid = handleField.get(process.getProcess());
+        } catch (IllegalArgumentException | IllegalAccessException e) {
+            throw new CdpException(e);
+        }
         try {
             Process process = Runtime
                                 .getRuntime()
@@ -49,7 +57,7 @@ public class TaskKillProcessManager extends ProcessManager {
                                         "cmd", "/c",
                                         "taskkill",
                                         "/pid",
-                                        valueOf(winProcess.getPid()), "/T", "/F"
+                                        valueOf(pid), "/T", "/F"
                                     });
             return process.waitFor(10, SECONDS) && process.exitValue() == 0;
         } catch (IOException | InterruptedException e) {
