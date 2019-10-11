@@ -1,6 +1,10 @@
 cdp4j Release Notes
 -------------------------------------------------------------------------------
 
+### 3.0.13 - October 11, 2019
+
+* Removed WINP dependency from TaskKillProcessManager
+
 ### 3.0.12 - June 25, 2019
 
 * Added Launcher.isChromeInstalled() method
