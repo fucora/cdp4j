@@ -4,7 +4,6 @@ import static java.io.File.pathSeparator;
 import static java.lang.System.getProperty;
 import static java.util.Locale.ENGLISH;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -22,7 +21,6 @@ import io.webfolder.cdp.MacOsProcessManager;
 import io.webfolder.cdp.ProcessManager;
 import io.webfolder.cdp.TaskKillProcessManager;
 import io.webfolder.cdp.channel.ChannelFactory;
-import io.webfolder.cdp.channel.NvWebSocketFactory;
 import io.webfolder.cdp.exception.CdpException;
 
 final class Constants {
@@ -43,26 +41,12 @@ final class Target_io_webfolder_cdp_session_CdpTypeAdapterFactory {
     }
 }
 
-@TargetClass(className = "com.neovisionaries.ws.client.Misc")
-final class Target_com_neovisionaries_ws_client_Misc {
-
-    @Substitute
-    public static Constructor<?> getConstructor(String className, Class<?>[] parameterTypes) {
-        return null;
-    }
-
-    @Substitute
-    public static Method getMethod(String className, String methodName, Class<?>[] parameterTypes) {
-        return null;
-    }
-}
-
 @TargetClass(io.webfolder.cdp.Launcher.class)
 final class Target_io_webfolder_cdp_Launcher {
 
     @Substitute
     protected static ChannelFactory createChannelFactory() {
-        return new NvWebSocketFactory();
+        return null;
     }
 }
 
@@ -87,7 +71,7 @@ public final class Cdp4jFeature implements Feature {
 
     @Override
     public void beforeAnalysis(BeforeAnalysisAccess access) {
-        if ( ! Constants.WINDOWS ) { // required by LinuxProcessManager and MacOsProcessManager
+        if ( Constants.JAVA_8 && ! Constants.WINDOWS ) { // required by LinuxProcessManager and MacOsProcessManager
             try {
                 Class<?> unixProcess = Cdp4jFeature.class.getClassLoader().loadClass("java.lang.UNIXProcess");
                 Field pid = unixProcess.getDeclaredField("pid");
