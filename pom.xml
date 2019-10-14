@@ -317,6 +317,7 @@
             <configuration>
               <mainClass>io.webfolder.cdp.HelloGraalVm</mainClass>
               <imageName>cdp4j-graalvm</imageName>
+              <buildArgs>--initialize-at-build-time=io.webfolder.cdp.event.Events,io.webfolder.cdp.session.TargetListener</buildArgs>
             </configuration>
           </plugin>
           <plugin>
