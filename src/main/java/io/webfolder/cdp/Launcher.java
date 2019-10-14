@@ -208,6 +208,8 @@ public class Launcher {
         ProcessBuilder builder = new ProcessBuilder(arguments);
 
         String cdp4jId = toHexString(current().nextLong());
+        arguments.add(format("--cdp4jId=%s", cdp4jId));
+        builder.environment().put("CDP4J_ID", cdp4jId);
         try {
             Process process = builder.start();
             try (Scanner scanner = new Scanner(process.getErrorStream())) {
