@@ -30,7 +30,9 @@ Features
 Supported Java Versions
 -----------------------
 
-Oracle & OpenJDK Java 8 & 11.
+Oracle/OpenJDK & GraalVM.
+
+_Note_: We only support LTS versions (8 & 11).
 
 Both the JRE and the JDK are suitable for use with this library.
 
@@ -86,7 +88,12 @@ Design Principles
 * Support only Chrome/Chromium based browsers.
 * Supports full capabilities of the Chrome DevTools Protocol.
 * Keep the API simple.
+* Support GraalVM.
 
 How it is tested
 ----------------
 cdp4j is regularly built and tested on Windows 10 and Ubuntu.
+
+Support
+-------
+Please report your bugs and new features by e-mail ([support@webfolder.io](mailto:support@webfolder.io)). github issues is only used by cdp4j developers.
