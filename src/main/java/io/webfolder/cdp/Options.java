@@ -21,7 +21,6 @@ package io.webfolder.cdp;
 import static io.webfolder.cdp.logger.CdpLoggerType.Null;
 import static io.webfolder.cdp.session.ConnectionType.NvWebSocket;
 import static io.webfolder.cdp.session.ContextLockType.LockInvocation;
-import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.emptyList;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
@@ -74,7 +73,7 @@ public class Options {
 
     private ContextLockType contextLockType;
 
-    private Boolean useCustomTypeAdapter;
+    private CustomTypeAdapter useCustomTypeAdapter;
 
     private Options() {
         // no op
@@ -143,7 +142,7 @@ public class Options {
             return this;
         }
 
-        public Builder useCustomTypeAdapter(boolean useCustomTypeAdapter) {
+        public Builder useCustomTypeAdapter(CustomTypeAdapter useCustomTypeAdapter) {
             options.useCustomTypeAdapter = useCustomTypeAdapter;
             return this;
         }
@@ -183,7 +182,7 @@ public class Options {
                 options.contextLockType = LockInvocation;
             }
             if (options.useCustomTypeAdapter == null) {
-                options.useCustomTypeAdapter = FALSE;
+                options.useCustomTypeAdapter = null;
             }
             return options;
         }
@@ -254,7 +253,7 @@ public class Options {
         return contextLockType;
     }
 
-    public Boolean useCustomTypeAdapter() {
+    public CustomTypeAdapter useCustomTypeAdapter() {
         return useCustomTypeAdapter;
     }
 }

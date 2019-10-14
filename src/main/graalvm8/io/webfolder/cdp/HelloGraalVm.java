@@ -27,7 +27,7 @@ public class HelloGraalVm {
 
     public static void main(String[] args) {
         Options options = Options.builder()
-                                .useCustomTypeAdapter(true)
+                                .useCustomTypeAdapter(CustomTypeAdapter.Generated)
                                 .loggerType(CdpLoggerType.Console)
                             .build();
 

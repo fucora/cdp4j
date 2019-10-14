@@ -1,48 +1,62 @@
-package io.webfolder.cdp;
+package io.webfolder.cdp.graal;
 
+import static java.io.File.pathSeparator;
 import static java.lang.System.getProperty;
 import static java.util.Locale.ENGLISH;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.graalvm.nativeimage.hosted.Feature;
 import org.graalvm.nativeimage.hosted.RuntimeReflection;
 
-import com.google.gson.TypeAdapterFactory;
-import com.oracle.svm.core.annotate.AutomaticFeature;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
+import com.google.gson.reflect.TypeToken;
 import com.oracle.svm.core.annotate.Substitute;
 import com.oracle.svm.core.annotate.TargetClass;
 
+import io.webfolder.cdp.LinuxProcessManager;
+import io.webfolder.cdp.MacOsProcessManager;
+import io.webfolder.cdp.ProcessManager;
+import io.webfolder.cdp.TaskKillProcessManager;
 import io.webfolder.cdp.channel.ChannelFactory;
 import io.webfolder.cdp.channel.NvWebSocketFactory;
-import io.webfolder.cdp.logger.CdpConsoleLogger;
-import io.webfolder.cdp.logger.CdpConsoleLogggerLevel;
-import io.webfolder.cdp.logger.CdpLogger;
+import io.webfolder.cdp.exception.CdpException;
 
-//----------------------------------------------------------------------------
-//
-// STEP 1
-//
-// configure cdp4j Logger
-//
-// ----------------------------------------------------------------------------
-@TargetClass(io.webfolder.cdp.logger.CdpLoggerFactory.class)
-final class Target_io_webfolder_cdp_logger_CdpLoggerFactory {
+final class Constants {
+    static final String  OS      = getProperty("os.name").toLowerCase(ENGLISH);
+    static final boolean WINDOWS = ";".equals(pathSeparator);
+    static final boolean LINUX   = "linux".contains(OS);
+    static final boolean MAC     = OS.contains("mac");
+    static final boolean JAVA_8  = getProperty("java.version").startsWith("1.8.");
+}
+
+@TargetClass(className = "io.webfolder.cdp.session.CdpTypeAdapterFactory")
+final class Target_io_webfolder_cdp_session_CdpTypeAdapterFactory {
 
     @Substitute
-    public CdpLogger getLogger(String name, CdpConsoleLogggerLevel loggerLevel) {
-        return new CdpConsoleLogger(loggerLevel);
+    @SuppressWarnings("rawtypes")
+    public TypeAdapter create(Gson gson, TypeToken type) {
+        return null;
     }
 }
 
-//----------------------------------------------------------------------------
-//
-// STEP 2
-//
-// configure ChannelFactory
-//
-//----------------------------------------------------------------------------
+@TargetClass(className = "com.neovisionaries.ws.client.Misc")
+final class Target_com_neovisionaries_ws_client_Misc {
+
+    @Substitute
+    public static Constructor<?> getConstructor(String className, Class<?>[] parameterTypes) {
+        return null;
+    }
+
+    @Substitute
+    public static Method getMethod(String className, String methodName, Class<?>[] parameterTypes) {
+        return null;
+    }
+}
+
 @TargetClass(io.webfolder.cdp.Launcher.class)
 final class Target_io_webfolder_cdp_Launcher {
 
@@ -52,53 +66,30 @@ final class Target_io_webfolder_cdp_Launcher {
     }
 }
 
-//----------------------------------------------------------------------------
-//
-// STEP 3
-//
-// configure ProcessManager
-//
-//----------------------------------------------------------------------------
 @TargetClass(io.webfolder.cdp.AdaptiveProcessManager.class)
 final class Target_io_webfolder_cdp_AdaptiveProcessManager {
 
     @Substitute
     private ProcessManager init() {
-        return new LinuxProcessManager();
+        if (Constants.WINDOWS) {
+            return new TaskKillProcessManager();
+        } else if (Constants.LINUX) {
+            return new LinuxProcessManager();
+        } else if (Constants.MAC) {
+            return new MacOsProcessManager();            
+        } else {
+            throw new CdpException(Constants.OS + " is not supported by AdaptiveProcessManager");
+        }
     }
 }
 
-//----------------------------------------------------------------------------
-//
-// Use gson TypeAdapterFactory
-//
-//----------------------------------------------------------------------------
-@TargetClass(io.webfolder.cdp.session.SessionFactory.class)
-final class Target_io_webfolder_cdp_session_SessionFactory {
-
-    @Substitute
-    private TypeAdapterFactory createTypeAdapterFactory() {
-        return new Stag.Factory();
-    }
-}
-
-//----------------------------------------------------------------------------
-//
-// Reflection support
-//
-//----------------------------------------------------------------------------
-@AutomaticFeature
-class JNIReflectionClasses implements Feature {
-
-    private static final String  OS_NAME = getProperty("os.name").toLowerCase(ENGLISH);
-
-    private static final boolean WINDOWS = OS_NAME.startsWith("windows");
+public final class Cdp4jFeature implements Feature {
 
     @Override
     public void beforeAnalysis(BeforeAnalysisAccess access) {
-        if ( ! WINDOWS ) { // required by LinuxProcessManager and MacOsProcessManager
+        if ( ! Constants.WINDOWS ) { // required by LinuxProcessManager and MacOsProcessManager
             try {
-                Class<?> unixProcess = JNIReflectionClasses.class.getClassLoader().loadClass("java.lang.UNIXProcess");
+                Class<?> unixProcess = Cdp4jFeature.class.getClassLoader().loadClass("java.lang.UNIXProcess");
                 Field pid = unixProcess.getDeclaredField("pid");
                 RuntimeReflection.register(pid);
                 Method destroyProcess = unixProcess.getDeclaredMethod("destroyProcess",
@@ -111,8 +102,4 @@ class JNIReflectionClasses implements Feature {
             }
         }
     }
-}
-
-public class Cdp4jSubstitutions {
-
 }

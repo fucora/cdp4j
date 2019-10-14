@@ -18,6 +18,7 @@
  */
 package io.webfolder.cdp.session;
 
+import static io.webfolder.cdp.CustomTypeAdapter.Generated;
 import static io.webfolder.cdp.event.Events.RuntimeExecutionContextCreated;
 import static io.webfolder.cdp.event.Events.RuntimeExecutionContextDestroyed;
 import static java.lang.Boolean.TRUE;
@@ -35,7 +36,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapterFactory;
 
+import io.webfolder.cdp.CustomTypeAdapter;
 import io.webfolder.cdp.Options;
+import io.webfolder.cdp.Stag;
 import io.webfolder.cdp.channel.Channel;
 import io.webfolder.cdp.channel.ChannelFactory;
 import io.webfolder.cdp.channel.Connection;
@@ -78,9 +81,9 @@ public class SessionFactory implements AutoCloseable {
     public SessionFactory(Options options, ChannelFactory channelFactory, Connection connection) {
         this.options            = options;
         this.loggerFactory      = createLoggerFactory(options.loggerType());
-        this.typeAdapterFactory = options.useCustomTypeAdapter() ? createTypeAdapterFactory() : null;
+        this.typeAdapterFactory = options.useCustomTypeAdapter() != null ? createTypeAdapterFactory(options.useCustomTypeAdapter()) : null;
         GsonBuilder builder     = new GsonBuilder().disableHtmlEscaping();
-        if (options.useCustomTypeAdapter()) {
+        if ( options.useCustomTypeAdapter() != null ) {
             this.gson = builder.registerTypeAdapterFactory(typeAdapterFactory)
                                .create();
         } else {
@@ -94,7 +97,10 @@ public class SessionFactory implements AutoCloseable {
         this.browserTargetId = initBrowserSession();
     }
 
-    private TypeAdapterFactory createTypeAdapterFactory() {
+    private TypeAdapterFactory createTypeAdapterFactory(CustomTypeAdapter adapter) {
+        if (Generated.equals(adapter)) {
+            return new Stag.Factory();
+        }
         return new CdpTypeAdapterFactory();
     }
 
@@ -289,8 +295,8 @@ public class SessionFactory implements AutoCloseable {
                     }
                 }
             }
-            if (options.useCustomTypeAdapter() &&
-                    typeAdapterFactory instanceof AutoCloseable) {
+            if ( options.useCustomTypeAdapter() != null &&
+                    typeAdapterFactory instanceof AutoCloseable ) {
                 try {
                     ((AutoCloseable) typeAdapterFactory).close();
                 } catch (Exception e) {
