@@ -1,5 +1,3 @@
-[![Build Status](https://github.com/webfolderio/cdp4j/workflows/.github/workflows/maven.yml/badge.svg)](https://github.com/webfolderio/cdp4j/actions)
-
 cdp4j - Chrome DevTools Protocol for Java
 =================================================
 
@@ -48,7 +46,7 @@ Download
 
 Supported Platforms
 -------------------
-cdp4j has been tested under Windows 10, macOS and Ubuntu, but should work on any platform where a Java & Chrome/Chromium available.
+cdp4j has been tested under Windows 10 and Ubuntu, but should work on any platform where a Java & Chrome/Chromium available.
 
 Release Notes
 -------------
