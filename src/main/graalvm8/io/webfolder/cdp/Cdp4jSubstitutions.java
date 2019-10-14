@@ -13,7 +13,6 @@ import com.google.gson.TypeAdapterFactory;
 import com.oracle.svm.core.annotate.AutomaticFeature;
 import com.oracle.svm.core.annotate.Substitute;
 import com.oracle.svm.core.annotate.TargetClass;
-import com.vimeo.stag.generated.Stag;
 
 import io.webfolder.cdp.channel.ChannelFactory;
 import io.webfolder.cdp.channel.NvWebSocketFactory;

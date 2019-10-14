@@ -292,16 +292,10 @@ public class Session implements AutoCloseable,
         sesessionFactory.activate(sessionId);
     }
 
-    /**
-     * Use {@link Session#getListenerManager()}
-     */
     public void addEventListener(EventListener eventListener) {
         listeners.add(eventListener);
     }
 
-    /**
-     * Use {@link Session#getListenerManager()}
-     */
     public void removeEventEventListener(EventListener eventListener) {
         if (eventListener != null) {
             listeners.remove(eventListener);

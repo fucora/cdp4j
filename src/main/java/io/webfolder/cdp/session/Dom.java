@@ -104,7 +104,7 @@ public interface Dom {
      * or an &lt;input&gt; element with a text field.
      * 
      * @param selector css or xpath selector
-     * @param selector format string
+     * @param args format string
      * 
      * @return this
      */
@@ -277,7 +277,7 @@ public interface Dom {
      * The list of options for a &lt;select&gt; element consists of all the option element children of the select element,
      * and all the &lt;option&gt; element children of all the &lt;optgroup&gt; element children of the &lt;select&gt; element.
      * 
-     * @param css selector
+     * @param selector css or xpath selector
      * 
      * @return list of HTML &lt;option&gt; elements (in document order).
      */
@@ -289,7 +289,7 @@ public interface Dom {
      * The list of options for a &lt;select&gt; element consists of all the option element children of the select element,
      * and all the &lt;option&gt; element children of all the &lt;optgroup&gt; element children of the &lt;select&gt; element.
      * 
-     * @param css selector
+     * @param selector css or xpath selector
      * @param args format string
      * 
      * @return list of HTML &lt;option&gt; elements (in document order).

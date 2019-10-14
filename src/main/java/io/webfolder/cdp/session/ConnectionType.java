@@ -22,13 +22,13 @@ public enum ConnectionType {
     /**
      * Use nv-websocket-client
      * 
-     * @see https://github.com/TakahikoKawasaki/nv-websocket-client
+     * @see <a href="https://github.com/TakahikoKawasaki/nv-websocket-client">nv-websocket-client</a>
      */
     NvWebSocket,
     /**
      * Use java.net.http.WebSocket implementation
      * 
-     * @see https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/WebSocket.html
+     * @see <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/WebSocket.html">WebSocket</a>
      * 
      * Requires Java 11+
      */

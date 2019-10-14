@@ -55,6 +55,7 @@
           </annotationProcessors>
           <compilerArgs>
             <arg>-parameters</arg>
+            <arg>-AstagGeneratedPackageName=io.webfolder.cdp</arg>
           </compilerArgs>
         </configuration>
       </plugin>

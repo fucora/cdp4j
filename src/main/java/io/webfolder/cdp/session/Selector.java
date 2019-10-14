@@ -52,7 +52,6 @@ public interface Selector {
      * otherwise, returns <code>false</code>.
      * 
      * @param selector css or xpath selector
-     * @param args format string
      * 
      * @return <code>true</code> if the element selected by the specified selector
      */
@@ -160,9 +159,9 @@ public interface Selector {
      */
     default void setProperty(
             final String selector,
-            final String propetyName,
+            final String propertyName,
             final Object value) {
-        setProperty(selector, propetyName, value, EMPTY_ARGS);
+        setProperty(selector, propertyName, value, EMPTY_ARGS);
     }
 
     /**
@@ -247,23 +246,23 @@ public interface Selector {
     /**
      * Gets the property value of the matched element
      * 
-     * @param selector css or xpath selector
+     * @param objectId
      * @param propertyName property name
      * 
      * @return property value
      */
     default Object getPropertyByObjectId(
                             final String objectId,
-                            final String name) {
-        if (name == null || name.trim().isEmpty()) {
+                            final String propertyName) {
+        if (propertyName == null || propertyName.trim().isEmpty()) {
             return null;
         }
-        if (objectId == null || name == null) {
+        if (objectId == null || propertyName == null) {
             return null;
         }
         List<CallArgument> arguments = new ArrayList<>(1);
         CallArgument argProperty = new CallArgument();
-        argProperty.setValue(name);
+        argProperty.setValue(propertyName);
         arguments.add(argProperty);
         CallFunctionOnResult callFunctionOn = getThis()
                                                 .getCommand()
