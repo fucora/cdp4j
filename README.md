@@ -54,7 +54,7 @@ Release Notes
 
 Headless Mode
 -------------
-cdp4j can be run in "headless" mode using with __--headless__ argument.
+cdp4j can be run in "headless" mode using with `Options.headles(boolean)` option.
 
 ### Install Chrome on Debian/Ubuntu
 
