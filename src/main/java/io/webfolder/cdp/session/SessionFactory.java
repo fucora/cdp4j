@@ -104,10 +104,22 @@ public class SessionFactory implements AutoCloseable {
         return new CdpTypeAdapterFactory();
     }
 
+    /**
+     * Creates a new page
+     * 
+     * @return this
+     */
     public Session create() {
         return create(null);
     }
 
+    /**
+     * Creates a new page
+     * 
+     * @param browserContextId incognito browser context id
+     * 
+     * @return this
+     */
     public Session create(String browserContextId) {
         Session browserSession = getBrowserSession();
         Target target = browserSession.getCommand().getTarget();
@@ -135,6 +147,11 @@ public class SessionFactory implements AutoCloseable {
         return connect(targetId, browserContextId);
     }
 
+    /**
+     * Connect to existing session
+     * 
+     * @return this
+     */
     public Session connect(String targetId) {
         return connect(targetId, null);
     }
@@ -243,6 +260,11 @@ public class SessionFactory implements AutoCloseable {
         sessions.remove(session.getId());
     }
 
+    /**
+     * Get major version of the browser.
+     * 
+     * @return major version number
+     */
     public int getMajorVersion() {
         if (majorVersion == 0) {
             String[] product = browserSession
@@ -261,6 +283,11 @@ public class SessionFactory implements AutoCloseable {
         return majorVersion;
     }
 
+    /**
+     * Closes all sessions.
+     * 
+     * The factory object itself is considered disposed and cannot be used anymore.
+     */
     @Override
     public void close() {
         if (closed.compareAndSet(false, true)) {
@@ -307,6 +334,11 @@ public class SessionFactory implements AutoCloseable {
         }
     }
 
+    /**
+     * Activate this browser window
+     * 
+     * @param sessionId session identifier
+     */
     public void activate(String sessionId) {
         Session session = sessions.get(sessionId);
         if ( session != null ) {
@@ -317,6 +349,11 @@ public class SessionFactory implements AutoCloseable {
         }
     }
 
+    /**
+     * Tests whether or not a Browser launched with headless argument.
+     * 
+     * @return {@code true} if browser launched with headless argument.
+     */
     public boolean isHeadless() {
         if (headless == null) {
             headless = getBrowserSession()
@@ -330,6 +367,11 @@ public class SessionFactory implements AutoCloseable {
         return headless.booleanValue();
     }
 
+    /**
+     * Creates a new incognito browser context.
+     * 
+     * This won't share cookies/cache with other browser contexts.
+     */
     public String createBrowserContext() {
         String browserContextId = getBrowserSession()
                                     .getCommand()
@@ -339,6 +381,9 @@ public class SessionFactory implements AutoCloseable {
         return browserContextId;
     }
 
+    /**
+     * Dispose incoginto browser context.
+     */
     public void disposeBrowserContext(final String browserContextId) {
         if (browserContexts.contains(browserContextId)) {
             getBrowserSession()

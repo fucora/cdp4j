@@ -257,6 +257,9 @@ public class Session implements AutoCloseable,
         this.command          = new Command(this);
     }
 
+    /**
+     * Gets the session identifier.
+     */
     public String getId() {
         return sessionId;
     }
@@ -280,6 +283,9 @@ public class Session implements AutoCloseable,
         }
     }
 
+    /**
+     * @return {@code true} if browser is connected.
+     */
     public boolean isConnected() {
         return connected.get();
     }
@@ -358,6 +364,14 @@ public class Session implements AutoCloseable,
         return false;
     }
 
+    /**
+     * Navigates to an url
+     * 
+     * @param url URL to navigate page to.
+     *  The url should include scheme, e.g. https://.
+     *  
+     *  @return this
+     */
     public Session navigate(final String url) {
         logEntry("navigate", url);
         NavigateResult navigate = command.getPage().navigate(url);
@@ -369,10 +383,33 @@ public class Session implements AutoCloseable,
         return this;
     }
 
+    /**
+     * Navigates to an url
+     * 
+     * @param url URL to navigate page to.
+     * The url should include scheme, e.g. https://.
+     *  
+     * @param condition When to consider navigation succeeded.
+     * 
+     * @return this
+     */
     public Session navigateAndWait(final String url, WaitUntil condition) {
         return navigateAndWait(url, condition, 10_000);
     }
 
+    /**
+     * Navigates to an url
+     * 
+     * @param url URL to navigate page to.
+     *  The url should include scheme, e.g. https://.
+     *  
+     * @param condition When to consider navigation succeeded.
+     * 
+     * @param timeout Maximum navigation time in milliseconds,
+     * defaults to 10 seconds.
+     * 
+     * @return this
+     */
     public Session navigateAndWait(final String    url,
                                    final WaitUntil condition,
                                    final int       timeout) {
@@ -434,7 +471,7 @@ public class Session implements AutoCloseable,
     }
 
     /**
-     * Redirects javascript console logs to slf4j
+     * Redirects javascript console logs to cdp4j logger.
      * 
      * @return this
      */
@@ -460,7 +497,7 @@ public class Session implements AutoCloseable,
     }
 
     /**
-     * Redirects runtime logs (network, security, storage etc..) to slf4j
+     * Redirects runtime logs (network, security, storage etc..) to cdp4j logger
      * 
      * @return this
      */
@@ -483,7 +520,7 @@ public class Session implements AutoCloseable,
     }
 
     /**
-     * Redirects network logs to slf4j
+     * Redirects network logs to cdp4j logger
      * 
      * @return this
      */
@@ -526,7 +563,7 @@ public class Session implements AutoCloseable,
     }
 
     /**
-     * Capture page screenshot.
+     * Takes a screenshot of the page.
      * 
      * @param hideScrollbar hides the scollbar
      */
@@ -535,7 +572,7 @@ public class Session implements AutoCloseable,
     }
 
     /**
-     * Capture page screenshot.
+     * Takes a screenshot of the page.
      * 
      * @param hideScrollbar hides the scollbar
      * @param format Image compression format (defaults to png).
