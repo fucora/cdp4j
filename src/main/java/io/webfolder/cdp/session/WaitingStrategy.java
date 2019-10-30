@@ -18,7 +18,7 @@
  */
 package io.webfolder.cdp.session;
 
-public enum ContextLockType {
-    LockThread,
-    LockInvocation
+public enum WaitingStrategy {
+    Semaphore,
+    ParkThread
 }

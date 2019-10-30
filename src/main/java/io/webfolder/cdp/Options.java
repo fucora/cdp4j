@@ -20,7 +20,7 @@ package io.webfolder.cdp;
 
 import static io.webfolder.cdp.logger.CdpLoggerType.Null;
 import static io.webfolder.cdp.session.ConnectionType.NvWebSocket;
-import static io.webfolder.cdp.session.ContextLockType.LockInvocation;
+import static io.webfolder.cdp.session.WaitingStrategy.Semaphore;
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.emptyList;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
@@ -33,7 +33,7 @@ import java.util.concurrent.ExecutorService;
 import io.webfolder.cdp.logger.CdpConsoleLogggerLevel;
 import io.webfolder.cdp.logger.CdpLoggerType;
 import io.webfolder.cdp.session.ConnectionType;
-import io.webfolder.cdp.session.ContextLockType;
+import io.webfolder.cdp.session.WaitingStrategy;
 
 public class Options {
 
@@ -71,7 +71,7 @@ public class Options {
 
     private Boolean shutdownThreadPoolOnClose;
 
-    private ContextLockType contextLockType;
+    private WaitingStrategy waitingStrategy;
 
     private CustomTypeAdapter useCustomTypeAdapter;
 
@@ -178,8 +178,8 @@ public class Options {
             if (options.shutdownThreadPoolOnClose == null) {
                 options.shutdownThreadPoolOnClose = TRUE;
             }
-            if (options.contextLockType == null) {
-                options.contextLockType = LockInvocation;
+            if (options.waitingStrategy == null) {
+                options.waitingStrategy = Semaphore;
             }
             if (options.useCustomTypeAdapter == null) {
                 options.useCustomTypeAdapter = null;
@@ -187,8 +187,8 @@ public class Options {
             return options;
         }
 
-        public Builder contextLockType(ContextLockType contextLockType) {
-            options.contextLockType = contextLockType;
+        public Builder waitingStrategy(WaitingStrategy waitingStrategy) {
+            options.waitingStrategy = waitingStrategy;
             return this;
         }
     }
@@ -249,8 +249,8 @@ public class Options {
         return shutdownThreadPoolOnClose.booleanValue();
     }
 
-    public ContextLockType contextLockType() {
-        return contextLockType;
+    public WaitingStrategy waitingStrategy() {
+        return waitingStrategy;
     }
 
     public CustomTypeAdapter useCustomTypeAdapter() {

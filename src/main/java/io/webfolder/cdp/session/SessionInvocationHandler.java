@@ -18,7 +18,7 @@
  */
 package io.webfolder.cdp.session;
 
-import static io.webfolder.cdp.session.ContextLockType.LockInvocation;
+import static io.webfolder.cdp.session.WaitingStrategy.Semaphore;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.lang.Integer.valueOf;
@@ -62,7 +62,7 @@ public class SessionInvocationHandler {
 
     private final int                   readTimeout;
 
-    private final ContextLockType       contextLockType;
+    private final WaitingStrategy       waitingStrategy;
 
     SessionInvocationHandler(
                     final Gson                  gson,
@@ -72,7 +72,7 @@ public class SessionInvocationHandler {
                     final CdpLogger             log,
                     final String                sessionId,
                     final int                   readTimeOut,
-                    final ContextLockType       contextLockType) {
+                    final WaitingStrategy       waitingStrategy) {
         this.gson            = gson;
         this.channel         = channel;
         this.contexts        = contexts;
@@ -80,7 +80,7 @@ public class SessionInvocationHandler {
         this.log             = log;
         this.sessionId       = sessionId;
         this.readTimeout     = readTimeOut;
-        this.contextLockType = contextLockType;
+        this.waitingStrategy = waitingStrategy;
     }
 
     public Object invoke(
@@ -104,7 +104,7 @@ public class SessionInvocationHandler {
         String json = toJson(method, id, parameters, args);
         log.debug("--> {}", json);
 
-        final Context context = LockInvocation.equals(contextLockType) ? new SemaphoreContext() : new ThreadContext();
+        final Context context = Semaphore.equals(waitingStrategy) ? new SemaphoreContext() : new ThreadContext();
         contexts.put(id, context);
 
         final long start = currentTimeMillis();

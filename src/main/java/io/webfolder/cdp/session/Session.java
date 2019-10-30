@@ -245,7 +245,7 @@ public class Session implements AutoCloseable,
                                                         loggerFactory.getLogger("cdp4j.ws.request", options.consoleLoggerLevel()),
                                                         sessionId,
                                                         options.readTimeout(),
-                                                        options.contextLockType());
+                                                        options.waitingStrategy());
         this.targetId         = targetId; 
         this.sesessionFactory = sessionFactory;
         this.listeners        = eventListeners;
