@@ -110,7 +110,18 @@ public class SessionFactory implements AutoCloseable {
      * @return this
      */
     public Session create() {
-        return create(null);
+        return create(null, null);
+    }
+
+    /**
+     * Creates a new page
+     * 
+     * @param settings
+     * 
+     * @return this
+     */
+    public Session create(SessionSettings settings) {
+        return create(null, settings);
     }
 
     /**
@@ -121,6 +132,18 @@ public class SessionFactory implements AutoCloseable {
      * @return this
      */
     public Session create(String browserContextId) {
+        return create(browserContextId, null);
+    }
+
+    /**
+     * Creates a new page
+     * 
+     * @param browserContextId incognito browser context id
+     * @param settings
+     * 
+     * @return this
+     */
+    public Session create(String browserContextId, SessionSettings settings) {
         Session browserSession = getBrowserSession();
         Target target = browserSession.getCommand().getTarget();
         // Try to use blank page on first launch
@@ -137,9 +160,11 @@ public class SessionFactory implements AutoCloseable {
                 return connect(blankPage.getTargetId(), blankPage.getBrowserContextId());
             }
         }
+        int width = settings != null ? settings.getScreenWidth() : options.screenWidth();
+        int height = settings != null ? settings.getScreenHeight() : options.screenHeight();
         String targetId = target.createTarget("about:blank",
-                                              options.screenWidth(),
-                                              options.screenHeight(),
+                                              width,
+                                              height,
                                               browserContextId, false, null, null);
         if (targetId == null) {
             throw new CdpException("Couldn't create a new session");
