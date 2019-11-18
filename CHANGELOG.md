@@ -1,6 +1,11 @@
 cdp4j Release Notes
 -------------------------------------------------------------------------------
 
+### 3.0.14 - November 11, 2019
+
+* Fixed [Cancel close timer after task execution](https://github.com/TakahikoKawasaki/nv-websocket-client/pull/191)
+* Updated nv-websocket-client to 2.9
+
 ### 3.0.13 - October 11, 2019
 
 * Removed WINP dependency from TaskKillProcessManager
