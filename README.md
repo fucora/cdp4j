@@ -40,9 +40,9 @@ This library is suitable for use in production systems.
 
 Download
 --------
-[cdp4j-4.0.1.jar](https://github.com/webfolderio/cdp4j/releases/download/4.0.1/cdp4j-4.0.1.jar)
+[cdp4j-4.1.0.jar](https://github.com/webfolderio/cdp4j/releases/download/4.1.0/cdp4j-4.1.0-sources.jar)
 
-[cdp4j-4.0.1-sources.jar](https://github.com/webfolderio/cdp4j/releases/download/4.0.1/cdp4j-4.0.1-sources.jar)
+[cdp4j-4.1.0-sources.jar](https://github.com/webfolderio/cdp4j/releases/download/4.1.0/cdp4j-4.1.0-sources.jar)
 
 Supported Platforms
 -------------------

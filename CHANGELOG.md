@@ -1,9 +1,10 @@
 cdp4j Release Notes
 -------------------------------------------------------------------------------
 
-### 4.1.0 - November 4, 2019
+### 4.1.0 - November 26, 2019
 
 * Add [GraalVM](https://www.graalvm.org/) support [#116](https://github.com/webfolderio/cdp4j/issues/116)
+* Add [SessionSettings](https://github.com/webfolderio/cdp4j/commit/2354a8cb2c1ad82847968d0a28a686ea5f82c550) class to configure width and height of tab page.
 
 ### 4.0.1 - October 10, 2019
 
