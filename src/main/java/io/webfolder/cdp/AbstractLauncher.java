@@ -34,6 +34,10 @@ abstract class AbstractLauncher {
 
     private volatile boolean launched;
 
+    private static final int SLEEP_DURATION = 100; // ms
+
+    private static final int DEFAULT_CONNECTION_TIMEOUT = 5000; // ms
+
     public AbstractLauncher(final SessionFactory factory) {
         this.factory = factory;
     }
@@ -90,8 +94,18 @@ abstract class AbstractLauncher {
     }
 
     public final SessionFactory launch(String chromeExecutablePath, List<String> arguments) {
+        return launch(chromeExecutablePath, arguments, DEFAULT_CONNECTION_TIMEOUT);
+    }
+
+    public final SessionFactory launch(String chromeExecutablePath, List<String> arguments, int connectionTimeout) {
         if (chromeExecutablePath == null || chromeExecutablePath.trim().isEmpty()) {
             throw new CdpException("chrome not found");
+        }
+        if (connectionTimeout < SLEEP_DURATION) {
+            throw new IllegalArgumentException();
+        }
+        if (connectionTimeout % SLEEP_DURATION != 0) {
+            throw new IllegalArgumentException();
         }
         if ( ! launched ) {
             List<String> list = getCommonParameters(chromeExecutablePath, arguments);
@@ -102,9 +116,10 @@ abstract class AbstractLauncher {
         int     retryCount = 0;
         boolean connected  = factory.ping();
 
-        while ( ! ( connected = factory.ping() ) && retryCount < 50 ) {
+        int maxRetryCount = connectionTimeout / (int) SLEEP_DURATION;
+        while ( ! ( connected = factory.ping() ) && retryCount < maxRetryCount ) {
             try {
-                sleep(100);
+                sleep(SLEEP_DURATION);
             } catch (InterruptedException e) {
                 // ignore
             }

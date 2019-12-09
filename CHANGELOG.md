@@ -1,6 +1,10 @@
 cdp4j Release Notes
 -------------------------------------------------------------------------------
 
+### 3.0.15 - December 12, 2019
+
+* Added connectionTimeout paramater to  AbstractLauncher.launch()
+
 ### 3.0.14 - November 11, 2019
 
 * Fixed [Cancel close timer after task execution](https://github.com/TakahikoKawasaki/nv-websocket-client/pull/191)
