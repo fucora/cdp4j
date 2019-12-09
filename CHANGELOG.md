@@ -37,6 +37,19 @@ non-blocking WebSocket client examples: [Netty](https://github.com/webfolderio/c
 
 :new: Move to flatten cdp protocol. DevTools protocol is dropping nested targets and switching to flatten protocol. cdp4j 4.x will be incompatible with Chromium below version 72
 
+### 3.0.15 - December 12, 2019
+
+* Added connectionTimeout paramater to  AbstractLauncher.launch()
+
+### 3.0.14 - November 11, 2019
+
+* Fixed [Cancel close timer after task execution](https://github.com/TakahikoKawasaki/nv-websocket-client/pull/191)
+* Updated nv-websocket-client to 2.9
+
+### 3.0.13 - October 11, 2019
+
+* Removed WINP dependency from TaskKillProcessManager
+
 ### 3.0.12 - June 25, 2019
 
 * Added Launcher.isChromeInstalled() method
