@@ -54,7 +54,7 @@ import org.graalvm.word.WordFactory;
 @CLibrary("cdp4j")
 class Libuv {
 
-    private static final boolean WINDOWS = ";".equals(pathSeparator);
+    static final boolean WINDOWS = ";".equals(pathSeparator);
 
     static class UDirectives implements CContext.Directives {
 
@@ -81,14 +81,14 @@ class Libuv {
         public List<String> getOptions() {
             Path include = get(getVcpkgRoot())
                                 .resolve("installed")
-                                .resolve(WINDOWS ? "x64-windows" : "x64-linux")
+                                .resolve(WINDOWS ? "x64-windows-static" : "x64-linux")
                                 .resolve("include");
             System.out.println("[cdp4j] vcpkg include path: " + include.toString());
             String uvCdp4jIncludePath = getUvCdp4jPath().toString();
             System.out.println("[cdp4j] uv-cdp4j include path: " + uvCdp4jIncludePath);
             String libCdp4jStaticPath = getUvCdp4jPath()
                                             .resolve("build")
-                                            .resolve(WINDOWS ? "uv-cdp4j.lib" : "libcdp4j.a")
+                                            .resolve(WINDOWS ? "cdp4j.lib" : "libcdp4j.a")
                                             .toString();
             System.out.println("[cdp4j] libcdp4j path: " + libCdp4jStaticPath);
             List<String> options = new ArrayList<>(asList(libCdp4jStaticPath,
@@ -96,20 +96,13 @@ class Libuv {
                                                 include.toAbsolutePath().toString()),
                                             format("-I%s",
                                                   uvCdp4jIncludePath)));
-            if (WINDOWS) {
-                Path libuvStaticPath = get(getVcpkgRoot())
-                                           .resolve("installed")
-                                           .resolve("x64-windows")
-                                           .resolve("lib")
-                                           .resolve("libuv.lib");
-            }
             return options;
         }
 
         public List<String> getLibraryPaths() {
             Path vcpkgLibraryPath = get(getVcpkgRoot())
                                     .resolve("installed")
-                                    .resolve(WINDOWS ? "x64-windows" : "x64-linux")
+                                    .resolve(WINDOWS ? "x64-windows-static" : "x64-linux")
                                     .resolve("lib");
             System.out.println("[cdp4j] vcpkg library path: " + vcpkgLibraryPath);
             String uvCdp4jLibraryPath = getUvCdp4jPath().resolve("build").toString();
@@ -125,14 +118,7 @@ class Libuv {
         @Override
         public List<String> getLibraries() {
             if (WINDOWS) {
-                return asList("uv-cdp4j",
-                              "libuv",
-                              "iphlpapi",
-                              "psapi",
-                              "userenv",
-                              "ws2_32",
-                              "wsock32",
-                              "user32");
+                return asList("libuv", "iphlpapi", "psapi", "userenv", "ws2_32", "wsock32", "user32");
             } else {
                 return emptyList();
             }
@@ -211,6 +197,24 @@ class Libuv {
 
         @CField("args")
         void args(CCharPointerPointer args);
+
+        @CField("flags")
+        void flags(int flags);
+
+        @CField("flags")
+        int flags();
+
+        @CField("env")
+        CCharPointerPointer env();
+
+        @CField("env")
+        void env(CCharPointerPointer env);
+
+        @CField("cwd")
+        CCharPointer cwd();
+
+        @CField("cwd")
+        void cwd(CCharPointer cwd);
     }
 
     @CStruct(value = "uv_process_s", addStructKeyword = true)
@@ -286,13 +290,16 @@ class Libuv {
     @CFunction
     static native int uv_write(write_request req, pipe handle, buf buf, UnsignedWord nbufs, PointerBase cb);
 
+    @CFunction
+    static native CCharPointer uv_err_name(int err);
+
     // ------------------------------------------------------------------------
     // cdp4j native methods
     // ------------------------------------------------------------------------
 
     @CFunction
     static native int cdp4j_spawn_process(loop loop, process process, process_options options);
-
+    
     @CFunction
     static native int cdp4j_write_pipe(loop loop, async handle, context_write context);
 
@@ -326,6 +333,15 @@ class Libuv {
         uv_write(request, write.pipe(), write.buf(), WordFactory.unsigned(1), callback);
         UnmanagedMemory.free(handle);
     }
+
+    @CConstant
+    static final native int UV_PROCESS_SETUID();
+
+    @CConstant
+    static final native int UV_PROCESS_SETGID();
+
+    @CConstant
+    static final native int UV_PROCESS_WINDOWS_VERBATIM_ARGUMENTS();
 
     @CConstant
     static final native int UV_IGNORE();
@@ -370,11 +386,9 @@ class Libuv {
                 @Override
                 public void run() {
                     process.spawn("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe", new String[] {
-                                  "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
-                                  "--enable-automation",
+                                  "chrome.exe",
                                   "--remote-debugging-pipe",
-                                  "--disable-gpu",
-                                  "--headless"
+                                  "--user-data-dir=C:\\test"
                                   }, true, true);
                     latch.countDown();
                 }
@@ -393,7 +407,6 @@ class Libuv {
                     Thread.sleep(Integer.parseInt(args[0]));
                 }
             }
-
 
             System.in.read();
             

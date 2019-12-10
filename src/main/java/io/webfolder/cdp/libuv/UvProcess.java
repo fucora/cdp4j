@@ -5,8 +5,11 @@ import static io.webfolder.cdp.libuv.Libuv.SIGKILL;
 import static io.webfolder.cdp.libuv.Libuv.UV_CREATE_PIPE;
 import static io.webfolder.cdp.libuv.Libuv.UV_IGNORE;
 import static io.webfolder.cdp.libuv.Libuv.UV_INHERIT_FD;
+import static io.webfolder.cdp.libuv.Libuv.UV_PROCESS_SETGID;
+import static io.webfolder.cdp.libuv.Libuv.UV_PROCESS_WINDOWS_VERBATIM_ARGUMENTS;
 import static io.webfolder.cdp.libuv.Libuv.UV_READABLE_PIPE;
 import static io.webfolder.cdp.libuv.Libuv.UV_WRITABLE_PIPE;
+import static io.webfolder.cdp.libuv.Libuv.WINDOWS;
 import static io.webfolder.cdp.libuv.Libuv.cdp4j_spawn_process;
 import static io.webfolder.cdp.libuv.Libuv.cdp4j_start_read;
 import static io.webfolder.cdp.libuv.Libuv.cdp4j_write_pipe;
@@ -16,6 +19,7 @@ import static org.graalvm.nativeimage.UnmanagedMemory.free;
 import static org.graalvm.nativeimage.UnmanagedMemory.malloc;
 import static org.graalvm.nativeimage.c.struct.SizeOf.get;
 import static org.graalvm.nativeimage.c.type.CTypeConversion.toCString;
+import static org.graalvm.nativeimage.c.type.CTypeConversion.toJavaString;
 import static org.graalvm.word.WordFactory.nullPointer;
 
 import org.graalvm.nativeimage.PinnedObject;
@@ -102,6 +106,17 @@ class UvProcess {
         options.stdio(container);
         options.file(this.file.get());
 
+        if (WINDOWS) {
+            options.flags(UV_PROCESS_WINDOWS_VERBATIM_ARGUMENTS());
+        } else {
+            options.flags(UV_PROCESS_SETGID() | UV_PROCESS_SETGID());
+        }
+
+        // inherit from parent process
+        options.cwd(nullPointer());
+        // inherit from parent process
+        options.env(nullPointer());
+
         argsLength = arguments.length + 1;
         args = malloc(get(CCharPointerPointer.class) * argsLength);
         argsHolder = new CCharPointerHolder[argsLength];
@@ -127,7 +142,7 @@ class UvProcess {
         free(args);
 
         if ( ret != CDP4J_UV_SUCCESS() ) {
-            debug("<- UvProcess.spawn()[cdp4j_spawn_process()]: false");
+            debug("<- UvProcess.spawn()[cdp4j_spawn_process()]: false, " + toJavaString(Libuv.uv_err_name(ret)));
             return false;
         }
 
